@@ -6,6 +6,7 @@ export default {
   data() {
     return {
       size: 0.2,
+      speed: 1,
 
       camera: undefined,
       scene: undefined,
@@ -197,12 +198,39 @@ export default {
       const width = 800;
       const height = 600;
 
-      const camera = new THREE.PerspectiveCamera(70, width / height, 0.01, 10);
+      const clock = new THREE.Clock();
+
+      const camera = new THREE.PerspectiveCamera(110, width / height, 0.01, 10);
       camera.position.z = 3;
       this.camera = camera;
 
       const scene = new THREE.Scene();
       this.scene = scene;
+
+      const bottomPlane = new THREE.GridHelper(10, 10, 0x0000ff, 0x808080);
+      bottomPlane.rotateX(Math.PI / 2);
+      bottomPlane.position.z = -5;
+      scene.add(bottomPlane);
+
+      const downPlane = new THREE.GridHelper(10, 10, 0x0000ff, 0x808080);
+      downPlane.rotateZ(Math.PI);
+      downPlane.position.y = -5;
+      scene.add(downPlane);
+
+      const upPlane = new THREE.GridHelper(10, 10, 0x0000ff, 0x808080);
+      upPlane.rotateZ(Math.PI);
+      upPlane.position.y = 5;
+      scene.add(upPlane);
+
+      const leftPlane = new THREE.GridHelper(10, 10, 0x0000ff, 0x808080);
+      leftPlane.rotateZ(Math.PI / 2);
+      leftPlane.position.x = -5;
+      scene.add(leftPlane);
+
+      const rightPlane = new THREE.GridHelper(10, 10, 0x0000ff, 0x808080);
+      rightPlane.rotateZ(Math.PI / 2);
+      rightPlane.position.x = 5;
+      scene.add(rightPlane);
 
       const onePoint = this.generateOnePoint();
       const twoPoints = this.generateTwoPoints();
@@ -233,17 +261,33 @@ export default {
       scene.add(sForm);
       scene.add(threePointsCurve);
 
-      const renderer = new THREE.WebGLRenderer({ antialias: true });
-      renderer.setSize(width, height);
-      renderer.setAnimationLoop(animation);
-      container.appendChild(renderer.domElement);
-      this.renderer = renderer;
-
-      this.updateRendererSize();
-
       // animation
 
-      function animation(time) {
+      let timeDelta = 0;
+      let prevTime = undefined;
+      let count = -4;
+
+      const animation = (time) => {
+        const delta = clock.getDelta();
+
+        timeDelta += delta;
+
+        const second = Math.round(timeDelta) * this.speed;
+
+        let changePosition = false;
+
+        if (second != prevTime) {
+          prevTime = second;
+
+          if (count > 3) {
+            count = -4;
+          }
+
+          changePosition = true;
+
+          count += 1;
+        }
+
         [
           onePoint,
           twoPoints,
@@ -257,10 +301,22 @@ export default {
           group.rotation.x = time / 2000;
           group.rotation.y = time / 1000;
           group.rotation.z = time / 3000;
+
+          if (changePosition) {
+            group.position.setZ(-count);
+          }
         });
 
         renderer.render(scene, camera);
-      }
+      };
+
+      const renderer = new THREE.WebGLRenderer({ antialias: true });
+      renderer.setSize(width, height);
+      renderer.setAnimationLoop(animation);
+      container.appendChild(renderer.domElement);
+      this.renderer = renderer;
+
+      this.updateRendererSize();
     },
   },
 
