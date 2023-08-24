@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
 
 export default {
   name: "MainScreen",
@@ -18,6 +19,14 @@ export default {
       scene: undefined,
       renderer: undefined,
     };
+  },
+
+  computed: {
+    zombie() {
+      const { scene } = this;
+
+      return scene.children.find((item) => item.userData.name == "Zombie");
+    },
   },
 
   methods: {
@@ -365,6 +374,9 @@ export default {
       scene.add(sForm);
       scene.add(threePointsCurve);
 
+      const light = new THREE.AmbientLight(0x404040); // soft white light
+      scene.add(light);
+
       // animation
 
       let timeDelta = 0;
@@ -425,27 +437,80 @@ export default {
       this.renderer = renderer;
 
       this.updateRendererSize();
+
+      const fbxLoader = new FBXLoader();
+      fbxLoader.load(
+        "/models/S_Zombie_01.fbx",
+        (object) => {
+          // object.traverse(function (child) {
+          //     if ((child as THREE.Mesh).isMesh) {
+          //         // (child as THREE.Mesh).material = material
+          //         if ((child as THREE.Mesh).material) {
+          //             ((child as THREE.Mesh).material as THREE.MeshBasicMaterial).transparent = false
+          //         }
+          //     }
+          // })
+          // object.scale.set(.01, .01, .01)
+
+          object.traverse(function (child) {
+            if (child.isMesh) {
+              // const loader = new THREE.TextureLoader();
+
+              // loader.load("/models/T_ColorAtlas16x16.png", (texture) => {
+              //   child.material.map = texture;
+              //   child.material.needsupdate = true;
+              //   console.log(texture);
+              //   // render(); // only if there is no render loop
+              // });
+              // console.log(child.geometry.attributes.uv);
+
+              child.castShadow = true;
+              child.receiveShadow = true;
+            }
+          });
+          object.scale.set(0.01, 0.01, 0.01);
+
+          object.userData.name = "Zombie";
+
+          object.position.setZ(-5);
+          object.position.setY(-1);
+
+          scene.add(object);
+        },
+        (xhr) => {
+          console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
     },
 
     keyupHandler(event) {
       switch (event.code) {
         case "KeyW":
           console.log("Press W");
+          this.zombie.position.setY(this.zombie.position.y + 1);
           break;
         case "KeyS":
           console.log("Press S");
+          this.zombie.position.setY(this.zombie.position.y - 1);
           break;
         case "KeyA":
           console.log("Press A");
+          this.zombie.position.setX(this.zombie.position.x - 1);
           break;
-        case "KeyF":
-          console.log("Press F");
+        case "KeyD":
+          console.log("Press D");
+          this.zombie.position.setX(this.zombie.position.x + 1);
           break;
         case "ArrowUp":
+          this.zombie.position.setZ(this.zombie.position.z + 1);
           console.log("Press Up");
           break;
         case "ArrowDown":
           console.log("Press Down");
+          this.zombie.position.setZ(this.zombie.position.z - 1);
           break;
         case "ArrowLeft":
           console.log("Press Left");
