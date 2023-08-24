@@ -9,12 +9,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "three": "^0.155.0",
     "vue": "^3.3.4"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.2.3",
+    "stylus": "^0.55.0",
+    "stylus-loader": "^6.1.0",
     "typescript": "^5.0.2",
     "vite": "^4.4.5",
+    "vue-cli-plugin-pug": "^2.0.0",
     "vue-tsc": "^1.8.5"
   }
 }
