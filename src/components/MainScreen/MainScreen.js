@@ -9,7 +9,7 @@ import generateTForm from "../../helpers/generate-t-form.js";
 import generateThreePoints from "../../helpers/generate-three-points.js";
 import generateThreePointsCurve from "../../helpers/generate-three-points-curve.js";
 import generateTwoPoints from "../../helpers/generate-two-points.js";
-import { loadZombie } from "../../helpers/load-zombie.js";
+import loadZombie from "../../helpers/load-zombie.js";
 
 export default {
   name: "MainScreen",
@@ -23,15 +23,18 @@ export default {
       pitHeight: 5,
       pitDepth: 12,
 
-      gridColor: 0x808080,
+      pitSize: "5x5x12",
 
-      lightColor: 0xfafafa,
+      gridColor: 0x80_80_80,
+
+      lightColor: 0xfa_fa_fa,
 
       isPause: false,
 
       camera: undefined,
       scene: undefined,
       renderer: undefined,
+      pit: undefined,
     };
   },
 
@@ -55,6 +58,27 @@ export default {
       this.camera.updateProjectionMatrix();
 
       this.renderer.setSize(containerRect.width, containerRect.height);
+    },
+
+    changePitSize() {
+      const { pitSize, scene, renderer } = this;
+
+      const [width, height, depth] = pitSize.split("x");
+
+      console.log(`Change pit size to ${pitSize}`);
+
+      this.pitWidth = width;
+      this.pitHeight = height;
+      this.pitDepth = depth;
+
+      scene.remove(this.pit);
+
+      renderer.renderLists.dispose();
+
+      this.pit = generatePit(width, height, depth, this.gridColor);
+      scene.add(this.pit);
+
+      return true;
     },
 
     async loadZombie() {
@@ -148,10 +172,12 @@ export default {
         this.gridColor
       );
       scene.add(pit);
+      this.pit = pit;
 
       const light = new THREE.AmbientLight(this.lightColor); //  white light
       scene.add(light);
 
+      // Init test mode
       this.initTest();
 
       // animation

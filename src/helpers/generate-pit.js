@@ -20,6 +20,8 @@ export function generatePit(
 ) {
   const pit = new Group();
 
+  pit.userData.name = "Pit";
+
   const bottomPlane = generateGrid(width, height, color);
   bottomPlane.position.z = -depth;
 
