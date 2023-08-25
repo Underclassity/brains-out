@@ -12,6 +12,8 @@ import ToQuads from "./to-quads.js";
  * @return  {Object}            Grid plane
  */
 export function generateGrid(width = 10, height = 10, color = 0x808080) {
+  console.log(`Generate grid ${width}x${height}`);
+
   const group = new Group();
 
   const gXY = new PlaneGeometry(width, height, width, height);

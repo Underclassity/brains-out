@@ -8,6 +8,8 @@ import generateMeshPoint from "./generate-mesh-point.js";
  * @return  {Object}  Group object
  */
 export function generateTForm(size = 0.2) {
+  console.log("Generate T form");
+
   const pointGroup = new Group();
 
   const firstMesh = generateMeshPoint();

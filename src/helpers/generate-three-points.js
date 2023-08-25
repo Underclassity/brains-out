@@ -8,6 +8,8 @@ import generateMeshPoint from "./generate-mesh-point";
  * @return  {Object}  Group object
  */
 export function generateThreePoints(size = 0.2) {
+  console.log("Generate three points form");
+
   const pointGroup = new Group();
 
   const firstMesh = generateMeshPoint();
