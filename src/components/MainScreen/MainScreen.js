@@ -1,10 +1,14 @@
 import * as THREE from "three";
 import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
 
-import generateMeshPoint from "../../helpers/generate-mesh-point.js";
+import generateFourPoints from "../../helpers/generate-four-points.js";
+import generateLForm from "../../helpers/generate-l-form.js";
 import generateOnePoint from "../../helpers/generate-one-point.js";
 import generatePit from "../../helpers/generate-pit.js";
+import generateSForm from "../../helpers/generate-s-form.js";
+import generateTForm from "../../helpers/generate-t-form.js";
 import generateThreePoints from "../../helpers/generate-three-points.js";
+import generateThreePointsCurve from "../../helpers/generate-three-points-curve.js";
 import generateTwoPoints from "../../helpers/generate-two-points.js";
 
 export default {
@@ -38,124 +42,6 @@ export default {
   },
 
   methods: {
-    generateMeshPoint(line = true) {
-      const { size } = this;
-
-      return generateMeshPoint(size, line);
-    },
-
-    generateThreePointsCurve() {
-      const { size } = this;
-
-      const pointGroup = new THREE.Group();
-
-      const firstMesh = this.generateMeshPoint();
-      const secondMesh = this.generateMeshPoint();
-      const thridMesh = this.generateMeshPoint();
-
-      pointGroup.add(firstMesh);
-      pointGroup.add(secondMesh);
-      pointGroup.add(thridMesh);
-
-      firstMesh.position.set(-size, 0, 0);
-      secondMesh.position.set(0, 0, 0);
-      thridMesh.position.set(-size, size, 0);
-
-      return pointGroup;
-    },
-
-    generateFourPoints() {
-      const { size } = this;
-
-      const pointGroup = new THREE.Group();
-
-      const firstMesh = this.generateMeshPoint();
-      const secondMesh = this.generateMeshPoint();
-      const thridMesh = this.generateMeshPoint();
-      const fourthPoint = this.generateMeshPoint();
-
-      pointGroup.add(firstMesh);
-      pointGroup.add(secondMesh);
-      pointGroup.add(thridMesh);
-      pointGroup.add(fourthPoint);
-
-      firstMesh.position.set(-size / 2, -size / 2, 0);
-      secondMesh.position.set(-size / 2, size / 2, 0);
-      thridMesh.position.set(size / 2, -size / 2, 0);
-      fourthPoint.position.set(size / 2, size / 2, 0);
-
-      return pointGroup;
-    },
-
-    generateLForm() {
-      const { size } = this;
-
-      const pointGroup = new THREE.Group();
-
-      const firstMesh = this.generateMeshPoint();
-      const secondMesh = this.generateMeshPoint();
-      const thridMesh = this.generateMeshPoint();
-      const fourthPoint = this.generateMeshPoint();
-
-      pointGroup.add(firstMesh);
-      pointGroup.add(secondMesh);
-      pointGroup.add(thridMesh);
-      pointGroup.add(fourthPoint);
-
-      firstMesh.position.set(-size, 0, 0);
-      secondMesh.position.set(0, 0, 0);
-      thridMesh.position.set(size, 0, 0);
-      fourthPoint.position.set(-size, -size, 0);
-
-      return pointGroup;
-    },
-
-    generateTForm() {
-      const { size } = this;
-
-      const pointGroup = new THREE.Group();
-
-      const firstMesh = this.generateMeshPoint();
-      const secondMesh = this.generateMeshPoint();
-      const thridMesh = this.generateMeshPoint();
-      const fourthPoint = this.generateMeshPoint();
-
-      pointGroup.add(firstMesh);
-      pointGroup.add(secondMesh);
-      pointGroup.add(thridMesh);
-      pointGroup.add(fourthPoint);
-
-      firstMesh.position.set(-size, 0, 0);
-      secondMesh.position.set(0, 0, 0);
-      thridMesh.position.set(size, 0, 0);
-      fourthPoint.position.set(0, size, 0);
-
-      return pointGroup;
-    },
-
-    generateSForm() {
-      const { size } = this;
-
-      const pointGroup = new THREE.Group();
-
-      const firstMesh = this.generateMeshPoint();
-      const secondMesh = this.generateMeshPoint();
-      const thridMesh = this.generateMeshPoint();
-      const fourthPoint = this.generateMeshPoint();
-
-      pointGroup.add(firstMesh);
-      pointGroup.add(secondMesh);
-      pointGroup.add(thridMesh);
-      pointGroup.add(fourthPoint);
-
-      firstMesh.position.set(-size, 0, 0);
-      secondMesh.position.set(0, 0, 0);
-      thridMesh.position.set(size, size, 0);
-      fourthPoint.position.set(0, size, 0);
-
-      return pointGroup;
-    },
-
     updateRendererSize() {
       console.log("Resize call");
 
@@ -197,11 +83,11 @@ export default {
       const onePoint = generateOnePoint();
       const twoPoints = generateTwoPoints();
       const threePoints = generateThreePoints();
-      const fourPoints = this.generateFourPoints();
-      const lForm = this.generateLForm();
-      const tForm = this.generateTForm();
-      const sForm = this.generateSForm();
-      const threePointsCurve = this.generateThreePointsCurve();
+      const fourPoints = generateFourPoints();
+      const lForm = generateLForm();
+      const tForm = generateTForm();
+      const sForm = generateSForm();
+      const threePointsCurve = generateThreePointsCurve();
 
       onePoint.position.set(0, 0, 0);
       twoPoints.position.set(-1, 0, 0);
