@@ -1,5 +1,4 @@
 import * as THREE from "three";
-import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
 
 import generateFourPoints from "../../helpers/generate-four-points.js";
 import generateLForm from "../../helpers/generate-l-form.js";
@@ -10,6 +9,7 @@ import generateTForm from "../../helpers/generate-t-form.js";
 import generateThreePoints from "../../helpers/generate-three-points.js";
 import generateThreePointsCurve from "../../helpers/generate-three-points-curve.js";
 import generateTwoPoints from "../../helpers/generate-two-points.js";
+import { loadZombie } from "../../helpers/load-zombie.js";
 
 export default {
   name: "MainScreen",
@@ -24,6 +24,8 @@ export default {
       pitDepth: 12,
 
       gridColor: 0x808080,
+
+      lightColor: 0xfafafa,
 
       isPause: false,
 
@@ -49,7 +51,74 @@ export default {
 
       const containerRect = container.getBoundingClientRect();
 
+      this.camera.aspect = containerRect.width / containerRect.height;
+      this.camera.updateProjectionMatrix();
+
       this.renderer.setSize(containerRect.width, containerRect.height);
+    },
+
+    async loadZombie() {
+      const zombie = await loadZombie();
+
+      if (!zombie) {
+        return false;
+      }
+
+      zombie.userData.name = "Zombie";
+
+      zombie.position.setZ(-5);
+      zombie.position.setY(-1);
+
+      if (this.scene) {
+        this.scene.add(zombie);
+      }
+    },
+
+    initTest() {
+      const { scene } = this;
+
+      const onePoint = generateOnePoint();
+      const twoPoints = generateTwoPoints();
+      const threePoints = generateThreePoints();
+      const fourPoints = generateFourPoints();
+      const lForm = generateLForm();
+      const tForm = generateTForm();
+      const sForm = generateSForm();
+      const threePointsCurve = generateThreePointsCurve();
+
+      // Set Test name
+      [
+        onePoint,
+        twoPoints,
+        threePoints,
+        fourPoints,
+        lForm,
+        tForm,
+        sForm,
+        threePointsCurve,
+      ].forEach((group) => (group.userData.name = "Test"));
+
+      onePoint.position.set(0, 0, 0);
+      twoPoints.position.set(-1, 0, 0);
+      threePoints.position.set(1, 0, 0);
+
+      fourPoints.position.set(1, 1, 0);
+      lForm.position.set(0, 1, 0);
+      tForm.position.set(-1, 1, 0);
+
+      sForm.position.set(-1, -1, 0);
+      threePointsCurve.position.set(0, -1, 0);
+
+      scene.add(onePoint);
+      scene.add(twoPoints);
+      scene.add(threePoints);
+      scene.add(fourPoints);
+      scene.add(lForm);
+      scene.add(tForm);
+      scene.add(sForm);
+      scene.add(threePointsCurve);
+
+      return true;
     },
 
     init() {
@@ -80,37 +149,10 @@ export default {
       );
       scene.add(pit);
 
-      const onePoint = generateOnePoint();
-      const twoPoints = generateTwoPoints();
-      const threePoints = generateThreePoints();
-      const fourPoints = generateFourPoints();
-      const lForm = generateLForm();
-      const tForm = generateTForm();
-      const sForm = generateSForm();
-      const threePointsCurve = generateThreePointsCurve();
-
-      onePoint.position.set(0, 0, 0);
-      twoPoints.position.set(-1, 0, 0);
-      threePoints.position.set(1, 0, 0);
-
-      fourPoints.position.set(1, 1, 0);
-      lForm.position.set(0, 1, 0);
-      tForm.position.set(-1, 1, 0);
-
-      sForm.position.set(-1, -1, 0);
-      threePointsCurve.position.set(0, -1, 0);
-
-      scene.add(onePoint);
-      scene.add(twoPoints);
-      scene.add(threePoints);
-      scene.add(fourPoints);
-      scene.add(lForm);
-      scene.add(tForm);
-      scene.add(sForm);
-      scene.add(threePointsCurve);
-
-      const light = new THREE.AmbientLight(0x404040); // soft white light
+      const light = new THREE.AmbientLight(this.lightColor); //  white light
       scene.add(light);
+
+      this.initTest();
 
       // animation
 
@@ -143,24 +185,18 @@ export default {
         //   count += 1;
         // }
 
-        [
-          onePoint,
-          twoPoints,
-          threePoints,
-          fourPoints,
-          lForm,
-          tForm,
-          sForm,
-          threePointsCurve,
-        ].forEach((group) => {
-          group.rotation.x = timeDelta / 2;
-          group.rotation.y = timeDelta / 1;
-          group.rotation.z = timeDelta / 3;
+        // Rotate test items
+        scene.children
+          .filter((item) => item.userData.name && item.userData.name == "Test")
+          .forEach((group) => {
+            group.rotation.x = timeDelta / 2;
+            group.rotation.y = timeDelta / 1;
+            group.rotation.z = timeDelta / 3;
 
-          // if (changePosition) {
-          //   group.position.setZ(-count);
-          // }
-        });
+            // if (changePosition) {
+            //   group.position.setZ(-count);
+            // }
+          });
 
         renderer.render(scene, camera);
       };
@@ -172,53 +208,6 @@ export default {
       this.renderer = renderer;
 
       this.updateRendererSize();
-
-      const fbxLoader = new FBXLoader();
-      fbxLoader.load(
-        "/models/S_Zombie_01.fbx",
-        (object) => {
-          // object.traverse(function (child) {
-          //     if ((child as THREE.Mesh).isMesh) {
-          //         // (child as THREE.Mesh).material = material
-          //         if ((child as THREE.Mesh).material) {
-          //             ((child as THREE.Mesh).material as THREE.MeshBasicMaterial).transparent = false
-          //         }
-          //     }
-          // })
-          // object.scale.set(.01, .01, .01)
-
-          object.traverse(function (child) {
-            if (child.isMesh) {
-              // const loader = new THREE.TextureLoader();
-
-              // loader.load("/models/T_ColorAtlas16x16.png", (texture) => {
-              //   child.material.map = texture;
-              //   child.material.needsupdate = true;
-              //   console.log(texture);
-              //   // render(); // only if there is no render loop
-              // });
-              // console.log(child.geometry.attributes.uv);
-
-              child.castShadow = true;
-              child.receiveShadow = true;
-            }
-          });
-          object.scale.set(0.01, 0.01, 0.01);
-
-          object.userData.name = "Zombie";
-
-          object.position.setZ(-5);
-          object.position.setY(-1);
-
-          scene.add(object);
-        },
-        (xhr) => {
-          console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
     },
 
     keyupHandler(event) {
@@ -264,6 +253,10 @@ export default {
           break;
       }
     },
+  },
+
+  beforeMount() {
+    this.loadZombie();
   },
 
   mounted() {
