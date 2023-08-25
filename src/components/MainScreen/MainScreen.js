@@ -1,6 +1,12 @@
 import * as THREE from "three";
 import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
 
+import generateMeshPoint from "../../helpers/generate-mesh-point.js";
+import generateOnePoint from "../../helpers/generate-one-point.js";
+import generatePit from "../../helpers/generate-pit.js";
+import generateThreePoints from "../../helpers/generate-three-points.js";
+import generateTwoPoints from "../../helpers/generate-two-points.js";
+
 export default {
   name: "MainScreen",
 
@@ -12,6 +18,8 @@ export default {
       pitWidth: 5,
       pitHeight: 5,
       pitDepth: 12,
+
+      gridColor: 0x808080,
 
       isPause: false,
 
@@ -33,74 +41,7 @@ export default {
     generateMeshPoint(line = true) {
       const { size } = this;
 
-      const geometry = new THREE.BoxGeometry(size, size, size);
-      const material = new THREE.MeshNormalMaterial();
-
-      const mesh = new THREE.Mesh(geometry, material);
-
-      if (!line) {
-        return mesh;
-      }
-
-      const group = new THREE.Group();
-
-      const wireframe = new THREE.WireframeGeometry(mesh.geometry);
-      const lineFrame = new THREE.LineSegments(wireframe);
-      lineFrame.material.depthTest = false;
-      lineFrame.material.opacity = 0.25;
-      lineFrame.material.transparent = true;
-
-      group.add(mesh);
-      group.add(lineFrame);
-
-      return group;
-    },
-
-    generateOnePoint() {
-      const pointGroup = new THREE.Group();
-
-      const mesh = this.generateMeshPoint();
-
-      pointGroup.add(mesh);
-
-      return pointGroup;
-    },
-
-    generateTwoPoints() {
-      const { size } = this;
-
-      const pointGroup = new THREE.Group();
-
-      const firstMesh = this.generateMeshPoint();
-      const secondMesh = this.generateMeshPoint();
-
-      pointGroup.add(firstMesh);
-      pointGroup.add(secondMesh);
-
-      firstMesh.position.set(-size / 2, 0, 0);
-      secondMesh.position.set(size / 2, 0, 0);
-
-      return pointGroup;
-    },
-
-    generateThreePoints() {
-      const { size } = this;
-
-      const pointGroup = new THREE.Group();
-
-      const firstMesh = this.generateMeshPoint();
-      const secondMesh = this.generateMeshPoint();
-      const thridMesh = this.generateMeshPoint();
-
-      pointGroup.add(firstMesh);
-      pointGroup.add(secondMesh);
-      pointGroup.add(thridMesh);
-
-      firstMesh.position.set(-size, 0, 0);
-      secondMesh.position.set(0, 0, 0);
-      thridMesh.position.set(size, 0, 0);
-
-      return pointGroup;
+      return generateMeshPoint(size, line);
     },
 
     generateThreePointsCurve() {
@@ -225,59 +166,6 @@ export default {
       this.renderer.setSize(containerRect.width, containerRect.height);
     },
 
-    ToQuads(g) {
-      const p = g.parameters;
-      const segmentsX =
-        (g.type == "TorusBufferGeometry"
-          ? p.tubularSegments
-          : p.radialSegments) ||
-        p.widthSegments ||
-        p.thetaSegments ||
-        p.points.length - 1 ||
-        1;
-      const segmentsY =
-        (g.type == "TorusBufferGeometry"
-          ? p.radialSegments
-          : p.tubularSegments) ||
-        p.heightSegments ||
-        p.phiSegments ||
-        p.segments ||
-        1;
-      const indices = [];
-      for (let i = 0; i < segmentsY + 1; i++) {
-        let index11 = 0;
-        let index12 = 0;
-        for (let j = 0; j < segmentsX; j++) {
-          index11 = (segmentsX + 1) * i + j;
-          index12 = index11 + 1;
-          const index21 = index11;
-          const index22 = index11 + (segmentsX + 1);
-          indices.push(index11, index12);
-          if (index22 < (segmentsX + 1) * (segmentsY + 1) - 1) {
-            indices.push(index21, index22);
-          }
-        }
-        if (index12 + segmentsX + 1 <= (segmentsX + 1) * (segmentsY + 1) - 1) {
-          indices.push(index12, index12 + segmentsX + 1);
-        }
-      }
-      g.setIndex(indices);
-    },
-
-    generateGrid(width = 10, height = 10, color = 0x808080) {
-      const group = new THREE.Group();
-
-      const gXY = new THREE.PlaneGeometry(width, height, width, height);
-      this.ToQuads(gXY);
-      const mXY = new THREE.LineBasicMaterial({ color });
-
-      const grXY = new THREE.LineSegments(gXY, mXY);
-
-      group.add(grXY);
-
-      return grXY;
-    },
-
     init() {
       const { container } = this.$refs;
 
@@ -298,75 +186,17 @@ export default {
       const scene = new THREE.Scene();
       this.scene = scene;
 
-      const bottomPlane = this.generateGrid(
+      const pit = generatePit(
         this.pitWidth,
         this.pitHeight,
-        0x808080
-      );
-      bottomPlane.position.z = -this.pitDepth;
-
-      const downPlane = this.generateGrid(
-        this.pitWidth,
         this.pitDepth,
-        0x808080
+        this.gridColor
       );
-      downPlane.rotateX(Math.PI / 2);
-      downPlane.position.z = -this.pitDepth / 2;
-      downPlane.position.y = -this.pitHeight / 2;
+      scene.add(pit);
 
-      const upPlane = this.generateGrid(this.pitWidth, this.pitDepth, 0x808080);
-      upPlane.rotateX(Math.PI / 2);
-      upPlane.position.z = -this.pitDepth / 2;
-      upPlane.position.y = this.pitHeight / 2;
-
-      const leftPlane = this.generateGrid(
-        this.pitHeight,
-        this.pitDepth,
-        0x808080
-      );
-      leftPlane.rotateY(Math.PI / 2);
-      leftPlane.rotateZ(Math.PI / 2);
-      leftPlane.position.z = -this.pitDepth / 2;
-      leftPlane.position.x = -this.pitWidth / 2;
-
-      const rightPlane = this.generateGrid(
-        this.pitHeight,
-        this.pitDepth,
-        0x808080
-      );
-      rightPlane.rotateY(Math.PI / 2);
-      rightPlane.rotateZ(Math.PI / 2);
-      rightPlane.position.z = -this.pitDepth / 2;
-      rightPlane.position.x = this.pitWidth / 2;
-
-      const rightBgPlane = this.generateGrid(100, 100, 0x808080);
-      rightBgPlane.position.y = this.pitHeight / 2;
-      rightBgPlane.position.x = this.pitWidth / 2 + 100 / 2;
-
-      const leftBgPlane = this.generateGrid(100, 100, 0x808080);
-      leftBgPlane.position.y = this.pitHeight / 2;
-      leftBgPlane.position.x = -this.pitWidth / 2 - 100 / 2;
-
-      const topBgPlane = this.generateGrid(this.pitWidth, 100, 0x808080);
-      topBgPlane.position.y = this.pitHeight / 2 + 100 / 2;
-
-      const bottomBgPlane = this.generateGrid(this.pitWidth, 100, 0x808080);
-      bottomBgPlane.position.y = -this.pitHeight / 2 - 100 / 2;
-
-      scene.add(bottomPlane);
-      scene.add(downPlane);
-      scene.add(upPlane);
-      scene.add(leftPlane);
-      scene.add(rightPlane);
-
-      scene.add(leftBgPlane);
-      scene.add(rightBgPlane);
-      scene.add(topBgPlane);
-      scene.add(bottomBgPlane);
-
-      const onePoint = this.generateOnePoint();
-      const twoPoints = this.generateTwoPoints();
-      const threePoints = this.generateThreePoints();
+      const onePoint = generateOnePoint();
+      const twoPoints = generateTwoPoints();
+      const threePoints = generateThreePoints();
       const fourPoints = this.generateFourPoints();
       const lForm = this.generateLForm();
       const tForm = this.generateTForm();
