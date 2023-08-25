@@ -292,7 +292,7 @@ export default {
         0.01,
         100
       );
-      camera.position.z = 1.5;
+      camera.position.z = 2;
       this.camera = camera;
 
       const scene = new THREE.Scene();
@@ -339,11 +339,30 @@ export default {
       rightPlane.position.z = -this.pitDepth / 2;
       rightPlane.position.x = this.pitWidth / 2;
 
+      const rightBgPlane = this.generateGrid(100, 100, 0x808080);
+      rightBgPlane.position.y = this.pitHeight / 2;
+      rightBgPlane.position.x = this.pitWidth / 2 + 100 / 2;
+
+      const leftBgPlane = this.generateGrid(100, 100, 0x808080);
+      leftBgPlane.position.y = this.pitHeight / 2;
+      leftBgPlane.position.x = -this.pitWidth / 2 - 100 / 2;
+
+      const topBgPlane = this.generateGrid(this.pitWidth, 100, 0x808080);
+      topBgPlane.position.y = this.pitHeight / 2 + 100 / 2;
+
+      const bottomBgPlane = this.generateGrid(this.pitWidth, 100, 0x808080);
+      bottomBgPlane.position.y = -this.pitHeight / 2 - 100 / 2;
+
       scene.add(bottomPlane);
       scene.add(downPlane);
       scene.add(upPlane);
       scene.add(leftPlane);
       scene.add(rightPlane);
+
+      scene.add(leftBgPlane);
+      scene.add(rightBgPlane);
+      scene.add(topBgPlane);
+      scene.add(bottomBgPlane);
 
       const onePoint = this.generateOnePoint();
       const twoPoints = this.generateTwoPoints();
@@ -513,9 +532,11 @@ export default {
           this.zombie.position.setZ(this.zombie.position.z - 1);
           break;
         case "ArrowLeft":
+          this.zombie.rotateX(Math.PI / 2);
           console.log("Press Left");
           break;
         case "ArrowRight":
+          this.zombie.rotateZ(Math.PI / 2);
           console.log("Press Right");
           break;
         case "Space":
