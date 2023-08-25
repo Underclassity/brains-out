@@ -1,6 +1,8 @@
 import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
 
 export async function loadZombie() {
+  console.log("Load Zombie model");
+
   return new Promise((resolve) => {
     const fbxLoader = new FBXLoader();
     fbxLoader.load(

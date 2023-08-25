@@ -99,6 +99,8 @@ export default {
     },
 
     initTest() {
+      console.log("Init test");
+
       const { scene } = this;
 
       const onePoint = generateOnePoint();
