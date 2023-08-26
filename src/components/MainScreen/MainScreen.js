@@ -1,4 +1,11 @@
-import * as THREE from "three";
+import {
+  AmbientLight,
+  Clock,
+  PerspectiveCamera,
+  Scene,
+  WebGLRenderer,
+  Vector3,
+} from "three";
 
 import generateFourPoints from "../../helpers/generate-four-points.js";
 import generateLForm from "../../helpers/generate-l-form.js";
@@ -76,8 +83,10 @@ export default {
       this.isPause = false;
     },
 
-    changePitSize() {
-      const { pitSize, scene, renderer } = this;
+    changePitSize(pitSize) {
+      const { scene, renderer } = this;
+
+      this.pitSize = pitSize;
 
       const [width, height, depth] = pitSize.split("x");
 
@@ -171,18 +180,13 @@ export default {
       const width = 800;
       const height = 600;
 
-      const clock = new THREE.Clock();
+      const clock = new Clock();
 
-      const camera = new THREE.PerspectiveCamera(
-        110,
-        width / height,
-        0.01,
-        100
-      );
+      const camera = new PerspectiveCamera(110, width / height, 0.01, 100);
       camera.position.z = 2;
       this.camera = camera;
 
-      const scene = new THREE.Scene();
+      const scene = new Scene();
       this.scene = scene;
 
       const pit = generatePit(
@@ -194,7 +198,7 @@ export default {
       scene.add(pit);
       this.pit = pit;
 
-      const light = new THREE.AmbientLight(this.lightColor); //  white light
+      const light = new AmbientLight(this.lightColor); //  white light
       scene.add(light);
 
       // Init test mode
@@ -247,7 +251,7 @@ export default {
         renderer.render(scene, camera);
       };
 
-      const renderer = new THREE.WebGLRenderer({ antialias: true });
+      const renderer = new WebGLRenderer({ antialias: true });
       renderer.setSize(width, height);
       renderer.setAnimationLoop(animation);
       container.appendChild(renderer.domElement);
@@ -257,32 +261,34 @@ export default {
     },
 
     keyupHandler(event) {
-      console.log(event.code);
+      const xAxis = new Vector3(1, 0, 0);
+      const yAxis = new Vector3(0, 1, 0);
+      const zAxis = new Vector3(0, 0, 1);
 
       switch (event.code) {
         case "KeyQ":
           console.log("Press Q");
-          this.zombie.rotateZ(-Math.PI / 2);
+          this.zombie.rotateOnWorldAxis(zAxis, -Math.PI / 2);
           break;
         case "KeyE":
           console.log("Press E");
-          this.zombie.rotateZ(Math.PI / 2);
+          this.zombie.rotateOnWorldAxis(zAxis, Math.PI / 2);
           break;
         case "KeyW":
           console.log("Press W");
-          this.zombie.rotateX(Math.PI / 2);
+          this.zombie.rotateOnWorldAxis(xAxis, Math.PI / 2);
           break;
         case "KeyS":
           console.log("Press S");
-          this.zombie.rotateX(-Math.PI / 2);
+          this.zombie.rotateOnWorldAxis(xAxis, -Math.PI / 2);
           break;
         case "KeyA":
           console.log("Press A");
-          this.zombie.rotateY(-Math.PI / 2);
+          this.zombie.rotateOnWorldAxis(yAxis, -Math.PI / 2);
           break;
         case "KeyD":
           console.log("Press D");
-          this.zombie.rotateY(Math.PI / 2);
+          this.zombie.rotateOnWorldAxis(yAxis, Math.PI / 2);
           break;
         case "ArrowUp":
           console.log("Press Up");
