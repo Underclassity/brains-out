@@ -12,8 +12,8 @@ export function generateTwoPoints(size = 0.2) {
 
   const pointGroup = new Group();
 
-  const firstMesh = generateMeshPoint();
-  const secondMesh = generateMeshPoint();
+  const firstMesh = generateMeshPoint(size);
+  const secondMesh = generateMeshPoint(size);
 
   pointGroup.add(firstMesh);
   pointGroup.add(secondMesh);

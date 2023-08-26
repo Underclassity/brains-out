@@ -11,12 +11,14 @@ import generateThreePointsCurve from "../../helpers/generate-three-points-curve.
 import generateTwoPoints from "../../helpers/generate-two-points.js";
 import loadZombie from "../../helpers/load-zombie.js";
 
+import MenuComponent from "../MenuComponent/MenuComponent.vue";
+
 export default {
   name: "MainScreen",
 
   data() {
     return {
-      size: 0.2,
+      size: 0.4,
       speed: 1,
 
       pitWidth: 5,
@@ -38,6 +40,10 @@ export default {
 
       resizeTimeout: undefined,
     };
+  },
+
+  components: {
+    MenuComponent,
   },
 
   computed: {
@@ -63,6 +69,11 @@ export default {
 
         this.renderer.setSize(containerRect.width, containerRect.height);
       }, 10);
+    },
+
+    closeMenu() {
+      console.log("Close menu");
+      this.isPause = false;
     },
 
     changePitSize() {
@@ -106,16 +117,16 @@ export default {
     initTest() {
       console.log("Init test");
 
-      const { scene } = this;
+      const { scene, size } = this;
 
-      const onePoint = generateOnePoint();
-      const twoPoints = generateTwoPoints();
-      const threePoints = generateThreePoints();
-      const fourPoints = generateFourPoints();
-      const lForm = generateLForm();
-      const tForm = generateTForm();
-      const sForm = generateSForm();
-      const threePointsCurve = generateThreePointsCurve();
+      const onePoint = generateOnePoint(size);
+      const twoPoints = generateTwoPoints(size);
+      const threePoints = generateThreePoints(size);
+      const fourPoints = generateFourPoints(size);
+      const lForm = generateLForm(size);
+      const tForm = generateTForm(size);
+      const sForm = generateSForm(size);
+      const threePointsCurve = generateThreePointsCurve(size);
 
       // Set Test name
       [
@@ -129,16 +140,18 @@ export default {
         threePointsCurve,
       ].forEach((group) => (group.userData.name = "Test"));
 
-      onePoint.position.set(0, 0, 0);
-      twoPoints.position.set(-1, 0, 0);
-      threePoints.position.set(1, 0, 0);
+      const zPosition = -2;
 
-      fourPoints.position.set(1, 1, 0);
-      lForm.position.set(0, 1, 0);
-      tForm.position.set(-1, 1, 0);
+      onePoint.position.set(0, 0, zPosition);
+      twoPoints.position.set(-2, 0, zPosition);
+      threePoints.position.set(2, 0, zPosition);
 
-      sForm.position.set(-1, -1, 0);
-      threePointsCurve.position.set(0, -1, 0);
+      fourPoints.position.set(2, 2, zPosition);
+      lForm.position.set(0, 2, zPosition);
+      tForm.position.set(-2, 2, zPosition);
+
+      sForm.position.set(-2, -2, zPosition);
+      threePointsCurve.position.set(0, -2, zPosition);
 
       scene.add(onePoint);
       scene.add(twoPoints);

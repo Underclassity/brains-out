@@ -12,10 +12,10 @@ export function generateTForm(size = 0.2) {
 
   const pointGroup = new Group();
 
-  const firstMesh = generateMeshPoint();
-  const secondMesh = generateMeshPoint();
-  const thridMesh = generateMeshPoint();
-  const fourthPoint = generateMeshPoint();
+  const firstMesh = generateMeshPoint(size);
+  const secondMesh = generateMeshPoint(size);
+  const thridMesh = generateMeshPoint(size);
+  const fourthPoint = generateMeshPoint(size);
 
   pointGroup.add(firstMesh);
   pointGroup.add(secondMesh);
