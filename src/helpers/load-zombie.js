@@ -6,7 +6,7 @@ export async function loadZombie() {
   return new Promise((resolve) => {
     const fbxLoader = new FBXLoader();
     fbxLoader.load(
-      "/models/S_Zombie_01.fbx",
+      "models/S_Zombie_01.fbx",
       (object) => {
         // object.traverse(function (child) {
         //     if ((child as THREE.Mesh).isMesh) {
