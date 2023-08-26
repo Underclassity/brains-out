@@ -244,44 +244,54 @@ export default {
     },
 
     keyupHandler(event) {
+      console.log(event.code);
+
       switch (event.code) {
+        case "KeyQ":
+          console.log("Press Q");
+          this.zombie.rotateZ(-Math.PI / 2);
+          break;
+        case "KeyE":
+          console.log("Press E");
+          this.zombie.rotateZ(Math.PI / 2);
+          break;
         case "KeyW":
           console.log("Press W");
-          this.zombie.position.setY(this.zombie.position.y + 1);
+          this.zombie.rotateX(Math.PI / 2);
           break;
         case "KeyS":
           console.log("Press S");
-          this.zombie.position.setY(this.zombie.position.y - 1);
+          this.zombie.rotateX(-Math.PI / 2);
           break;
         case "KeyA":
           console.log("Press A");
-          this.zombie.position.setX(this.zombie.position.x - 1);
+          this.zombie.rotateY(-Math.PI / 2);
           break;
         case "KeyD":
           console.log("Press D");
-          this.zombie.position.setX(this.zombie.position.x + 1);
+          this.zombie.rotateY(Math.PI / 2);
           break;
         case "ArrowUp":
-          this.zombie.position.setZ(this.zombie.position.z + 1);
           console.log("Press Up");
+          this.zombie.position.setY(this.zombie.position.y + 1);
           break;
         case "ArrowDown":
           console.log("Press Down");
-          this.zombie.position.setZ(this.zombie.position.z - 1);
+          this.zombie.position.setY(this.zombie.position.y - 1);
           break;
         case "ArrowLeft":
-          this.zombie.rotateX(Math.PI / 2);
           console.log("Press Left");
+          this.zombie.position.setX(this.zombie.position.x - 1);
           break;
         case "ArrowRight":
-          this.zombie.rotateZ(Math.PI / 2);
           console.log("Press Right");
+          this.zombie.position.setX(this.zombie.position.x + 1);
           break;
         case "Space":
           console.log("Press Space");
           break;
-        case "KeyP":
-          console.log("Press P");
+        case "Escape":
+          console.log("Press Escape");
           this.isPause = !this.isPause;
           break;
       }
