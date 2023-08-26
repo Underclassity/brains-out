@@ -35,6 +35,8 @@ export default {
       scene: undefined,
       renderer: undefined,
       pit: undefined,
+
+      resizeTimeout: undefined,
     };
   },
 
@@ -48,16 +50,19 @@ export default {
 
   methods: {
     updateRendererSize() {
-      console.log("Resize call");
+      clearTimeout(this.resizeTimeout);
+      this.resizeTimeout = setTimeout(() => {
+        console.log("Resize call");
 
-      const { container } = this.$refs;
+        const { container } = this.$refs;
 
-      const containerRect = container.getBoundingClientRect();
+        const containerRect = container.getBoundingClientRect();
 
-      this.camera.aspect = containerRect.width / containerRect.height;
-      this.camera.updateProjectionMatrix();
+        this.camera.aspect = containerRect.width / containerRect.height;
+        this.camera.updateProjectionMatrix();
 
-      this.renderer.setSize(containerRect.width, containerRect.height);
+        this.renderer.setSize(containerRect.width, containerRect.height);
+      }, 10);
     },
 
     changePitSize() {
@@ -290,12 +295,12 @@ export default {
   mounted() {
     this.init();
 
-    window.addEventListener("resize", this.updateRendererSize());
+    window.addEventListener("resize", this.updateRendererSize);
     document.addEventListener("keyup", this.keyupHandler);
   },
 
-  beforeUnmount() {
-    window.removeEventListener("resize", this.updateRendererSize());
+  unmounted() {
+    window.removeEventListener("resize", this.updateRendererSize);
     document.removeEventListener("keyup", this.keyupHandler);
   },
 };
