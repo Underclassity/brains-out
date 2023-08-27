@@ -12,6 +12,8 @@ export function generateTForm(size = 0.2) {
 
   const pointGroup = new Group();
 
+  pointGroup.userData.name = "T form";
+
   const firstMesh = generateMeshPoint(size);
   const secondMesh = generateMeshPoint(size);
   const thridMesh = generateMeshPoint(size);

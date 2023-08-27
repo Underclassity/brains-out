@@ -12,6 +12,8 @@ export function generateOnePoint(size = 0.2) {
 
   const pointGroup = new Group();
 
+  pointGroup.userData.name = "1 point";
+
   const mesh = generateMeshPoint(size);
 
   pointGroup.add(mesh);

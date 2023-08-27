@@ -11,11 +11,17 @@ export default {
       type: String,
       default: "5x5x12",
     },
+
+    speed: {
+      type: Number,
+      default: 1,
+    },
   },
 
   data() {
     return {
       currentPitSize: this.pitSize,
+      currentSpeed: this.speed,
     };
   },
 
@@ -27,6 +33,10 @@ export default {
 
     changePitSize() {
       this.$emit("change-pit-size", this.currentPitSize);
+    },
+
+    changeSpeed() {
+      this.$emit("change-speed", this.currentSpeed);
     },
   },
 };

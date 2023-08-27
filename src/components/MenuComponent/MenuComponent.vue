@@ -11,6 +11,14 @@
                 option(value='10x10x12') 10x10x12
                 option(value='7x4x12') 7x4x12
 
+        .menu-item
+            span Speed:
+            select(v-model="currentSpeed" v-on:change="changeSpeed")
+                option(value=1) 1
+                option(value=2) 2
+                option(value=3) 3
+                option(value=4) 4
+
         h3.link(v-on:click="closeMenu") Back to game
 </template>
 

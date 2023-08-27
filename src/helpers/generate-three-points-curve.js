@@ -12,6 +12,8 @@ export function generateThreePointsCurve(size = 0.2) {
 
   const pointGroup = new Group();
 
+  pointGroup.userData.name = "3 points curve";
+
   const firstMesh = generateMeshPoint(size);
   const secondMesh = generateMeshPoint(size);
   const thridMesh = generateMeshPoint(size);

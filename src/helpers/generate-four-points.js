@@ -12,6 +12,8 @@ export function generateFourPoints(size = 0.2) {
 
   const pointGroup = new Group();
 
+  pointGroup.userData.name = "4 points";
+
   const firstMesh = generateMeshPoint(size);
   const secondMesh = generateMeshPoint(size);
   const thridMesh = generateMeshPoint(size);

@@ -2,7 +2,16 @@
 .main
     .container(ref="container")
 
-MenuComponent(:isMenu="isPause" :pitSize="pitSize" v-on:close-menu="closeMenu" v-on:change-pit-size="changePitSize")
+    span.menu-button.link.material-symbols-outlined(v-on:click="openMenu") menu
+
+MenuComponent(
+    :isMenu="isPause"
+    :pitSize="pitSize"
+    :speed="speed"
+    v-on:close-menu="closeMenu"
+    v-on:change-pit-size="changePitSize"
+    v-on:change-speed="changeSpeed"
+)
 </template>
 
 <script src="./MainScreen.js"></script>

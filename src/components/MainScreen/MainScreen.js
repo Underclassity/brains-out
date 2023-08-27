@@ -1,10 +1,11 @@
 import {
   AmbientLight,
+  Box3,
   Clock,
   PerspectiveCamera,
   Scene,
-  WebGLRenderer,
   Vector3,
+  WebGLRenderer,
 } from "three";
 
 import generateFourPoints from "../../helpers/generate-four-points.js";
@@ -18,6 +19,8 @@ import generateThreePointsCurve from "../../helpers/generate-three-points-curve.
 import generateTwoPoints from "../../helpers/generate-two-points.js";
 import loadZombie from "../../helpers/load-zombie.js";
 
+import randomBetween from "../../helpers/random-between.js";
+
 import MenuComponent from "../MenuComponent/MenuComponent.vue";
 
 export default {
@@ -25,12 +28,14 @@ export default {
 
   data() {
     return {
-      size: 0.4,
+      size: 1,
       speed: 1,
 
       pitWidth: 5,
       pitHeight: 5,
       pitDepth: 12,
+
+      fov: 70,
 
       pitSize: "5x5x12",
 
@@ -46,6 +51,8 @@ export default {
       pit: undefined,
 
       resizeTimeout: undefined,
+
+      loopCb: [],
     };
   },
 
@@ -78,9 +85,19 @@ export default {
       }, 10);
     },
 
+    openMenu() {
+      console.log("Open menu");
+      this.isPause = true;
+    },
+
     closeMenu() {
       console.log("Close menu");
       this.isPause = false;
+    },
+
+    changeSpeed(speed) {
+      console.log(`Update speed to: ${speed}`);
+      this.speed = parseInt(speed);
     },
 
     changePitSize(pitSize) {
@@ -121,6 +138,103 @@ export default {
       if (this.scene) {
         this.scene.add(zombie);
       }
+    },
+
+    getRandomForm() {
+      console.log("Get random form call");
+
+      const { pitWidth, pitHeight } = this;
+
+      const formFunctions = [
+        generateFourPoints,
+        generateLForm,
+        generateOnePoint,
+        generateSForm,
+        generateTForm,
+        generateThreePoints,
+        generateThreePointsCurve,
+        generateTwoPoints,
+      ];
+
+      const formFunction =
+        formFunctions[Math.floor(Math.random() * formFunctions.length)];
+
+      const cornerType = randomBetween(1, 4);
+
+      // Create element
+      const element = formFunction(this.size);
+
+      const box = new Box3().setFromObject(element);
+      const size = new Vector3();
+      box.getSize(size);
+
+      switch (cornerType) {
+        // Top Left
+        case 1:
+          element.position.setX(size.x / 2 - pitWidth / 2);
+          element.position.setY(size.y / 2 - pitHeight / 2);
+          break;
+        // Top Right
+        case 2:
+          element.position.setX(size.x / 2 + pitWidth / 2);
+          element.position.setY(size.y / 2 - pitHeight / 2);
+          break;
+        // Bottom Left
+        case 3:
+          element.position.setX(size.x / 2 - pitWidth / 2);
+          element.position.setY(size.y / 2 + pitHeight / 2);
+          break;
+        // Bottom Right
+        case 4:
+          element.position.setX(size.x / 2 + pitWidth / 2);
+          element.position.setY(size.y / 2 + pitHeight / 2);
+          break;
+      }
+
+      return element;
+    },
+
+    initWaterfall() {
+      console.log("Init waterfall");
+
+      const { scene } = this;
+
+      let prevCount = undefined;
+
+      let elements = [];
+
+      this.loopCb.push((delta, timeDelta, second) => {
+        elements.forEach((element, index, array) => {
+          if (!element) {
+            return false;
+          }
+
+          const elTime = element.userData.time;
+          element.position.setZ(-(timeDelta - elTime) * this.speed);
+
+          if (element.position.z < -this.pitDepth) {
+            scene.remove(element);
+            array[index] = undefined;
+          }
+        });
+
+        elements = elements.filter((item) => item);
+
+        const count = Math.round(timeDelta / 2);
+
+        if (prevCount == count) {
+          return false;
+        }
+
+        prevCount = count;
+
+        const element = this.getRandomForm();
+
+        element.userData.time = timeDelta;
+
+        elements.push(element);
+        scene.add(element);
+      });
     },
 
     initTest() {
@@ -182,7 +296,7 @@ export default {
 
       const clock = new Clock();
 
-      const camera = new PerspectiveCamera(110, width / height, 0.01, 100);
+      const camera = new PerspectiveCamera(this.fov, width / height, 0.01, 100);
       camera.position.z = 2;
       this.camera = camera;
 
@@ -202,7 +316,10 @@ export default {
       scene.add(light);
 
       // Init test mode
-      this.initTest();
+      // this.initTest();
+
+      // init waterfall mode
+      this.initWaterfall();
 
       // animation
 
@@ -248,6 +365,10 @@ export default {
             // }
           });
 
+        if (Array.isArray(this.loopCb) && this.loopCb.length) {
+          this.loopCb.forEach((fn) => fn(delta, timeDelta, second));
+        }
+
         renderer.render(scene, camera);
       };
 
@@ -268,43 +389,43 @@ export default {
       switch (event.code) {
         case "KeyQ":
           console.log("Press Q");
-          this.zombie.rotateOnWorldAxis(zAxis, -Math.PI / 2);
+          // this.zombie.rotateOnWorldAxis(zAxis, -Math.PI / 2);
           break;
         case "KeyE":
           console.log("Press E");
-          this.zombie.rotateOnWorldAxis(zAxis, Math.PI / 2);
+          // this.zombie.rotateOnWorldAxis(zAxis, Math.PI / 2);
           break;
         case "KeyW":
           console.log("Press W");
-          this.zombie.rotateOnWorldAxis(xAxis, Math.PI / 2);
+          // this.zombie.rotateOnWorldAxis(xAxis, Math.PI / 2);
           break;
         case "KeyS":
           console.log("Press S");
-          this.zombie.rotateOnWorldAxis(xAxis, -Math.PI / 2);
+          // this.zombie.rotateOnWorldAxis(xAxis, -Math.PI / 2);
           break;
         case "KeyA":
           console.log("Press A");
-          this.zombie.rotateOnWorldAxis(yAxis, -Math.PI / 2);
+          // this.zombie.rotateOnWorldAxis(yAxis, -Math.PI / 2);
           break;
         case "KeyD":
           console.log("Press D");
-          this.zombie.rotateOnWorldAxis(yAxis, Math.PI / 2);
+          // this.zombie.rotateOnWorldAxis(yAxis, Math.PI / 2);
           break;
         case "ArrowUp":
           console.log("Press Up");
-          this.zombie.position.setY(this.zombie.position.y + 1);
+          // this.zombie.position.setY(this.zombie.position.y + 1);
           break;
         case "ArrowDown":
           console.log("Press Down");
-          this.zombie.position.setY(this.zombie.position.y - 1);
+          // this.zombie.position.setY(this.zombie.position.y - 1);
           break;
         case "ArrowLeft":
           console.log("Press Left");
-          this.zombie.position.setX(this.zombie.position.x - 1);
+          // this.zombie.position.setX(this.zombie.position.x - 1);
           break;
         case "ArrowRight":
           console.log("Press Right");
-          this.zombie.position.setX(this.zombie.position.x + 1);
+          // this.zombie.position.setX(this.zombie.position.x + 1);
           break;
         case "Space":
           console.log("Press Space");
@@ -318,7 +439,7 @@ export default {
   },
 
   beforeMount() {
-    this.loadZombie();
+    // this.loadZombie();
   },
 
   mounted() {
