@@ -141,6 +141,29 @@ export default {
       this.isPause = false;
     },
 
+    restrainElement(element) {
+      const { pitWidth, pitHeight } = this;
+
+      // Restrain position
+      if (element.position.x <= -pitWidth / 2) {
+        element.position.x = -pitWidth / 2;
+      }
+
+      if (element.position.x >= pitWidth / 2) {
+        element.position.x = pitWidth / 2;
+      }
+
+      if (element.position.y <= -pitHeight / 2) {
+        element.position.y = -pitHeight / 2;
+      }
+
+      if (element.position.y >= pitHeight / 2) {
+        element.position.y = pitHeight / 2;
+      }
+
+      return element;
+    },
+
     changePitSize(pitSize) {
       const { scene, renderer } = this;
 
@@ -241,22 +264,7 @@ export default {
           break;
       }
 
-      // Restrain position
-      if (element.position.x <= -pitWidth / 2) {
-        element.position.x = -pitWidth / 2;
-      }
-
-      if (element.position.x >= pitWidth / 2) {
-        element.position.x = pitWidth / 2;
-      }
-
-      if (element.position.y <= -pitHeight / 2) {
-        element.position.y = -pitHeight / 2;
-      }
-
-      if (element.position.y >= pitHeight / 2) {
-        element.position.y = pitHeight / 2;
-      }
+      this.restrainElement(element);
 
       return element;
     },
@@ -270,9 +278,9 @@ export default {
 
       let elements = [];
 
-      this.loopCb.push((delta, timeDelta, second) => {
+      this.loopCb.push((delta, timeDelta) => {
         if (this.isPause) {
-          elements.forEach((element, index, array) => {
+          elements.forEach((element) => {
             if (!element.userData.timeDiff) {
               element.userData.timeDiff = timeDelta - element.userData.time;
             }
