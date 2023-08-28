@@ -87,7 +87,23 @@ export default {
         this.camera.updateProjectionMatrix();
 
         this.renderer.setSize(containerRect.width, containerRect.height);
+
+        this.updateCameraProjection();
       }, 10);
+    },
+
+    updateCameraProjection() {
+      console.log("Update camera projection call");
+
+      const { camera, pitWidth, pitHeight } = this;
+
+      const maxSize = Math.max(pitWidth, pitHeight, 0);
+      const fitHeightDistance =
+        maxSize / (2 * Math.atan((Math.PI * camera.fov) / 360));
+      const fitWidthDistance = fitHeightDistance / camera.aspect;
+      const distance = 2 * Math.max(fitHeightDistance, fitWidthDistance);
+
+      camera.position.setZ(distance - maxSize);
     },
 
     openMenu() {
@@ -124,6 +140,8 @@ export default {
 
       this.pit = generatePit(width, height, depth, this.gridColor);
       scene.add(this.pit);
+
+      this.updateCameraProjection();
 
       return true;
     },
@@ -345,8 +363,6 @@ export default {
       const clock = new Clock();
 
       const camera = new PerspectiveCamera(this.fov, width / height, 0.01, 100);
-      camera.position.setZ(4);
-
       this.camera = camera;
 
       const scene = new Scene();
