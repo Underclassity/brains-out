@@ -1,6 +1,7 @@
 import { Group } from "three";
 
 import generateMeshPoint from "./generate-mesh-point.js";
+import getGroupSize from "./get-group-size.js";
 
 /**
  * Generate L form
@@ -24,10 +25,12 @@ export function generateLForm(size = 0.2) {
   pointGroup.add(thridMesh);
   pointGroup.add(fourthPoint);
 
-  firstMesh.position.set(-size, 0, 0);
-  secondMesh.position.set(0, 0, 0);
-  thridMesh.position.set(size, 0, 0);
-  fourthPoint.position.set(-size, -size, 0);
+  firstMesh.position.set(-size, -size / 2, 0);
+  secondMesh.position.set(0, -size / 2, 0);
+  thridMesh.position.set(size, -size / 2, 0);
+  fourthPoint.position.set(-size, size / 2, 0);
+
+  pointGroup.userData.size = getGroupSize(pointGroup);
 
   return pointGroup;
 }

@@ -19,11 +19,9 @@ import generateThreePoints from "../../helpers/generate-three-points.js";
 import generateThreePointsCurve from "../../helpers/generate-three-points-curve.js";
 import generateTwoPoints from "../../helpers/generate-two-points.js";
 import loadZombie from "../../helpers/load-zombie.js";
-
 import randomBetween from "../../helpers/random-between.js";
 
 import MenuComponent from "../MenuComponent/MenuComponent.vue";
-import getGroupSize from "../../helpers/get-group-size.js";
 
 // Define axis for rotates
 const xAxis = new Vector3(1, 0, 0);
@@ -230,16 +228,14 @@ export default {
       // Create element
       const element = formFunction(this.size);
 
-      // Save box size vector
-      element.userData.size = getGroupSize(element);
-
       // const offset = randomBetween(-2, 2);
       const offset = 0;
 
       const left = element.userData.size.x / 2 - pitWidth / 2;
+      const right = -element.userData.size.x / 2 + pitWidth / 2;
+
       const top = -element.userData.size.y / 2 + pitHeight / 2;
       const bottom = element.userData.size.y / 2 - pitHeight / 2;
-      const right = -element.userData.size.x / 2 + pitWidth / 2;
 
       switch (cornerType) {
         // Top Left
@@ -309,6 +305,7 @@ export default {
           if (element.position.z < -this.pitDepth) {
             scene.remove(element);
             array[index] = undefined;
+            return false;
           }
 
           // Try to random rotate every second

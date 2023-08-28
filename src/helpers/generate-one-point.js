@@ -1,6 +1,7 @@
 import { Group } from "three";
 
 import generateMeshPoint from "./generate-mesh-point.js";
+import getGroupSize from "./get-group-size.js";
 
 /**
  * Generate one point form
@@ -17,6 +18,8 @@ export function generateOnePoint(size = 0.2) {
   const mesh = generateMeshPoint(size);
 
   pointGroup.add(mesh);
+
+  pointGroup.userData.size = getGroupSize(pointGroup);
 
   return pointGroup;
 }

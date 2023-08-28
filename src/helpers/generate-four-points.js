@@ -1,6 +1,7 @@
 import { Group } from "three";
 
 import generateMeshPoint from "./generate-mesh-point.js";
+import getGroupSize from "./get-group-size.js";
 
 /**
  * Generate four points form
@@ -28,6 +29,8 @@ export function generateFourPoints(size = 0.2) {
   secondMesh.position.set(-size / 2, size / 2, 0);
   thridMesh.position.set(size / 2, -size / 2, 0);
   fourthPoint.position.set(size / 2, size / 2, 0);
+
+  pointGroup.userData.size = getGroupSize(pointGroup);
 
   return pointGroup;
 }
