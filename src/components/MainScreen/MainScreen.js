@@ -210,7 +210,8 @@ export default {
       // Save box size vector
       element.userData.size = getGroupSize(element);
 
-      const offset = randomBetween(-2, 2);
+      // const offset = randomBetween(-2, 2);
+      const offset = 0;
 
       const left = element.userData.size.x / 2 - pitWidth / 2;
       const top = -element.userData.size.y / 2 + pitHeight / 2;
@@ -270,6 +271,10 @@ export default {
       let elements = [];
 
       this.loopCb.push((delta, timeDelta, second) => {
+        if (this.isPause) {
+          return false;
+        }
+
         elements.forEach((element, index, array) => {
           if (!element) {
             return false;
@@ -371,6 +376,21 @@ export default {
       scene.add(sForm);
       scene.add(threePointsCurve);
 
+      this.loopCb.push((delta, timeDelta) => {
+        // Rotate test items
+        scene.children
+          .filter((item) => item.userData.name && item.userData.name == "Test")
+          .forEach((group) => {
+            group.rotation.x = timeDelta / 2;
+            group.rotation.y = timeDelta / 1;
+            group.rotation.z = timeDelta / 3;
+
+            // if (changePosition) {
+            //   group.position.setZ(-count);
+            // }
+          });
+      });
+
       return true;
     },
 
@@ -415,9 +435,9 @@ export default {
       const animation = (time) => {
         const delta = clock.getDelta();
 
-        if (this.isPause) {
-          return false;
-        }
+        // if (this.isPause) {
+        //   return false;
+        // }
 
         timeDelta += delta;
 
@@ -436,19 +456,6 @@ export default {
 
         //   count += 1;
         // }
-
-        // Rotate test items
-        scene.children
-          .filter((item) => item.userData.name && item.userData.name == "Test")
-          .forEach((group) => {
-            group.rotation.x = timeDelta / 2;
-            group.rotation.y = timeDelta / 1;
-            group.rotation.z = timeDelta / 3;
-
-            // if (changePosition) {
-            //   group.position.setZ(-count);
-            // }
-          });
 
         if (Array.isArray(this.loopCb) && this.loopCb.length) {
           this.loopCb.forEach((fn) => fn(delta, timeDelta, second));
