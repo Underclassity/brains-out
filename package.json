@@ -10,8 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "hammerjs": "^2.0.8",
     "three": "^0.155.0",
-    "vue": "^3.3.4"
+    "vue": "^3.3.4",
+    "vuex": "^4.1.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.2.3",

@@ -7,6 +7,8 @@ import {
   WebGLRenderer,
 } from "three";
 
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
 import generateFourPoints from "../../helpers/generate-four-points.js";
 import generateLForm from "../../helpers/generate-l-form.js";
 import generateOnePoint from "../../helpers/generate-one-point.js";
@@ -53,6 +55,7 @@ export default {
       camera: undefined,
       scene: undefined,
       renderer: undefined,
+      controls: undefined,
       pit: undefined,
 
       resizeTimeout: undefined,
@@ -86,6 +89,8 @@ export default {
         this.camera.aspect = containerRect.width / containerRect.height;
         this.camera.updateProjectionMatrix();
 
+        this.controls.update();
+
         this.renderer.setSize(containerRect.width, containerRect.height);
 
         this.updateCameraProjection();
@@ -95,7 +100,7 @@ export default {
     updateCameraProjection() {
       console.log("Update camera projection call");
 
-      const { camera, pitWidth, pitHeight } = this;
+      const { camera, controls, pitWidth, pitHeight } = this;
 
       const maxSize = Math.max(pitWidth, pitHeight, 0);
       const fitHeightDistance =
@@ -104,6 +109,8 @@ export default {
       const distance = 2 * Math.max(fitHeightDistance, fitWidthDistance);
 
       camera.position.setZ(distance - maxSize);
+
+      controls.update();
     },
 
     openMenu() {
@@ -434,6 +441,8 @@ export default {
           this.loopCb.forEach((fn) => fn(delta, timeDelta, second));
         }
 
+        controls.update();
+
         renderer.render(scene, camera);
       };
 
@@ -442,6 +451,9 @@ export default {
       renderer.setAnimationLoop(animation);
       container.appendChild(renderer.domElement);
       this.renderer = renderer;
+
+      const controls = new OrbitControls(camera, renderer.domElement);
+      this.controls = controls;
 
       this.updateRendererSize();
     },
@@ -475,21 +487,25 @@ export default {
         case "ArrowUp":
           console.log("Press Up");
           this.camera.position.setY(this.camera.position.y + 0.1);
+          this.controls.update();
           // this.zombie.position.setY(this.zombie.position.y + 1);
           break;
         case "ArrowDown":
           console.log("Press Down");
           this.camera.position.setY(this.camera.position.y - 0.1);
+          this.controls.update();
           // this.zombie.position.setY(this.zombie.position.y - 1);
           break;
         case "ArrowLeft":
           console.log("Press Left");
           this.camera.position.setX(this.camera.position.x - 0.1);
+          this.controls.update();
           // this.zombie.position.setX(this.zombie.position.x - 1);
           break;
         case "ArrowRight":
           console.log("Press Right");
           this.camera.position.setX(this.camera.position.x + 0.1);
+          this.controls.update();
           // this.zombie.position.setX(this.zombie.position.x + 1);
           break;
         case "Space":
