@@ -51,6 +51,7 @@ export default {
       lightColor: 0xfa_fa_fa,
 
       isPause: false,
+      isMenu: false,
 
       camera: undefined,
       scene: undefined,
@@ -116,16 +117,28 @@ export default {
     openMenu() {
       console.log("Open menu");
       this.isPause = true;
+      this.isMenu = true;
     },
 
     closeMenu() {
       console.log("Close menu");
       this.isPause = false;
+      this.isMenu = false;
     },
 
     changeSpeed(speed) {
       console.log(`Update speed to: ${speed}`);
       this.speed = parseInt(speed);
+    },
+
+    pauseCall() {
+      console.log("Pause call");
+      this.isPause = true;
+    },
+
+    playCall() {
+      console.log("Play call");
+      this.isPause = false;
     },
 
     changePitSize(pitSize) {
@@ -513,7 +526,12 @@ export default {
           break;
         case "Escape":
           console.log("Press Escape");
-          this.isPause = !this.isPause;
+
+          if (this.isMenu) {
+            this.closeMenu();
+          } else {
+            this.openMenu();
+          }
           break;
       }
     },

@@ -3,9 +3,11 @@
     .container(ref="container")
 
     span.menu-button.link.material-symbols-outlined(v-on:click="openMenu") menu
+    span.pause-button.link.material-symbols-outlined(v-on:click="pauseCall" v-if="!isPause") pause
+    span.play-button.link.material-symbols-outlined(v-on:click="playCall" v-if="isPause") play_arrow
 
 MenuComponent(
-    :isMenu="isPause"
+    :isMenu="isMenu"
     :pitSize="pitSize"
     :speed="speed"
     v-on:close-menu="closeMenu"
