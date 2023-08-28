@@ -55,11 +55,11 @@ export function generatePit(
   leftBgPlane.position.y = height / 2;
   leftBgPlane.position.x = -width / 2 - 100 / 2;
 
-  const topBgPlane = generateGrid(width, 100, color);
-  topBgPlane.position.y = height / 2 + 100 / 2;
+  const topBgPlane = generateGrid(width, 50, color);
+  topBgPlane.position.y = 50 / 2 + height / 2;
 
-  const bottomBgPlane = generateGrid(width, 100, color);
-  bottomBgPlane.position.y = -height / 2 - 100 / 2;
+  const bottomBgPlane = generateGrid(width, 50 - height, color);
+  bottomBgPlane.position.y = -50 / 2;
 
   pit.add(bottomPlane);
   pit.add(downPlane);

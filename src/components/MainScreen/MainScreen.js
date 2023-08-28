@@ -59,6 +59,10 @@ export default {
 
       resizeTimeout: undefined,
 
+      prevCorner: undefined,
+      current: undefined,
+      next: undefined,
+
       loopCb: [],
     };
   },
@@ -223,7 +227,13 @@ export default {
       const formFunction =
         formFunctions[Math.floor(Math.random() * formFunctions.length)];
 
-      const cornerType = randomBetween(1, 4);
+      let cornerType = randomBetween(1, 4);
+
+      while (cornerType == this.prevCorner) {
+        cornerType = randomBetween(1, 4);
+      }
+
+      this.prevCorner = cornerType;
 
       // Create element
       const element = formFunction(this.size);
@@ -302,7 +312,10 @@ export default {
 
           element.position.setZ(-(timeDelta - elTime) * this.speed);
 
-          if (element.position.z < -this.pitDepth) {
+          if (
+            element.position.z <
+            -this.pitDepth + element.userData.size.z / 2
+          ) {
             scene.remove(element);
             array[index] = undefined;
             return false;
