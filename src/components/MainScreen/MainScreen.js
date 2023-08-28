@@ -1,6 +1,5 @@
 import {
   AmbientLight,
-  Box3,
   Clock,
   PerspectiveCamera,
   Scene,
@@ -22,6 +21,12 @@ import loadZombie from "../../helpers/load-zombie.js";
 import randomBetween from "../../helpers/random-between.js";
 
 import MenuComponent from "../MenuComponent/MenuComponent.vue";
+import getGroupSize from "../../helpers/get-group-size.js";
+
+// Define axis for rotates
+const xAxis = new Vector3(1, 0, 0);
+const yAxis = new Vector3(0, 1, 0);
+const zAxis = new Vector3(0, 0, 1);
 
 export default {
   name: "MainScreen",
@@ -164,31 +169,54 @@ export default {
       // Create element
       const element = formFunction(this.size);
 
-      const box = new Box3().setFromObject(element);
-      const size = new Vector3();
-      box.getSize(size);
+      // Save box size vector
+      element.userData.size = getGroupSize(element);
+
+      const offset = randomBetween(-2, 2);
+
+      const left = element.userData.size.x / 2 - pitWidth / 2;
+      const top = -element.userData.size.y / 2 + pitHeight / 2;
+      const bottom = element.userData.size.y / 2 - pitHeight / 2;
+      const right = -element.userData.size.x / 2 + pitWidth / 2;
 
       switch (cornerType) {
         // Top Left
         case 1:
-          element.position.setX(size.x / 2 - pitWidth / 2);
-          element.position.setY(size.y / 2 - pitHeight / 2);
+          element.position.setX(left + offset);
+          element.position.setY(top + offset);
           break;
         // Top Right
         case 2:
-          element.position.setX(size.x / 2 + pitWidth / 2);
-          element.position.setY(size.y / 2 - pitHeight / 2);
+          element.position.setX(right + offset);
+          element.position.setY(top + offset);
           break;
         // Bottom Left
         case 3:
-          element.position.setX(size.x / 2 - pitWidth / 2);
-          element.position.setY(size.y / 2 + pitHeight / 2);
+          element.position.setX(left + offset);
+          element.position.setY(bottom + offset);
           break;
         // Bottom Right
         case 4:
-          element.position.setX(size.x / 2 + pitWidth / 2);
-          element.position.setY(size.y / 2 + pitHeight / 2);
+          element.position.setX(right + offset);
+          element.position.setY(bottom + offset);
           break;
+      }
+
+      // Restrain position
+      if (element.position.x <= -pitWidth / 2) {
+        element.position.x = -pitWidth / 2;
+      }
+
+      if (element.position.x >= pitWidth / 2) {
+        element.position.x = pitWidth / 2;
+      }
+
+      if (element.position.y <= -pitHeight / 2) {
+        element.position.y = -pitHeight / 2;
+      }
+
+      if (element.position.y >= pitHeight / 2) {
+        element.position.y = pitHeight / 2;
       }
 
       return element;
@@ -210,12 +238,32 @@ export default {
           }
 
           const elTime = element.userData.time;
+          const rotateTime = element.userData.rotate || 0;
+          // const elSize = element.userData.size;
+
           element.position.setZ(-(timeDelta - elTime) * this.speed);
 
           if (element.position.z < -this.pitDepth) {
             scene.remove(element);
             array[index] = undefined;
           }
+
+          // Try to random rotate every second
+          if (!(Math.random() > 0.5 && Date.now() - rotateTime > 1000)) {
+            element.userData.rotate = Date.now();
+            return false;
+          }
+
+          // console.log("Rotate call");
+
+          const axis = randomBetween(0, 2);
+
+          element.rotateOnWorldAxis(
+            [xAxis, yAxis, zAxis][axis],
+            Math.random() > 0.5 ? Math.PI / 2 : -Math.PI / 2
+          );
+
+          element.userData.rotate = Date.now();
         });
 
         elements = elements.filter((item) => item);
@@ -297,7 +345,8 @@ export default {
       const clock = new Clock();
 
       const camera = new PerspectiveCamera(this.fov, width / height, 0.01, 100);
-      camera.position.z = 2;
+      camera.position.setZ(4);
+
       this.camera = camera;
 
       const scene = new Scene();
@@ -382,10 +431,6 @@ export default {
     },
 
     keyupHandler(event) {
-      const xAxis = new Vector3(1, 0, 0);
-      const yAxis = new Vector3(0, 1, 0);
-      const zAxis = new Vector3(0, 0, 1);
-
       switch (event.code) {
         case "KeyQ":
           console.log("Press Q");
@@ -413,18 +458,22 @@ export default {
           break;
         case "ArrowUp":
           console.log("Press Up");
+          this.camera.position.setY(this.camera.position.y + 0.1);
           // this.zombie.position.setY(this.zombie.position.y + 1);
           break;
         case "ArrowDown":
           console.log("Press Down");
+          this.camera.position.setY(this.camera.position.y - 0.1);
           // this.zombie.position.setY(this.zombie.position.y - 1);
           break;
         case "ArrowLeft":
           console.log("Press Left");
+          this.camera.position.setX(this.camera.position.x - 0.1);
           // this.zombie.position.setX(this.zombie.position.x - 1);
           break;
         case "ArrowRight":
           console.log("Press Right");
+          this.camera.position.setX(this.camera.position.x + 0.1);
           // this.zombie.position.setX(this.zombie.position.x + 1);
           break;
         case "Space":
