@@ -48,8 +48,8 @@ export default {
 
       lightColor: 0xfa_fa_fa,
 
-      isPause: false,
-      isMenu: false,
+      isPause: true,
+      isMenu: true,
 
       camera: undefined,
       scene: undefined,
@@ -62,6 +62,8 @@ export default {
       prevCorner: undefined,
       current: undefined,
       next: undefined,
+
+      zombieParts: [],
 
       loopCb: [],
     };
@@ -198,14 +200,21 @@ export default {
         return false;
       }
 
-      zombie.userData.name = "Zombie";
-
-      zombie.position.setZ(-5);
-      zombie.position.setY(-1);
-
-      if (this.scene) {
-        this.scene.add(zombie);
+      // Save all parts
+      for (const child of zombie.children) {
+        this.zombieParts.push(child);
       }
+
+      // console.log(this.zombieParts.map((item) => item.name).sort());
+
+      // zombie.userData.name = "Zombie";
+
+      // zombie.position.setZ(-5);
+      // zombie.position.setY(-1);
+
+      // if (this.scene) {
+      //   this.scene.add(zombie);
+      // }
     },
 
     getRandomForm() {
@@ -236,7 +245,7 @@ export default {
       this.prevCorner = cornerType;
 
       // Create element
-      const element = formFunction(this.size);
+      const element = formFunction(this.size, this.zombieParts);
 
       // const offset = randomBetween(-2, 2);
       const offset = 0;
@@ -308,14 +317,15 @@ export default {
 
           const elTime = element.userData.time;
           const rotateTime = element.userData.rotate || 0;
-          // const elSize = element.userData.size;
+          const elSize = element.userData.size;
 
-          element.position.setZ(-(timeDelta - elTime) * this.speed);
+          element.position.setZ(
+            -(timeDelta - elTime) * this.speed - elSize.z / 2
+          );
 
-          if (
-            element.position.z <
-            -this.pitDepth + element.userData.size.z / 2
-          ) {
+          // console.log(`${index}: ${element.position.z.toFixed(2)}`);
+
+          if (element.position.z < -this.pitDepth + elSize.z / 2) {
             scene.remove(element);
             array[index] = undefined;
             return false;
@@ -352,6 +362,9 @@ export default {
         const element = this.getRandomForm();
 
         element.userData.time = timeDelta;
+
+        // set start position on Z axis
+        element.position.setZ(-element.userData.size.z / 2);
 
         elements.push(element);
         scene.add(element);
@@ -485,6 +498,8 @@ export default {
       this.renderer = renderer;
 
       const controls = new OrbitControls(camera, renderer.domElement);
+      controls.maxZoom = 10;
+      controls.maxDistance = 50;
       this.controls = controls;
 
       this.updateRendererSize();
@@ -558,7 +573,7 @@ export default {
   },
 
   beforeMount() {
-    // this.loadZombie();
+    this.loadZombie();
   },
 
   mounted() {

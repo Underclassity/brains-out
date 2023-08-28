@@ -6,18 +6,21 @@ import getGroupSize from "./get-group-size.js";
 /**
  * Generate three points form
  *
- * @return  {Object}  Group object
+ * @param   {Number}  [size=0.2]   Size
+ * @param   {Array}   [parts=[]]   Parts array
+ *
+ * @return  {Object}               Group object
  */
-export function generateThreePoints(size = 0.2) {
+export function generateThreePoints(size = 0.2, parts = []) {
   console.log("Generate three points form");
 
   const pointGroup = new Group();
 
   pointGroup.userData.name = "3 points";
 
-  const firstMesh = generateMeshPoint(size);
-  const secondMesh = generateMeshPoint(size);
-  const thridMesh = generateMeshPoint(size);
+  const firstMesh = generateMeshPoint(size, parts);
+  const secondMesh = generateMeshPoint(size, parts);
+  const thridMesh = generateMeshPoint(size, parts);
 
   pointGroup.add(firstMesh);
   pointGroup.add(secondMesh);

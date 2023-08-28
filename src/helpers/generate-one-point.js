@@ -4,18 +4,21 @@ import generateMeshPoint from "./generate-mesh-point.js";
 import getGroupSize from "./get-group-size.js";
 
 /**
- * Generate one point form
+ * Generate one point
  *
- * @return  {Object}  Group object
+ * @param   {Number}  [size=0.2]   Size
+ * @param   {Array}   [parts=[]]   Parts array
+ *
+ * @return  {Object}               Group object
  */
-export function generateOnePoint(size = 0.2) {
+export function generateOnePoint(size = 0.2, parts = []) {
   console.log("Generate one point form");
 
   const pointGroup = new Group();
 
   pointGroup.userData.name = "1 point";
 
-  const mesh = generateMeshPoint(size);
+  const mesh = generateMeshPoint(size, parts);
 
   pointGroup.add(mesh);
 

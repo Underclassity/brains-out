@@ -6,7 +6,7 @@ export async function loadZombie() {
   return new Promise((resolve) => {
     const fbxLoader = new FBXLoader();
     fbxLoader.load(
-      "models/S_Zombie_01.fbx",
+      "models/S_Zombie_1-2-3-4.fbx",
       (object) => {
         // object.traverse(function (child) {
         //     if ((child as THREE.Mesh).isMesh) {
@@ -36,10 +36,12 @@ export async function loadZombie() {
         });
         object.scale.set(0.01, 0.01, 0.01);
 
+        console.log("Loaded zombie", object);
+
         resolve(object);
       },
       (xhr) => {
-        console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
+        console.log(`${(xhr.loaded / xhr.total) * 100}% loaded`);
       },
       (error) => {
         console.log(error);

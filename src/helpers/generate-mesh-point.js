@@ -7,24 +7,34 @@ import {
   WireframeGeometry,
 } from "three";
 
+import randomBetween from "./random-between.js";
+
 /**
  * Generate mesh point
  *
- * @param   {Number}   size  Point size
- * @param   {Boolean}  line  Render lines flag
+ * @param   {Number}   [size=0.2]     Point size
+ * @param   {Array}    [parts=[]]     Parts array
+ * @param   {Boolean}  [line=false]   Render lines flag
  *
- * @return  {Object}         Group object
+ * @return  {Object}                  Group object
  */
-export function generateMeshPoint(size = 0.2, line = true) {
+export function generateMeshPoint(size = 0.2, parts = [], line = false) {
   if (!size) {
     console.log("Size not defined!");
     return false;
   }
 
-  const geometry = new BoxGeometry(size, size, size);
-  const material = new MeshNormalMaterial();
+  let mesh;
 
-  const mesh = new Mesh(geometry, material);
+  if (Array.isArray(parts) && parts.length) {
+    mesh = parts[randomBetween(0, parts.length - 1)].clone();
+    mesh.scale.set(1, 1, 1);
+  } else {
+    const geometry = new BoxGeometry(size, size, size);
+    const material = new MeshNormalMaterial();
+
+    mesh = new Mesh(geometry, material);
+  }
 
   if (!line) {
     return mesh;
