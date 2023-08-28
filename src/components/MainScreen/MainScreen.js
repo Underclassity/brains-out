@@ -272,6 +272,16 @@ export default {
 
       this.loopCb.push((delta, timeDelta, second) => {
         if (this.isPause) {
+          elements.forEach((element, index, array) => {
+            if (!element.userData.timeDiff) {
+              element.userData.timeDiff = timeDelta - element.userData.time;
+            }
+
+            element.userData.time = timeDelta - element.userData.timeDiff;
+          });
+
+          prevCount = Math.round(timeDelta / 2);
+
           return false;
         }
 
@@ -279,6 +289,8 @@ export default {
           if (!element) {
             return false;
           }
+
+          element.userData.timeDiff = undefined;
 
           const elTime = element.userData.time;
           const rotateTime = element.userData.rotate || 0;
@@ -429,33 +441,15 @@ export default {
       // animation
 
       let timeDelta = 0;
-      let prevTime = undefined;
-      let count = -4;
 
       const animation = (time) => {
         const delta = clock.getDelta();
 
-        // if (this.isPause) {
-        //   return false;
-        // }
-
-        timeDelta += delta;
+        if (!this.isPause) {
+          timeDelta += delta;
+        }
 
         const second = Math.round(timeDelta) * this.speed;
-
-        // let changePosition = false;
-
-        // if (second != prevTime) {
-        //   prevTime = second;
-
-        //   if (count > 3) {
-        //     count = -4;
-        //   }
-
-        //   changePosition = true;
-
-        //   count += 1;
-        // }
 
         if (Array.isArray(this.loopCb) && this.loopCb.length) {
           this.loopCb.forEach((fn) => fn(delta, timeDelta, second));
@@ -530,6 +524,7 @@ export default {
           break;
         case "Space":
           console.log("Press Space");
+          this.isPause = !this.isPause;
           break;
         case "Escape":
           console.log("Press Escape");
