@@ -247,19 +247,21 @@ export default {
       const position = new Vector3();
       element.getWorldPosition(position);
 
-      const sizeBefore = element.userData.size;
+      // const sizeBefore = element.userData.size;
 
       element.userData.size = getGroupSize(element);
 
-      const { x: sizeX, y: sizeY, z: sizeZ } = element.userData;
+      const { x: sizeX, y: sizeY, z: sizeZ } = element.userData.size;
 
-      if (sizeBefore.x != sizeX && sizeBefore.x < sizeX) {
-        element.translateX((sizeBefore.x - sizeX) / 2);
-      }
+      // if (sizeBefore.x != sizeX) {
+      //   console.log("Move to X point");
+      //   element.translateX((sizeBefore.x - sizeX) / 2);
+      // }
 
-      if (sizeBefore.y != sizeY && sizeBefore.y < sizeY) {
-        element.translateY((sizeBefore.y - sizeY) / 2);
-      }
+      // if (sizeBefore.y != sizeY) {
+      //   console.log("Move to Y point");
+      //   element.translateY((sizeBefore.y - sizeY) / 2);
+      // }
 
       // console.log(
       //   element.userData.name,
@@ -305,20 +307,20 @@ export default {
       }
 
       // Restrain position
-      if (position.x <= -pitWidth / 2) {
-        element.position.x = -pitWidth / 2;
+      if (position.x <= -pitWidth / 2 + sizeX / 2) {
+        element.position.x = -pitWidth / 2 + sizeX / 2;
       }
 
-      if (position.x >= pitWidth / 2) {
-        element.position.x = pitWidth / 2;
+      if (position.x >= pitWidth / 2 - sizeX / 2) {
+        element.position.x = pitWidth / 2 - sizeX / 2;
       }
 
-      if (position.y <= -pitHeight / 2) {
-        element.position.y = -pitHeight / 2;
+      if (position.y <= -pitHeight / 2 + sizeY / 2) {
+        element.position.y = -pitHeight / 2 + sizeY / 2;
       }
 
-      if (position.y >= pitHeight / 2) {
-        element.position.y = pitHeight / 2;
+      if (position.y >= pitHeight / 2 - sizeY / 2) {
+        element.position.y = pitHeight / 2 - sizeY / 2;
       }
 
       if (position.z <= -pitDepth + sizeZ / 2) {
@@ -413,7 +415,7 @@ export default {
       this.prevCorner = cornerType;
 
       // Create element
-      const element = formFunction(this.size, this.zombieParts);
+      const element = generateTwoPoints(this.size, this.zombieParts);
 
       // const offset = randomBetween(-2, 2);
       const offset = 0;
@@ -741,11 +743,8 @@ export default {
     },
   },
 
-  beforeMount() {
-    this.loadZombie();
-  },
-
-  mounted() {
+  async mounted() {
+    await this.loadZombie();
     this.init();
 
     window.addEventListener("resize", this.updateRendererSize);
