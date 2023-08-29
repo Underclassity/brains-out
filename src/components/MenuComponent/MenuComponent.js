@@ -16,12 +16,18 @@ export default {
       type: Number,
       default: 1,
     },
+
+    smooth: {
+      type: Boolean,
+      default: true,
+    },
   },
 
   data() {
     return {
       currentPitSize: this.pitSize,
       currentSpeed: this.speed,
+      isSmooth: this.smooth,
     };
   },
 
@@ -37,6 +43,10 @@ export default {
 
     changeSpeed() {
       this.$emit("change-speed", this.currentSpeed);
+    },
+
+    updateSmooth() {
+      this.$emit("update-smooth", this.isSmooth);
     },
   },
 };

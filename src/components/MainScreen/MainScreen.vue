@@ -10,9 +10,11 @@ MenuComponent(
     :isMenu="isMenu"
     :pitSize="pitSize"
     :speed="speed"
+    :smooth="isSmooth"
     v-on:close-menu="closeMenu"
     v-on:change-pit-size="changePitSize"
     v-on:change-speed="changeSpeed"
+    v-on:update-smooth="updateSmooth"
 )
 </template>
 

@@ -6,7 +6,6 @@ import {
   Vector3,
   WebGLRenderer,
   MathUtils,
-  Group,
 } from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -53,6 +52,7 @@ export default {
 
       isPause: true,
       isMenu: true,
+      isSmooth: true,
 
       camera: undefined,
       scene: undefined,
@@ -174,6 +174,11 @@ export default {
     playCall() {
       console.log("Play call");
       this.isPause = false;
+    },
+
+    updateSmooth(isSmooth) {
+      this.isSmooth = isSmooth ? true : false;
+      console.log(`Smooth updated: ${this.isSmooth}`);
     },
 
     rotateHelper(axisType = "x", angle = 90, element) {
@@ -456,17 +461,19 @@ export default {
 
       let elements = [];
 
-      this.loopCb.push((delta, timeDelta) => {
+      this.loopCb.push((delta, timeDelta, second) => {
+        const time = this.isSmooth ? timeDelta : second;
+
         if (this.isPause) {
           elements.forEach((element) => {
             if (!element.userData.timeDiff) {
-              element.userData.timeDiff = timeDelta - element.userData.time;
+              element.userData.timeDiff = time - element.userData.time;
             }
 
-            element.userData.time = timeDelta - element.userData.timeDiff;
+            element.userData.time = time - element.userData.timeDiff;
           });
 
-          prevCount = Math.round(timeDelta / 2);
+          prevCount = Math.round(time / 2);
 
           return false;
         }
@@ -482,9 +489,7 @@ export default {
           const rotateTime = element.userData.rotate || 0;
           const elSize = element.userData.size;
 
-          element.position.setZ(
-            -(timeDelta - elTime) * this.speed - elSize.z / 2
-          );
+          element.position.setZ(-(time - elTime) * this.speed - elSize.z / 2);
 
           // console.log(`${index}: ${element.position.z.toFixed(2)}`);
 
@@ -515,7 +520,7 @@ export default {
 
         elements = elements.filter((item) => item);
 
-        const count = Math.round(timeDelta / 2);
+        const count = Math.round(time / 2);
 
         if (prevCount == count) {
           return false;
@@ -525,7 +530,7 @@ export default {
 
         const element = this.next ? this.next : this.getRandomForm();
 
-        element.userData.time = timeDelta;
+        element.userData.time = time;
 
         // set start position on Z axis
         element.position.setZ(-element.userData.size.z / 2);

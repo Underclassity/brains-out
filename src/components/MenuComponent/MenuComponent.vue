@@ -20,6 +20,10 @@ Transition(:duration="{ enter: 500, leave: 800 }")
                     option(value=3) 3
                     option(value=4) 4
 
+            .menu-item
+                input#smooth(type="checkbox" v-model="isSmooth" v-on:change="updateSmooth")
+                label(for="smooth") Smooth
+
             h3.link(v-on:click="closeMenu") Back to game
 </template>
 
