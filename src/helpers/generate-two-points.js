@@ -16,13 +16,18 @@ export function generateTwoPoints(size = 0.2, parts = []) {
 
   const pointGroup = new Group();
 
-  pointGroup.userData.name = "2 points";
+  pointGroup.name = "2 points";
+
+  const childsGroup = new Group();
+  childsGroup.name = "childs";
 
   const firstMesh = generateMeshPoint(size, parts);
   const secondMesh = generateMeshPoint(size, parts);
 
-  pointGroup.add(firstMesh);
-  pointGroup.add(secondMesh);
+  childsGroup.add(firstMesh);
+  childsGroup.add(secondMesh);
+
+  pointGroup.add(childsGroup);
 
   firstMesh.position.set(-size / 2, 0, 0);
   secondMesh.position.set(size / 2, 0, 0);

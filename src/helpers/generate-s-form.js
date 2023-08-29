@@ -16,17 +16,22 @@ export function generateSForm(size = 0.2, parts = []) {
 
   const pointGroup = new Group();
 
-  pointGroup.userData.name = "S form";
+  pointGroup.name = "S form";
+
+  const childsGroup = new Group();
+  childsGroup.name = "childs";
 
   const firstMesh = generateMeshPoint(size, parts);
   const secondMesh = generateMeshPoint(size, parts);
   const thridMesh = generateMeshPoint(size, parts);
   const fourthPoint = generateMeshPoint(size, parts);
 
-  pointGroup.add(firstMesh);
-  pointGroup.add(secondMesh);
-  pointGroup.add(thridMesh);
-  pointGroup.add(fourthPoint);
+  childsGroup.add(firstMesh);
+  childsGroup.add(secondMesh);
+  childsGroup.add(thridMesh);
+  childsGroup.add(fourthPoint);
+
+  pointGroup.add(childsGroup);
 
   firstMesh.position.set(-size, -size / 2, 0);
   secondMesh.position.set(0, -size / 2, 0);

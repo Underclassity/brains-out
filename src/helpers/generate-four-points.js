@@ -16,17 +16,22 @@ export function generateFourPoints(size = 0.2, parts = []) {
 
   const pointGroup = new Group();
 
-  pointGroup.userData.name = "4 points";
+  pointGroup.name = "4 points";
 
   const firstMesh = generateMeshPoint(size, parts);
   const secondMesh = generateMeshPoint(size, parts);
   const thridMesh = generateMeshPoint(size, parts);
   const fourthPoint = generateMeshPoint(size, parts);
 
-  pointGroup.add(firstMesh);
-  pointGroup.add(secondMesh);
-  pointGroup.add(thridMesh);
-  pointGroup.add(fourthPoint);
+  const childsGroup = new Group();
+  childsGroup.name = "childs";
+
+  childsGroup.add(firstMesh);
+  childsGroup.add(secondMesh);
+  childsGroup.add(thridMesh);
+  childsGroup.add(fourthPoint);
+
+  pointGroup.add(childsGroup);
 
   firstMesh.position.set(-size / 2, -size / 2, 0);
   secondMesh.position.set(-size / 2, size / 2, 0);

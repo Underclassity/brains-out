@@ -16,15 +16,20 @@ export function generateThreePoints(size = 0.2, parts = []) {
 
   const pointGroup = new Group();
 
-  pointGroup.userData.name = "3 points";
+  pointGroup.name = "3 points";
+
+  const childsGroup = new Group();
+  childsGroup.name = "childs";
 
   const firstMesh = generateMeshPoint(size, parts);
   const secondMesh = generateMeshPoint(size, parts);
   const thridMesh = generateMeshPoint(size, parts);
 
-  pointGroup.add(firstMesh);
-  pointGroup.add(secondMesh);
-  pointGroup.add(thridMesh);
+  childsGroup.add(firstMesh);
+  childsGroup.add(secondMesh);
+  childsGroup.add(thridMesh);
+
+  pointGroup.add(childsGroup);
 
   firstMesh.position.set(-size, 0, 0);
   secondMesh.position.set(0, 0, 0);

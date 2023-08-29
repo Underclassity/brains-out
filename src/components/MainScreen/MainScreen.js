@@ -5,6 +5,8 @@ import {
   Scene,
   Vector3,
   WebGLRenderer,
+  MathUtils,
+  Group,
 } from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -18,15 +20,16 @@ import generateTForm from "../../helpers/generate-t-form.js";
 import generateThreePoints from "../../helpers/generate-three-points.js";
 import generateThreePointsCurve from "../../helpers/generate-three-points-curve.js";
 import generateTwoPoints from "../../helpers/generate-two-points.js";
+import getGroupSize from "../../helpers/get-group-size.js";
 import loadZombie from "../../helpers/load-zombie.js";
 import randomBetween from "../../helpers/random-between.js";
 
 import MenuComponent from "../MenuComponent/MenuComponent.vue";
 
 // Define axis for rotates
-const xAxis = new Vector3(1, 0, 0);
-const yAxis = new Vector3(0, 1, 0);
-const zAxis = new Vector3(0, 0, 1);
+const xAxis = new Vector3(1, 0, 0).normalize();
+const yAxis = new Vector3(0, 1, 0).normalize();
+const zAxis = new Vector3(0, 0, 1).normalize();
 
 export default {
   name: "MainScreen",
@@ -78,6 +81,34 @@ export default {
       const { scene } = this;
 
       return scene.children.find((item) => item.userData.name == "Zombie");
+    },
+
+    xPoints() {
+      const { pitWidth } = this;
+
+      const points = [];
+
+      const firstPoint = -pitWidth / 2;
+
+      for (let i = 0; i <= pitWidth; i++) {
+        points.push(firstPoint + i);
+      }
+
+      return points;
+    },
+
+    yPoints() {
+      const { pitHeight } = this;
+
+      const points = [];
+
+      const firstPoint = -pitHeight / 2;
+
+      for (let i = 0; i <= pitHeight; i++) {
+        points.push(firstPoint + i);
+      }
+
+      return points;
     },
   },
 
@@ -145,24 +176,152 @@ export default {
       this.isPause = false;
     },
 
+    rotateHelper(axisType = "x", angle = 90, element) {
+      const angleValue = MathUtils.degToRad(angle);
+
+      if (!element) {
+        element = this.current;
+      }
+
+      let axis = xAxis;
+
+      switch (axisType) {
+        case "x":
+          axis = xAxis;
+          break;
+        case "y":
+          axis = yAxis;
+          break;
+        case "z":
+          axis = zAxis;
+          break;
+
+        default:
+          axis = xAxis;
+          break;
+      }
+
+      element.getObjectByName("childs").rotateOnWorldAxis(axis, angleValue);
+
+      this.restrainElement(element);
+    },
+
+    moveLeft() {
+      this.scene.remove(this.current);
+      this.current.translateX(-1);
+      this.scene.add(this.current);
+      this.restrainElement(this.current);
+    },
+
+    moveRight() {
+      this.scene.remove(this.current);
+      this.current.translateX(1);
+      this.scene.add(this.current);
+      this.restrainElement(this.current);
+    },
+
+    moveUp() {
+      this.scene.remove(this.current);
+      this.current.translateY(1);
+      this.scene.add(this.current);
+      this.restrainElement(this.current);
+    },
+
+    moveDown() {
+      this.scene.remove(this.current);
+      this.current.translateY(-1);
+      this.scene.add(this.current);
+      this.restrainElement(this.current);
+    },
+
     restrainElement(element) {
-      const { pitWidth, pitHeight } = this;
+      const { pitWidth, pitHeight, pitDepth, xPoints, yPoints } = this;
+
+      element.updateMatrixWorld();
+
+      const position = new Vector3();
+      element.getWorldPosition(position);
+
+      const sizeBefore = element.userData.size;
+
+      element.userData.size = getGroupSize(element);
+
+      const { x: sizeX, y: sizeY, z: sizeZ } = element.userData;
+
+      if (sizeBefore.x != sizeX && sizeBefore.x < sizeX) {
+        element.translateX((sizeBefore.x - sizeX) / 2);
+      }
+
+      if (sizeBefore.y != sizeY && sizeBefore.y < sizeY) {
+        element.translateY((sizeBefore.y - sizeY) / 2);
+      }
+
+      // console.log(
+      //   element.userData.name,
+      //   "position",
+      //   {
+      //     x: position.x.toFixed(1),
+      //     y: position.y.toFixed(1),
+      //     z: position.z.toFixed(1),
+      //   },
+      //   "size",
+      //   {
+      //     x: element.userData.size.x.toFixed(1),
+      //     y: element.userData.size.y.toFixed(1),
+      //     z: element.userData.size.z.toFixed(1),
+      //   }
+      // );
+
+      const xPosition = Math.round((position.x - sizeX / 2) * 100) / 100;
+      const yPosition = Math.round((position.y - sizeY / 2) * 100) / 100;
+
+      if (!xPoints.includes(xPosition)) {
+        // console.log("x before", xPosition);
+
+        xPoints.forEach((point, index, array) => {
+          if (xPosition > point && xPosition < array[index + 1]) {
+            element.translateX(point - xPosition);
+          }
+        });
+
+        // console.log("x after", element.position.x);
+      }
+
+      if (!yPoints.includes(yPosition)) {
+        // console.log("y before", yPosition);
+
+        yPoints.forEach((point, index, array) => {
+          if (yPosition > point && yPosition < array[index + 1]) {
+            element.translateY(point - yPosition);
+          }
+        });
+
+        // console.log("y after", element.position.y);
+      }
 
       // Restrain position
-      if (element.position.x <= -pitWidth / 2) {
+      if (position.x <= -pitWidth / 2) {
         element.position.x = -pitWidth / 2;
       }
 
-      if (element.position.x >= pitWidth / 2) {
+      if (position.x >= pitWidth / 2) {
         element.position.x = pitWidth / 2;
       }
 
-      if (element.position.y <= -pitHeight / 2) {
+      if (position.y <= -pitHeight / 2) {
         element.position.y = -pitHeight / 2;
       }
 
-      if (element.position.y >= pitHeight / 2) {
+      if (position.y >= pitHeight / 2) {
         element.position.y = pitHeight / 2;
+      }
+
+      if (position.z <= -pitDepth + sizeZ / 2) {
+        element.position.z = -pitDepth + sizeZ / 2;
+      }
+
+      if (position.z >= -sizeZ / 2) {
+        element.position.z = -sizeZ / 2;
       }
 
       return element;
@@ -215,6 +374,10 @@ export default {
       // if (this.scene) {
       //   this.scene.add(zombie);
       // }
+    },
+
+    updatePreview() {
+      console.log("Update preview call");
     },
 
     getRandomForm() {
@@ -341,9 +504,10 @@ export default {
 
           const axis = randomBetween(0, 2);
 
-          element.rotateOnWorldAxis(
-            [xAxis, yAxis, zAxis][axis],
-            Math.random() > 0.5 ? Math.PI / 2 : -Math.PI / 2
+          this.rotateHelper(
+            ["x", "y", "z"][axis],
+            Math.random() > 0.5 ? 90 : -90,
+            element
           );
 
           element.userData.rotate = Date.now();
@@ -359,7 +523,7 @@ export default {
 
         prevCount = count;
 
-        const element = this.getRandomForm();
+        const element = this.next ? this.next : this.getRandomForm();
 
         element.userData.time = timeDelta;
 
@@ -368,6 +532,11 @@ export default {
 
         elements.push(element);
         scene.add(element);
+
+        this.current = element;
+        this.next = this.getRandomForm();
+
+        this.updatePreview();
       });
     },
 
@@ -491,7 +660,10 @@ export default {
         renderer.render(scene, camera);
       };
 
-      const renderer = new WebGLRenderer({ antialias: true });
+      const renderer = new WebGLRenderer({
+        antialias: true,
+        powerPreference: "high-performance",
+      });
       renderer.setSize(width, height);
       renderer.setAnimationLoop(animation);
       container.appendChild(renderer.domElement);
@@ -509,51 +681,43 @@ export default {
       switch (event.code) {
         case "KeyQ":
           console.log("Press Q");
-          // this.zombie.rotateOnWorldAxis(zAxis, -Math.PI / 2);
+          this.rotateHelper("z", -90);
           break;
         case "KeyE":
           console.log("Press E");
-          // this.zombie.rotateOnWorldAxis(zAxis, Math.PI / 2);
+          this.rotateHelper("z", 90);
           break;
         case "KeyW":
           console.log("Press W");
-          // this.zombie.rotateOnWorldAxis(xAxis, Math.PI / 2);
+          this.rotateHelper("x", 90);
           break;
         case "KeyS":
           console.log("Press S");
-          // this.zombie.rotateOnWorldAxis(xAxis, -Math.PI / 2);
+          this.rotateHelper("x", -90);
           break;
         case "KeyA":
           console.log("Press A");
-          // this.zombie.rotateOnWorldAxis(yAxis, -Math.PI / 2);
+          this.rotateHelper("y", -90);
           break;
         case "KeyD":
           console.log("Press D");
-          // this.zombie.rotateOnWorldAxis(yAxis, Math.PI / 2);
+          this.rotateHelper("y", 90);
           break;
         case "ArrowUp":
           console.log("Press Up");
-          this.camera.position.setY(this.camera.position.y + 0.1);
-          this.controls.update();
-          // this.zombie.position.setY(this.zombie.position.y + 1);
+          this.moveUp();
           break;
         case "ArrowDown":
           console.log("Press Down");
-          this.camera.position.setY(this.camera.position.y - 0.1);
-          this.controls.update();
-          // this.zombie.position.setY(this.zombie.position.y - 1);
+          this.moveDown();
           break;
         case "ArrowLeft":
           console.log("Press Left");
-          this.camera.position.setX(this.camera.position.x - 0.1);
-          this.controls.update();
-          // this.zombie.position.setX(this.zombie.position.x - 1);
+          this.moveLeft();
           break;
         case "ArrowRight":
           console.log("Press Right");
-          this.camera.position.setX(this.camera.position.x + 0.1);
-          this.controls.update();
-          // this.zombie.position.setX(this.zombie.position.x + 1);
+          this.moveRight();
           break;
         case "Space":
           console.log("Press Space");

@@ -16,11 +16,15 @@ export function generateOnePoint(size = 0.2, parts = []) {
 
   const pointGroup = new Group();
 
-  pointGroup.userData.name = "1 point";
+  pointGroup.name = "1 point";
 
   const mesh = generateMeshPoint(size, parts);
 
-  pointGroup.add(mesh);
+  const childsGroup = new Group();
+  childsGroup.name = "childs";
+
+  childsGroup.add(mesh);
+  pointGroup.add(childsGroup);
 
   pointGroup.userData.size = getGroupSize(pointGroup);
 
