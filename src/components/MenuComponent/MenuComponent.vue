@@ -6,6 +6,7 @@ Transition(:duration="{ enter: 500, leave: 800 }")
             hr
 
             .menu-item
+                span.menu-icon.material-symbols-outlined fit_page
                 span Pit size:
                 select(v-model="currentPitSize" v-on:change="changePitSize")
                     option(value='5x5x12') 5x5x12
@@ -13,16 +14,14 @@ Transition(:duration="{ enter: 500, leave: 800 }")
                     option(value='7x4x12') 7x4x12
 
             .menu-item
+                span.menu-icon.material-symbols-outlined speed
                 span Speed:
-                select(v-model="currentSpeed" v-on:change="changeSpeed")
-                    option(value=1) 1
-                    option(value=2) 2
-                    option(value=3) 3
-                    option(value=4) 4
+                input(type='number' v-model="currentSpeed" v-on:change="changeSpeed" min=0.1 max=10 step=0.1)
 
             .menu-item
-                input#smooth(type="checkbox" v-model="isSmooth" v-on:change="updateSmooth")
+                span.menu-icon.material-symbols-outlined line_curve
                 label(for="smooth") Smooth
+                input#smooth(type="checkbox" v-model="isSmooth" v-on:change="updateSmooth")
 
             h3.link(v-on:click="closeMenu") Back to game
 </template>

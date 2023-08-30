@@ -25,6 +25,8 @@ import loadZombie from "../../helpers/load-zombie.js";
 import randomBetween from "../../helpers/random-between.js";
 
 import { moveUp, moveDown, moveLeft, moveRight } from "./move.js";
+import initWaterfall from "./waterfall.js";
+// import initTest from "./init-test.js";
 
 import MenuComponent from "../MenuComponent/MenuComponent.vue";
 
@@ -39,7 +41,7 @@ export default {
   data() {
     return {
       size: 1,
-      speed: 1,
+      speed: 0.5,
 
       pitWidth: 5,
       pitHeight: 5,
@@ -436,165 +438,6 @@ export default {
       return element;
     },
 
-    initWaterfall() {
-      console.log("Init waterfall");
-
-      const { scene } = this;
-
-      let prevCount = undefined;
-
-      let elements = [];
-
-      this.loopCb.push((delta, timeDelta, second) => {
-        const time = this.isSmooth ? timeDelta : second;
-
-        if (this.isPause) {
-          elements.forEach((element) => {
-            if (!element.userData.timeDiff) {
-              element.userData.timeDiff = time - element.userData.time;
-            }
-
-            element.userData.time = time - element.userData.timeDiff;
-          });
-
-          prevCount = Math.round(time / 2);
-
-          return false;
-        }
-
-        elements.forEach((element, index, array) => {
-          if (!element) {
-            return false;
-          }
-
-          element.userData.timeDiff = undefined;
-
-          const elTime = element.userData.time;
-          const rotateTime = element.userData.rotate || 0;
-          const elSize = element.userData.size;
-
-          element.position.setZ(-(time - elTime) * this.speed - elSize.z / 2);
-
-          // console.log(`${index}: ${element.position.z.toFixed(2)}`);
-
-          if (element.position.z < -this.pitDepth + elSize.z / 2) {
-            scene.remove(element);
-            array[index] = undefined;
-            return false;
-          }
-
-          // Try to random rotate every second
-          if (!(Math.random() > 0.5 && Date.now() - rotateTime > 1000)) {
-            element.userData.rotate = Date.now();
-            return false;
-          }
-
-          // console.log("Rotate call");
-
-          const axis = randomBetween(0, 2);
-
-          this.rotateHelper(
-            ["x", "y", "z"][axis],
-            Math.random() > 0.5 ? 90 : -90,
-            element
-          );
-
-          element.userData.rotate = Date.now();
-        });
-
-        elements = elements.filter((item) => item);
-
-        const count = Math.round(time / 2);
-
-        if (prevCount == count) {
-          return false;
-        }
-
-        prevCount = count;
-
-        const element = this.next ? this.next : this.getRandomForm();
-
-        element.userData.time = time;
-
-        // set start position on Z axis
-        element.position.setZ(-element.userData.size.z / 2);
-
-        elements.push(element);
-        scene.add(element);
-
-        this.current = element;
-        this.next = this.getRandomForm();
-
-        this.updatePreview();
-      });
-    },
-
-    initTest() {
-      console.log("Init test");
-
-      const { scene, size } = this;
-
-      const onePoint = generateOnePoint(size);
-      const twoPoints = generateTwoPoints(size);
-      const threePoints = generateThreePoints(size);
-      const fourPoints = generateFourPoints(size);
-      const lForm = generateLForm(size);
-      const tForm = generateTForm(size);
-      const sForm = generateSForm(size);
-      const threePointsCurve = generateThreePointsCurve(size);
-
-      // Set Test name
-      [
-        onePoint,
-        twoPoints,
-        threePoints,
-        fourPoints,
-        lForm,
-        tForm,
-        sForm,
-        threePointsCurve,
-      ].forEach((group) => (group.userData.name = "Test"));
-
-      const zPosition = -2;
-
-      onePoint.position.set(0, 0, zPosition);
-      twoPoints.position.set(-2, 0, zPosition);
-      threePoints.position.set(2, 0, zPosition);
-
-      fourPoints.position.set(2, 2, zPosition);
-      lForm.position.set(0, 2, zPosition);
-      tForm.position.set(-2, 2, zPosition);
-
-      sForm.position.set(-2, -2, zPosition);
-      threePointsCurve.position.set(0, -2, zPosition);
-
-      scene.add(onePoint);
-      scene.add(twoPoints);
-      scene.add(threePoints);
-      scene.add(fourPoints);
-      scene.add(lForm);
-      scene.add(tForm);
-      scene.add(sForm);
-      scene.add(threePointsCurve);
-
-      this.loopCb.push((delta, timeDelta) => {
-        // Rotate test items
-        scene.children
-          .filter((item) => item.userData.name && item.userData.name == "Test")
-          .forEach((group) => {
-            group.rotation.x = timeDelta / 2;
-            group.rotation.y = timeDelta / 1;
-            group.rotation.z = timeDelta / 3;
-
-            // if (changePosition) {
-            //   group.position.setZ(-count);
-            // }
-          });
-      });
-
-      return true;
-    },
-
     init() {
       const { container } = this.$refs;
 
@@ -623,10 +466,10 @@ export default {
       scene.add(light);
 
       // Init test mode
-      // this.initTest();
+      // initTest.call(this);
 
       // init waterfall mode
-      this.initWaterfall();
+      initWaterfall.call(this);
 
       // animation
 

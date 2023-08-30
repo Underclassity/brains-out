@@ -14,7 +14,7 @@ export default {
 
     speed: {
       type: Number,
-      default: 1,
+      default: 0.5,
     },
 
     smooth: {

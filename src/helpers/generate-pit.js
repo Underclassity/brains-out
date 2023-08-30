@@ -1,4 +1,4 @@
-import { Group } from "three";
+import { Group, BoxGeometry, Mesh, MeshBasicMaterial } from "three";
 
 import generateGrid from "./generate-grid.js";
 
@@ -71,6 +71,19 @@ export function generatePit(
   pit.add(rightBgPlane);
   pit.add(topBgPlane);
   pit.add(bottomBgPlane);
+
+  const geometry = new BoxGeometry(width, height, depth);
+  const material = new MeshBasicMaterial({
+    color: 0xfa_fa_fa,
+    transparent: true,
+    opacity: 0.1,
+  });
+  const cube = new Mesh(geometry, material);
+  cube.name = "pit";
+
+  cube.position.z = -depth / 2;
+
+  pit.add(cube);
 
   return pit;
 }
