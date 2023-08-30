@@ -6,6 +6,7 @@ import {
   Vector3,
   WebGLRenderer,
   MathUtils,
+  Color,
 } from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -22,6 +23,8 @@ import generateTwoPoints from "../../helpers/generate-two-points.js";
 import getGroupSize from "../../helpers/get-group-size.js";
 import loadZombie from "../../helpers/load-zombie.js";
 import randomBetween from "../../helpers/random-between.js";
+
+import { moveUp, moveDown, moveLeft, moveRight } from "./move.js";
 
 import MenuComponent from "../MenuComponent/MenuComponent.vue";
 
@@ -47,8 +50,8 @@ export default {
       pitSize: "5x5x12",
 
       gridColor: 0x80_80_80,
-
       lightColor: 0xfa_fa_fa,
+      sceneColor: 0x00_0b_12,
 
       isPause: true,
       isMenu: true,
@@ -211,33 +214,10 @@ export default {
       this.restrainElement(element);
     },
 
-    moveLeft() {
-      this.scene.remove(this.current);
-      this.current.translateX(-1);
-      this.scene.add(this.current);
-      this.restrainElement(this.current);
-    },
-
-    moveRight() {
-      this.scene.remove(this.current);
-      this.current.translateX(1);
-      this.scene.add(this.current);
-      this.restrainElement(this.current);
-    },
-
-    moveUp() {
-      this.scene.remove(this.current);
-      this.current.translateY(1);
-      this.scene.add(this.current);
-      this.restrainElement(this.current);
-    },
-
-    moveDown() {
-      this.scene.remove(this.current);
-      this.current.translateY(-1);
-      this.scene.add(this.current);
-      this.restrainElement(this.current);
-    },
+    moveUp,
+    moveDown,
+    moveLeft,
+    moveRight,
 
     restrainElement(element) {
       const { pitWidth, pitHeight, pitDepth, xPoints, yPoints } = this;
@@ -406,16 +386,16 @@ export default {
       const formFunction =
         formFunctions[Math.floor(Math.random() * formFunctions.length)];
 
-      let cornerType = randomBetween(1, 4);
+      let cornerType = randomBetween(1, 5);
 
       while (cornerType == this.prevCorner) {
-        cornerType = randomBetween(1, 4);
+        cornerType = randomBetween(1, 5);
       }
 
       this.prevCorner = cornerType;
 
       // Create element
-      const element = generateTwoPoints(this.size, this.zombieParts);
+      const element = formFunction(this.size, this.zombieParts);
 
       // const offset = randomBetween(-2, 2);
       const offset = 0;
@@ -446,6 +426,8 @@ export default {
         case 4:
           element.position.setX(right + offset);
           element.position.setY(bottom + offset);
+          break;
+        default:
           break;
       }
 
@@ -625,6 +607,7 @@ export default {
       this.camera = camera;
 
       const scene = new Scene();
+      scene.background = new Color(this.sceneColor);
       this.scene = scene;
 
       const pit = generatePit(

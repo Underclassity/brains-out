@@ -3,14 +3,17 @@
 3D puzzle game inspired by ["The Block Out"](https://en.wikipedia.org/wiki/Blockout).
 
 Made by:
+
 - [Ivan Gornovskiy](www.linkedin.com/in/ivan-gornovskiy-a1a290282/)
 - [Nikolai Gavrev](https://www.linkedin.com/in/nikolai-gavrev-6010ba215/)
 
 Development:
+
 - `npm i` - install dependencies
 - `npm run dev` - run development livereload server
 
 Core dependencies:
+
 - `three.js` - core 3d engine
 - `vue` - main template engine
 - `vuex` - store support
