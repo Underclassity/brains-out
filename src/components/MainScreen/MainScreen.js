@@ -20,17 +20,17 @@ import generateTForm from "../../helpers/generate-t-form.js";
 import generateThreePoints from "../../helpers/generate-three-points.js";
 import generateThreePointsCurve from "../../helpers/generate-three-points-curve.js";
 import generateTwoPoints from "../../helpers/generate-two-points.js";
-import getGroupSize from "../../helpers/get-group-size.js";
 import randomBetween from "../../helpers/random-between.js";
 
-import { moveUp, moveDown, moveLeft, moveRight } from "./move.js";
+import { moveDown, moveLeft, moveRight, moveUp } from "./move.js";
 import {
   positionHelper,
   rotateHelper,
   translateHelper,
+  setLayerPoint,
 } from "./transform-helpers.js";
+import { initWaterfall, createElement } from "./waterfall.js";
 import initPoints from "./init-points.js";
-import initWaterfall from "./waterfall.js";
 // import initTest from "./init-test.js";
 
 import MenuComponent from "../MenuComponent/MenuComponent.vue";
@@ -41,13 +41,21 @@ export default {
   data() {
     return {
       size: 1,
+
+      minSpeed: 0.5,
       speed: 0.5,
+      maxSpeed: 10,
 
       pitWidth: 5,
       pitHeight: 5,
       pitDepth: 12,
 
       layers: new Array(12),
+      elements: [],
+
+      delta: 0,
+      timeDelta: 0,
+      second: 0,
 
       fov: 70,
 
@@ -94,6 +102,10 @@ export default {
       const { scene } = this;
 
       return scene.children.find((item) => item.userData.name == "Zombie");
+    },
+
+    time() {
+      return this.isSmooth ? this.timeDelta : this.second;
     },
   },
 
@@ -246,6 +258,7 @@ export default {
         pX: x,
         pY: y,
         pZ: z,
+        uuid: child.uuid,
       };
     },
 
@@ -302,6 +315,57 @@ export default {
       return isFreeze;
     },
 
+    dropElement(element) {
+      console.log(`Drop element: ${element.name}`);
+
+      const childs = element.getObjectByName("childs").children;
+
+      const indexes = childs.map(this.findElementIndexes);
+
+      const collisionPoints = [];
+
+      for (const { x, y, z, uuid } of indexes) {
+        for (let zIndex = 0; zIndex < this.zPoints.length; zIndex++) {
+          if (this.layers[zIndex + 1] && this.layers[zIndex + 1][x][y]) {
+            collisionPoints.push({ x, y, z, zIndex, uuid });
+          }
+        }
+      }
+
+      if (collisionPoints.length) {
+        console.log(`Found ${collisionPoints.length} collision points`);
+
+        const uuids = collisionPoints.map((item) => item.uuid);
+
+        const maxZ = Math.max(...collisionPoints.map(({ z }) => z));
+
+        const { uuid } = indexes.find(
+          (item) => item.z === maxZ && uuids.includes(item.uuid)
+        );
+        const maxPoint = childs.find((item) => item.uuid === uuid);
+
+        const collisionZ = collisionPoints.find(
+          (item) => item.uuid == uuid
+        ).zIndex;
+
+        const maxPointPosition = new Vector3();
+        maxPoint.getWorldPosition(maxPointPosition);
+
+        const tZ = this.zPoints[collisionZ] - maxPointPosition.z;
+
+        this.translateHelper(element, "z", tZ);
+      } else {
+        this.positionHelper(
+          element,
+          "z",
+          this.zPoints[this.zPoints.length - 1]
+        );
+        this.restrainElement(element);
+      }
+
+      return element;
+    },
+
     petrify(element) {
       console.log(
         `Petrify element: ${element.name}(${element.position.x.toFixed(
@@ -315,13 +379,13 @@ export default {
 
       for (const { x, y, z, pX, pY, pZ } of indexes) {
         if (z != -1 && x != -1 && y != -1) {
-          if (this.layers[z][x][y]) {
+          if (this.layers[z][x][y] && !element.userData.drop) {
             throw new Error(
               `Element already petrified!(${x}-${y}-${z})(${pX}-${pY}-${pZ})`
             );
           }
 
-          this.layers[z][x][y] = 1;
+          this.setLayerPoint(x, y, z);
         } else {
           throw new Error(
             `Index not found!(${x}-${y}-${z})(${pX}-${pY}-${pZ})`
@@ -343,11 +407,14 @@ export default {
     positionHelper,
     rotateHelper,
     translateHelper,
+    setLayerPoint,
 
     moveUp,
     moveDown,
     moveLeft,
     moveRight,
+
+    createElement,
 
     restrainElement(element) {
       const { pitWidth, pitHeight, pitDepth, xPoints, yPoints } = this;
@@ -358,8 +425,6 @@ export default {
       element.getWorldPosition(position);
 
       // const sizeBefore = element.userData.size;
-
-      // element.userData.size = getGroupSize(element.getObjectByName("childs"));
 
       const { x: sizeX, y: sizeY, z: sizeZ } = element.userData.size;
 
@@ -548,8 +613,6 @@ export default {
       // Create element
       const element = formFunction(size, zombieParts);
 
-      element.userData.blockSize = size;
-
       const offset = randomBetween(-2, 2);
 
       const left = element.userData.size.x / 2 - pitWidth / 2;
@@ -637,7 +700,7 @@ export default {
 
       let timeDelta = 0;
 
-      const animation = (time) => {
+      const animation = () => {
         const delta = clock.getDelta();
 
         if (!this.isPause) {
@@ -645,6 +708,10 @@ export default {
         }
 
         const second = Math.round(timeDelta) * this.speed;
+
+        this.delta = delta;
+        this.timeDelta = timeDelta;
+        this.second = second;
 
         if (Array.isArray(this.loopCb) && this.loopCb.length && !this.isPause) {
           this.loopCb.forEach((fn) => fn(delta, timeDelta, second));
@@ -675,51 +742,53 @@ export default {
     keyupHandler(event) {
       switch (event.code) {
         case "KeyQ":
-          console.log("Press Q");
+          // console.log("Press Q");
           this.rotateHelper(this.current, "z", -90);
           break;
         case "KeyE":
-          console.log("Press E");
+          // console.log("Press E");
           this.rotateHelper(this.current, "z", 90);
           break;
         case "KeyW":
-          console.log("Press W");
+          // console.log("Press W");
           this.rotateHelper(this.current, "x", 90);
           break;
         case "KeyS":
-          console.log("Press S");
+          // console.log("Press S");
           this.rotateHelper(this.current, "x", -90);
           break;
         case "KeyA":
-          console.log("Press A");
+          // console.log("Press A");
           this.rotateHelper(this.current, "y", -90);
           break;
         case "KeyD":
-          console.log("Press D");
+          // console.log("Press D");
           this.rotateHelper(this.current, "y", 90);
           break;
         case "ArrowUp":
-          console.log("Press Up");
+          // console.log("Press Up");
           this.moveUp();
           break;
         case "ArrowDown":
-          console.log("Press Down");
+          // console.log("Press Down");
           this.moveDown();
           break;
         case "ArrowLeft":
-          console.log("Press Left");
+          // console.log("Press Left");
           this.moveLeft();
           break;
         case "ArrowRight":
-          console.log("Press Right");
+          // console.log("Press Right");
           this.moveRight();
           break;
         case "Space":
-          console.log("Press Space");
-          this.isPause = !this.isPause;
+          // console.log("Press Space");
+          // this.isPause = !this.isPause;
+
+          this.current.userData.drop = true;
           break;
         case "Escape":
-          console.log("Press Escape");
+          // console.log("Press Escape");
 
           if (this.isMenu) {
             this.closeMenu();

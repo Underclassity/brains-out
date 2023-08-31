@@ -1,4 +1,32 @@
-import randomBetween from "../../helpers/random-between.js";
+// import generateSForm from "../../helpers/generate-s-form.js";
+// import generateThreePoints from "../../helpers/generate-three-points.js";
+
+/**
+ * Create new element helper
+ *
+ * @return  {Object}  Element object
+ */
+export function createElement() {
+  console.log("Create element call");
+
+  const element = this.next ? this.next.clone() : this.getRandomForm();
+
+  element.userData.time = this.time;
+  element.userData.static = false;
+
+  // set start position on Z axis
+  this.positionHelper(element, "z", -element.userData.size.z / 2);
+
+  this.current = element;
+  this.next = this.getRandomForm(this.size, this.zombieParts);
+
+  this.scene.add(element);
+  this.elements.push(element);
+
+  this.updatePreview();
+
+  return element;
+}
 
 /**
  * Init waterfall mode
@@ -8,30 +36,24 @@ import randomBetween from "../../helpers/random-between.js";
 export function initWaterfall() {
   console.log("Init waterfall");
 
-  const { scene, pitDepth } = this;
-
   let prevCount = undefined;
 
-  let elements = [];
-
-  this.loopCb.push((delta, timeDelta, second) => {
-    const time = this.isSmooth ? timeDelta : second;
-
+  this.loopCb.push(() => {
     if (this.isPause) {
-      elements.forEach((element) => {
+      this.elements.forEach((element) => {
         if (!element.userData.timeDiff) {
-          element.userData.timeDiff = time - element.userData.time;
+          element.userData.timeDiff = this.time - element.userData.time;
         }
 
-        element.userData.time = time - element.userData.timeDiff;
+        element.userData.time = this.time - element.userData.timeDiff;
       });
 
-      prevCount = Math.round(time / 2);
+      prevCount = Math.round(this.time / 2);
 
       return false;
     }
 
-    elements.forEach((element, index, array) => {
+    this.elements.forEach((element, index, array) => {
       if (!element) {
         return false;
       }
@@ -39,51 +61,39 @@ export function initWaterfall() {
       element.userData.timeDiff = undefined;
 
       const elTime = element.userData.time;
-      const rotateTime = element.userData.rotate || 0;
       const elSize = element.userData.size;
+      const elSpeed = element.userData.drop ? this.maxSpeed : this.speed;
 
-      const newZPosition = -(time - elTime) * this.speed - elSize.z / 2;
+      if (element.userData.drop) {
+        this.dropElement(element);
+      } else {
+        const newZPosition = -(this.time - elTime) * elSpeed - elSize.z / 2;
 
-      this.positionHelper(element, "z", newZPosition);
+        this.positionHelper(element, "z", newZPosition);
 
-      this.restrainElement(element);
+        this.restrainElement(element);
+      }
 
       // console.log(`${index}: ${element.position.z.toFixed(2)}`);
 
       const isFreeze = this.collisionElement(element);
 
-      if (element.position.z < -pitDepth + elSize.z / 2 || isFreeze) {
-        // scene.remove(element);
+      if (isFreeze) {
         element.userData.static = true;
         array[index] = undefined;
         this.petrify(element);
+
+        this.createElement();
+
         return false;
       }
-
-      // // Try to random rotate every second
-      // if (!(Math.random() > 0.5 && Date.now() - rotateTime > 1000)) {
-      //   element.userData.rotate = Date.now();
-      //   return false;
-      // }
-
-      // // console.log("Rotate call");
-
-      // const axis = randomBetween(0, 2);
-
-      // this.rotateHelper(
-      //   ["x", "y", "z"][axis],
-      //   Math.random() > 0.5 ? 90 : -90,
-      //   element
-      // );
-
-      // element.userData.rotate = Date.now();
     });
 
-    elements = elements
+    this.elements = this.elements
       .filter((item) => item)
       .filter((item) => !item.userData.static);
 
-    const count = Math.round(time / 2);
+    const count = Math.round(this.time / 2);
 
     if (prevCount == count) {
       return false;
@@ -91,21 +101,9 @@ export function initWaterfall() {
 
     prevCount = count;
 
-    const element = this.next ? this.next.clone() : this.getRandomForm();
-
-    element.userData.time = time;
-    element.userData.static = false;
-
-    // set start position on Z axis
-    this.positionHelper(element, "z", -element.userData.size.z / 2);
-
-    this.current = element;
-    this.next = this.getRandomForm();
-
-    scene.add(element);
-    elements.push(element);
-
-    this.updatePreview();
+    if (!this.current) {
+      this.createElement();
+    }
   });
 
   return true;

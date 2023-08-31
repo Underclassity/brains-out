@@ -17,6 +17,16 @@ export default {
       default: 0.5,
     },
 
+    minSpeed: {
+      type: Number,
+      default: 0.5,
+    },
+
+    maxSpeed: {
+      type: Number,
+      default: 10,
+    },
+
     smooth: {
       type: Boolean,
       default: true,

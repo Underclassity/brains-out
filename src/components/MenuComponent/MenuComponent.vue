@@ -16,7 +16,7 @@ Transition(:duration="{ enter: 500, leave: 800 }")
             .menu-item
                 span.menu-icon.material-symbols-outlined speed
                 span Speed:
-                input(type='number' v-model="currentSpeed" v-on:change="changeSpeed" min=0.1 max=10 step=0.1)
+                input(type='number' v-model="currentSpeed" v-on:change="changeSpeed" min=minSpeed max=maxSpeed step=0.1)
 
             .menu-item
                 span.menu-icon.material-symbols-outlined line_curve

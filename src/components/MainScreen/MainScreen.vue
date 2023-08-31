@@ -10,6 +10,8 @@ MenuComponent(
     :isMenu="isMenu"
     :pitSize="pitSize"
     :speed="speed"
+    :minSpeed="minSpeed"
+    :maxSpeed="maxSpeed"
     :smooth="isSmooth"
     v-on:close-menu="closeMenu"
     v-on:change-pit-size="changePitSize"

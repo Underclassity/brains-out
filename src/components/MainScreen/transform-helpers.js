@@ -98,4 +98,22 @@ export function translateHelper(element, axis = "x", value) {
   return element;
 }
 
+export function setLayerPoint(x, y, z) {
+  console.log(`Set layer point ${x}-${y}-${z}`);
+
+  this.layers[z][x][y] = 1;
+
+  // console.log(this.layers[z].map((xLayer) => xLayer.join("-")).join("\n"));
+
+  // console.log(
+  //   this.layers
+  //     .map((layer) => {
+  //       return layer.map((xLayer) => xLayer.join("-")).join("\n");
+  //     })
+  //     .join("\n" + new Array(pitWidth).join("-") + "\n")
+  // );
+
+  return this.layers;
+}
+
 export default rotateHelper;
