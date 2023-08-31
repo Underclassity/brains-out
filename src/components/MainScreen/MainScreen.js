@@ -359,7 +359,7 @@ export default {
 
       // const sizeBefore = element.userData.size;
 
-      element.userData.size = getGroupSize(element.getObjectByName("childs"));
+      // element.userData.size = getGroupSize(element.getObjectByName("childs"));
 
       const { x: sizeX, y: sizeY, z: sizeZ } = element.userData.size;
 

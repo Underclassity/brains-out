@@ -1,4 +1,5 @@
 import { Vector3, MathUtils } from "three";
+
 import getGroupSize from "../../helpers/get-group-size.js";
 
 const xAxis = new Vector3(1, 0, 0).normalize();
@@ -36,6 +37,9 @@ export function rotateHelper(element, axisType = "x", angle = 90) {
   }
 
   element.getObjectByName("childs").rotateOnWorldAxis(axis, angleValue);
+
+  // Update size after rotate
+  element.userData.size = getGroupSize(element.getObjectByName("childs"));
 
   this.restrainElement(element);
 }
