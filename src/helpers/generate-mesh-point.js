@@ -29,6 +29,7 @@ export function generateMeshPoint(size = 0.2, parts = [], line = false) {
   if (Array.isArray(parts) && parts.length) {
     mesh = parts[randomBetween(0, parts.length - 1)].clone();
     mesh.scale.set(1, 1, 1);
+    mesh.position.set(0, 0, 0);
   } else {
     const geometry = new BoxGeometry(size, size, size);
     const material = new MeshNormalMaterial();

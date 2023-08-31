@@ -8,7 +8,7 @@ import { Box3, Vector3 } from "three";
  * @return  {Object}         Vector3 size
  */
 export function getGroupSize(group) {
-  const box = new Box3().setFromObject(group);
+  const box = new Box3().setFromObject(group, true);
   const size = new Vector3();
   box.getSize(size);
 

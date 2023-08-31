@@ -12,7 +12,7 @@ import getGroupSize from "./get-group-size.js";
  * @return  {Object}               Group object
  */
 export function generateOnePoint(size = 0.2, parts = []) {
-  console.log("Generate one point form");
+  // console.log("Generate one point form");
 
   const pointGroup = new Group();
 
@@ -26,7 +26,7 @@ export function generateOnePoint(size = 0.2, parts = []) {
   childsGroup.add(mesh);
   pointGroup.add(childsGroup);
 
-  pointGroup.userData.size = getGroupSize(pointGroup);
+  pointGroup.userData.size = getGroupSize(childsGroup);
 
   return pointGroup;
 }

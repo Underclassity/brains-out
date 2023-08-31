@@ -4,9 +4,7 @@
  * @return  {Object}  Current element
  */
 export function moveLeft() {
-  this.scene.remove(this.current);
-  this.current.translateX(-1);
-  this.scene.add(this.current);
+  this.translateHelper(this.current, "x", -1);
   this.restrainElement(this.current);
 
   return this.current;
@@ -18,9 +16,7 @@ export function moveLeft() {
  * @return  {Object}  Current element
  */
 export function moveRight() {
-  this.scene.remove(this.current);
-  this.current.translateX(1);
-  this.scene.add(this.current);
+  this.translateHelper(this.current, "x", 1);
   this.restrainElement(this.current);
 
   return this.current;
@@ -32,9 +28,7 @@ export function moveRight() {
  * @return  {Object}  Current element
  */
 export function moveUp() {
-  this.scene.remove(this.current);
-  this.current.translateY(1);
-  this.scene.add(this.current);
+  this.translateHelper(this.current, "y", 1);
   this.restrainElement(this.current);
 
   return this.current;
@@ -46,9 +40,7 @@ export function moveUp() {
  * @return  {Object}  Current element
  */
 export function moveDown() {
-  this.scene.remove(this.current);
-  this.current.translateY(-1);
-  this.scene.add(this.current);
+  this.translateHelper(this.current, "y", -1);
   this.restrainElement(this.current);
 
   return this.current;

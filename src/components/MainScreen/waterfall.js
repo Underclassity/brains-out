@@ -8,7 +8,7 @@ import randomBetween from "../../helpers/random-between.js";
 export function initWaterfall() {
   console.log("Init waterfall");
 
-  const { scene } = this;
+  const { scene, pitDepth } = this;
 
   let prevCount = undefined;
 
@@ -42,36 +42,46 @@ export function initWaterfall() {
       const rotateTime = element.userData.rotate || 0;
       const elSize = element.userData.size;
 
-      element.position.setZ(-(time - elTime) * this.speed - elSize.z / 2);
+      const newZPosition = -(time - elTime) * this.speed - elSize.z / 2;
+
+      this.positionHelper(element, "z", newZPosition);
+
+      this.restrainElement(element);
 
       // console.log(`${index}: ${element.position.z.toFixed(2)}`);
 
-      if (element.position.z < -this.pitDepth + elSize.z / 2) {
-        scene.remove(element);
+      const isFreeze = this.collisionElement(element);
+
+      if (element.position.z < -pitDepth + elSize.z / 2 || isFreeze) {
+        // scene.remove(element);
+        element.userData.static = true;
         array[index] = undefined;
+        this.petrify(element);
         return false;
       }
 
-      // Try to random rotate every second
-      if (!(Math.random() > 0.5 && Date.now() - rotateTime > 1000)) {
-        element.userData.rotate = Date.now();
-        return false;
-      }
+      // // Try to random rotate every second
+      // if (!(Math.random() > 0.5 && Date.now() - rotateTime > 1000)) {
+      //   element.userData.rotate = Date.now();
+      //   return false;
+      // }
 
-      // console.log("Rotate call");
+      // // console.log("Rotate call");
 
-      const axis = randomBetween(0, 2);
+      // const axis = randomBetween(0, 2);
 
-      this.rotateHelper(
-        ["x", "y", "z"][axis],
-        Math.random() > 0.5 ? 90 : -90,
-        element
-      );
+      // this.rotateHelper(
+      //   ["x", "y", "z"][axis],
+      //   Math.random() > 0.5 ? 90 : -90,
+      //   element
+      // );
 
-      element.userData.rotate = Date.now();
+      // element.userData.rotate = Date.now();
     });
 
-    elements = elements.filter((item) => item);
+    elements = elements
+      .filter((item) => item)
+      .filter((item) => !item.userData.static);
 
     const count = Math.round(time / 2);
 
@@ -81,18 +91,19 @@ export function initWaterfall() {
 
     prevCount = count;
 
-    const element = this.next ? this.next : this.getRandomForm();
+    const element = this.next ? this.next.clone() : this.getRandomForm();
 
     element.userData.time = time;
+    element.userData.static = false;
 
     // set start position on Z axis
-    element.position.setZ(-element.userData.size.z / 2);
-
-    elements.push(element);
-    scene.add(element);
+    this.positionHelper(element, "z", -element.userData.size.z / 2);
 
     this.current = element;
     this.next = this.getRandomForm();
+
+    scene.add(element);
+    elements.push(element);
 
     this.updatePreview();
   });

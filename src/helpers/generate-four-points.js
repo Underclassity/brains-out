@@ -1,5 +1,6 @@
 import { Group } from "three";
 
+import { positionHelper } from "../components/MainScreen/transform-helpers.js";
 import generateMeshPoint from "./generate-mesh-point.js";
 import getGroupSize from "./get-group-size.js";
 
@@ -12,7 +13,7 @@ import getGroupSize from "./get-group-size.js";
  * @return  {Object}               Group object
  */
 export function generateFourPoints(size = 0.2, parts = []) {
-  console.log(`Generate four points form: size ${size}`);
+  // console.log(`Generate four points form: size ${size}`);
 
   const pointGroup = new Group();
 
@@ -33,12 +34,19 @@ export function generateFourPoints(size = 0.2, parts = []) {
 
   pointGroup.add(childsGroup);
 
-  firstMesh.position.set(-size / 2, -size / 2, 0);
-  secondMesh.position.set(-size / 2, size / 2, 0);
-  thridMesh.position.set(size / 2, -size / 2, 0);
-  fourthPoint.position.set(size / 2, size / 2, 0);
+  positionHelper(firstMesh, "x", -size / 2);
+  positionHelper(firstMesh, "y", -size / 2);
 
-  pointGroup.userData.size = getGroupSize(pointGroup);
+  positionHelper(secondMesh, "x", -size / 2);
+  positionHelper(secondMesh, "y", size / 2);
+
+  positionHelper(thridMesh, "x", size / 2);
+  positionHelper(thridMesh, "y", -size / 2);
+
+  positionHelper(fourthPoint, "x", size / 2);
+  positionHelper(fourthPoint, "y", size / 2);
+
+  pointGroup.userData.size = getGroupSize(childsGroup);
 
   return pointGroup;
 }

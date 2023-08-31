@@ -1,16 +1,16 @@
 import {
   AmbientLight,
   Clock,
+  Color,
   PerspectiveCamera,
   Scene,
   Vector3,
   WebGLRenderer,
-  MathUtils,
-  Color,
 } from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
+import { loadZombie } from "../../helpers/load-zombie.js";
 import generateFourPoints from "../../helpers/generate-four-points.js";
 import generateLForm from "../../helpers/generate-l-form.js";
 import generateOnePoint from "../../helpers/generate-one-point.js";
@@ -21,19 +21,19 @@ import generateThreePoints from "../../helpers/generate-three-points.js";
 import generateThreePointsCurve from "../../helpers/generate-three-points-curve.js";
 import generateTwoPoints from "../../helpers/generate-two-points.js";
 import getGroupSize from "../../helpers/get-group-size.js";
-import loadZombie from "../../helpers/load-zombie.js";
 import randomBetween from "../../helpers/random-between.js";
 
 import { moveUp, moveDown, moveLeft, moveRight } from "./move.js";
+import {
+  positionHelper,
+  rotateHelper,
+  translateHelper,
+} from "./transform-helpers.js";
+import initPoints from "./init-points.js";
 import initWaterfall from "./waterfall.js";
 // import initTest from "./init-test.js";
 
 import MenuComponent from "../MenuComponent/MenuComponent.vue";
-
-// Define axis for rotates
-const xAxis = new Vector3(1, 0, 0).normalize();
-const yAxis = new Vector3(0, 1, 0).normalize();
-const zAxis = new Vector3(0, 0, 1).normalize();
 
 export default {
   name: "MainScreen",
@@ -46,6 +46,8 @@ export default {
       pitWidth: 5,
       pitHeight: 5,
       pitDepth: 12,
+
+      layers: new Array(12),
 
       fov: 70,
 
@@ -74,6 +76,12 @@ export default {
       zombieParts: [],
 
       loopCb: [],
+
+      xCPoints: [],
+      yCPoints: [],
+      xPoints: [],
+      yPoints: [],
+      zPoints: [],
     };
   },
 
@@ -86,34 +94,6 @@ export default {
       const { scene } = this;
 
       return scene.children.find((item) => item.userData.name == "Zombie");
-    },
-
-    xPoints() {
-      const { pitWidth } = this;
-
-      const points = [];
-
-      const firstPoint = -pitWidth / 2;
-
-      for (let i = 0; i <= pitWidth; i++) {
-        points.push(firstPoint + i);
-      }
-
-      return points;
-    },
-
-    yPoints() {
-      const { pitHeight } = this;
-
-      const points = [];
-
-      const firstPoint = -pitHeight / 2;
-
-      for (let i = 0; i <= pitHeight; i++) {
-        points.push(firstPoint + i);
-      }
-
-      return points;
     },
   },
 
@@ -130,12 +110,16 @@ export default {
         this.camera.aspect = containerRect.width / containerRect.height;
         this.camera.updateProjectionMatrix();
 
-        this.controls.update();
+        if (this.controls) {
+          this.controls.update();
+        }
 
         this.renderer.setSize(containerRect.width, containerRect.height);
 
         this.updateCameraProjection();
       }, 10);
+
+      return true;
     },
 
     updateCameraProjection() {
@@ -151,7 +135,11 @@ export default {
 
       camera.position.setZ(distance - maxSize);
 
-      controls.update();
+      if (controls) {
+        controls.update();
+      }
+
+      return true;
     },
 
     openMenu() {
@@ -186,35 +174,175 @@ export default {
       console.log(`Smooth updated: ${this.isSmooth}`);
     },
 
-    rotateHelper(axisType = "x", angle = 90, element) {
-      const angleValue = MathUtils.degToRad(angle);
+    initLayers() {
+      const { pitWidth, pitHeight, pitDepth } = this;
 
-      if (!element) {
-        element = this.current;
+      console.log(`Init layers: ${pitDepth}-${pitWidth}-${pitHeight}`);
+
+      this.layers = [];
+
+      for (let z = 0; z < pitDepth; z++) {
+        this.layers[z] = [];
+        for (let x = 0; x < pitWidth; x++) {
+          this.layers[z][x] = [];
+
+          for (let y = 0; y < pitHeight; y++) {
+            this.layers[z][x][y] = 0;
+          }
+        }
       }
 
-      let axis = xAxis;
-
-      switch (axisType) {
-        case "x":
-          axis = xAxis;
-          break;
-        case "y":
-          axis = yAxis;
-          break;
-        case "z":
-          axis = zAxis;
-          break;
-
-        default:
-          axis = xAxis;
-          break;
-      }
-
-      element.getObjectByName("childs").rotateOnWorldAxis(axis, angleValue);
-
-      this.restrainElement(element);
+      return true;
     },
+
+    findElementIndexes(child) {
+      const { xPoints, yPoints, zPoints, size } = this;
+
+      const half = size / 2;
+
+      const position = new Vector3(0, 0, 0);
+      child.getWorldPosition(position);
+
+      let { x, y, z } = position;
+
+      x = Math.round(x * 100) / 100 + half;
+      y = Math.round(y * 100) / 100 + half;
+      z = Math.round(z * 100) / 100 - half;
+
+      let xIndex = xPoints.indexOf(x) || -1;
+      let yIndex = yPoints.indexOf(y) || -1;
+      let zIndex = zPoints.indexOf(z) || -1;
+
+      if (xIndex == -1) {
+        xPoints.forEach((point, index, array) => {
+          if (x >= point && x < array[index + 1]) {
+            xIndex = index;
+          }
+        });
+      }
+
+      if (yIndex == -1) {
+        yPoints.forEach((point, index, array) => {
+          if (y >= point && y < array[index + 1]) {
+            yIndex = index;
+          }
+        });
+      }
+
+      if (zIndex == -1) {
+        zPoints.forEach((point, index, array) => {
+          if (z < point && z > array[index + 1]) {
+            zIndex = index;
+          } else if (z <= array[array.length - 1]) {
+            zIndex = array.length - 1;
+          }
+        });
+      }
+
+      return {
+        x: xIndex - 1,
+        y: yIndex - 1,
+        z: zIndex,
+        pX: x,
+        pY: y,
+        pZ: z,
+      };
+    },
+
+    collisionElement(element) {
+      const childs = element.getObjectByName("childs").children;
+
+      let isFreeze = false;
+
+      for (const child of childs) {
+        if (isFreeze) {
+          continue;
+        }
+
+        const { x, y, z, pX, pY, pZ } = this.findElementIndexes(child);
+
+        if (z != -1 && x != -1 && y != -1) {
+          if (this.layers[z + 1]) {
+            if (
+              this.layers[z + 1] == undefined ||
+              this.layers[z + 1][x] == undefined ||
+              this.layers[z + 1][x][y] == undefined
+            ) {
+              throw new Error(
+                `Layer not found ${element.name}!(${x}-${y}-${z})(${pX.toFixed(
+                  1
+                )}-${pY.toFixed(1)}-${pZ.toFixed(
+                  1
+                )})(${child.position.x.toFixed(1)}-${child.position.y.toFixed(
+                  1
+                )}-${child.position.z.toFixed(1)})`
+              );
+            }
+
+            const nextLayerValue = this.layers[z + 1][x][y];
+
+            // console.log(
+            //   this.layers[zIndex + 1].map((xLayer) => xLayer.join("-")).join("\n")
+            // );
+
+            if (nextLayerValue) {
+              isFreeze = true;
+            }
+          } else {
+            // Reached end
+            isFreeze = true;
+          }
+        } else {
+          throw new Error(
+            `Index not found!(${x}-${y}-${z})(${pX}-${pY}-${pZ})`
+          );
+        }
+      }
+
+      return isFreeze;
+    },
+
+    petrify(element) {
+      console.log(
+        `Petrify element: ${element.name}(${element.position.x.toFixed(
+          1
+        )}-${element.position.y.toFixed(1)}-${element.position.z.toFixed(1)})`
+      );
+
+      const childs = element.getObjectByName("childs").children;
+
+      const indexes = childs.map(this.findElementIndexes);
+
+      for (const { x, y, z, pX, pY, pZ } of indexes) {
+        if (z != -1 && x != -1 && y != -1) {
+          if (this.layers[z][x][y]) {
+            throw new Error(
+              `Element already petrified!(${x}-${y}-${z})(${pX}-${pY}-${pZ})`
+            );
+          }
+
+          this.layers[z][x][y] = 1;
+        } else {
+          throw new Error(
+            `Index not found!(${x}-${y}-${z})(${pX}-${pY}-${pZ})`
+          );
+        }
+      }
+
+      // console.log(
+      //   this.layers
+      //     .map((layer) => {
+      //       return layer.map((xLayer) => xLayer.join("-")).join("\n");
+      //     })
+      //     .join("\n" + new Array(pitWidth).join("-") + "\n")
+      // );
+
+      return true;
+    },
+
+    positionHelper,
+    rotateHelper,
+    translateHelper,
 
     moveUp,
     moveDown,
@@ -231,7 +359,7 @@ export default {
 
       // const sizeBefore = element.userData.size;
 
-      element.userData.size = getGroupSize(element);
+      element.userData.size = getGroupSize(element.getObjectByName("childs"));
 
       const { x: sizeX, y: sizeY, z: sizeZ } = element.userData.size;
 
@@ -269,7 +397,7 @@ export default {
 
         xPoints.forEach((point, index, array) => {
           if (xPosition > point && xPosition < array[index + 1]) {
-            element.translateX(point - xPosition);
+            this.translateHelper(element, "x", point - xPosition);
           }
         });
 
@@ -281,7 +409,7 @@ export default {
 
         yPoints.forEach((point, index, array) => {
           if (yPosition > point && yPosition < array[index + 1]) {
-            element.translateY(point - yPosition);
+            this.translateHelper(element, "y", point - yPosition);
           }
         });
 
@@ -290,28 +418,43 @@ export default {
 
       // Restrain position
       if (position.x <= -pitWidth / 2 + sizeX / 2) {
-        element.position.x = -pitWidth / 2 + sizeX / 2;
+        this.positionHelper(element, "x", -pitWidth / 2 + sizeX / 2);
       }
 
       if (position.x >= pitWidth / 2 - sizeX / 2) {
-        element.position.x = pitWidth / 2 - sizeX / 2;
+        this.positionHelper(element, "x", pitWidth / 2 - sizeX / 2);
       }
 
       if (position.y <= -pitHeight / 2 + sizeY / 2) {
-        element.position.y = -pitHeight / 2 + sizeY / 2;
+        this.positionHelper(element, "y", -pitHeight / 2 + sizeY / 2);
       }
 
       if (position.y >= pitHeight / 2 - sizeY / 2) {
-        element.position.y = pitHeight / 2 - sizeY / 2;
+        this.positionHelper(element, "y", pitHeight / 2 - sizeY / 2);
       }
 
       if (position.z <= -pitDepth + sizeZ / 2) {
-        element.position.z = -pitDepth + sizeZ / 2;
+        this.positionHelper(element, "z", -pitDepth + sizeZ / 2);
       }
 
       if (position.z >= -sizeZ / 2) {
-        element.position.z = -sizeZ / 2;
+        this.positionHelper(element, "z", -sizeZ / 2);
       }
+
+      // const newPosition = new Vector3();
+      // element.getWorldPosition(position);
+
+      // if (newPosition.x != position.x) {
+      //   console.log(`X: ${position.x} -> ${newPosition.x}`);
+      // }
+
+      // if (newPosition.y != position.y) {
+      //   console.log(`Y: ${position.y} -> ${newPosition.y}`);
+      // }
+
+      // if (newPosition.z != position.z) {
+      //   console.log(`Z: ${position.z} -> ${newPosition.z}`);
+      // }
 
       return element;
     },
@@ -338,11 +481,17 @@ export default {
 
       this.updateCameraProjection();
 
+      // Init layers after resize
+      this.initLayers();
+      this.initPoints();
+
       return true;
     },
 
     async loadZombie() {
       const zombie = await loadZombie();
+
+      // await loadTestCube();
 
       if (!zombie) {
         return false;
@@ -366,13 +515,13 @@ export default {
     },
 
     updatePreview() {
-      console.log("Update preview call");
+      // console.log("Update preview call");
     },
 
     getRandomForm() {
-      console.log("Get random form call");
+      // console.log("Get random form call");
 
-      const { pitWidth, pitHeight } = this;
+      const { pitWidth, pitHeight, size, zombieParts } = this;
 
       const formFunctions = [
         generateFourPoints,
@@ -397,10 +546,11 @@ export default {
       this.prevCorner = cornerType;
 
       // Create element
-      const element = formFunction(this.size, this.zombieParts);
+      const element = formFunction(size, zombieParts);
 
-      // const offset = randomBetween(-2, 2);
-      const offset = 0;
+      element.userData.blockSize = size;
+
+      const offset = randomBetween(-2, 2);
 
       const left = element.userData.size.x / 2 - pitWidth / 2;
       const right = -element.userData.size.x / 2 + pitWidth / 2;
@@ -411,23 +561,23 @@ export default {
       switch (cornerType) {
         // Top Left
         case 1:
-          element.position.setX(left + offset);
-          element.position.setY(top + offset);
+          this.positionHelper(element, "x", left + offset);
+          this.positionHelper(element, "y", top + offset);
           break;
         // Top Right
         case 2:
-          element.position.setX(right + offset);
-          element.position.setY(top + offset);
+          this.positionHelper(element, "x", right + offset);
+          this.positionHelper(element, "y", top + offset);
           break;
         // Bottom Left
         case 3:
-          element.position.setX(left + offset);
-          element.position.setY(bottom + offset);
+          this.positionHelper(element, "x", left + offset);
+          this.positionHelper(element, "y", bottom + offset);
           break;
         // Bottom Right
         case 4:
-          element.position.setX(right + offset);
-          element.position.setY(bottom + offset);
+          this.positionHelper(element, "x", right + offset);
+          this.positionHelper(element, "y", bottom + offset);
           break;
         default:
           break;
@@ -435,8 +585,16 @@ export default {
 
       this.restrainElement(element);
 
+      // console.log(
+      //   `Created ${element.name}(${element.position.x.toFixed(
+      //     1
+      //   )}-${element.position.y.toFixed(1)}-${element.position.z.toFixed(1)})`
+      // );
+
       return element;
     },
+
+    initPoints,
 
     init() {
       const { container } = this.$refs;
@@ -462,6 +620,10 @@ export default {
       scene.add(pit);
       this.pit = pit;
 
+      // Init layers
+      this.initLayers();
+      this.initPoints();
+
       const light = new AmbientLight(this.lightColor); //  white light
       scene.add(light);
 
@@ -484,11 +646,11 @@ export default {
 
         const second = Math.round(timeDelta) * this.speed;
 
-        if (Array.isArray(this.loopCb) && this.loopCb.length) {
+        if (Array.isArray(this.loopCb) && this.loopCb.length && !this.isPause) {
           this.loopCb.forEach((fn) => fn(delta, timeDelta, second));
         }
 
-        controls.update();
+        // controls.update();
 
         renderer.render(scene, camera);
       };
@@ -514,27 +676,27 @@ export default {
       switch (event.code) {
         case "KeyQ":
           console.log("Press Q");
-          this.rotateHelper("z", -90);
+          this.rotateHelper(this.current, "z", -90);
           break;
         case "KeyE":
           console.log("Press E");
-          this.rotateHelper("z", 90);
+          this.rotateHelper(this.current, "z", 90);
           break;
         case "KeyW":
           console.log("Press W");
-          this.rotateHelper("x", 90);
+          this.rotateHelper(this.current, "x", 90);
           break;
         case "KeyS":
           console.log("Press S");
-          this.rotateHelper("x", -90);
+          this.rotateHelper(this.current, "x", -90);
           break;
         case "KeyA":
           console.log("Press A");
-          this.rotateHelper("y", -90);
+          this.rotateHelper(this.current, "y", -90);
           break;
         case "KeyD":
           console.log("Press D");
-          this.rotateHelper("y", 90);
+          this.rotateHelper(this.current, "y", 90);
           break;
         case "ArrowUp":
           console.log("Press Up");

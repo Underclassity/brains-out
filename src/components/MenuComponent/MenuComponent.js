@@ -33,7 +33,6 @@ export default {
 
   methods: {
     closeMenu() {
-      console.log("Close menu");
       this.$emit("close-menu");
     },
 

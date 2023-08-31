@@ -1,5 +1,6 @@
 import { Group } from "three";
 
+import { positionHelper } from "../components/MainScreen/transform-helpers.js";
 import generateMeshPoint from "./generate-mesh-point";
 import getGroupSize from "./get-group-size.js";
 
@@ -12,7 +13,7 @@ import getGroupSize from "./get-group-size.js";
  * @return  {Object}               Group object
  */
 export function generateThreePoints(size = 0.2, parts = []) {
-  console.log("Generate three points form");
+  // console.log("Generate three points form");
 
   const pointGroup = new Group();
 
@@ -31,11 +32,11 @@ export function generateThreePoints(size = 0.2, parts = []) {
 
   pointGroup.add(childsGroup);
 
-  firstMesh.position.set(-size, 0, 0);
-  secondMesh.position.set(0, 0, 0);
-  thridMesh.position.set(size, 0, 0);
+  positionHelper(firstMesh, "x", -size);
 
-  pointGroup.userData.size = getGroupSize(pointGroup);
+  positionHelper(thridMesh, "x", size);
+
+  pointGroup.userData.size = getGroupSize(childsGroup);
 
   return pointGroup;
 }
