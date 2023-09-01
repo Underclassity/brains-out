@@ -2,7 +2,7 @@ import {
   AmbientLight,
   Clock,
   Color,
-  Group,
+  MeshPhongMaterial,
   PerspectiveCamera,
   Scene,
   Vector3,
@@ -32,6 +32,7 @@ import {
 } from "./transform-helpers.js";
 import { initWaterfall, createElement } from "./waterfall.js";
 import initPoints from "./init-points.js";
+import colorPalette from "./color-palette.js";
 // import initTest from "./init-test.js";
 
 import MenuComponent from "../MenuComponent/MenuComponent.vue";
@@ -52,7 +53,9 @@ export default {
       pitDepth: 12,
 
       layers: new Array(12),
+      layersElements: new Array(12),
       elements: [],
+      colorPalette,
 
       delta: 0,
       timeDelta: 0,
@@ -197,9 +200,12 @@ export default {
       console.log(`Init layers: ${pitDepth}-${pitWidth}-${pitHeight}`);
 
       this.layers = [];
+      this.layersElements = [];
 
       for (let z = 0; z < pitDepth; z++) {
         this.layers[z] = [];
+        this.layersElements[z] = new Array(pitWidth * pitHeight);
+
         for (let x = 0; x < pitWidth; x++) {
           this.layers[z][x] = [];
 
@@ -264,6 +270,7 @@ export default {
         pY: y,
         pZ: z,
         uuid: child.uuid,
+        el: child.clone(),
       };
     },
 
@@ -371,6 +378,45 @@ export default {
       return element;
     },
 
+    colorizeElement(element, layer) {
+      const color = this.colorPalette[layer];
+
+      console.log(
+        `Colorize element ${
+          element.name
+        } on layer ${layer}: ${color.getHexString()}`,
+        `color: #${color.getHexString()}`
+      );
+
+      if (Array.isArray(element.material)) {
+        element.material.forEach((material, index) => {
+          if (!material.name.includes("MainMat")) {
+            return false;
+          }
+
+          const newMaterial = material.clone();
+          newMaterial.map = newMaterial.map.clone();
+          newMaterial.map.repeat.set(2, 2);
+          newMaterial.map.offset.set(0.5, 0);
+          newMaterial.map.needsUpdate = true;
+          newMaterial.color = color;
+
+          element.material[index] = newMaterial;
+        });
+      } else {
+        const newMaterial = element.material.clone();
+        newMaterial.map = newMaterial.map.clone();
+        newMaterial.map.repeat.set(2, 2);
+        newMaterial.map.offset.set(0.5, 0);
+        newMaterial.map.needsUpdate = true;
+        newMaterial.color = color;
+
+        element.material = newMaterial;
+      }
+
+      return true;
+    },
+
     petrify(element) {
       console.log(
         `Petrify element: ${element.name}(${element.position.x.toFixed(
@@ -382,7 +428,7 @@ export default {
 
       const indexes = childs.map(this.findElementIndexes);
 
-      for (const { x, y, z, pX, pY, pZ } of indexes) {
+      for (const { x, y, z, pX, pY, pZ, el } of indexes) {
         if (z != -1 && x != -1 && y != -1) {
           if (this.layers[z][x][y] && !element.userData.drop) {
             throw new Error(
@@ -391,12 +437,22 @@ export default {
           }
 
           this.setLayerPoint(x, y, z);
+
+          el.position.set(pX - this.size / 2, pY - this.size / 2, pZ);
+          el.userData.static = true;
+
+          this.colorizeElement(el, z);
+
+          this.layersElements[z].push(el);
+          this.scene.add(el);
         } else {
           throw new Error(
             `Index not found!(${x}-${y}-${z})(${pX}-${pY}-${pZ})`
           );
         }
       }
+
+      this.scene.remove(element);
 
       // console.log(
       //   this.layers

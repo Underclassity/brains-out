@@ -79,7 +79,6 @@ export function initWaterfall() {
         const newZPosition = -(this.time - elTime) * elSpeed - elSize.z / 2;
 
         this.positionHelper(element, "z", newZPosition);
-
         this.restrainElement(element);
       }
 
@@ -87,15 +86,17 @@ export function initWaterfall() {
 
       const isFreeze = this.collisionElement(element);
 
-      if (isFreeze) {
-        element.userData.static = true;
-        array[index] = undefined;
-        this.petrify(element);
-
-        this.createElement();
-
+      if (!isFreeze) {
         return false;
       }
+
+      element.userData.static = true;
+      array[index] = undefined;
+      this.petrify(element);
+
+      this.createElement();
+
+      return true;
     });
 
     this.elements = this.elements
