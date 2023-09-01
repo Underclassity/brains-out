@@ -31,6 +31,9 @@
     .control-item.control-item-bottom--last(v-on:click="rotateZMinus")
         .material-symbols-outlined south_east
 
+    .control-item.control-item--drop(v-on:click="drop")
+        .material-symbols-outlined water_drop
+
 MenuComponent(
     :isMenu="isMenu"
     :isEnd="isEnd"

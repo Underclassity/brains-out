@@ -43,8 +43,8 @@
     left: 0px
 
 .control-item
-    width: 40px
-    height: 40px
+    width: 60px
+    height: 60px
     border-radius: 4px
     position: fixed
     background-color: rgba(#ccc, 0.3)
@@ -58,43 +58,53 @@
         background-color: rgba(#ccc, 0.8)
 
     &-left
-        top: calc(50% - 20px)
+        top: calc(50% - 30px)
         left: 0px
 
         &--first
-            top: calc(50% - 80px)
+            top: calc(50% - 120px)
             left: 0px
 
         &--last
-            top: calc(50% + 40px)
+            top: calc(50% + 60px)
             left: 0px
 
     &-right
-        top: calc(50% - 20px)
+        top: calc(50% - 30px)
         right: 0px
 
         &--first
-            top: calc(50% - 80px)
+            top: calc(50% - 120px)
             right: 0px
 
         &--last
-            top: calc(50% + 40px)
+            top: calc(50% + 60px)
             right: 0px
 
     &-top
         &--first
             top: 0px
-            left: calc(50% - 40px)
+            left: calc(50% - 120px)
 
         &--last
             top: 0px
-            left: calc(50% + 40px)
+            left: calc(50% + 60px)
 
     &-bottom
         &--first
             bottom: 0px
-            left: calc(50% - 40px)
+            left: calc(50% - 120px)
 
         &--last
             bottom: 0px
-            left: calc(50% + 40px)
+            left: calc(50% + 60px)
+
+    &--drop
+        top: calc(50% - 30px)
+        right: 120px
+
+        @media(max-aspect-ratio 2/3)
+            top: unset
+            right: unset
+            bottom: 60px
+            left: calc(50% - 30px)

@@ -363,8 +363,14 @@ export default {
       return isFreeze;
     },
 
+    drop() {
+      this.dropElement(this.current);
+    },
+
     dropElement(element) {
       console.log(`Drop element: ${element.name}`);
+
+      element.userData.drop = true;
 
       const childs = element.getObjectByName("childs").children;
 
