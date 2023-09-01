@@ -2,7 +2,6 @@ import {
   AmbientLight,
   Clock,
   Color,
-  MeshPhongMaterial,
   PerspectiveCamera,
   Scene,
   Vector3,
@@ -47,6 +46,8 @@ export default {
       minSpeed: 0.5,
       speed: 0.5,
       maxSpeed: 10,
+      speedStep: 0.2,
+      score: 0,
 
       pitWidth: 5,
       pitHeight: 5,
@@ -139,11 +140,13 @@ export default {
     },
 
     updateCameraProjection() {
-      console.log("Update camera projection call");
+      const { camera, controls, pitWidth, pitHeight, pitDepth, next } = this;
 
-      const { camera, controls, pitWidth, pitHeight, next } = this;
+      console.log(
+        `Update camera projection call: ${pitWidth}-${pitHeight}-${pitDepth}`
+      );
 
-      const maxSize = Math.max(pitWidth + 1, pitHeight, 0);
+      const maxSize = Math.max(pitWidth, pitHeight, 0) + 1;
       const fitHeightDistance =
         maxSize / (2 * Math.atan((Math.PI * camera.fov) / 360));
       const fitWidthDistance = fitHeightDistance / camera.aspect;
@@ -194,6 +197,31 @@ export default {
       console.log(`Smooth updated: ${this.isSmooth}`);
     },
 
+    newGame() {
+      console.log("New game call");
+
+      this.changePitSize(this.pitSize);
+
+      return true;
+    },
+
+    initLayer(z) {
+      console.log(`Init layer ${z}`);
+
+      const { pitWidth, pitHeight } = this;
+
+      this.layers[z] = [];
+      this.layersElements[z] = new Array(pitWidth * pitHeight);
+
+      for (let x = 0; x < pitWidth; x++) {
+        this.layers[z][x] = [];
+
+        for (let y = 0; y < pitHeight; y++) {
+          this.layers[z][x][y] = 0;
+        }
+      }
+    },
+
     initLayers() {
       const { pitWidth, pitHeight, pitDepth } = this;
 
@@ -203,16 +231,7 @@ export default {
       this.layersElements = [];
 
       for (let z = 0; z < pitDepth; z++) {
-        this.layers[z] = [];
-        this.layersElements[z] = new Array(pitWidth * pitHeight);
-
-        for (let x = 0; x < pitWidth; x++) {
-          this.layers[z][x] = [];
-
-          for (let y = 0; y < pitHeight; y++) {
-            this.layers[z][x][y] = 0;
-          }
-        }
+        this.initLayer(z);
       }
 
       return true;
@@ -417,6 +436,44 @@ export default {
       return true;
     },
 
+    layersCheck() {
+      const { layers } = this;
+
+      for (const [index, zLayer] of layers.entries()) {
+        const layerValues = zLayer.reduce((prev, current) => {
+          prev.push(...current);
+
+          return prev;
+        }, []);
+
+        if (layerValues.includes(0)) {
+          continue;
+        }
+
+        console.log(`Process layer delete: ${index}`);
+
+        // Update score
+        this.score += 100;
+
+        // Update speed level
+        this.speed += this.speedStep;
+
+        const layerElements = this.layersElements[index];
+
+        // Delete all layer elements
+        for (const element of layerElements) {
+          this.scene.remove(element);
+        }
+
+        // Move all elements by one level
+        this.layers.splice(index, 1);
+        this.layers.unshift(0);
+        this.initLayer(0);
+      }
+
+      return true;
+    },
+
     petrify(element) {
       console.log(
         `Petrify element: ${element.name}(${element.position.x.toFixed(
@@ -430,6 +487,16 @@ export default {
 
       for (const { x, y, z, pX, pY, pZ, el } of indexes) {
         if (z != -1 && x != -1 && y != -1) {
+          if (
+            this.layers[z] == undefined ||
+            this.layers[z][x] == undefined ||
+            this.layers[z][x][y] == undefined
+          ) {
+            throw new Error(
+              `Element not found in layers!(${x}-${y}-${z})(${pX}-${pY}-${pZ})`
+            );
+          }
+
           if (this.layers[z][x][y] && !element.userData.drop) {
             throw new Error(
               `Element already petrified!(${x}-${y}-${z})(${pX}-${pY}-${pZ})`
@@ -452,7 +519,11 @@ export default {
         }
       }
 
+      // Remove element after process layers
       this.scene.remove(element);
+
+      // Check layers
+      this.layersCheck();
 
       // console.log(
       //   this.layers
@@ -593,6 +664,23 @@ export default {
       const [width, height, depth] = pitSize.split("x");
 
       console.log(`Change pit size to ${pitSize}`);
+
+      // remove all child
+      scene.children
+        .filter((item) => item.name.length)
+        .forEach((child) => {
+          scene.remove(child);
+        });
+
+      this.score = 0;
+      this.speed = this.minSpeed;
+
+      // reset elements array
+      if (this.elements.length) {
+        this.elements.forEach((item) => item.dispose());
+      }
+
+      this.elements = [];
 
       this.pitWidth = width;
       this.pitHeight = height;

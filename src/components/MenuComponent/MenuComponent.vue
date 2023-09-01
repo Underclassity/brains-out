@@ -16,12 +16,24 @@ Transition(:duration="{ enter: 500, leave: 800 }")
             .menu-item
                 span.menu-icon.material-symbols-outlined speed
                 span Speed:
-                input(type='number' v-model="currentSpeed" v-on:change="changeSpeed" min=minSpeed max=maxSpeed step=0.1)
+                input(type='number' v-model="currentSpeed" v-on:change="changeSpeed" min=minSpeed max=maxSpeed step=speedStep)
 
             .menu-item
                 span.menu-icon.material-symbols-outlined line_curve
                 label(for="smooth") Smooth
                 input#smooth(type="checkbox" v-model="isSmooth" v-on:change="updateSmooth")
+
+            .menu-item
+                span.menu-icon.material-symbols-outlined scoreboard
+                span Current score: {{ score }}
+
+            hr
+
+            .menu-item(v-on:click="newGameCall")
+                span.menu-icon.material-symbols-outlined joystick
+                span.link New game
+
+            hr
 
             h3.link(v-on:click="closeMenu") Back to game
 </template>

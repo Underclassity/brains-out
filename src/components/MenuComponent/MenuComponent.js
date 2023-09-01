@@ -27,9 +27,19 @@ export default {
       default: 10,
     },
 
+    speedStep: {
+      type: Number,
+      default: 0.2,
+    },
+
     smooth: {
       type: Boolean,
       default: true,
+    },
+
+    score: {
+      type: Number,
+      default: 0,
     },
   },
 
@@ -56,6 +66,10 @@ export default {
 
     updateSmooth() {
       this.$emit("update-smooth", this.isSmooth);
+    },
+
+    newGameCall() {
+      this.$emit("new-game");
     },
   },
 };

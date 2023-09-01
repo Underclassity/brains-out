@@ -12,11 +12,14 @@ MenuComponent(
     :speed="speed"
     :minSpeed="minSpeed"
     :maxSpeed="maxSpeed"
+    :speedStep="speedStep"
     :smooth="isSmooth"
+    :score="score"
     v-on:close-menu="closeMenu"
     v-on:change-pit-size="changePitSize"
     v-on:change-speed="changeSpeed"
     v-on:update-smooth="updateSmooth"
+    v-on:new-game="newGame"
 )
 </template>
 
