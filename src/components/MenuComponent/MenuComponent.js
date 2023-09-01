@@ -7,6 +7,11 @@ export default {
       default: false,
     },
 
+    isEnd: {
+      type: Boolean,
+      default: false,
+    },
+
     pitSize: {
       type: String,
       default: "5x5x12",

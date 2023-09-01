@@ -8,6 +8,7 @@
 
 MenuComponent(
     :isMenu="isMenu"
+    :isEnd="isEnd"
     :pitSize="pitSize"
     :speed="speed"
     :minSpeed="minSpeed"

@@ -36,10 +36,14 @@ export function rotateHelper(element, axisType = "x", angle = 90) {
       break;
   }
 
-  element.getObjectByName("childs").rotateOnWorldAxis(axis, angleValue);
+  const childs = element.getObjectByName("childs");
 
-  // Update size after rotate
-  element.userData.size = getGroupSize(element.getObjectByName("childs"));
+  if (childs) {
+    childs.rotateOnWorldAxis(axis, angleValue);
+
+    // Update size after rotate
+    element.userData.size = getGroupSize(element.getObjectByName("childs"));
+  }
 
   this.restrainElement(element);
 }

@@ -24,6 +24,7 @@ export function createElement() {
   this.positionHelper(element, "z", -element.userData.size.z / 2);
 
   this.current = element;
+  this.moveToRandomCorner(this.current);
   this.next = this.getRandomForm(this.size, this.zombieParts);
   this.next.position.set(0, 0, 0);
   this.next.scale.set(0.2, 0.2, 0.2);

@@ -73,6 +73,7 @@ export default {
       isPause: true,
       isMenu: true,
       isSmooth: true,
+      isEnd: false,
 
       camera: undefined,
       scene: undefined,
@@ -200,6 +201,7 @@ export default {
     newGame() {
       console.log("New game call");
 
+      this.isEnd = false;
       this.changePitSize(this.pitSize);
 
       return true;
@@ -409,9 +411,9 @@ export default {
 
       if (Array.isArray(element.material)) {
         element.material.forEach((material, index) => {
-          if (!material.name.includes("MainMat")) {
-            return false;
-          }
+          // if (!material.name.includes("MainMat")) {
+          //   return false;
+          // }
 
           const newMaterial = material.clone();
           newMaterial.map = newMaterial.map.clone();
@@ -498,9 +500,12 @@ export default {
           }
 
           if (this.layers[z][x][y] && !element.userData.drop) {
-            throw new Error(
+            console.log(
               `Element already petrified!(${x}-${y}-${z})(${pX}-${pY}-${pZ})`
             );
+            this.isEnd = true;
+            this.openMenu();
+            return false;
           }
 
           this.setLayerPoint(x, y, z);
@@ -736,24 +741,8 @@ export default {
       return true;
     },
 
-    getRandomForm() {
-      // console.log("Get random form call");
-
-      const { pitWidth, pitHeight, size, zombieParts } = this;
-
-      const formFunctions = [
-        generateFourPoints,
-        generateLForm,
-        generateOnePoint,
-        generateSForm,
-        generateTForm,
-        generateThreePoints,
-        generateThreePointsCurve,
-        generateTwoPoints,
-      ];
-
-      const formFunction =
-        formFunctions[Math.floor(Math.random() * formFunctions.length)];
+    moveToRandomCorner(element) {
+      const { pitWidth, pitHeight } = this;
 
       let cornerType = randomBetween(1, 5);
 
@@ -763,16 +752,13 @@ export default {
 
       this.prevCorner = cornerType;
 
-      // Create element
-      const element = formFunction(size, zombieParts);
+      const offset = randomBetween(-this.size, this.size);
 
-      const offset = randomBetween(-2, 2);
-
-      const left = element.userData.size.x / 2 - pitWidth / 2;
-      const right = -element.userData.size.x / 2 + pitWidth / 2;
+      const left = -pitWidth / 2 - element.userData.size.x / 2;
+      const right = element.userData.size.x / 2 + pitWidth / 2;
 
       const top = -element.userData.size.y / 2 + pitHeight / 2;
-      const bottom = element.userData.size.y / 2 - pitHeight / 2;
+      const bottom = pitHeight / 2 - element.userData.size.y / 2;
 
       switch (cornerType) {
         // Top Left
@@ -798,6 +784,33 @@ export default {
         default:
           break;
       }
+
+      this.restrainElement(element);
+
+      return element;
+    },
+
+    getRandomForm() {
+      // console.log("Get random form call");
+
+      const { size, zombieParts } = this;
+
+      const formFunctions = [
+        generateFourPoints,
+        generateLForm,
+        generateOnePoint,
+        generateSForm,
+        generateTForm,
+        generateThreePoints,
+        generateThreePointsCurve,
+        generateTwoPoints,
+      ];
+
+      const formFunction =
+        formFunctions[Math.floor(Math.random() * formFunctions.length)];
+
+      // Create element
+      const element = formFunction(size, zombieParts);
 
       this.restrainElement(element);
 

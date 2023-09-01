@@ -3,6 +3,11 @@ Transition(:duration="{ enter: 500, leave: 800 }")
     .overlay(v-if="isMenu")
         .menu
             h1 Menu
+
+            hr(v-if="isEnd")
+
+            h2(v-if="isEnd") Game ended with score {{ score }}
+
             hr
 
             .menu-item
@@ -33,9 +38,9 @@ Transition(:duration="{ enter: 500, leave: 800 }")
                 span.menu-icon.material-symbols-outlined joystick
                 span.link New game
 
-            hr
+            hr(v-if="!isEnd")
 
-            h3.link(v-on:click="closeMenu") Back to game
+            h3.link(v-if="!isEnd" v-on:click="closeMenu") Back to game
 </template>
 
 <script src="./MenuComponent.js"></script>
