@@ -22,7 +22,18 @@ import generateThreePointsCurve from "../../helpers/generate-three-points-curve.
 import generateTwoPoints from "../../helpers/generate-two-points.js";
 import randomBetween from "../../helpers/random-between.js";
 
-import { moveDown, moveLeft, moveRight, moveUp } from "./move.js";
+import {
+  moveDown,
+  moveLeft,
+  moveRight,
+  moveUp,
+  rotateXMinus,
+  rotateXPlus,
+  rotateYMinus,
+  rotateYPlus,
+  rotateZMinus,
+  rotateZPlus,
+} from "./move.js";
 import {
   positionHelper,
   rotateHelper,
@@ -147,7 +158,7 @@ export default {
         `Update camera projection call: ${pitWidth}-${pitHeight}-${pitDepth}`
       );
 
-      const maxSize = Math.max(pitWidth, pitHeight, 0) + 1;
+      const maxSize = Math.max(pitWidth, pitHeight, 0);
       const fitHeightDistance =
         maxSize / (2 * Math.atan((Math.PI * camera.fov) / 360));
       const fitWidthDistance = fitHeightDistance / camera.aspect;
@@ -156,7 +167,11 @@ export default {
       camera.position.setZ(distance - maxSize);
 
       if (next) {
-        next.position.set(pitWidth / 2 + 0.5, pitHeight / 2 - 0.5, 0);
+        if (camera.aspect > 1) {
+          next.position.set(pitWidth / 2 + 0.5, pitHeight / 2 - 0.5, 0);
+        } else {
+          next.position.set(0, -pitHeight / 2 - 0.5, 0);
+        }
       }
 
       if (controls) {
@@ -551,6 +566,13 @@ export default {
     moveLeft,
     moveRight,
 
+    rotateXMinus,
+    rotateXPlus,
+    rotateYMinus,
+    rotateYPlus,
+    rotateZMinus,
+    rotateZPlus,
+
     createElement,
 
     restrainElement(element) {
@@ -915,27 +937,27 @@ export default {
       switch (event.code) {
         case "KeyQ":
           // console.log("Press Q");
-          this.rotateHelper(this.current, "z", -90);
+          this.rotateZMinus();
           break;
         case "KeyE":
           // console.log("Press E");
-          this.rotateHelper(this.current, "z", 90);
+          this.rotateZPlus();
           break;
         case "KeyW":
           // console.log("Press W");
-          this.rotateHelper(this.current, "x", 90);
+          this.rotateXPlus();
           break;
         case "KeyS":
           // console.log("Press S");
-          this.rotateHelper(this.current, "x", -90);
+          this.rotateXMinus();
           break;
         case "KeyA":
           // console.log("Press A");
-          this.rotateHelper(this.current, "y", -90);
+          this.rotateYMinus();
           break;
         case "KeyD":
           // console.log("Press D");
-          this.rotateHelper(this.current, "y", 90);
+          this.rotateYPlus();
           break;
         case "ArrowUp":
           // console.log("Press Up");

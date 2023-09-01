@@ -34,3 +34,67 @@
 .play-button
     top: 10px
     left: 10px
+
+.controls
+    width: 100%
+    height: 100%
+    position: fixed
+    top: 0px
+    left: 0px
+
+.control-item
+    width: 40px
+    height: 40px
+    border-radius: 4px
+    position: fixed
+    background-color: rgba(#ccc, 0.3)
+    cursor: pointer
+    display: flex
+    justify-content: center
+    align-items: center
+    transition: background-color 300ms ease-in-out
+
+    &:hover
+        background-color: rgba(#ccc, 0.8)
+
+    &-left
+        top: calc(50% - 20px)
+        left: 0px
+
+        &--first
+            top: calc(50% - 80px)
+            left: 0px
+
+        &--last
+            top: calc(50% + 40px)
+            left: 0px
+
+    &-right
+        top: calc(50% - 20px)
+        right: 0px
+
+        &--first
+            top: calc(50% - 80px)
+            right: 0px
+
+        &--last
+            top: calc(50% + 40px)
+            right: 0px
+
+    &-top
+        &--first
+            top: 0px
+            left: calc(50% - 40px)
+
+        &--last
+            top: 0px
+            left: calc(50% + 40px)
+
+    &-bottom
+        &--first
+            bottom: 0px
+            left: calc(50% - 40px)
+
+        &--last
+            bottom: 0px
+            left: calc(50% + 40px)

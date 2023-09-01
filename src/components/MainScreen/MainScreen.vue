@@ -6,6 +6,31 @@
     span.pause-button.link.material-symbols-outlined(v-on:click="pauseCall" v-if="!isPause") pause
     span.play-button.link.material-symbols-outlined(v-on:click="playCall" v-if="isPause") play_arrow
 
+    .control-item.control-item-left(v-on:click="moveLeft")
+        .material-symbols-outlined west
+    .control-item.control-item-right(v-on:click="moveRight")
+        .material-symbols-outlined east
+
+    .control-item.control-item-top--first(v-on:click="moveUp")
+        .material-symbols-outlined north
+    .control-item.control-item-bottom--first(v-on:click="moveDown")
+        .material-symbols-outlined south
+
+    .control-item.control-item-left.control-item-left--first(v-on:click="rotateXMinus")
+        .material-symbols-outlined north_west
+    .control-item.control-item-left.control-item-left--last(v-on:click="rotateYMinus")
+        .material-symbols-outlined south_west
+
+    .control-item.control-item-right.control-item-right--first(v-on:click="rotateXPlus")
+        .material-symbols-outlined north_east
+    .control-item.control-item-right.control-item-right--last(v-on:click="rotateYPlus")
+        .material-symbols-outlined south_east
+
+    .control-item.control-item-top--last(v-on:click="rotateZPlus")
+        .material-symbols-outlined north_east
+    .control-item.control-item-bottom--last(v-on:click="rotateZMinus")
+        .material-symbols-outlined south_east
+
 MenuComponent(
     :isMenu="isMenu"
     :isEnd="isEnd"
