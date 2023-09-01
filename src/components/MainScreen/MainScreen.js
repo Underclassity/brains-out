@@ -85,6 +85,7 @@ export default {
       isMenu: true,
       isSmooth: true,
       isEnd: false,
+      isControls: true,
 
       camera: undefined,
       scene: undefined,
@@ -211,6 +212,11 @@ export default {
     updateSmooth(isSmooth) {
       this.isSmooth = isSmooth ? true : false;
       console.log(`Smooth updated: ${this.isSmooth}`);
+    },
+
+    updateControls(isControls) {
+      this.isControls = isControls ? true : false;
+      console.log(`Controls updated: ${this.isControls}`);
     },
 
     newGame() {

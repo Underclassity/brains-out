@@ -6,37 +6,38 @@
     span.pause-button.link.material-symbols-outlined(v-on:click="pauseCall" v-if="!isPause") pause
     span.play-button.link.material-symbols-outlined(v-on:click="playCall" v-if="isPause") play_arrow
 
-    .control-item.control-item-left(v-on:click="moveLeft")
+    .control-item.control-item-left(v-on:click="moveLeft" v-if="isControls")
         .material-symbols-outlined west
-    .control-item.control-item-right(v-on:click="moveRight")
+    .control-item.control-item-right(v-on:click="moveRight" v-if="isControls")
         .material-symbols-outlined east
 
-    .control-item.control-item-top--first(v-on:click="moveUp")
+    .control-item.control-item-top--first(v-on:click="moveUp" v-if="isControls")
         .material-symbols-outlined north
-    .control-item.control-item-bottom--first(v-on:click="moveDown")
+    .control-item.control-item-bottom--first(v-on:click="moveDown" v-if="isControls")
         .material-symbols-outlined south
 
-    .control-item.control-item-left.control-item-left--first(v-on:click="rotateXMinus")
+    .control-item.control-item-left.control-item-left--first(v-on:click="rotateXMinus" v-if="isControls")
         .material-symbols-outlined north_west
-    .control-item.control-item-left.control-item-left--last(v-on:click="rotateYMinus")
+    .control-item.control-item-left.control-item-left--last(v-on:click="rotateYMinus" v-if="isControls")
         .material-symbols-outlined south_west
 
-    .control-item.control-item-right.control-item-right--first(v-on:click="rotateXPlus")
+    .control-item.control-item-right.control-item-right--first(v-on:click="rotateXPlus" v-if="isControls")
         .material-symbols-outlined north_east
-    .control-item.control-item-right.control-item-right--last(v-on:click="rotateYPlus")
+    .control-item.control-item-right.control-item-right--last(v-on:click="rotateYPlus" v-if="isControls")
         .material-symbols-outlined south_east
 
-    .control-item.control-item-top--last(v-on:click="rotateZPlus")
+    .control-item.control-item-top--last(v-on:click="rotateZPlus" v-if="isControls")
         .material-symbols-outlined north_east
-    .control-item.control-item-bottom--last(v-on:click="rotateZMinus")
+    .control-item.control-item-bottom--last(v-on:click="rotateZMinus" v-if="isControls")
         .material-symbols-outlined south_east
 
-    .control-item.control-item--drop(v-on:click="drop")
+    .control-item.control-item--drop(v-on:click="drop" v-if="isControls")
         .material-symbols-outlined water_drop
 
 MenuComponent(
     :isMenu="isMenu"
     :isEnd="isEnd"
+    :isControls="isControls"
     :pitSize="pitSize"
     :speed="speed"
     :minSpeed="minSpeed"
@@ -48,6 +49,7 @@ MenuComponent(
     v-on:change-pit-size="changePitSize"
     v-on:change-speed="changeSpeed"
     v-on:update-smooth="updateSmooth"
+    v-on:update-controls="updateControls"
     v-on:new-game="newGame"
 )
 </template>

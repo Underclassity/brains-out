@@ -12,6 +12,11 @@ export default {
       default: false,
     },
 
+    isControls: {
+      type: Boolean,
+      default: true,
+    },
+
     pitSize: {
       type: String,
       default: "5x5x12",
@@ -53,6 +58,7 @@ export default {
       currentPitSize: this.pitSize,
       currentSpeed: this.speed,
       isSmooth: this.smooth,
+      controls: this.isControls,
     };
   },
 
@@ -70,7 +76,11 @@ export default {
     },
 
     updateSmooth() {
-      this.$emit("update-smooth", this.isSmooth);
+      this.$emit("update-smooth", this.controls);
+    },
+
+    updateControls() {
+      this.$emit("update-controls", this.controls);
     },
 
     newGameCall() {

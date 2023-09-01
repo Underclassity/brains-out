@@ -29,6 +29,11 @@ Transition(:duration="{ enter: 500, leave: 800 }")
                 input#smooth(type="checkbox" v-model="isSmooth" v-on:change="updateSmooth")
 
             .menu-item
+                span.menu-icon.material-symbols-outlined tune
+                label(for="controls") Controls
+                input#controls(type="checkbox" v-model="controls" v-on:change="updateControls")
+
+            .menu-item
                 span.menu-icon.material-symbols-outlined scoreboard
                 span Current score: {{ score }}
 
