@@ -99,7 +99,7 @@ export function translateHelper(element, axis = "x", value) {
 }
 
 export function setLayerPoint(x, y, z) {
-  console.log(`Set layer point ${x}-${y}-${z}`);
+  // console.log(`Set layer point ${x}-${y}-${z}`);
 
   this.layers[z][x][y] = 1;
 

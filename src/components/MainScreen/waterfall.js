@@ -11,6 +11,12 @@ export function createElement() {
 
   const element = this.next ? this.next.clone() : this.getRandomForm();
 
+  this.scene.remove(this.next);
+
+  element.position.set(0, 0, 0);
+  element.rotation.set(0, 0, 0);
+  element.scale.set(1, 1, 1);
+
   element.userData.time = this.time;
   element.userData.static = false;
 
@@ -19,8 +25,11 @@ export function createElement() {
 
   this.current = element;
   this.next = this.getRandomForm(this.size, this.zombieParts);
+  this.next.position.set(0, 0, 0);
+  this.next.scale.set(0.2, 0.2, 0.2);
 
   this.scene.add(element);
+  this.scene.add(this.next);
   this.elements.push(element);
 
   this.updatePreview();

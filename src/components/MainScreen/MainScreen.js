@@ -2,6 +2,7 @@ import {
   AmbientLight,
   Clock,
   Color,
+  Group,
   PerspectiveCamera,
   Scene,
   Vector3,
@@ -137,15 +138,19 @@ export default {
     updateCameraProjection() {
       console.log("Update camera projection call");
 
-      const { camera, controls, pitWidth, pitHeight } = this;
+      const { camera, controls, pitWidth, pitHeight, next } = this;
 
-      const maxSize = Math.max(pitWidth, pitHeight, 0);
+      const maxSize = Math.max(pitWidth + 1, pitHeight, 0);
       const fitHeightDistance =
         maxSize / (2 * Math.atan((Math.PI * camera.fov) / 360));
       const fitWidthDistance = fitHeightDistance / camera.aspect;
       const distance = 2 * Math.max(fitHeightDistance, fitWidthDistance);
 
       camera.position.setZ(distance - maxSize);
+
+      if (next) {
+        next.position.set(pitWidth / 2 + 0.5, pitHeight / 2 - 0.5, 0);
+      }
 
       if (controls) {
         controls.update();
@@ -333,7 +338,7 @@ export default {
       }
 
       if (collisionPoints.length) {
-        console.log(`Found ${collisionPoints.length} collision points`);
+        // console.log(`Found ${collisionPoints.length} collision points`);
 
         const uuids = collisionPoints.map((item) => item.uuid);
 
@@ -581,6 +586,10 @@ export default {
 
     updatePreview() {
       // console.log("Update preview call");
+
+      this.updateCameraProjection();
+
+      return true;
     },
 
     getRandomForm() {
@@ -715,6 +724,12 @@ export default {
 
         if (Array.isArray(this.loopCb) && this.loopCb.length && !this.isPause) {
           this.loopCb.forEach((fn) => fn(delta, timeDelta, second));
+        }
+
+        if (this.next) {
+          this.next.rotation.x = timeDelta / 1;
+          this.next.rotation.y = timeDelta / 2;
+          this.next.rotation.z = timeDelta / 3;
         }
 
         // controls.update();
