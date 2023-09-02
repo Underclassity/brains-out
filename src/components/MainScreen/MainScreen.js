@@ -77,7 +77,7 @@ export default {
 
       pitSize: "5x5x12",
 
-      gridColor: 0x80_80_80,
+      gridColor: 0x9b_43_0e,
       lightColor: 0xfa_fa_fa,
       sceneColor: 0x00_0b_12,
 
