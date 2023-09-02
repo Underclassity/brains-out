@@ -1,29 +1,108 @@
-import { Group, BoxGeometry, Mesh, MeshBasicMaterial } from "three";
+import {
+  BoxGeometry,
+  BoxHelper,
+  Group,
+  MathUtils,
+  Mesh,
+  MeshBasicMaterial,
+  Vector3,
+} from "three";
 
 import generateGrid from "./generate-grid.js";
+import getRandom from "./random.js";
+
+const axisTypes = ["x", "y", "z"];
+const angleTypes = [0, 90, 180, 270];
+
+const xAxis = new Vector3(1, 0, 0).normalize();
+const yAxis = new Vector3(0, 1, 0).normalize();
+const zAxis = new Vector3(0, 0, 1).normalize();
+
+export function randomRotate(element) {
+  const rotateAxis = getRandom(axisTypes)[0];
+  const rotateAngle = getRandom(angleTypes)[0];
+
+  switch (rotateAxis) {
+    case "x":
+      element.rotateOnWorldAxis(xAxis, MathUtils.degToRad(rotateAngle));
+      break;
+    case "y":
+      element.rotateOnWorldAxis(yAxis, MathUtils.degToRad(rotateAngle));
+      break;
+    case "z":
+      element.rotateOnWorldAxis(zAxis, MathUtils.degToRad(rotateAngle));
+      break;
+  }
+
+  console.log(rotateAxis, rotateAngle);
+
+  return element;
+}
+
+export function generateGridFromParts(width, height, size, part, gridColor) {
+  const group = new Group();
+
+  for (let x = -width / 2 + size / 2; x < width / 2; x++) {
+    for (let y = -height / 2 + size / 2; y < height / 2; y++) {
+      const meshGroup = new Group();
+
+      const mesh = part.clone();
+      mesh.position.set(x, y, 0);
+
+      randomRotate(mesh);
+      randomRotate(mesh);
+
+      const box = new BoxHelper(mesh, gridColor);
+      box.position.set(x, y, 0);
+
+      meshGroup.add(mesh);
+      meshGroup.add(box);
+
+      group.add(meshGroup);
+    }
+  }
+
+  return group;
+}
 
 /**
  * Generate pit
  *
- * @param   {Number}  width   Pit width
- * @param   {height}  height  Pit height
- * @param   {Number}  depth   Pit depth
- * @param   {Number}  color   Grid color
+ * @param   {Number}  width      Pit width
+ * @param   {height}  height     Pit height
+ * @param   {Number}  depth      Pit depth
+ * @param   {Number}  color      Grid color
+ * @param   {Array}   pitParts   Pit parts
  *
- * @return  {Object}          Group object
+ * @return  {Object}             Group object
  */
 export function generatePit(
   width = 5,
   height = 5,
   depth = 12,
-  color = 0x808080
+  size = 1,
+  color = 0x808080,
+  pitParts = []
 ) {
   const pit = new Group();
 
   pit.userData.name = "Pit";
 
-  const bottomPlane = generateGrid(width, height, color);
-  bottomPlane.position.z = -depth;
+  const groundPart = pitParts.find((item) => item.name == "G_Ground");
+  const grassPart = pitParts.find((item) => item.name == "G_Grass");
+  const grassToGround = pitParts.find((item) => item.name == "G_GrassToGround");
+
+  // const bottomPlane = generateGrid(width, height, color);
+  // bottomPlane.position.z = -depth;
+
+  const downGroup = generateGridFromParts(
+    width,
+    height,
+    size,
+    groundPart,
+    color
+  );
+  downGroup.position.setZ(-depth - size / 2);
 
   const downPlane = generateGrid(width, depth, color);
   downPlane.rotateX(Math.PI / 2);
@@ -61,7 +140,8 @@ export function generatePit(
   const bottomBgPlane = generateGrid(width, 50 - height, color);
   bottomBgPlane.position.y = -50 / 2;
 
-  pit.add(bottomPlane);
+  pit.add(downGroup);
+
   pit.add(downPlane);
   pit.add(upPlane);
   pit.add(leftPlane);

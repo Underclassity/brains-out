@@ -45,7 +45,11 @@ export function rotateHelper(element, axisType = "x", angle = 90) {
     element.userData.size = getGroupSize(element.getObjectByName("childs"));
   }
 
-  this.restrainElement(element);
+  if (this && this.restrainElement) {
+    this.restrainElement(element);
+  }
+
+  return element;
 }
 
 /**

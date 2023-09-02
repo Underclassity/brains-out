@@ -10,7 +10,7 @@ import {
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-import { loadZombie } from "../../helpers/load-zombie.js";
+import { loadPitParts, loadZombie } from "../../helpers/load-zombie.js";
 import generateFourPoints from "../../helpers/generate-four-points.js";
 import generateLForm from "../../helpers/generate-l-form.js";
 import generateOnePoint from "../../helpers/generate-one-point.js";
@@ -85,7 +85,7 @@ export default {
       isMenu: true,
       isSmooth: true,
       isEnd: false,
-      isControls: true,
+      isControls: false,
 
       camera: undefined,
       scene: undefined,
@@ -100,6 +100,7 @@ export default {
       next: undefined,
 
       zombieParts: [],
+      pitParts: [],
 
       loopCb: [],
 
@@ -696,7 +697,7 @@ export default {
     },
 
     changePitSize(pitSize) {
-      const { scene, renderer } = this;
+      const { scene, renderer, size } = this;
 
       this.pitSize = pitSize;
 
@@ -729,7 +730,14 @@ export default {
 
       renderer.renderLists.dispose();
 
-      this.pit = generatePit(width, height, depth, this.gridColor);
+      this.pit = generatePit(
+        width,
+        height,
+        depth,
+        size,
+        this.gridColor,
+        this.pitParts
+      );
       scene.add(this.pit);
 
       this.updateCameraProjection();
@@ -743,11 +751,16 @@ export default {
 
     async loadZombie() {
       const zombie = await loadZombie();
+      const pitParts = await loadPitParts();
 
       // await loadTestCube();
 
       if (!zombie) {
         return false;
+      }
+
+      for (const child of pitParts.children) {
+        this.pitParts.push(child);
       }
 
       // Save all parts
@@ -878,7 +891,9 @@ export default {
         this.pitWidth,
         this.pitHeight,
         this.pitDepth,
-        this.gridColor
+        this.size,
+        this.gridColor,
+        this.pitParts
       );
       scene.add(pit);
       this.pit = pit;
