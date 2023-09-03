@@ -7,12 +7,17 @@ import getGroupSize from "./get-group-size.js";
 /**
  * Generate three points curve
  *
- * @param   {Number}  [size=0.2]   Size
- * @param   {Array}   [parts=[]]   Parts array
+ * @param   {Number}    [size=0.2]         Size
+ * @param   {Array}     [parts=[]]         Parts array
+ * @param   {Boolean}   [isSimple=false]   Simple block render
  *
- * @return  {Object}               Group object
+ * @return  {Object}                       Group object
  */
-export function generateThreePointsCurve(size = 0.2, parts = []) {
+export function generateThreePointsCurve(
+  size = 0.2,
+  parts = [],
+  isSimple = false
+) {
   // console.log("Generate three points curve form");
 
   const pointGroup = new Group();
@@ -22,9 +27,9 @@ export function generateThreePointsCurve(size = 0.2, parts = []) {
   const childsGroup = new Group();
   childsGroup.name = "childs";
 
-  const firstMesh = generateMeshPoint(size, parts);
-  const secondMesh = generateMeshPoint(size, parts);
-  const thridMesh = generateMeshPoint(size, parts);
+  const firstMesh = generateMeshPoint(size, parts, isSimple);
+  const secondMesh = generateMeshPoint(size, parts, isSimple);
+  const thridMesh = generateMeshPoint(size, parts, isSimple);
 
   childsGroup.add(firstMesh);
   childsGroup.add(secondMesh);

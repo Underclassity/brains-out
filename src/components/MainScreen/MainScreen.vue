@@ -38,6 +38,7 @@ MenuComponent(
     :isMenu="isMenu"
     :isEnd="isEnd"
     :isControls="isControls"
+    :isSimple="isSimple"
     :pitSize="pitSize"
     :speed="speed"
     :minSpeed="minSpeed"
@@ -49,6 +50,7 @@ MenuComponent(
     v-on:change-pit-size="changePitSize"
     v-on:change-speed="changeSpeed"
     v-on:update-smooth="updateSmooth"
+    v-on:update-simple="updateSimple"
     v-on:update-controls="updateControls"
     v-on:new-game="newGame"
 )

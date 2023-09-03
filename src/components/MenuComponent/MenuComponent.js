@@ -12,6 +12,11 @@ export default {
       default: false,
     },
 
+    isSimple: {
+      type: Boolean,
+      default: false,
+    },
+
     isControls: {
       type: Boolean,
       default: true,
@@ -59,6 +64,7 @@ export default {
       currentSpeed: this.speed,
       isSmooth: this.smooth,
       controls: this.isControls,
+      simple: this.isSimple,
     };
   },
 
@@ -77,6 +83,10 @@ export default {
 
     updateSmooth() {
       this.$emit("update-smooth", this.controls);
+    },
+
+    updateSimple() {
+      this.$emit("update-simple", this.simple);
     },
 
     updateControls() {

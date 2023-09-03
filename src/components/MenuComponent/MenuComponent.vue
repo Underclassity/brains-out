@@ -12,7 +12,7 @@ Transition(:duration="{ enter: 500, leave: 800 }")
 
             .menu-item
                 span.menu-icon.material-symbols-outlined fit_page
-                span Pit size:
+                span.label Pit size:
                 select(v-model="currentPitSize" v-on:change="changePitSize")
                     option(value='5x5x12') 5x5x12
                     option(value='10x10x12') 10x10x12
@@ -20,8 +20,13 @@ Transition(:duration="{ enter: 500, leave: 800 }")
 
             .menu-item
                 span.menu-icon.material-symbols-outlined speed
-                span Speed:
-                input(type='number' v-model="currentSpeed" v-on:change="changeSpeed" min=minSpeed max=maxSpeed step=speedStep)
+                span.label Speed:
+                input(type='number' v-model="currentSpeed" v-on:change="changeSpeed" :min="minSpeed" :max="maxSpeed" :step="speedStep")
+
+            .menu-item
+                span.menu-icon.material-symbols-outlined package_2
+                label(for="simple") Simple view
+                input#simple(type="checkbox" v-model="simple" v-on:change="updateSimple")
 
             .menu-item
                 span.menu-icon.material-symbols-outlined line_curve
@@ -35,7 +40,7 @@ Transition(:duration="{ enter: 500, leave: 800 }")
 
             .menu-item
                 span.menu-icon.material-symbols-outlined scoreboard
-                span Current score: {{ score }}
+                span.label Current score: {{ score }}
 
             hr
 

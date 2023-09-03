@@ -7,22 +7,23 @@ import getGroupSize from "./get-group-size.js";
 /**
  * Generate four points form
  *
- * @param   {Number}  [size=0.2]   Size
- * @param   {Array}   [parts=[]]   Parts array
+ * @param   {Number}    [size=0.2]         Size
+ * @param   {Array}     [parts=[]]         Parts array
+ * @param   {Boolean}   [isSimple=false]   Simple block render
  *
- * @return  {Object}               Group object
+ * @return  {Object}                       Group object
  */
-export function generateFourPoints(size = 0.2, parts = []) {
+export function generateFourPoints(size = 0.2, parts = [], isSimple = false) {
   // console.log(`Generate four points form: size ${size}`);
 
   const pointGroup = new Group();
 
   pointGroup.name = "4 points";
 
-  const firstMesh = generateMeshPoint(size, parts);
-  const secondMesh = generateMeshPoint(size, parts);
-  const thridMesh = generateMeshPoint(size, parts);
-  const fourthPoint = generateMeshPoint(size, parts);
+  const firstMesh = generateMeshPoint(size, parts, isSimple);
+  const secondMesh = generateMeshPoint(size, parts, isSimple);
+  const thridMesh = generateMeshPoint(size, parts, isSimple);
+  const fourthPoint = generateMeshPoint(size, parts, isSimple);
 
   const childsGroup = new Group();
   childsGroup.name = "childs";

@@ -1,4 +1,5 @@
 import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
+import { BufferGeometryLoader } from "three/src/loaders/BufferGeometryLoader.js";
 
 /**
  * Load zombie parts
@@ -153,6 +154,28 @@ export async function loadPitParts() {
         console.log("Loaded pit parts", object);
 
         resolve(object);
+      },
+      (xhr) => {
+        console.log(`${(xhr.loaded / xhr.total) * 100}% loaded`);
+      },
+      (error) => {
+        console.log(error);
+        resolve();
+      }
+    );
+  });
+}
+
+export function loadSuzanne() {
+  console.log("Load pit parts model");
+
+  return new Promise((resolve) => {
+    const bufferGeometryLoader = new BufferGeometryLoader();
+    bufferGeometryLoader.load(
+      "models/suzanne_buffergeometry.json",
+      (geometry) => {
+        geometry.name = "suzanne";
+        resolve(geometry);
       },
       (xhr) => {
         console.log(`${(xhr.loaded / xhr.total) * 100}% loaded`);

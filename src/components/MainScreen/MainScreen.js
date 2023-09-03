@@ -2,6 +2,7 @@ import {
   AmbientLight,
   Clock,
   Color,
+  MeshBasicMaterial,
   PerspectiveCamera,
   Scene,
   Vector3,
@@ -84,6 +85,7 @@ export default {
       isPause: true,
       isMenu: true,
       isSmooth: true,
+      isSimple: false,
       isEnd: false,
       isControls: false,
 
@@ -213,6 +215,12 @@ export default {
     updateSmooth(isSmooth) {
       this.isSmooth = isSmooth ? true : false;
       console.log(`Smooth updated: ${this.isSmooth}`);
+    },
+
+    updateSimple(isSimple) {
+      this.isSimple = isSimple ? true : false;
+      console.log(`Simple updated: ${this.isSimple}`);
+      this.newGame();
     },
 
     updateControls(isControls) {
@@ -453,12 +461,18 @@ export default {
           element.material[index] = newMaterial;
         });
       } else {
-        const newMaterial = element.material.clone();
-        newMaterial.map = newMaterial.map.clone();
-        newMaterial.map.repeat.set(2, 2);
-        newMaterial.map.offset.set(0.5, 0);
-        newMaterial.map.needsUpdate = true;
-        newMaterial.color = color;
+        let newMaterial;
+
+        if (element.material.isMeshNormalMaterial) {
+          newMaterial = new MeshBasicMaterial({ color });
+        } else {
+          newMaterial = element.material.clone();
+          newMaterial.map = newMaterial.map.clone();
+          newMaterial.map.repeat.set(2, 2);
+          newMaterial.map.offset.set(0.5, 0);
+          newMaterial.map.needsUpdate = true;
+          newMaterial.color = color;
+        }
 
         element.material = newMaterial;
       }
@@ -717,7 +731,21 @@ export default {
 
       // reset elements array
       if (this.elements.length) {
-        this.elements.forEach((item) => item.dispose());
+        this.elements.forEach((item) => {
+          if (item.dispose) {
+            item.dispose();
+          }
+        });
+      }
+
+      if (this.current) {
+        scene.remove(this.current);
+        this.current = undefined;
+      }
+
+      if (this.next) {
+        scene.remove(this.next);
+        this.next = undefined;
       }
 
       this.elements = [];
@@ -736,7 +764,8 @@ export default {
         depth,
         size,
         this.gridColor,
-        this.pitParts
+        this.pitParts,
+        this.isSimple
       );
       scene.add(this.pit);
 
@@ -745,6 +774,8 @@ export default {
       // Init layers after resize
       this.initLayers();
       this.initPoints();
+
+      this.createElement();
 
       return true;
     },
@@ -840,7 +871,7 @@ export default {
     getRandomForm() {
       // console.log("Get random form call");
 
-      const { size, zombieParts } = this;
+      const { size, isSimple, zombieParts } = this;
 
       const formFunctions = [
         generateFourPoints,
@@ -857,7 +888,7 @@ export default {
         formFunctions[Math.floor(Math.random() * formFunctions.length)];
 
       // Create element
-      const element = formFunction(size, zombieParts);
+      const element = formFunction(size, zombieParts, isSimple);
 
       this.restrainElement(element);
 
@@ -893,7 +924,8 @@ export default {
         this.pitDepth,
         this.size,
         this.gridColor,
-        this.pitParts
+        this.pitParts,
+        this.isSimple
       );
       scene.add(pit);
       this.pit = pit;
@@ -948,7 +980,9 @@ export default {
         powerPreference: "high-performance",
       });
       renderer.setSize(width, height);
+      renderer.setPixelRatio(window.devicePixelRatio);
       renderer.setAnimationLoop(animation);
+      renderer.gammaFactor = 2.2;
       container.appendChild(renderer.domElement);
       this.renderer = renderer;
 

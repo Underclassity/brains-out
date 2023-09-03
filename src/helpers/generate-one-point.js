@@ -6,19 +6,20 @@ import getGroupSize from "./get-group-size.js";
 /**
  * Generate one point
  *
- * @param   {Number}  [size=0.2]   Size
- * @param   {Array}   [parts=[]]   Parts array
+ * @param   {Number}    [size=0.2]         Size
+ * @param   {Array}     [parts=[]]         Parts array
+ * @param   {Boolean}   [isSimple=false]   Simple block render
  *
- * @return  {Object}               Group object
+ * @return  {Object}                       Group object
  */
-export function generateOnePoint(size = 0.2, parts = []) {
+export function generateOnePoint(size = 0.2, parts = [], isSimple = false) {
   // console.log("Generate one point form");
 
   const pointGroup = new Group();
 
   pointGroup.name = "1 point";
 
-  const mesh = generateMeshPoint(size, parts);
+  const mesh = generateMeshPoint(size, parts, isSimple);
 
   const childsGroup = new Group();
   childsGroup.name = "childs";
