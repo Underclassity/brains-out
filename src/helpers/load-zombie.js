@@ -119,7 +119,7 @@ export async function loadPitParts() {
   return new Promise((resolve) => {
     const fbxLoader = new FBXLoader();
     fbxLoader.load(
-      "models/GrassGround.fbx",
+      "models/GroundGrass.fbx",
       (object) => {
         // object.traverse(function (child) {
         //     if ((child as THREE.Mesh).isMesh) {
@@ -143,8 +143,8 @@ export async function loadPitParts() {
             // });
             // console.log(child.geometry.attributes.uv);
 
-            child.castShadow = true;
-            child.receiveShadow = true;
+            child.castShadow = false;
+            child.receiveShadow = false;
 
             child.scale.set(1, 1, 1);
           }

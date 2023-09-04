@@ -16,6 +16,10 @@ const zAxis = new Vector3(0, 0, 1).normalize();
  * @return  {Object}                     Object3D
  */
 export function rotateHelper(element, axisType = "x", angle = 90) {
+  if (!element) {
+    return false;
+  }
+
   const angleValue = MathUtils.degToRad(angle);
 
   let axis = xAxis;
@@ -62,6 +66,10 @@ export function rotateHelper(element, axisType = "x", angle = 90) {
  * @return  {Object}                     Object3D
  */
 export function positionHelper(element, axis = "x", value) {
+  if (!element) {
+    return false;
+  }
+
   // console.log("position", axis, value);
 
   switch (axis) {
@@ -89,6 +97,10 @@ export function positionHelper(element, axis = "x", value) {
  * @return  {Object}                     Object3D
  */
 export function translateHelper(element, axis = "x", value) {
+  if (!element) {
+    return false;
+  }
+
   // console.log("translate", axis, value);
 
   switch (axis) {

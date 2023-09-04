@@ -88,6 +88,7 @@ export default {
       isSimple: false,
       isEnd: false,
       isControls: false,
+      isInstanced: true,
 
       camera: undefined,
       scene: undefined,
@@ -215,6 +216,12 @@ export default {
     updateSmooth(isSmooth) {
       this.isSmooth = isSmooth ? true : false;
       console.log(`Smooth updated: ${this.isSmooth}`);
+    },
+
+    updateInstanced(isInstanced) {
+      this.isInstanced = isInstanced ? true : false;
+      console.log(`Instanced updated: ${this.isInstanced}`);
+      this.newGame();
     },
 
     updateSimple(isSimple) {
@@ -605,7 +612,7 @@ export default {
     restrainElement(element) {
       const { pitWidth, pitHeight, pitDepth, xPoints, yPoints } = this;
 
-      element.updateMatrixWorld();
+      // element.updateMatrixWorld();
 
       const position = new Vector3();
       element.getWorldPosition(position);
@@ -765,7 +772,8 @@ export default {
         size,
         this.gridColor,
         this.pitParts,
-        this.isSimple
+        this.isSimple,
+        this.isInstanced
       );
       scene.add(this.pit);
 
@@ -925,7 +933,8 @@ export default {
         this.size,
         this.gridColor,
         this.pitParts,
-        this.isSimple
+        this.isSimple,
+        this.isInstanced
       );
       scene.add(pit);
       this.pit = pit;

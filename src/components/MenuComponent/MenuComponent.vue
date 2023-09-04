@@ -1,6 +1,8 @@
 <template lang="pug">
 Transition(:duration="{ enter: 500, leave: 800 }")
     .overlay(v-if="isMenu")
+        audio(:src="`sound/${sound}`" :volume="volume" autoplay loop)
+
         .menu
             h1 Menu
 
@@ -19,6 +21,11 @@ Transition(:duration="{ enter: 500, leave: 800 }")
                     option(value='7x4x12') 7x4x12
 
             .menu-item
+                span.menu-icon.material-symbols-outlined volume_up
+                span.label Volume
+                input(type='number' v-model="volume" min="0" max="1" step="0.1")
+
+            .menu-item
                 span.menu-icon.material-symbols-outlined speed
                 span.label Speed:
                 input(type='number' v-model="currentSpeed" v-on:change="changeSpeed" :min="minSpeed" :max="maxSpeed" :step="speedStep")
@@ -30,8 +37,19 @@ Transition(:duration="{ enter: 500, leave: 800 }")
 
             .menu-item
                 span.menu-icon.material-symbols-outlined line_curve
+                label(for="instanced") Is instanced
+                input#instanced(type="checkbox" v-model="instanced" v-on:change="updateInstanced")
+
+            .menu-item
+                span.menu-icon.material-symbols-outlined line_curve
                 label(for="smooth") Smooth
                 input#smooth(type="checkbox" v-model="isSmooth" v-on:change="updateSmooth")
+
+            .menu-item
+                span.menu-icon.material-symbols-outlined equalizer
+                span.label Sound
+                select(v-model="sound")
+                    option(v-for="item of audio" :key="item" :value="item") {{ item }}
 
             .menu-item
                 span.menu-icon.material-symbols-outlined tune

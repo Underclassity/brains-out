@@ -7,7 +7,7 @@ import {
   MathUtils,
   Mesh,
   MeshBasicMaterial,
-  MeshPhongMaterial,
+  Object3D,
   Vector3,
 } from "three";
 
@@ -48,52 +48,44 @@ export function randomRotate(element) {
 }
 
 /**
- * Generate grid from parts
+ * Generate instanced mesh from part mesh
  *
- * @param   {Number}  width      Width
- * @param   {Number}  height     Height
- * @param   {Number}  depth      Depth
- * @param   {Number}  size       Point size
- * @param   {Object}  part       Grid part
- * @param   {Number}  gridColor  Color
+ * @param   {Object}  part   Part mesh
+ * @param   {Number}  count  Draw call count
  *
- * @return  {Object}             Group object
+ * @return  {Object}         New instanced mesh
  */
-export function generateGridFromParts(
-  width,
-  height,
-  depth,
-  size,
-  part,
-  gridColor
-) {
-  const group = new Group();
+function getMesh(part, count) {
+  const mesh = new InstancedMesh(part.geometry, part.material, count);
+  mesh.instanceMatrix.setUsage(DynamicDrawUsage);
 
-  for (let x = -width / 2 + size / 2; x < width / 2; x++) {
-    for (let y = -height / 2 + size / 2; y < height / 2; y++) {
-      // const mesh = new InstancedMesh(
-      //   // part.geometry,
-      //   // part.material,
+  return mesh;
+}
 
-      //   // suzanne test
-      //   part,
-      //   new MeshPhongMaterial({ color: 0x003300 }),
-      //   width * size
-      // );
-      // mesh.instanceMatrix.setUsage(DynamicDrawUsage);
+/**
+ * Update instanced mesh position
+ *
+ * @param   {Object}  mesh     Instanced mesh
+ * @param   {Object}  dummy    Object3D dummy
+ * @param   {Number}  counter  Mesh counter
+ * @param   {Number}  [x=0]    X position
+ * @param   {Number}  [y=0]    Y position
+ * @param   {Number}  [z=0]    Z position
+ *
+ * @return  {Number}           Updated mesh counter
+ */
+function updateInstancedMesh(mesh, dummy, counter, x = 0, y = 0, z = 0) {
+  dummy.position.set(x, y, z);
 
-      const mesh = part.clone();
-      mesh.position.set(x, y, -depth - size / 2);
-      mesh.scale.set(1, 1, 1);
+  randomRotate(dummy);
+  randomRotate(dummy);
 
-      randomRotate(mesh);
-      randomRotate(mesh);
+  dummy.updateMatrix();
 
-      group.add(mesh);
-    }
-  }
+  mesh.setMatrixAt(counter, dummy.matrix);
+  counter++;
 
-  return group;
+  return counter;
 }
 
 /**
@@ -115,7 +107,8 @@ export function generatePit(
   size = 1,
   color = 0x808080,
   pitParts = [],
-  simple = false
+  simple = false,
+  isInstanced = false
 ) {
   const pit = new Group();
   pit.userData.name = "Pit";
@@ -202,30 +195,68 @@ export function generatePit(
 
     pit.add(cube);
   } else {
-    // const groundPart = pitParts.find((item) => item.name == "G_Ground");
-    // const grassPart = pitParts.find((item) => item.name == "G_Grass");
-    // const grassToGround = pitParts.find(
-    //   (item) => item.name == "G_GrassToGround"
-    // );
+    const groundPart = pitParts.find((item) => item.name == "G_Ground");
+    const grassPart = pitParts.find((item) => item.name == "G_Grass");
+    const groundAndGrassPart = pitParts.find(
+      (item) => item.name == "G_GrassToGround"
+    );
+
+    // Set scale
+    groundPart.scale.set(1, 1, 1);
+    grassPart.scale.set(1, 1, 1);
+    groundAndGrassPart.scale.set(1, 1, 1);
 
     const hHeight = height / 2;
     const hSize = size / 2;
     const hWidth = width / 2;
 
-    const box = new BoxGeometry(1, 1);
+    // const box = new BoxGeometry(1, 1);
 
-    const groundMaterial = new MeshBasicMaterial({ color: 0x3a_2e_27 });
-    const grassMaterial = new MeshBasicMaterial({ color: 0x3a_7c_25 });
-    const groundAndGrassMaterial = new MeshBasicMaterial({ color: 0x43_5c_61 });
+    // const groundMaterial = new MeshBasicMaterial({ color: 0x3a_2e_27 });
+    // const grassMaterial = new MeshBasicMaterial({ color: 0x3a_7c_25 });
+    // const groundAndGrassMaterial = new MeshBasicMaterial({ color: 0x43_5c_61 });
 
-    const groundPart = new Mesh(box, groundMaterial);
-    const grassPart = new Mesh(box, grassMaterial);
-    const groundAndGrassPart = new Mesh(box, groundAndGrassMaterial);
+    // const groundPart = new Mesh(box, groundMaterial);
+    // const grassPart = new Mesh(box, grassMaterial);
+    // const groundAndGrassPart = new Mesh(box, groundAndGrassMaterial);
 
     const pitGroup = new Group();
 
+    const dummy = new Object3D();
+
     const xArr = [];
     const yArr = [];
+
+    const groundGrassCount = width * 2 + height * 2 + 4;
+    const groundCount = width * height + 2 * width * depth + 2 * height * depth;
+    const grassCount =
+      (width + 20) * (height + 20) -
+      width * height -
+      width * 2 -
+      height * 2 -
+      4;
+
+    console.log("Ground", groundCount);
+    console.log("Grass", grassCount);
+    console.log("Ground and grass", groundGrassCount);
+
+    let groundCounter = 0;
+    let grassCounter = 0;
+    let groundAndGrassCounter = 0;
+
+    const grassMesh = getMesh(grassPart, grassCount);
+    const groundMesh = getMesh(groundPart, groundCount);
+    const groundAndGrassMesh = getMesh(groundAndGrassPart, groundGrassCount);
+
+    grassMesh.name = "grass";
+    groundMesh.name = "ground";
+    groundAndGrassMesh.name = "groundAndGrass";
+
+    if (isInstanced) {
+      pitGroup.add(grassMesh);
+      pitGroup.add(groundMesh);
+      pitGroup.add(groundAndGrassMesh);
+    }
 
     // Generate bottom
     for (let x = -hWidth + hSize; x < hWidth; x++) {
@@ -233,75 +264,133 @@ export function generatePit(
         xArr.push(x);
         yArr.push(y);
 
-        const mesh = groundPart.clone();
-        mesh.position.set(x, y, -depth - hSize);
-        mesh.scale.set(1, 1, 1);
+        if (isInstanced) {
+          groundCounter = updateInstancedMesh(
+            groundMesh,
+            dummy,
+            groundCounter,
+            x,
+            y,
+            -depth - size
+          );
+        } else {
+          const mesh = groundPart.clone();
+          mesh.frustumCulled = false;
 
-        randomRotate(mesh);
-        randomRotate(mesh);
+          mesh.position.set(x, y, -depth - size);
 
-        pitGroup.add(mesh);
-        pitGroup.add(new BoxHelper(mesh, color));
+          randomRotate(mesh);
+          randomRotate(mesh);
+
+          pitGroup.add(mesh);
+          pitGroup.add(new BoxHelper(mesh, color));
+        }
       }
     }
 
     // Generate top and bottom walls
     for (let x = -hWidth + hSize; x < hWidth; x++) {
       for (let z = -depth; z < 0; z++) {
-        let mesh = groundPart.clone();
-        mesh.position.set(x, -hHeight - hSize, z);
-        mesh.scale.set(1, 1, 1);
+        if (isInstanced) {
+          groundCounter = updateInstancedMesh(
+            groundMesh,
+            dummy,
+            groundCounter,
+            x,
+            -hHeight - hSize,
+            z
+          );
+        } else {
+          const mesh = groundPart.clone();
+          mesh.frustumCulled = false;
 
-        randomRotate(mesh);
-        randomRotate(mesh);
+          mesh.position.set(x, -hHeight - hSize, z);
 
-        pitGroup.add(mesh);
-        pitGroup.add(new BoxHelper(mesh, color));
+          randomRotate(mesh);
+          randomRotate(mesh);
 
-        mesh = groundPart.clone();
-        mesh.position.set(x, hHeight + hSize, z);
-        mesh.scale.set(1, 1, 1);
+          pitGroup.add(mesh);
+          pitGroup.add(new BoxHelper(mesh, color));
+        }
 
-        randomRotate(mesh);
-        randomRotate(mesh);
+        if (isInstanced) {
+          groundCounter = updateInstancedMesh(
+            groundMesh,
+            dummy,
+            groundCounter,
+            x,
+            hHeight + hSize,
+            z
+          );
+        } else {
+          const mesh = groundPart.clone();
+          mesh.frustumCulled = false;
 
-        pitGroup.add(mesh);
-        pitGroup.add(new BoxHelper(mesh, color));
+          mesh.position.set(x, hHeight + hSize, z);
+
+          randomRotate(mesh);
+          randomRotate(mesh);
+
+          pitGroup.add(mesh);
+          pitGroup.add(new BoxHelper(mesh, color));
+        }
       }
     }
 
     // Generate left and right walls
     for (let y = -hHeight + hSize; y < hHeight; y++) {
       for (let z = -depth; z < 0; z++) {
-        let mesh = groundPart.clone();
-        mesh.position.set(-hWidth - hSize, y, z);
-        mesh.scale.set(1, 1, 1);
+        if (isInstanced) {
+          groundCounter = updateInstancedMesh(
+            groundMesh,
+            dummy,
+            groundCounter,
+            -hWidth - hSize,
+            y,
+            z
+          );
+        } else {
+          const mesh = groundPart.clone();
+          mesh.frustumCulled = false;
 
-        randomRotate(mesh);
-        randomRotate(mesh);
+          mesh.position.set(-hWidth - hSize, y, z);
 
-        pitGroup.add(mesh);
-        pitGroup.add(new BoxHelper(mesh, color));
+          randomRotate(mesh);
+          randomRotate(mesh);
 
-        mesh = groundPart.clone();
-        mesh.position.set(hWidth + hSize, y, z);
-        mesh.scale.set(1, 1, 1);
+          pitGroup.add(mesh);
+          pitGroup.add(new BoxHelper(mesh, color));
+        }
 
-        randomRotate(mesh);
-        randomRotate(mesh);
+        if (isInstanced) {
+          groundCounter = updateInstancedMesh(
+            groundMesh,
+            dummy,
+            groundCounter,
+            hWidth + hSize,
+            y,
+            z
+          );
+        } else {
+          const mesh = groundPart.clone();
+          mesh.frustumCulled = false;
 
-        pitGroup.add(mesh);
-        pitGroup.add(new BoxHelper(mesh, color));
+          mesh.position.set(hWidth + hSize, y, z);
+
+          randomRotate(mesh);
+          randomRotate(mesh);
+
+          pitGroup.add(mesh);
+          pitGroup.add(new BoxHelper(mesh, color));
+        }
       }
     }
 
-    for (let x = -hWidth + hSize - 15; x < hWidth + 15; x++) {
-      for (let y = -hHeight + hSize - 15; y < hHeight + 15; y++) {
+    for (let x = -hWidth + hSize - 10; x < hWidth + 10; x++) {
+      for (let y = -hHeight + hSize - 10; y < hHeight + 10; y++) {
         if (xArr.includes(x) && yArr.includes(y)) {
           continue;
         }
-
-        let mesh = grassPart.clone();
 
         if (
           (x == -hWidth - hSize &&
@@ -315,17 +404,50 @@ export function generatePit(
             y == hHeight + hSize) ||
           (x >= -hWidth - hSize && x <= hWidth + hSize && y == -hHeight - hSize)
         ) {
-          mesh = groundAndGrassPart.clone();
+          if (isInstanced) {
+            groundAndGrassCounter = updateInstancedMesh(
+              groundAndGrassMesh,
+              dummy,
+              groundAndGrassCounter,
+              x,
+              y,
+              0
+            );
+          } else {
+            const mesh = groundAndGrassPart.clone();
+            mesh.frustumCulled = false;
+
+            mesh.position.set(x, y, 0);
+
+            randomRotate(mesh);
+            randomRotate(mesh);
+
+            pitGroup.add(mesh);
+            pitGroup.add(new BoxHelper(mesh, color));
+          }
+        } else {
+          if (isInstanced) {
+            grassCounter = updateInstancedMesh(
+              grassMesh,
+              dummy,
+              grassCounter,
+              x,
+              y,
+              0
+            );
+          } else {
+            const mesh = grassPart.clone();
+            mesh.frustumCulled = false;
+
+            mesh.position.set(x, y, 0);
+
+            randomRotate(mesh);
+            randomRotate(mesh);
+
+            pitGroup.add(mesh);
+            pitGroup.add(new BoxHelper(mesh, color));
+          }
         }
-
-        mesh.position.set(x, y, 0);
-        mesh.scale.set(1, 1, 1);
-
-        randomRotate(mesh);
-        randomRotate(mesh);
-
-        pitGroup.add(mesh);
-        pitGroup.add(new BoxHelper(mesh, color));
       }
     }
 
