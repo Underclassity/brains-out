@@ -990,6 +990,9 @@ export default {
 
       for (const child of pitParts.children) {
         this.pitParts.push(child);
+
+        child.material.shininess = 0;
+        child.material.specular = new Color(0x000000);
       }
 
       // Save all parts
@@ -1119,7 +1122,7 @@ export default {
       l2.position.set(pitWidth / 2, 0, 5);
       l3.position.set(0, 0, 5);
 
-      const coff = 10;
+      const coff = 2;
 
       l1.power = 10000 / coff;
       l2.power = 10000 / coff;

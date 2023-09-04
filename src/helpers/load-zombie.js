@@ -1,6 +1,9 @@
 import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
 import { BufferGeometryLoader } from "three/src/loaders/BufferGeometryLoader.js";
 
+const castShadow = true;
+const receiveShadow = true;
+
 /**
  * Load zombie parts
  *
@@ -36,8 +39,8 @@ export async function loadZombie() {
             // });
             // console.log(child.geometry.attributes.uv);
 
-            child.castShadow = true;
-            child.receiveShadow = true;
+            child.castShadow = castShadow;
+            child.receiveShadow = receiveShadow;
           }
         });
         object.scale.set(0.01, 0.01, 0.01);
@@ -92,8 +95,8 @@ export async function loadTestCube() {
             // });
             // console.log(child.geometry.attributes.uv);
 
-            child.castShadow = true;
-            child.receiveShadow = true;
+            child.castShadow = castShadow;
+            child.receiveShadow = receiveShadow;
           }
         });
         object.scale.set(0.01, 0.01, 0.01);
@@ -143,8 +146,8 @@ export async function loadPitParts() {
             // });
             // console.log(child.geometry.attributes.uv);
 
-            child.castShadow = false;
-            child.receiveShadow = false;
+            child.castShadow = castShadow;
+            child.receiveShadow = receiveShadow;
 
             child.scale.set(1, 1, 1);
           }
