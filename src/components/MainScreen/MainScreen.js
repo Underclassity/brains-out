@@ -6,6 +6,7 @@ import {
   Color,
   MeshBasicMaterial,
   PerspectiveCamera,
+  // PointLightHelper,
   Scene,
   Vector3,
   WebGLRenderer,
@@ -24,6 +25,7 @@ import generateThreePoints from "../../helpers/generate-three-points.js";
 import generateThreePointsCurve from "../../helpers/generate-three-points-curve.js";
 import generateTwoPoints from "../../helpers/generate-two-points.js";
 import loadAudio from "../../helpers/audio.js";
+import loadLights from "../../helpers/lights.js";
 import randomBetween from "../../helpers/random-between.js";
 
 import {
@@ -907,6 +909,10 @@ export default {
       scene.children
         .filter((item) => item.name.length)
         .forEach((child) => {
+          if (child.dispose) {
+            child.dispose();
+          }
+
           scene.remove(child);
         });
 
@@ -930,6 +936,14 @@ export default {
       if (this.next) {
         scene.remove(this.next);
         this.next = undefined;
+      }
+
+      if (this.pit) {
+        this.pit.traverse((obj) => {
+          if (obj.isMesh && obj.dispose) {
+            obj.dispose();
+          }
+        });
       }
 
       this.elements = [];
@@ -969,9 +983,8 @@ export default {
       const zombie = await loadZombie();
       const pitParts = await loadPitParts();
 
-      // await loadTestCube();
-
-      if (!zombie) {
+      if (!zombie || !pitParts) {
+        this.isSimple = true;
         return false;
       }
 
@@ -984,16 +997,7 @@ export default {
         this.zombieParts.push(child);
       }
 
-      // console.log(this.zombieParts.map((item) => item.name).sort());
-
-      // zombie.userData.name = "Zombie";
-
-      // zombie.position.setZ(-5);
-      // zombie.position.setY(-1);
-
-      // if (this.scene) {
-      //   this.scene.add(zombie);
-      // }
+      return true;
     },
 
     updatePreview() {
@@ -1086,6 +1090,59 @@ export default {
       return element;
     },
 
+    async initLights() {
+      const { scene, camera, pitWidth } = this;
+
+      const gltf = await loadLights();
+
+      const light = new AmbientLight(0xffffff, 0.4);
+      scene.add(light);
+
+      const cameraLight = new AmbientLight(0xffffff, 0.6);
+      camera.add(cameraLight);
+
+      if (!gltf) {
+        const light = new AmbientLight(this.lightColor);
+        scene.add(light);
+        return false;
+      }
+
+      const lights = gltf.scene.children;
+
+      // console.log(lights);
+
+      const l1 = lights[0].clone();
+      const l2 = lights[1].clone();
+      const l3 = lights[2].clone();
+
+      l1.position.set(-pitWidth / 2, 0, 5);
+      l2.position.set(pitWidth / 2, 0, 5);
+      l3.position.set(0, 0, 5);
+
+      const coff = 10;
+
+      l1.power = 10000 / coff;
+      l2.power = 10000 / coff;
+      l3.power = 5000 / coff;
+
+      scene.add(l1);
+      scene.add(l2);
+      scene.add(l3);
+
+      // const sphereSize = 1;
+
+      // let pointLightHelper = new PointLightHelper(l1, sphereSize);
+      // scene.add(pointLightHelper);
+
+      // pointLightHelper = new PointLightHelper(l2, sphereSize);
+      // scene.add(pointLightHelper);
+
+      // pointLightHelper = new PointLightHelper(l3, sphereSize);
+      // scene.add(pointLightHelper);
+
+      return true;
+    },
+
     initPoints,
 
     init() {
@@ -1120,8 +1177,8 @@ export default {
       this.initLayers();
       this.initPoints();
 
-      const light = new AmbientLight(this.lightColor); //  white light
-      scene.add(light);
+      // Init light
+      this.initLights();
 
       // Init test mode
       // initTest.call(this);
@@ -1242,6 +1299,12 @@ export default {
           break;
       }
     },
+
+    clickListener() {
+      if (this.bgSound) {
+        this.bgSound.play();
+      }
+    },
   },
 
   async mounted() {
@@ -1250,10 +1313,12 @@ export default {
 
     window.addEventListener("resize", this.updateRendererSize);
     document.addEventListener("keyup", this.keyupHandler);
+    window.addEventListener("click", this.clickListener);
   },
 
   unmounted() {
     window.removeEventListener("resize", this.updateRendererSize);
     document.removeEventListener("keyup", this.keyupHandler);
+    window.removeEventListener("click", this.clickListener);
   },
 };
