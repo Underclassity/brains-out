@@ -6,7 +6,7 @@ import {
   Color,
   MeshBasicMaterial,
   PerspectiveCamera,
-  // PointLightHelper,
+  PointLightHelper,
   Scene,
   Vector3,
   WebGLRenderer,
@@ -285,8 +285,50 @@ export default {
     newGame() {
       console.log("New game call");
 
+      const { scene } = this;
+
       this.isEnd = false;
-      this.changePitSize(this.pitSize);
+
+      // reset elements array
+      if (this.elements.length) {
+        this.elements.forEach((item) => {
+          if (item.dispose) {
+            item.dispose();
+          }
+          scene.remove(item);
+        });
+      }
+
+      for (const layer of this.layersElements) {
+        for (const mesh of layer) {
+          if (!mesh) {
+            continue;
+          }
+
+          if (mesh.dispose) {
+            mesh.dispose();
+          }
+          scene.remove(mesh);
+        }
+      }
+
+      if (this.current) {
+        scene.remove(this.current);
+        this.current = undefined;
+      }
+
+      if (this.next) {
+        scene.remove(this.next);
+        this.next = undefined;
+      }
+
+      this.elements = [];
+
+      // Init layers after resize
+      this.initLayers();
+      this.initPoints();
+
+      this.createElement();
 
       return true;
     },
@@ -925,7 +967,22 @@ export default {
           if (item.dispose) {
             item.dispose();
           }
+
+          scene.remove(item);
         });
+      }
+
+      for (const layer of this.layersElements) {
+        for (const mesh of layer) {
+          if (!mesh) {
+            continue;
+          }
+
+          if (mesh.dispose) {
+            mesh.dispose();
+          }
+          scene.remove(mesh);
+        }
       }
 
       if (this.current) {
@@ -973,6 +1030,7 @@ export default {
       // Init layers after resize
       this.initLayers();
       this.initPoints();
+      this.initLights();
 
       this.createElement();
 
@@ -1153,16 +1211,16 @@ export default {
       scene.add(l2);
       scene.add(l3);
 
-      // const sphereSize = 1;
+      const sphereSize = 1;
 
-      // let pointLightHelper = new PointLightHelper(l1, sphereSize);
-      // scene.add(pointLightHelper);
+      let pointLightHelper = new PointLightHelper(l1, sphereSize);
+      scene.add(pointLightHelper);
 
-      // pointLightHelper = new PointLightHelper(l2, sphereSize);
-      // scene.add(pointLightHelper);
+      pointLightHelper = new PointLightHelper(l2, sphereSize);
+      scene.add(pointLightHelper);
 
-      // pointLightHelper = new PointLightHelper(l3, sphereSize);
-      // scene.add(pointLightHelper);
+      pointLightHelper = new PointLightHelper(l3, sphereSize);
+      scene.add(pointLightHelper);
 
       return true;
     },
