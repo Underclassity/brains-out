@@ -6,7 +6,7 @@ import {
   Color,
   MeshBasicMaterial,
   PerspectiveCamera,
-  PointLightHelper,
+  // PointLightHelper,
   Scene,
   Vector3,
   WebGLRenderer,
@@ -1211,16 +1211,16 @@ export default {
       scene.add(l2);
       scene.add(l3);
 
-      const sphereSize = 1;
+      // const sphereSize = 1;
 
-      let pointLightHelper = new PointLightHelper(l1, sphereSize);
-      scene.add(pointLightHelper);
+      // let pointLightHelper = new PointLightHelper(l1, sphereSize);
+      // scene.add(pointLightHelper);
 
-      pointLightHelper = new PointLightHelper(l2, sphereSize);
-      scene.add(pointLightHelper);
+      // pointLightHelper = new PointLightHelper(l2, sphereSize);
+      // scene.add(pointLightHelper);
 
-      pointLightHelper = new PointLightHelper(l3, sphereSize);
-      scene.add(pointLightHelper);
+      // pointLightHelper = new PointLightHelper(l3, sphereSize);
+      // scene.add(pointLightHelper);
 
       return true;
     },
