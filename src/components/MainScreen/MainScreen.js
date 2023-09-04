@@ -993,6 +993,7 @@ export default {
 
         child.material.shininess = 0;
         child.material.specular = new Color(0x000000);
+        child.material.flatShading = true;
       }
 
       // Save all parts
