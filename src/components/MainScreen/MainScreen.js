@@ -759,6 +759,8 @@ export default {
             this.isEnd = true;
             this.openMenu();
 
+            this.scene.remove(element);
+
             if (this.endSound) {
               this.endSound.play();
             }
@@ -1107,7 +1109,7 @@ export default {
       const right = element.userData.size.x / 2 + pitWidth / 2;
 
       const top = -element.userData.size.y / 2 + pitHeight / 2;
-      const bottom = pitHeight / 2 - element.userData.size.y / 2;
+      const bottom = element.userData.size.y / 2 - pitHeight / 2;
 
       switch (cornerType) {
         // Top Left
