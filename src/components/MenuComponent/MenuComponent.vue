@@ -1,8 +1,6 @@
 <template lang="pug">
 Transition(:duration="{ enter: 500, leave: 800 }")
     .overlay(v-if="isMenu")
-        audio(:src="`sound/${sound}`" :volume="volume" autoplay loop)
-
         .menu
             h1 Menu
 
@@ -23,7 +21,12 @@ Transition(:duration="{ enter: 500, leave: 800 }")
             .menu-item
                 span.menu-icon.material-symbols-outlined volume_up
                 span.label Volume
-                input(type='number' v-model="volume" min="0" max="1" step="0.1")
+                input(type='number' v-on:change="updateVolume" v-model="volume" min="0" max="1" step="0.1")
+
+            .menu-item
+                span.menu-icon.material-symbols-outlined volume_up
+                span.label Fx Volume
+                input(type='number' v-on:change="updateFxVolume" v-model="fxVolume" min="0" max="1" step="0.1")
 
             .menu-item
                 span.menu-icon.material-symbols-outlined speed
@@ -48,7 +51,7 @@ Transition(:duration="{ enter: 500, leave: 800 }")
             .menu-item
                 span.menu-icon.material-symbols-outlined equalizer
                 span.label Sound
-                select(v-model="sound")
+                select(v-model="sound" v-on:change="updateSound")
                     option(v-for="item of audio" :key="item" :value="item") {{ item }}
 
             .menu-item

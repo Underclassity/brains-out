@@ -40,6 +40,9 @@ MenuComponent(
     :isControls="isControls"
     :isSimple="isSimple"
     :isInstanced="isInstanced"
+    :inputSound="sound"
+    :inputVolume="volume"
+    :inputFxVolume="fxVolume"
     :pitSize="pitSize"
     :speed="speed"
     :minSpeed="minSpeed"
@@ -54,6 +57,9 @@ MenuComponent(
     v-on:update-instanced="updateInstanced"
     v-on:update-simple="updateSimple"
     v-on:update-controls="updateControls"
+    v-on:update-sound="updateSound"
+    v-on:update-volume="updateVolume"
+    v-on:update-fx-volume="updateFxVolume"
     v-on:new-game="newGame"
 )
 </template>

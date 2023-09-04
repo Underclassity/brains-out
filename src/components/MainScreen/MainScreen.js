@@ -1,5 +1,7 @@
 import {
   AmbientLight,
+  Audio,
+  AudioListener,
   Clock,
   Color,
   MeshBasicMaterial,
@@ -21,6 +23,7 @@ import generateTForm from "../../helpers/generate-t-form.js";
 import generateThreePoints from "../../helpers/generate-three-points.js";
 import generateThreePointsCurve from "../../helpers/generate-three-points-curve.js";
 import generateTwoPoints from "../../helpers/generate-two-points.js";
+import loadAudio from "../../helpers/audio.js";
 import randomBetween from "../../helpers/random-between.js";
 
 import {
@@ -89,6 +92,15 @@ export default {
       isEnd: false,
       isControls: false,
       isInstanced: true,
+
+      sound: "ZombiesAreComing.ogg",
+      volume: 0.1,
+      fxVolume: 0.7,
+
+      bgSound: undefined,
+      dropSound: undefined,
+      endSound: undefined,
+      clearSound: undefined,
 
       camera: undefined,
       scene: undefined,
@@ -235,6 +247,39 @@ export default {
       console.log(`Controls updated: ${this.isControls}`);
     },
 
+    updateSound(sound) {
+      this.sound = sound;
+      console.log(`Update sound: ${sound}`);
+
+      this.initAudio();
+    },
+
+    updateVolume(volume) {
+      this.volume = volume;
+      console.log(`Update volume: ${volume}`);
+
+      if (this.bgSound) {
+        this.bgSound.setVolume(volume);
+      }
+    },
+
+    updateFxVolume(fxVolume) {
+      this.fxVolume = fxVolume;
+      console.log(`Update FX volume: ${fxVolume}`);
+
+      if (this.dropSound) {
+        this.dropSound.setVolume(fxVolume);
+      }
+
+      if (this.endSound) {
+        this.endSound.setVolume(fxVolume);
+      }
+
+      if (this.clearSound) {
+        this.clearSound.setVolume(fxVolume);
+      }
+    },
+
     newGame() {
       console.log("New game call");
 
@@ -274,6 +319,117 @@ export default {
       }
 
       return true;
+    },
+
+    async initBgSound() {
+      const { scene, sound, camera, volume } = this;
+
+      // instantiate a listener
+      const audioListener = new AudioListener();
+
+      // add the listener to the camera
+      camera.add(audioListener);
+
+      // instantiate audio object
+      const soundInstance = new Audio(audioListener);
+
+      // add the audio object to the scene
+      scene.add(soundInstance);
+
+      const audioBuffer = await loadAudio(sound);
+
+      soundInstance.setBuffer(audioBuffer);
+
+      soundInstance.setLoop(true);
+      soundInstance.setVolume(volume);
+
+      // play the audio
+      soundInstance.play();
+
+      this.bgSound = soundInstance;
+    },
+
+    async initDropSound() {
+      const { scene, camera, fxVolume } = this;
+
+      const audioListener = new AudioListener();
+      camera.add(audioListener);
+
+      const soundInstance = new Audio(audioListener);
+      scene.add(soundInstance);
+
+      const audioBuffer = await loadAudio("fall.wav");
+
+      soundInstance.setBuffer(audioBuffer);
+      soundInstance.setVolume(fxVolume);
+
+      this.dropSound = soundInstance;
+
+      return soundInstance;
+    },
+
+    async initEndSound() {
+      const { scene, camera, fxVolume } = this;
+
+      const audioListener = new AudioListener();
+      camera.add(audioListener);
+
+      const soundInstance = new Audio(audioListener);
+      scene.add(soundInstance);
+
+      const audioBuffer = await loadAudio("zombieHoouw_1.mp3");
+
+      soundInstance.setBuffer(audioBuffer);
+      soundInstance.setVolume(fxVolume);
+
+      this.endSound = soundInstance;
+
+      return soundInstance;
+    },
+
+    async initClearSound() {
+      const { scene, camera, fxVolume } = this;
+
+      const audioListener = new AudioListener();
+      camera.add(audioListener);
+
+      const soundInstance = new Audio(audioListener);
+      scene.add(soundInstance);
+
+      const audioBuffer = await loadAudio("Zombie Sound.wav");
+
+      soundInstance.setBuffer(audioBuffer);
+      soundInstance.setVolume(fxVolume);
+
+      this.clearSound = soundInstance;
+
+      return soundInstance;
+    },
+
+    async initAudio() {
+      const { scene, sound, camera, bgSound } = this;
+
+      if (!scene || !camera || !sound) {
+        return false;
+      }
+
+      // Update sound
+      if (bgSound) {
+        const audioBuffer = await loadAudio(sound);
+
+        bgSound.stop();
+        bgSound.setBuffer(audioBuffer);
+        bgSound.play();
+
+        return true;
+      }
+
+      await this.initBgSound();
+      await this.initDropSound();
+      await this.initEndSound();
+      await this.initClearSound();
+
+      return bgSound;
     },
 
     findElementIndexes(child) {
@@ -520,6 +676,10 @@ export default {
         this.layers.splice(index, 1);
         this.layers.unshift(0);
         this.initLayer(0);
+
+        if (this.clearSound) {
+          this.clearSound.play();
+        }
       }
 
       return true;
@@ -554,6 +714,10 @@ export default {
             );
             this.isEnd = true;
             this.openMenu();
+
+            if (this.endSound) {
+              this.endSound.play();
+            }
             return false;
           }
 
@@ -566,6 +730,14 @@ export default {
 
           this.layersElements[z].push(el);
           this.scene.add(el);
+
+          if (this.dropSound && this.dropSound.isPlaying) {
+            this.dropSound.stop();
+          }
+
+          if (this.dropSound) {
+            this.dropSound.play();
+          }
         } else {
           throw new Error(
             `Index not found!(${x}-${y}-${z})(${pX}-${pY}-${pZ})`
@@ -608,8 +780,13 @@ export default {
     rotateZPlus,
 
     createElement,
+    initWaterfall,
 
     restrainElement(element) {
+      if (!element) {
+        return false;
+      }
+
       const { pitWidth, pitHeight, pitDepth, xPoints, yPoints } = this;
 
       // element.updateMatrixWorld();
@@ -950,7 +1127,10 @@ export default {
       // initTest.call(this);
 
       // init waterfall mode
-      initWaterfall.call(this);
+      this.initWaterfall();
+
+      // Audio
+      this.initAudio();
 
       // animation
 

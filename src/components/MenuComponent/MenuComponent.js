@@ -61,6 +61,21 @@ export default {
       type: Number,
       default: 0,
     },
+
+    inputSound: {
+      type: String,
+      default: "ZombiesAreComing.ogg",
+    },
+
+    inputVolume: {
+      type: Number,
+      default: 0.5,
+    },
+
+    inputFxVolume: {
+      type: Number,
+      default: 0.8,
+    },
   },
 
   data() {
@@ -71,10 +86,9 @@ export default {
       instanced: this.isInstanced,
       controls: this.isControls,
       simple: this.isSimple,
-
-      volume: 0.5,
-
-      sound: "ZombiesAreComing.ogg",
+      volume: this.inputVolume,
+      fxVolume: this.inputFxVolume,
+      sound: this.inputSound,
 
       // https://opengameart.org/
       audio: [
@@ -86,8 +100,6 @@ export default {
         "Day_1.ogg",
         "Disco Is Undead.mp3",
         "fall.wav",
-        "Iwan Gabovitch - Dark Ambience Loop.flac",
-        "Iwan Gabovitch - Dark Ambience Loop.mp3",
         "Iwan Gabovitch - Dark Ambience Loop.ogg",
         "last_fight.mp3",
         "Pripyat 2.0 Chiptune.mp3",
@@ -136,5 +148,23 @@ export default {
     newGameCall() {
       this.$emit("new-game");
     },
+
+    updateVolume() {
+      this.$emit("update-volume", this.volume);
+    },
+
+    updateFxVolume() {
+      this.$emit("update-fx-volume", this.fxVolume);
+    },
+
+    updateSound() {
+      this.$emit("update-sound", this.sound);
+    },
+  },
+
+  mounted() {
+    this.$emit("update-fx-volume", this.fxVolume);
+    this.$emit("update-sound", this.sound);
+    this.$emit("update-volume", this.volume);
   },
 };
