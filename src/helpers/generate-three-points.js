@@ -5,7 +5,7 @@ import generateMeshPoint from "./generate-mesh-point";
 import getGroupSize from "./get-group-size.js";
 
 /**
- * Generate three points form
+ * Generate three points form (block_images/p2.png)
  *
  * @param   {Number}    [size=0.2]         Size
  * @param   {Array}     [parts=[]]         Parts array

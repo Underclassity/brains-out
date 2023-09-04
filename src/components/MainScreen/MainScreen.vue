@@ -43,6 +43,7 @@ MenuComponent(
     :inputSound="sound"
     :inputVolume="volume"
     :inputFxVolume="fxVolume"
+    :inputBlocksType="blocksType"
     :pitSize="pitSize"
     :speed="speed"
     :minSpeed="minSpeed"
@@ -60,6 +61,7 @@ MenuComponent(
     v-on:update-sound="updateSound"
     v-on:update-volume="updateVolume"
     v-on:update-fx-volume="updateFxVolume"
+    v-on:update-blocks-type="updateBlocksType"
     v-on:new-game="newGame"
 )
 </template>

@@ -4,7 +4,7 @@ import generateMeshPoint from "./generate-mesh-point.js";
 import getGroupSize from "./get-group-size.js";
 
 /**
- * Generate one point
+ * Generate one point (block_images/p0.png)
  *
  * @param   {Number}    [size=0.2]         Size
  * @param   {Array}     [parts=[]]         Parts array

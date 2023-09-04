@@ -5,7 +5,7 @@ import generateMeshPoint from "./generate-mesh-point.js";
 import getGroupSize from "./get-group-size.js";
 
 /**
- * Generate T form (block_images/p7.png)
+ * Generate big T form (block_images/p11.png)
  *
  * @param   {Number}    [size=0.2]         Size
  * @param   {Array}     [parts=[]]         Parts array
@@ -13,12 +13,12 @@ import getGroupSize from "./get-group-size.js";
  *
  * @return  {Object}                       Group object
  */
-export function generateTForm(size = 0.2, parts = [], isSimple = false) {
+export function generateBigTForm(size = 0.2, parts = [], isSimple = false) {
   // console.log("Generate T form");
 
   const pointGroup = new Group();
 
-  pointGroup.name = "T form";
+  pointGroup.name = "Big T form";
 
   const childsGroup = new Group();
   childsGroup.name = "childs";
@@ -27,27 +27,29 @@ export function generateTForm(size = 0.2, parts = [], isSimple = false) {
   const secondMesh = generateMeshPoint(size, parts, isSimple);
   const thridMesh = generateMeshPoint(size, parts, isSimple);
   const fourthPoint = generateMeshPoint(size, parts, isSimple);
+  const fifthMesh = generateMeshPoint(size, parts, isSimple);
 
   childsGroup.add(firstMesh);
   childsGroup.add(secondMesh);
   childsGroup.add(thridMesh);
   childsGroup.add(fourthPoint);
+  childsGroup.add(fifthMesh);
 
   pointGroup.add(childsGroup);
 
   positionHelper(firstMesh, "x", -size);
-  positionHelper(firstMesh, "y", -size / 2);
+  positionHelper(firstMesh, "y", -size);
 
-  positionHelper(secondMesh, "y", -size / 2);
+  positionHelper(secondMesh, "y", -size);
 
   positionHelper(thridMesh, "x", size);
-  positionHelper(thridMesh, "y", -size / 2);
+  positionHelper(thridMesh, "y", -size);
 
-  positionHelper(fourthPoint, "y", size / 2);
+  positionHelper(fifthMesh, "y", size);
 
   pointGroup.userData.size = getGroupSize(childsGroup);
 
   return pointGroup;
 }
 
-export default generateTForm;
+export default generateBigTForm;

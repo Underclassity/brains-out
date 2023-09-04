@@ -76,6 +76,11 @@ export default {
       type: Number,
       default: 0.8,
     },
+
+    inputBlocksType: {
+      type: String,
+      default: "flat",
+    },
   },
 
   data() {
@@ -89,6 +94,7 @@ export default {
       volume: this.inputVolume,
       fxVolume: this.inputFxVolume,
       sound: this.inputSound,
+      blocksType: this.inputBlocksType,
 
       // https://opengameart.org/
       audio: [
@@ -113,6 +119,8 @@ export default {
         "zombieHoouw_3.mp3",
         "ZombiesAreComing.ogg",
       ],
+
+      blocksTypeOptions: ["flat", "basic", "extended"],
     };
   },
 
@@ -159,6 +167,10 @@ export default {
 
     updateSound() {
       this.$emit("update-sound", this.sound);
+    },
+
+    updateBlocksType() {
+      this.$emit("update-blocks-type", this.blocksType);
     },
   },
 

@@ -16,6 +16,10 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 import { loadPitParts, loadZombie } from "../../helpers/load-zombie.js";
 import generateFourPoints from "../../helpers/generate-four-points.js";
+import generateBigLForm from "../../helpers/generate-big-l-form.js";
+import generateBigTForm from "../../helpers/generate-big-t-form.js";
+import generateFivePointsLine from "../../helpers/generate-five-points-line.js";
+import generateFourPointsLine from "../../helpers/generate-four-points-line.js";
 import generateLForm from "../../helpers/generate-l-form.js";
 import generateOnePoint from "../../helpers/generate-one-point.js";
 import generatePit from "../../helpers/generate-pit.js";
@@ -69,6 +73,8 @@ export default {
       pitWidth: 5,
       pitHeight: 5,
       pitDepth: 12,
+
+      blocksType: "flat",
 
       layers: new Array(12),
       layersElements: new Array(12),
@@ -280,6 +286,11 @@ export default {
       if (this.clearSound) {
         this.clearSound.setVolume(fxVolume);
       }
+    },
+
+    updateBlocksType(blocksType) {
+      this.blocksType = blocksType;
+      console.log(`Update blocks type: ${blocksType}`);
     },
 
     newGame() {
@@ -1144,7 +1155,7 @@ export default {
     getRandomForm() {
       // console.log("Get random form call");
 
-      const { size, isSimple, zombieParts } = this;
+      const { size, isSimple, zombieParts, blocksType } = this;
 
       const formFunctions = [
         generateFourPoints,
@@ -1156,6 +1167,21 @@ export default {
         generateThreePointsCurve,
         generateTwoPoints,
       ];
+
+      if (blocksType == "basic" || blocksType == "extended") {
+        formFunctions.push(
+          ...[
+            generateBigLForm,
+            generateBigTForm,
+            generateFivePointsLine,
+            generateFourPointsLine,
+          ]
+        );
+      }
+
+      if (blocksType == "extended") {
+        // Add later
+      }
 
       const formFunction =
         formFunctions[Math.floor(Math.random() * formFunctions.length)];
