@@ -991,18 +991,34 @@ export default {
       for (const child of pitParts.children) {
         this.pitParts.push(child);
 
-        child.material.shininess = 0;
-        child.material.specular = new Color(0x000000);
-        child.material.flatShading = true;
+        if (Array.isArray(child.material)) {
+          child.material.forEach((item, index, array) => {
+            item.shininess = 0;
+            item.specular = new Color(0x000000);
+            item.flatShading = true;
+          });
+        } else {
+          child.material.shininess = 0;
+          child.material.specular = new Color(0x000000);
+          child.material.flatShading = true;
+        }
       }
 
       // Save all parts
       for (const child of zombie.children) {
         this.zombieParts.push(child);
 
-        child.material.shininess = 0;
-        child.material.specular = new Color(0x000000);
-        child.material.flatShading = true;
+        if (Array.isArray(child.material)) {
+          child.material.forEach((item, index, array) => {
+            item.shininess = 0;
+            item.specular = new Color(0x000000);
+            item.flatShading = true;
+          });
+        } else {
+          child.material.shininess = 0;
+          child.material.specular = new Color(0x000000);
+          child.material.flatShading = true;
+        }
       }
 
       return true;
