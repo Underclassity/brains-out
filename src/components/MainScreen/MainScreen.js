@@ -695,6 +695,8 @@ export default {
     layersCheck() {
       const { layers } = this;
 
+      let filledLevelsCounter = 0;
+
       for (const [index, zLayer] of layers.entries()) {
         const layerValues = zLayer.reduce((prev, current) => {
           prev.push(...current);
@@ -708,8 +710,7 @@ export default {
 
         console.log(`Process layer delete: ${index}`);
 
-        // Update score
-        this.score += 100;
+        filledLevelsCounter++;
 
         // Update speed level
         this.speed += this.speedStep;
@@ -729,6 +730,16 @@ export default {
         if (this.clearSound) {
           this.clearSound.play();
         }
+      }
+
+      // Update score by tetris formula: https://en.wikipedia.org/wiki/Tetris
+      if (filledLevelsCounter) {
+        const scoreDiff =
+          10 * (filledLevelsCounter - 1) * filledLevelsCounter + 10;
+
+        console.log(`Levels ${filledLevelsCounter} score: ${scoreDiff}`);
+
+        this.score += scoreDiff;
       }
 
       return true;
@@ -758,6 +769,8 @@ export default {
           }
 
           if (this.layers[z][x][y] && !element.userData.drop) {
+            this.score += indexes.length;
+
             console.log(
               `Element already petrified!(${x}-${y}-${z})(${pX}-${pY}-${pZ})`
             );
@@ -771,6 +784,8 @@ export default {
             }
             return false;
           }
+
+          this.score++;
 
           this.setLayerPoint(x, y, z);
 
