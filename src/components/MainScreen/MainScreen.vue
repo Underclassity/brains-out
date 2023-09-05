@@ -3,8 +3,9 @@
     .container(ref="container")
 
     span.menu-button.link.material-symbols-outlined(v-on:click="openMenu") menu
-    span.pause-button.link.material-symbols-outlined(v-on:click="pauseCall" v-if="!isPause") pause
-    span.play-button.link.material-symbols-outlined(v-on:click="playCall" v-if="isPause") play_arrow
+    span.score-button Score: {{ score }}
+    //- span.pause-button.link.material-symbols-outlined(v-on:click="pauseCall" v-if="!isPause") pause
+    //- span.play-button.link.material-symbols-outlined(v-on:click="playCall" v-if="isPause") play_arrow
 
     .control-item.control-item-left(v-on:click="moveLeft" v-if="isControls")
         .material-symbols-outlined west
