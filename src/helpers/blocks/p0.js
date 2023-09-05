@@ -1,10 +1,10 @@
 import { Group } from "three";
 
-import generateMeshPoint from "./generate-mesh-point.js";
-import getGroupSize from "./get-group-size.js";
+import generateMeshPoint from "../generate-mesh-point.js";
+import getGroupSize from "../get-group-size.js";
 
 /**
- * Generate one point (block_images/p0.png)
+ * Generate P0 form (block_images/p0.png)
  *
  * @param   {Number}    [size=0.2]         Size
  * @param   {Array}     [parts=[]]         Parts array
@@ -12,12 +12,12 @@ import getGroupSize from "./get-group-size.js";
  *
  * @return  {Object}                       Group object
  */
-export function generateOnePoint(size = 0.2, parts = [], isSimple = false) {
-  // console.log("Generate one point form");
+export function generateP0Form(size = 0.2, parts = [], isSimple = false) {
+  // console.log("Generate P0 form");
 
   const pointGroup = new Group();
 
-  pointGroup.name = "1 point";
+  pointGroup.name = "P0";
 
   const mesh = generateMeshPoint(size, parts, isSimple);
 
@@ -32,4 +32,4 @@ export function generateOnePoint(size = 0.2, parts = [], isSimple = false) {
   return pointGroup;
 }
 
-export default generateOnePoint;
+export default generateP0Form;

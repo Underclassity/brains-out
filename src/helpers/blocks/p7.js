@@ -1,11 +1,11 @@
 import { Group } from "three";
 
-import { positionHelper } from "../components/MainScreen/transform-helpers.js";
-import generateMeshPoint from "./generate-mesh-point.js";
-import getGroupSize from "./get-group-size.js";
+import { positionHelper } from "../../components/MainScreen/transform-helpers.js";
+import generateMeshPoint from "../generate-mesh-point.js";
+import getGroupSize from "../get-group-size.js";
 
 /**
- * Generate L form (block_images/p9.png)
+ * Generate P7 form (block_images/p7.png)
  *
  * @param   {Number}    [size=0.2]         Size
  * @param   {Array}     [parts=[]]         Parts array
@@ -13,12 +13,12 @@ import getGroupSize from "./get-group-size.js";
  *
  * @return  {Object}                       Group object
  */
-export function generateLForm(size = 0.2, parts = [], isSimple = false) {
-  // console.log("Generate L form");
+export function generateP7Form(size = 0.2, parts = [], isSimple = false) {
+  // console.log("Generate P7 form");
 
   const pointGroup = new Group();
 
-  pointGroup.name = "L form";
+  pointGroup.name = "P7";
 
   const childsGroup = new Group();
   childsGroup.name = "childs";
@@ -43,7 +43,6 @@ export function generateLForm(size = 0.2, parts = [], isSimple = false) {
   positionHelper(thridMesh, "x", size);
   positionHelper(thridMesh, "y", -size / 2);
 
-  positionHelper(fourthPoint, "x", -size);
   positionHelper(fourthPoint, "y", size / 2);
 
   pointGroup.userData.size = getGroupSize(childsGroup);
@@ -51,4 +50,4 @@ export function generateLForm(size = 0.2, parts = [], isSimple = false) {
   return pointGroup;
 }
 
-export default generateLForm;
+export default generateP7Form;

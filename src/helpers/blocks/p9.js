@@ -1,11 +1,11 @@
 import { Group } from "three";
 
-import { positionHelper } from "../components/MainScreen/transform-helpers.js";
-import generateMeshPoint from "./generate-mesh-point.js";
-import getGroupSize from "./get-group-size.js";
+import { positionHelper } from "../../components/MainScreen/transform-helpers.js";
+import generateMeshPoint from "../generate-mesh-point.js";
+import getGroupSize from "../get-group-size.js";
 
 /**
- * Generate big L form (block_images/p10.png)
+ * Generate P9 form (block_images/p9.png)
  *
  * @param   {Number}    [size=0.2]         Size
  * @param   {Array}     [parts=[]]         Parts array
@@ -13,12 +13,12 @@ import getGroupSize from "./get-group-size.js";
  *
  * @return  {Object}                       Group object
  */
-export function generateBigLForm(size = 0.2, parts = [], isSimple = false) {
-  // console.log("Generate L form");
+export function generateP9Form(size = 0.2, parts = [], isSimple = false) {
+  // console.log("Generate P9 form");
 
   const pointGroup = new Group();
 
-  pointGroup.name = "Big L form";
+  pointGroup.name = "P9";
 
   const childsGroup = new Group();
   childsGroup.name = "childs";
@@ -27,32 +27,28 @@ export function generateBigLForm(size = 0.2, parts = [], isSimple = false) {
   const secondMesh = generateMeshPoint(size, parts, isSimple);
   const thridMesh = generateMeshPoint(size, parts, isSimple);
   const fourthPoint = generateMeshPoint(size, parts, isSimple);
-  const fifthMesh = generateMeshPoint(size, parts, isSimple);
 
   childsGroup.add(firstMesh);
   childsGroup.add(secondMesh);
   childsGroup.add(thridMesh);
   childsGroup.add(fourthPoint);
-  childsGroup.add(fifthMesh);
 
   pointGroup.add(childsGroup);
 
   positionHelper(firstMesh, "x", -size);
-  positionHelper(firstMesh, "y", -size);
+  positionHelper(firstMesh, "y", -size / 2);
 
-  positionHelper(secondMesh, "y", -size);
+  positionHelper(secondMesh, "y", -size / 2);
 
   positionHelper(thridMesh, "x", size);
-  positionHelper(thridMesh, "y", -size);
+  positionHelper(thridMesh, "y", -size / 2);
 
   positionHelper(fourthPoint, "x", -size);
-
-  positionHelper(fifthMesh, "x", -size);
-  positionHelper(fifthMesh, "y", size);
+  positionHelper(fourthPoint, "y", size / 2);
 
   pointGroup.userData.size = getGroupSize(childsGroup);
 
   return pointGroup;
 }
 
-export default generateBigLForm;
+export default generateP9Form;

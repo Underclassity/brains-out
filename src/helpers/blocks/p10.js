@@ -1,11 +1,11 @@
 import { Group } from "three";
 
-import { positionHelper } from "../components/MainScreen/transform-helpers.js";
-import generateMeshPoint from "./generate-mesh-point.js";
-import getGroupSize from "./get-group-size.js";
+import { positionHelper } from "../../components/MainScreen/transform-helpers.js";
+import generateMeshPoint from "../generate-mesh-point.js";
+import getGroupSize from "../get-group-size.js";
 
 /**
- * Generate big T form (block_images/p11.png)
+ * Generate P10 form (block_images/p10.png)
  *
  * @param   {Number}    [size=0.2]         Size
  * @param   {Array}     [parts=[]]         Parts array
@@ -13,12 +13,12 @@ import getGroupSize from "./get-group-size.js";
  *
  * @return  {Object}                       Group object
  */
-export function generateBigTForm(size = 0.2, parts = [], isSimple = false) {
-  // console.log("Generate T form");
+export function generateP10Form(size = 0.2, parts = [], isSimple = false) {
+  // console.log("Generate P10 form");
 
   const pointGroup = new Group();
 
-  pointGroup.name = "Big T form";
+  pointGroup.name = "P10";
 
   const childsGroup = new Group();
   childsGroup.name = "childs";
@@ -45,6 +45,9 @@ export function generateBigTForm(size = 0.2, parts = [], isSimple = false) {
   positionHelper(thridMesh, "x", size);
   positionHelper(thridMesh, "y", -size);
 
+  positionHelper(fourthPoint, "x", -size);
+
+  positionHelper(fifthMesh, "x", -size);
   positionHelper(fifthMesh, "y", size);
 
   pointGroup.userData.size = getGroupSize(childsGroup);
@@ -52,4 +55,4 @@ export function generateBigTForm(size = 0.2, parts = [], isSimple = false) {
   return pointGroup;
 }
 
-export default generateBigTForm;
+export default generateP10Form;

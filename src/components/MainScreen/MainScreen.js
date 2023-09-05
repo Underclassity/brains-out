@@ -12,25 +12,31 @@ import {
   WebGLRenderer,
 } from "three";
 
-import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-
 import { loadPitParts, loadZombie } from "../../helpers/load-zombie.js";
-import generateFourPoints from "../../helpers/generate-four-points.js";
-import generateBigLForm from "../../helpers/generate-big-l-form.js";
-import generateBigTForm from "../../helpers/generate-big-t-form.js";
-import generateFivePointsLine from "../../helpers/generate-five-points-line.js";
-import generateFourPointsLine from "../../helpers/generate-four-points-line.js";
-import generateLForm from "../../helpers/generate-l-form.js";
-import generateOnePoint from "../../helpers/generate-one-point.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import generatePit from "../../helpers/generate-pit.js";
-import generateSForm from "../../helpers/generate-s-form.js";
-import generateTForm from "../../helpers/generate-t-form.js";
-import generateThreePoints from "../../helpers/generate-three-points.js";
-import generateThreePointsCurve from "../../helpers/generate-three-points-curve.js";
-import generateTwoPoints from "../../helpers/generate-two-points.js";
 import loadAudio from "../../helpers/audio.js";
 import loadLights from "../../helpers/lights.js";
 import randomBetween from "../../helpers/random-between.js";
+
+// Form functions
+import generateP0Form from "../../helpers/blocks/p0.js";
+import generateP1Form from "../../helpers/blocks/p1.js";
+import generateP2Form from "../../helpers/blocks/p2.js";
+import generateP3Form from "../../helpers/blocks/p3.js";
+import generateP4Form from "../../helpers/blocks/p4.js";
+import generateP5Form from "../../helpers/blocks/p5.js";
+import generateP6Form from "../../helpers/blocks/p6.js";
+import generateP7Form from "../../helpers/blocks/p7.js";
+import generateP8Form from "../../helpers/blocks/p8.js";
+import generateP9Form from "../../helpers/blocks/p9.js";
+import generateP10Form from "../../helpers/blocks/p10.js";
+import generateP11Form from "../../helpers/blocks/p11.js";
+import generateP36Form from "../../helpers/blocks/p36.js";
+import generateP37Form from "../../helpers/blocks/p37.js";
+import generateP38Form from "../../helpers/blocks/p38.js";
+import generateP39Form from "../../helpers/blocks/p39.js";
+import generateP40Form from "../../helpers/blocks/p40.js";
 
 import {
   moveDown,
@@ -1216,25 +1222,27 @@ export default {
       const { size, isSimple, zombieParts, blocksType } = this;
 
       const formFunctions = [
-        generateFourPoints,
-        generateLForm,
-        generateOnePoint,
-        generateSForm,
-        generateTForm,
-        generateThreePoints,
-        generateThreePointsCurve,
-        generateTwoPoints,
+        generateP0Form,
+        generateP1Form,
+        generateP2Form,
+        generateP3Form,
+        generateP4Form,
+        generateP5Form,
+        generateP6Form,
+        generateP7Form,
+        generateP8Form,
+        generateP9Form,
+        generateP10Form,
+        generateP11Form,
+        generateP36Form,
+        generateP37Form,
+        generateP38Form,
+        generateP39Form,
+        generateP40Form,
       ];
 
       if (blocksType == "basic" || blocksType == "extended") {
-        formFunctions.push(
-          ...[
-            generateBigLForm,
-            generateBigTForm,
-            generateFivePointsLine,
-            generateFourPointsLine,
-          ]
-        );
+        formFunctions.push(...[]);
       }
 
       if (blocksType == "extended") {
