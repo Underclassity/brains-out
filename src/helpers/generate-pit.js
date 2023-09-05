@@ -65,20 +65,31 @@ function getMesh(part, count) {
 /**
  * Update instanced mesh position
  *
- * @param   {Object}  mesh     Instanced mesh
- * @param   {Object}  dummy    Object3D dummy
- * @param   {Number}  counter  Mesh counter
- * @param   {Number}  [x=0]    X position
- * @param   {Number}  [y=0]    Y position
- * @param   {Number}  [z=0]    Z position
+ * @param   {Object}   mesh                      Instanced mesh
+ * @param   {Object}   dummy                     Object3D dummy
+ * @param   {Number}   counter                   Mesh counter
+ * @param   {Number}   [x=0]                     X position
+ * @param   {Number}   [y=0]                     Y position
+ * @param   {Number}   [z=0]                     Z position
+ * @param   {Boolean}  [randomRotation=true]     Random rotate object flag
  *
- * @return  {Number}           Updated mesh counter
+ * @return  {Number}                             Updated mesh counter
  */
-function updateInstancedMesh(mesh, dummy, counter, x = 0, y = 0, z = 0) {
+function updateInstancedMesh(
+  mesh,
+  dummy,
+  counter,
+  x = 0,
+  y = 0,
+  z = 0,
+  randomRotation = true
+) {
   dummy.position.set(x, y, z);
 
-  randomRotate(dummy);
-  randomRotate(dummy);
+  if (randomRotation) {
+    randomRotate(dummy);
+    randomRotate(dummy);
+  }
 
   dummy.updateMatrix();
 
@@ -91,33 +102,47 @@ function updateInstancedMesh(mesh, dummy, counter, x = 0, y = 0, z = 0) {
 /**
  * Put mesh helper
  *
- * @param   {Boolean}  isInstanced       Instanced flag
- * @param   {Object}   instancedMesh     Instanced mesh
- * @param   {Object}   part              Part mesh
- * @param   {Object}   dummy             Object3D dummy
- * @param   {Object}   group             Group object
- * @param   {String}   color             Color
- * @param   {Number}   counter           Mesh counter
- * @param   {Number}   [x=0]             X position
- * @param   {Number}   [y=0]             Y position
- * @param   {Number}   [z=0]             Z position
+ * @param   {Boolean}  [isInstanced=true]       Instanced flag
+ * @param   {Object}   instancedMesh            Instanced mesh
+ * @param   {Object}   part                     Part mesh
+ * @param   {Object}   dummy                    Object3D dummy
+ * @param   {Object}   group                    Group object
+ * @param   {String}   color                    Color
+ * @param   {Number}   counter                  Mesh counter
+ * @param   {Number}   [x=0]                    X position
+ * @param   {Number}   [y=0]                    Y position
+ * @param   {Number}   [z=0]                    Z position
+ * @param   {Boolean}  [randomRotation=true]    Random rotate object flag
  *
- * @return  {Number}                     Updated counter
+ * @return  {Number}                            Updated counter
  */
 function putMeshHelper(
-  isInstanced,
+  isInstanced = true,
   instancedMesh,
   part,
   dummy,
   group,
   color,
   counter,
-  x,
-  y,
-  z
+  x = 0,
+  y = 0,
+  z = 0,
+  randomRotation = true
 ) {
+  // Reset dummy
+  dummy.position.set(0, 0, 0);
+  dummy.rotation.set(0, 0, 0);
+
   if (isInstanced) {
-    return updateInstancedMesh(instancedMesh, dummy, counter, x, y, z);
+    return updateInstancedMesh(
+      instancedMesh,
+      dummy,
+      counter,
+      x,
+      y,
+      z,
+      randomRotation
+    );
   }
 
   const mesh = part.clone();
@@ -125,8 +150,10 @@ function putMeshHelper(
 
   mesh.position.set(x, y, z);
 
-  randomRotate(mesh);
-  randomRotate(mesh);
+  if (randomRotation) {
+    randomRotate(mesh);
+    randomRotate(mesh);
+  }
 
   group.add(mesh);
   group.add(new BoxHelper(mesh, color));
@@ -533,7 +560,8 @@ export function generatePit(
             groundAndGrassCounter,
             x,
             y,
-            0
+            0,
+            false
           );
         } else {
           grassCounter = putMeshHelper(
