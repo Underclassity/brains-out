@@ -177,13 +177,13 @@ export default {
     },
 
     updateCameraProjection() {
-      const { camera, controls, pitWidth, pitHeight, pitDepth, next } = this;
+      const { camera, controls, pitWidth, pitHeight, pitDepth } = this;
 
       console.log(
         `Update camera projection call: ${pitWidth}-${pitHeight}-${pitDepth}`
       );
 
-      const maxSize = Math.max(pitWidth, pitHeight, 0);
+      const maxSize = Math.max(pitWidth, pitHeight, 0) + 1;
       const fitHeightDistance =
         maxSize / (2 * Math.atan((Math.PI * camera.fov) / 360));
       const fitWidthDistance = fitHeightDistance / camera.aspect;
@@ -191,17 +191,11 @@ export default {
 
       camera.position.setZ(distance - maxSize);
 
-      if (next) {
-        if (camera.aspect > 1) {
-          next.position.set(pitWidth / 2 + 0.5, pitHeight / 2 - 0.5, 0);
-        } else {
-          next.position.set(0, -pitHeight / 2 - 0.5, 0);
-        }
-      }
-
       if (controls) {
         controls.update();
       }
+
+      this.updatePreview();
 
       return true;
     },
@@ -345,7 +339,7 @@ export default {
     },
 
     initLayer(z) {
-      console.log(`Init layer ${z}`);
+      // console.log(`Init layer ${z}`);
 
       const { pitWidth, pitHeight } = this;
 
@@ -1098,7 +1092,23 @@ export default {
     updatePreview() {
       // console.log("Update preview call");
 
-      this.updateCameraProjection();
+      const { next, pitWidth, pitHeight, camera, size } = this;
+
+      if (next) {
+        if (camera.aspect > 1) {
+          next.position.set(
+            pitWidth / 2 + size / 2,
+            pitHeight / 2 - size / 2,
+            1.1 * next.userData.size.z + size / 2
+          );
+        } else {
+          next.position.set(
+            0,
+            -pitHeight / 2 - size / 2,
+            1.1 * next.userData.size.z + size / 2
+          );
+        }
+      }
 
       return true;
     },
@@ -1298,6 +1308,8 @@ export default {
 
       // Audio
       this.initAudio();
+
+      this.createElement();
 
       // animation
 

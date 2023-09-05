@@ -1,6 +1,8 @@
 // import generateSForm from "../../helpers/generate-s-form.js";
 // import generateThreePoints from "../../helpers/generate-three-points.js";
 
+import getGroupSize from "../../helpers/get-group-size.js";
+
 /**
  * Create new element helper
  *
@@ -16,6 +18,7 @@ export function createElement() {
   element.position.set(0, 0, 0);
   element.rotation.set(0, 0, 0);
   element.scale.set(1, 1, 1);
+  element.userData.size = getGroupSize(element);
 
   element.userData.time = this.time;
   element.userData.static = false;
@@ -28,6 +31,7 @@ export function createElement() {
   this.next = this.getRandomForm(this.size, this.zombieParts);
   this.next.position.set(0, 0, 0);
   this.next.scale.set(0.2, 0.2, 0.2);
+  this.next.userData.size = getGroupSize(this.next);
 
   this.scene.add(element);
   this.scene.add(this.next);
