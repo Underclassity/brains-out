@@ -3,7 +3,9 @@
     .container(ref="container")
 
     span.menu-button.link.material-symbols-outlined(v-on:click="openMenu") menu
-    span.score-button Score: {{ score }}
+    div.score-button
+        span Score: {{ score }}
+        span Speed: {{ speed }}
 
     span.pause-button.link.material-symbols-outlined(v-on:click="pauseCall" v-if="!isPause && helpers") pause
     span.play-button.link.material-symbols-outlined(v-on:click="playCall" v-if="isPause && helpers") play_arrow
