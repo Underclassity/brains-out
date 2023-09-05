@@ -20,3 +20,8 @@ Core dependencies:
 - `stylus` - style support
 - `pug` - template helper
 - `hammer.js` - gestures helper
+
+Search params:
+
+- `orbit=true` - enable OrbitControls
+- `helpers=true` - enable helpers for lights, objects and etc.

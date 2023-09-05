@@ -6,7 +6,7 @@ import {
   Color,
   MeshBasicMaterial,
   PerspectiveCamera,
-  // PointLightHelper,
+  PointLightHelper,
   Scene,
   Vector3,
   WebGLRenderer,
@@ -102,6 +102,7 @@ export default {
       isInstanced: true,
 
       orbitControls: false,
+      helpers: false,
 
       sound: "ZombiesAreComing.ogg",
       volume: 0.1,
@@ -117,6 +118,12 @@ export default {
       renderer: undefined,
       controls: undefined,
       pit: undefined,
+
+      lights: {
+        l1: undefined,
+        l2: undefined,
+        l3: undefined,
+      },
 
       resizeTimeout: undefined,
 
@@ -295,6 +302,18 @@ export default {
       const { scene } = this;
 
       this.isEnd = false;
+
+      if (this.lights?.l1 && this.lights?.l2 && this.lights?.l3) {
+        if (!scene.getObjectByName(this.lights.l1.name)) {
+          scene.add(this.lights.l1);
+        }
+        if (!scene.getObjectByName(this.lights.l2.name)) {
+          scene.add(this.lights.l2);
+        }
+        if (scene.getObjectByName(this.lights.l3.name)) {
+          scene.remove(this.lights.l3);
+        }
+      }
 
       // reset elements array
       if (this.elements.length) {
@@ -779,6 +798,18 @@ export default {
             this.isEnd = true;
             this.openMenu();
 
+            if (this.lights?.l1 && this.lights?.l2 && this.lights?.l3) {
+              if (this.scene.getObjectByName(this.lights.l1.name)) {
+                this.scene.remove(this.lights.l1);
+              }
+              if (this.scene.getObjectByName(this.lights.l2.name)) {
+                this.scene.remove(this.lights.l2);
+              }
+              if (!this.scene.getObjectByName(this.lights.l3.name)) {
+                this.scene.add(this.lights.l3);
+              }
+            }
+
             this.scene.remove(element);
 
             if (this.endSound) {
@@ -1246,8 +1277,6 @@ export default {
 
       const lights = gltf.scene.children;
 
-      // console.log(lights);
-
       const l1 = lights[0].clone();
       const l2 = lights[1].clone();
       const l3 = lights[2].clone();
@@ -1262,20 +1291,26 @@ export default {
       l2.power = 10000 / coff;
       l3.power = 5000 / coff;
 
+      // Save lights for process
+      this.lights.l1 = l1;
+      this.lights.l2 = l2;
+      this.lights.l3 = l3;
+
       scene.add(l1);
       scene.add(l2);
-      scene.add(l3);
 
-      // const sphereSize = 1;
+      if (this.helpers) {
+        const sphereSize = 1;
 
-      // let pointLightHelper = new PointLightHelper(l1, sphereSize);
-      // scene.add(pointLightHelper);
+        let pointLightHelper = new PointLightHelper(l1, sphereSize);
+        scene.add(pointLightHelper);
 
-      // pointLightHelper = new PointLightHelper(l2, sphereSize);
-      // scene.add(pointLightHelper);
+        pointLightHelper = new PointLightHelper(l2, sphereSize);
+        scene.add(pointLightHelper);
 
-      // pointLightHelper = new PointLightHelper(l3, sphereSize);
-      // scene.add(pointLightHelper);
+        pointLightHelper = new PointLightHelper(l3, sphereSize);
+        scene.add(pointLightHelper);
+      }
 
       return true;
     },
@@ -1454,6 +1489,10 @@ export default {
 
       if (params.has("orbit") && params.get("orbit") == "true") {
         this.orbitControls = true;
+      }
+
+      if (params.has("helpers") && params.get("helpers") == "true") {
+        this.helpers = true;
       }
 
       return false;
