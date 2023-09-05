@@ -25,20 +25,20 @@ export function generateP4Form(size = 0.2, parts = [], isSimple = false) {
 
   const firstMesh = generateMeshPoint(size, parts, isSimple);
   const secondMesh = generateMeshPoint(size, parts, isSimple);
-  const thridMesh = generateMeshPoint(size, parts, isSimple);
+  const thirdMesh = generateMeshPoint(size, parts, isSimple);
   const fourthMesh = generateMeshPoint(size, parts, isSimple);
   const fifthMesh = generateMeshPoint(size, parts, isSimple);
 
   childsGroup.add(firstMesh);
   childsGroup.add(secondMesh);
-  childsGroup.add(thridMesh);
+  childsGroup.add(thirdMesh);
   childsGroup.add(fourthMesh);
   childsGroup.add(fifthMesh);
 
   pointGroup.add(childsGroup);
 
   positionHelper(secondMesh, "x", -size * 2);
-  positionHelper(thridMesh, "x", -size);
+  positionHelper(thirdMesh, "x", -size);
   positionHelper(fourthMesh, "x", size);
   positionHelper(fifthMesh, "x", size * 2);
 

@@ -25,13 +25,13 @@ export function generateP11Form(size = 0.2, parts = [], isSimple = false) {
 
   const firstMesh = generateMeshPoint(size, parts, isSimple);
   const secondMesh = generateMeshPoint(size, parts, isSimple);
-  const thridMesh = generateMeshPoint(size, parts, isSimple);
+  const thirdMesh = generateMeshPoint(size, parts, isSimple);
   const fourthPoint = generateMeshPoint(size, parts, isSimple);
   const fifthMesh = generateMeshPoint(size, parts, isSimple);
 
   childsGroup.add(firstMesh);
   childsGroup.add(secondMesh);
-  childsGroup.add(thridMesh);
+  childsGroup.add(thirdMesh);
   childsGroup.add(fourthPoint);
   childsGroup.add(fifthMesh);
 
@@ -42,8 +42,8 @@ export function generateP11Form(size = 0.2, parts = [], isSimple = false) {
 
   positionHelper(secondMesh, "y", -size);
 
-  positionHelper(thridMesh, "x", size);
-  positionHelper(thridMesh, "y", -size);
+  positionHelper(thirdMesh, "x", size);
+  positionHelper(thirdMesh, "y", -size);
 
   positionHelper(fifthMesh, "y", size);
 

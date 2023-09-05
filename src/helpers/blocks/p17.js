@@ -5,7 +5,7 @@ import generateMeshPoint from "../generate-mesh-point.js";
 import getGroupSize from "../get-group-size.js";
 
 /**
- * Generate P40 form (block_images/p40.png)
+ * Generate P17 form (block_images/p17.png)
  *
  * @param   {Number}    [size=0.2]         Size
  * @param   {Array}     [parts=[]]         Parts array
@@ -13,12 +13,12 @@ import getGroupSize from "../get-group-size.js";
  *
  * @return  {Object}                       Group object
  */
-export function generateP40Form(size = 0.2, parts = [], isSimple = false) {
-  // console.log("Generate P40 form");
+export function generateP17Form(size = 0.2, parts = [], isSimple = false) {
+  // console.log("Generate P17 form");
 
   const pointGroup = new Group();
 
-  pointGroup.name = "P40";
+  pointGroup.name = "P17";
 
   const childsGroup = new Group();
   childsGroup.name = "childs";
@@ -37,31 +37,23 @@ export function generateP40Form(size = 0.2, parts = [], isSimple = false) {
 
   pointGroup.add(childsGroup);
 
-  // First level
   positionHelper(firstMesh, "x", -size / 2);
-  positionHelper(firstMesh, "y", size / 2);
-  positionHelper(firstMesh, "z", -size / 2);
 
   positionHelper(secondMesh, "x", size / 2);
-  positionHelper(secondMesh, "y", size / 2);
-  positionHelper(secondMesh, "z", -size / 2);
+  positionHelper(secondMesh, "y", size);
 
   positionHelper(thirdMesh, "x", -size / 2);
-  positionHelper(thirdMesh, "y", -size / 2);
-  positionHelper(thirdMesh, "z", -size / 2);
+  positionHelper(thirdMesh, "y", -size);
 
-  // Second level
-  positionHelper(fourthPoint, "x", -size / 2);
-  positionHelper(fourthPoint, "y", -size / 2);
-  positionHelper(fourthPoint, "z", size / 2);
+  positionHelper(fourthPoint, "x", size / 2);
+  positionHelper(fourthPoint, "y", -size);
 
-  positionHelper(fifthPoint, "x", size / 2);
-  positionHelper(fifthPoint, "y", -size / 2);
-  positionHelper(fifthPoint, "z", size / 2);
+  positionHelper(fifthPoint, "x", -size / 2);
+  positionHelper(fifthPoint, "y", size);
 
   pointGroup.userData.size = getGroupSize(childsGroup);
 
   return pointGroup;
 }
 
-export default generateP40Form;
+export default generateP17Form;

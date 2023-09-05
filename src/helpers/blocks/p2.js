@@ -25,17 +25,17 @@ export function generateP2Form(size = 0.2, parts = [], isSimple = false) {
 
   const firstMesh = generateMeshPoint(size, parts, isSimple);
   const secondMesh = generateMeshPoint(size, parts, isSimple);
-  const thridMesh = generateMeshPoint(size, parts, isSimple);
+  const thirdMesh = generateMeshPoint(size, parts, isSimple);
 
   childsGroup.add(firstMesh);
   childsGroup.add(secondMesh);
-  childsGroup.add(thridMesh);
+  childsGroup.add(thirdMesh);
 
   pointGroup.add(childsGroup);
 
   positionHelper(firstMesh, "x", -size);
 
-  positionHelper(thridMesh, "x", size);
+  positionHelper(thirdMesh, "x", size);
 
   pointGroup.userData.size = getGroupSize(childsGroup);
 

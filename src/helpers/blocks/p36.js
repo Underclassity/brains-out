@@ -25,13 +25,13 @@ export function generateP36Form(size = 0.2, parts = [], isSimple = false) {
 
   const firstMesh = generateMeshPoint(size, parts, isSimple);
   const secondMesh = generateMeshPoint(size, parts, isSimple);
-  const thridMesh = generateMeshPoint(size, parts, isSimple);
+  const thirdMesh = generateMeshPoint(size, parts, isSimple);
   const fourthPoint = generateMeshPoint(size, parts, isSimple);
   const fifthPoint = generateMeshPoint(size, parts, isSimple);
 
   childsGroup.add(firstMesh);
   childsGroup.add(secondMesh);
-  childsGroup.add(thridMesh);
+  childsGroup.add(thirdMesh);
   childsGroup.add(fourthPoint);
   childsGroup.add(fifthPoint);
 
@@ -46,9 +46,9 @@ export function generateP36Form(size = 0.2, parts = [], isSimple = false) {
   positionHelper(secondMesh, "y", -size / 2);
   positionHelper(secondMesh, "z", -size / 2);
 
-  positionHelper(thridMesh, "x", size / 2);
-  positionHelper(thridMesh, "y", size / 2);
-  positionHelper(thridMesh, "z", -size / 2);
+  positionHelper(thirdMesh, "x", size / 2);
+  positionHelper(thirdMesh, "y", size / 2);
+  positionHelper(thirdMesh, "z", -size / 2);
 
   positionHelper(fourthPoint, "x", -size / 2);
   positionHelper(fourthPoint, "y", size / 2);

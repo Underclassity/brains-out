@@ -5,7 +5,7 @@ import generateMeshPoint from "../generate-mesh-point.js";
 import getGroupSize from "../get-group-size.js";
 
 /**
- * Generate P40 form (block_images/p40.png)
+ * Generate P32 form (block_images/p32.png)
  *
  * @param   {Number}    [size=0.2]         Size
  * @param   {Array}     [parts=[]]         Parts array
@@ -13,12 +13,12 @@ import getGroupSize from "../get-group-size.js";
  *
  * @return  {Object}                       Group object
  */
-export function generateP40Form(size = 0.2, parts = [], isSimple = false) {
-  // console.log("Generate P40 form");
+export function generateP32Form(size = 0.2, parts = [], isSimple = false) {
+  // console.log("Generate P32 form");
 
   const pointGroup = new Group();
 
-  pointGroup.name = "P40";
+  pointGroup.name = "P32";
 
   const childsGroup = new Group();
   childsGroup.name = "childs";
@@ -27,13 +27,11 @@ export function generateP40Form(size = 0.2, parts = [], isSimple = false) {
   const secondMesh = generateMeshPoint(size, parts, isSimple);
   const thirdMesh = generateMeshPoint(size, parts, isSimple);
   const fourthPoint = generateMeshPoint(size, parts, isSimple);
-  const fifthPoint = generateMeshPoint(size, parts, isSimple);
 
   childsGroup.add(firstMesh);
   childsGroup.add(secondMesh);
   childsGroup.add(thirdMesh);
   childsGroup.add(fourthPoint);
-  childsGroup.add(fifthPoint);
 
   pointGroup.add(childsGroup);
 
@@ -46,22 +44,18 @@ export function generateP40Form(size = 0.2, parts = [], isSimple = false) {
   positionHelper(secondMesh, "y", size / 2);
   positionHelper(secondMesh, "z", -size / 2);
 
-  positionHelper(thirdMesh, "x", -size / 2);
+  positionHelper(thirdMesh, "x", size / 2);
   positionHelper(thirdMesh, "y", -size / 2);
   positionHelper(thirdMesh, "z", -size / 2);
 
   // Second level
-  positionHelper(fourthPoint, "x", -size / 2);
+  positionHelper(fourthPoint, "x", size / 2);
   positionHelper(fourthPoint, "y", -size / 2);
   positionHelper(fourthPoint, "z", size / 2);
-
-  positionHelper(fifthPoint, "x", size / 2);
-  positionHelper(fifthPoint, "y", -size / 2);
-  positionHelper(fifthPoint, "z", size / 2);
 
   pointGroup.userData.size = getGroupSize(childsGroup);
 
   return pointGroup;
 }
 
-export default generateP40Form;
+export default generateP32Form;

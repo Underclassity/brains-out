@@ -5,7 +5,7 @@ import generateMeshPoint from "../generate-mesh-point.js";
 import getGroupSize from "../get-group-size.js";
 
 /**
- * Generate P40 form (block_images/p40.png)
+ * Generate P30 form (block_images/p30.png)
  *
  * @param   {Number}    [size=0.2]         Size
  * @param   {Array}     [parts=[]]         Parts array
@@ -13,12 +13,12 @@ import getGroupSize from "../get-group-size.js";
  *
  * @return  {Object}                       Group object
  */
-export function generateP40Form(size = 0.2, parts = [], isSimple = false) {
-  // console.log("Generate P40 form");
+export function generateP30Form(size = 0.2, parts = [], isSimple = false) {
+  // console.log("Generate P30 form");
 
   const pointGroup = new Group();
 
-  pointGroup.name = "P40";
+  pointGroup.name = "P30";
 
   const childsGroup = new Group();
   childsGroup.name = "childs";
@@ -39,24 +39,23 @@ export function generateP40Form(size = 0.2, parts = [], isSimple = false) {
 
   // First level
   positionHelper(firstMesh, "x", -size / 2);
-  positionHelper(firstMesh, "y", size / 2);
+  positionHelper(firstMesh, "y", size);
   positionHelper(firstMesh, "z", -size / 2);
 
   positionHelper(secondMesh, "x", size / 2);
-  positionHelper(secondMesh, "y", size / 2);
+  positionHelper(secondMesh, "y", size);
   positionHelper(secondMesh, "z", -size / 2);
 
   positionHelper(thirdMesh, "x", -size / 2);
-  positionHelper(thirdMesh, "y", -size / 2);
   positionHelper(thirdMesh, "z", -size / 2);
 
-  // Second level
   positionHelper(fourthPoint, "x", -size / 2);
-  positionHelper(fourthPoint, "y", -size / 2);
-  positionHelper(fourthPoint, "z", size / 2);
+  positionHelper(fourthPoint, "y", -size);
+  positionHelper(fourthPoint, "z", -size / 2);
 
-  positionHelper(fifthPoint, "x", size / 2);
-  positionHelper(fifthPoint, "y", -size / 2);
+  // Second level
+  positionHelper(fifthPoint, "x", -size / 2);
+  positionHelper(fifthPoint, "y", -size);
   positionHelper(fifthPoint, "z", size / 2);
 
   pointGroup.userData.size = getGroupSize(childsGroup);
@@ -64,4 +63,4 @@ export function generateP40Form(size = 0.2, parts = [], isSimple = false) {
   return pointGroup;
 }
 
-export default generateP40Form;
+export default generateP30Form;

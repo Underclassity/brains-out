@@ -25,19 +25,19 @@ export function generateP3Form(size = 0.2, parts = [], isSimple = false) {
 
   const firstMesh = generateMeshPoint(size, parts, isSimple);
   const secondMesh = generateMeshPoint(size, parts, isSimple);
-  const thridMesh = generateMeshPoint(size, parts, isSimple);
+  const thirdMesh = generateMeshPoint(size, parts, isSimple);
   const fourthMesh = generateMeshPoint(size, parts, isSimple);
 
   childsGroup.add(firstMesh);
   childsGroup.add(secondMesh);
-  childsGroup.add(thridMesh);
+  childsGroup.add(thirdMesh);
   childsGroup.add(fourthMesh);
 
   pointGroup.add(childsGroup);
 
   positionHelper(firstMesh, "x", (-size / 2) * 3);
   positionHelper(secondMesh, "x", -size / 2);
-  positionHelper(thridMesh, "x", size / 2);
+  positionHelper(thirdMesh, "x", size / 2);
   positionHelper(fourthMesh, "x", (size / 2) * 3);
 
   pointGroup.userData.size = getGroupSize(childsGroup);
