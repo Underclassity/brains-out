@@ -119,6 +119,7 @@ export default {
       second: 0,
 
       fov: 70,
+      lightPower: 5000,
 
       pitSize: "5x5x12",
 
@@ -337,15 +338,12 @@ export default {
       this.isEnd = false;
 
       if (this.lights?.l1 && this.lights?.l2 && this.lights?.l3) {
-        if (!scene.getObjectByName(this.lights.l1.name)) {
-          scene.add(this.lights.l1);
-        }
-        if (!scene.getObjectByName(this.lights.l2.name)) {
-          scene.add(this.lights.l2);
-        }
-        if (scene.getObjectByName(this.lights.l3.name)) {
-          scene.remove(this.lights.l3);
-        }
+        this.lights.l1.power = this.lightPower;
+        this.lights.l1.visible = true;
+        this.lights.l2.power = this.lightPower;
+        this.lights.l2.visible = true;
+        this.lights.l3.power = 0;
+        this.lights.l3.visible = false;
       }
 
       // reset elements array
@@ -832,15 +830,12 @@ export default {
             this.openMenu();
 
             if (this.lights?.l1 && this.lights?.l2 && this.lights?.l3) {
-              if (this.scene.getObjectByName(this.lights.l1.name)) {
-                this.scene.remove(this.lights.l1);
-              }
-              if (this.scene.getObjectByName(this.lights.l2.name)) {
-                this.scene.remove(this.lights.l2);
-              }
-              if (!this.scene.getObjectByName(this.lights.l3.name)) {
-                this.scene.add(this.lights.l3);
-              }
+              this.lights.l1.power = 0;
+              this.lights.l1.visible = false;
+              this.lights.l2.power = 0;
+              this.lights.l2.visible = false;
+              this.lights.l3.power = this.lightPower;
+              this.lights.l3.visible = true;
             }
 
             this.scene.remove(element);
@@ -1350,19 +1345,21 @@ export default {
       l2.position.set(pitWidth / 2, 0, 5);
       l3.position.set(0, 0, 5);
 
-      const coff = 2;
-
-      l1.power = 10000 / coff;
-      l2.power = 10000 / coff;
-      l3.power = 5000 / coff;
+      l1.power = this.lightPower;
+      l2.power = this.lightPower;
+      l3.power = 0;
 
       // Save lights for process
       this.lights.l1 = l1;
       this.lights.l2 = l2;
       this.lights.l3 = l3;
 
+      // hide red light
+      l3.visible = false;
+
       scene.add(l1);
       scene.add(l2);
+      scene.add(l3);
 
       if (this.helpers) {
         const sphereSize = 1;
