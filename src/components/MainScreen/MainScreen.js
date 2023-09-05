@@ -1323,10 +1323,10 @@ export default {
 
       const gltf = await loadLights();
 
-      const light = new AmbientLight(0xffffff, 0.4);
+      const light = new AmbientLight(0xffffff, 0.02);
       scene.add(light);
 
-      const cameraLight = new AmbientLight(0xffffff, 0.6);
+      const cameraLight = new AmbientLight(0xffffff, 0.08);
       camera.add(cameraLight);
 
       if (!gltf) {
