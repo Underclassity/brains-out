@@ -101,6 +101,8 @@ export default {
       isControls: false,
       isInstanced: true,
 
+      orbitControls: false,
+
       sound: "ZombiesAreComing.ogg",
       volume: 0.1,
       fxVolume: 0.7,
@@ -1369,10 +1371,12 @@ export default {
       container.appendChild(renderer.domElement);
       this.renderer = renderer;
 
-      const controls = new OrbitControls(camera, renderer.domElement);
-      controls.maxZoom = 10;
-      controls.maxDistance = 50;
-      this.controls = controls;
+      if (this.orbitControls) {
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.maxZoom = 10;
+        controls.maxDistance = 50;
+        this.controls = controls;
+      }
 
       this.updateRendererSize();
     },
@@ -1442,9 +1446,23 @@ export default {
         this.bgSound.play();
       }
     },
+
+    parseURLSearchParams() {
+      console.log("Parse URLSearchParams");
+
+      const params = new URLSearchParams(window.location.search);
+
+      if (params.has("orbit") && params.get("orbit") == "true") {
+        this.orbitControls = true;
+      }
+
+      return false;
+    },
   },
 
   async mounted() {
+    this.parseURLSearchParams();
+
     await this.loadZombie();
     this.init();
 
