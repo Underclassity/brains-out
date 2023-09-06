@@ -7,6 +7,7 @@ import {
   MathUtils,
   Mesh,
   MeshBasicMaterial,
+  MeshPhongMaterial,
   Object3D,
   Vector3,
 } from "three";
@@ -14,6 +15,10 @@ import {
 import generateGrid from "./generate-grid.js";
 import getRandom from "./random.js";
 import log from "./log.js";
+import shuffle from "./shuffle.js";
+
+import { grassColorPalette } from "../components/MainScreen/color-palette.js";
+import randomBetween from "./random-between.js";
 
 const axisTypes = ["x", "y", "z"];
 const angleTypes = [0, 90, 180, 270];
@@ -162,6 +167,30 @@ function putMeshHelper(
   counter++;
 
   return counter;
+}
+
+/**
+ * Split number to numbers with same sum (https://stackoverflow.com/questions/45652867/how-to-divide-number-n-in-javascript-into-x-parts-where-the-sum-of-all-the-part)
+ *
+ * @param   {Number}  num    Input number
+ * @param   {Number}  parts  Parts length
+ *
+ * @return  {Array}          Numbers array
+ */
+function splitNParts(num, parts) {
+  const result = [];
+
+  for (let i = 0; i < parts; i++) {
+    result[i] = Math.round(num / parts);
+  }
+
+  const sum = result.reduce((prev, curr) => prev + curr, 0);
+
+  if (num - sum > 0) {
+    result[result.length - 1] = result[result.length - 1] + (num - sum);
+  }
+
+  return result;
 }
 
 /**
@@ -325,20 +354,50 @@ export function generatePit(
     log("Grass", grassCount);
     log("Ground and grass", groundGrassCount);
 
+    let grassColorCounter = splitNParts(grassCount, grassColorPalette.length);
+
+    grassColorCounter = grassColorCounter.filter((item) => item > 0);
+
+    const grassParts = [];
+    const grassMeshes = [];
+    const grassPartsCounter = {};
+
+    // Shuffle color before use
+    const grassColors = shuffle(grassColorPalette);
+
+    grassColorCounter.forEach((count, index) => {
+      // Clone part
+      const part = grassPart.clone();
+
+      // Change material color from palette
+      // part.material.color = grassColorPalette[index];
+      part.material = new MeshPhongMaterial({
+        color: grassColors[index],
+      });
+
+      // Save grass part
+      grassParts[index] = part;
+      grassMeshes[index] = getMesh(part, count);
+      grassMeshes[index].name = `grass-${index}`;
+      grassPartsCounter[index] = 0;
+
+      pitGroup.add(grassMeshes[index]);
+    });
+
     let groundCounter = 0;
-    let grassCounter = 0;
+    // let grassCounter = 0;
     let groundAndGrassCounter = 0;
 
-    const grassMesh = getMesh(grassPart, grassCount);
+    // const grassMesh = getMesh(grassPart, grassCount);
     const groundMesh = getMesh(groundPart, groundCount);
     const groundAndGrassMesh = getMesh(groundAndGrassPart, groundGrassCount);
 
-    grassMesh.name = "grass";
+    // grassMesh.name = "grass";
     groundMesh.name = "ground";
     groundAndGrassMesh.name = "groundAndGrass";
 
     if (isInstanced) {
-      pitGroup.add(grassMesh);
+      // pitGroup.add(grassMesh);
       pitGroup.add(groundMesh);
       pitGroup.add(groundAndGrassMesh);
     }
@@ -569,14 +628,22 @@ export function generatePit(
             false
           );
         } else {
-          grassCounter = putMeshHelper(
+          let index = randomBetween(0, grassParts.length - 1);
+
+          if (grassPartsCounter[index] >= grassColorCounter[index]) {
+            while (grassPartsCounter[index] >= grassColorCounter[index]) {
+              index = randomBetween(0, grassParts.length - 1);
+            }
+          }
+
+          grassPartsCounter[index] = putMeshHelper(
             isInstanced,
-            grassMesh,
-            grassPart,
+            grassMeshes[index],
+            grassParts[index],
             dummy,
             pitGroup,
             color,
-            grassCounter,
+            grassPartsCounter[index],
             x,
             y,
             0

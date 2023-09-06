@@ -1,5 +1,10 @@
 import { Color } from "three";
 
+/**
+ * Main levels color palette
+ *
+ * @var {Array}
+ */
 export const colorPalette = [
   // https://www.color-hex.com/color-palette/33364
   new Color("rgb(0, 223, 37)"),
@@ -42,6 +47,41 @@ export const colorPalette = [
   new Color("rgb(0, 65, 123)"),
   new Color("rgb(214, 109, 0)"),
   new Color("rgb(170, 170, 170)"),
+];
+
+/**
+ * Grass color palette
+ *
+ * @var {Array}
+ */
+export const grassColorPalette = [
+  // https://www.color-hex.com/color-palette/42770
+  new Color("rgb(19,109,21)"),
+  new Color("rgb(17,124,19)"),
+  new Color("rgb(19,133,16)"),
+  new Color("rgb(38,139,7)"),
+  new Color("rgb(65,152,10)"),
+
+  // https://www.color-hex.com/color-palette/3591
+  // new Color("rgb(120,144,48)"),
+  // new Color("rgb(72,144,48)"),
+  // new Color("rgb(103,146,103)"),
+  // new Color("rgb(103,146,125)"),
+  // new Color("rgb(144,120,48)"),
+
+  // https://www.color-hex.com/color-palette/9588
+  // new Color("rgb(192,255,109)"),
+  // new Color("rgb(98,188,47)"),
+  // new Color("rgb(93,68,29)"),
+  // new Color("rgb(150,226,238)"),
+  // new Color("rgb(27,114,174)"),
+
+  // https://www.color-hex.com/color-palette/17752
+  // new Color("rgb(206,187,73)"),
+  // new Color("rgb(140,191,28)"),
+  // new Color("rgb(98,161,25)"),
+  // new Color("rgb(31,122,4)"),
+  // new Color("rgb(3,96,19)"),
 ];
 
 export default colorPalette;
