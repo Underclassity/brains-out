@@ -7,13 +7,15 @@ import generateThreePoints from "../../helpers/generate-three-points.js";
 import generateThreePointsCurve from "../../helpers/generate-three-points-curve.js";
 import generateTwoPoints from "../../helpers/generate-two-points.js";
 
+import log from "../../helpers/log.js";
+
 /**
  * Init test mode
  *
  * @return  {Boolean}  Result
  */
 export function initTest() {
-  console.log("Init test");
+  log("Init test");
 
   const { scene, size } = this;
 

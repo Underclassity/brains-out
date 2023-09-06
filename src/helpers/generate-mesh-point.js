@@ -14,10 +14,10 @@ import randomBetween from "./random-between.js";
  *
  * @param   {Number}   [size=0.2]         Point size
  * @param   {Array}    [parts=[]]         Parts array
- * @param   {Boolean}  [isSimple=false]   Render lines flag
+ * @param   {Boolean}  [isSimple=false]   Render simple block flag
  * @param   {Boolean}  [line=false]       Render lines flag
  *
- * @return  {Object}                      Group object
+ * @return  {Object}                      Group objects
  */
 export function generateMeshPoint(
   size = 0.2,
@@ -44,7 +44,7 @@ export function generateMeshPoint(
     mesh.name = "point";
   }
 
-  if (!line) {
+  if (!line && !isSimple) {
     return mesh;
   }
 

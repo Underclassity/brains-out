@@ -13,6 +13,7 @@ import {
 
 import generateGrid from "./generate-grid.js";
 import getRandom from "./random.js";
+import log from "./log.js";
 
 const axisTypes = ["x", "y", "z"];
 const angleTypes = [0, 90, 180, 270];
@@ -320,9 +321,9 @@ export function generatePit(
       height * 2 -
       4;
 
-    console.log("Ground", groundCount);
-    console.log("Grass", grassCount);
-    console.log("Ground and grass", groundGrassCount);
+    log("Ground", groundCount);
+    log("Grass", grassCount);
+    log("Ground and grass", groundGrassCount);
 
     let groundCounter = 0;
     let grassCounter = 0;

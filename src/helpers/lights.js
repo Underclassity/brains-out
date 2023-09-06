@@ -1,5 +1,7 @@
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
+import log from "./log.js";
+
 /**
  * Load lights
  *
@@ -16,11 +18,11 @@ export function loadLights() {
       },
       // called while loading is progressing
       (xhr) => {
-        console.log(`${(xhr.loaded / xhr.total) * 100}% loaded`);
+        log(`${(xhr.loaded / xhr.total) * 100}% loaded`);
       },
       // called when loading has errors
       (error) => {
-        console.log("An error happened");
+        log("An error happened");
         resolve(false);
       }
     );

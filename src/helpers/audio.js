@@ -1,5 +1,7 @@
 import { AudioLoader } from "three";
 
+import log from "./log.js";
+
 /**
  * Load audio helper
  *
@@ -18,11 +20,11 @@ export function loadAudio(filename) {
       },
 
       (xhr) => {
-        console.log(`${(xhr.loaded / xhr.total) * 100}% loaded`);
+        log(`${(xhr.loaded / xhr.total) * 100}% loaded`);
       },
 
       (err) => {
-        console.log("An error happened");
+        log("An error happened");
         resolve(false);
       }
     );

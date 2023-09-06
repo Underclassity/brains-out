@@ -17,6 +17,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import generatePit from "../../helpers/generate-pit.js";
 import loadAudio from "../../helpers/audio.js";
 import loadLights from "../../helpers/lights.js";
+import log from "../../helpers/log.js";
 import randomBetween from "../../helpers/random-between.js";
 
 // Form functions
@@ -89,6 +90,7 @@ import colorPalette from "./color-palette.js";
 // import initTest from "./init-test.js";
 
 import MenuComponent from "../MenuComponent/MenuComponent.vue";
+import getGroupSize from "../../helpers/get-group-size.js";
 
 export default {
   name: "MainScreen",
@@ -135,6 +137,10 @@ export default {
       isEnd: false,
       isControls: false,
       isInstanced: true,
+      isStop: false,
+
+      isRandomColor: false,
+      isColorizeLevel: true,
 
       orbitControls: false,
       helpers: false,
@@ -162,6 +168,7 @@ export default {
 
       resizeTimeout: undefined,
 
+      prevColor: undefined,
       prevCorner: undefined,
       current: undefined,
       next: undefined,
@@ -215,7 +222,7 @@ export default {
     updateRendererSize() {
       clearTimeout(this.resizeTimeout);
       this.resizeTimeout = setTimeout(() => {
-        console.log("Resize call");
+        log("Resize call");
 
         const { container } = this.$refs;
 
@@ -239,7 +246,7 @@ export default {
     updateCameraProjection() {
       const { camera, controls, pitWidth, pitHeight, pitDepth } = this;
 
-      console.log(
+      log(
         `Update camera projection call: ${pitWidth}-${pitHeight}-${pitDepth}`
       );
 
@@ -268,7 +275,7 @@ export default {
         localStorage.setItem("score", JSON.stringify(lsScore));
       }
 
-      console.log(`Load score ${lsScore} from localStorage`);
+      log(`Load score ${lsScore} from localStorage`);
 
       // Update value
       this.lsScore = lsScore;
@@ -279,7 +286,7 @@ export default {
     updateScore() {
       const { score } = this;
 
-      console.log(`Update score ${score} in localStorage`);
+      log(`Update score ${score} in localStorage`);
 
       const scoreItems = localStorage.getItem("score");
       const lsScore = scoreItems ? JSON.parse(scoreItems) : [];
@@ -299,64 +306,64 @@ export default {
     },
 
     openMenu() {
-      console.log("Open menu");
+      log("Open menu");
       this.isPause = true;
       this.isMenu = true;
     },
 
     closeMenu() {
-      console.log("Close menu");
+      log("Close menu");
       this.isPause = false;
       this.isMenu = false;
     },
 
     changeSpeed(speed) {
-      console.log(`Update speed to: ${speed}`);
+      log(`Update speed to: ${speed}`);
       this.speed = parseInt(speed);
     },
 
     pauseCall() {
-      console.log("Pause call");
+      log("Pause call");
       this.isPause = true;
     },
 
     playCall() {
-      console.log("Play call");
+      log("Play call");
       this.isPause = false;
     },
 
     updateSmooth(isSmooth) {
       this.isSmooth = isSmooth ? true : false;
-      console.log(`Smooth updated: ${this.isSmooth}`);
+      log(`Smooth updated: ${this.isSmooth}`);
     },
 
     updateInstanced(isInstanced) {
       this.isInstanced = isInstanced ? true : false;
-      console.log(`Instanced updated: ${this.isInstanced}`);
+      log(`Instanced updated: ${this.isInstanced}`);
       this.newGame();
     },
 
     updateSimple(isSimple) {
       this.isSimple = isSimple ? true : false;
-      console.log(`Simple updated: ${this.isSimple}`);
+      log(`Simple updated: ${this.isSimple}`);
       this.newGame();
     },
 
     updateControls(isControls) {
       this.isControls = isControls ? true : false;
-      console.log(`Controls updated: ${this.isControls}`);
+      log(`Controls updated: ${this.isControls}`);
     },
 
     updateSound(sound) {
       this.sound = sound;
-      console.log(`Update sound: ${sound}`);
+      log(`Update sound: ${sound}`);
 
       this.initAudio();
     },
 
     updateVolume(volume) {
       this.volume = volume;
-      console.log(`Update volume: ${volume}`);
+      log(`Update volume: ${volume}`);
 
       if (this.bgSound) {
         this.bgSound.setVolume(volume);
@@ -365,7 +372,7 @@ export default {
 
     updateFxVolume(fxVolume) {
       this.fxVolume = fxVolume;
-      console.log(`Update FX volume: ${fxVolume}`);
+      log(`Update FX volume: ${fxVolume}`);
 
       if (this.dropSound) {
         this.dropSound.setVolume(fxVolume);
@@ -382,11 +389,11 @@ export default {
 
     updateBlocksType(blocksType) {
       this.blocksType = blocksType;
-      console.log(`Update blocks type: ${blocksType}`);
+      log(`Update blocks type: ${blocksType}`);
     },
 
     newGame() {
-      console.log("New game call");
+      log("New game call");
 
       const { scene } = this;
 
@@ -450,7 +457,7 @@ export default {
     },
 
     initLayer(z) {
-      // console.log(`Init layer ${z}`);
+      // log(`Init layer ${z}`);
 
       const { pitWidth, pitHeight } = this;
 
@@ -469,7 +476,7 @@ export default {
     initLayers() {
       const { pitWidth, pitHeight, pitDepth } = this;
 
-      console.log(`Init layers: ${pitDepth}-${pitWidth}-${pitHeight}`);
+      log(`Init layers: ${pitDepth}-${pitWidth}-${pitHeight}`);
 
       this.layers = [];
       this.layersElements = [];
@@ -648,6 +655,26 @@ export default {
       };
     },
 
+    findCollissionElements(element) {
+      log(`Find collision elements: ${element.name}`);
+
+      const childs = element.getObjectByName("childs").children;
+
+      const indexes = childs.map(this.findElementIndexes);
+
+      const collisionPoints = [];
+
+      for (const { x, y, z, pX, pY, pZ, uuid, el } of indexes) {
+        for (let zIndex = 0; zIndex < this.zPoints.length; zIndex++) {
+          if (this.layers[zIndex + 1] && this.layers[zIndex + 1][x][y]) {
+            collisionPoints.push({ x, y, z, pX, pY, pZ, zIndex, uuid, el });
+          }
+        }
+      }
+
+      return collisionPoints;
+    },
+
     collisionElement(element) {
       const childs = element.getObjectByName("childs").children;
 
@@ -680,7 +707,7 @@ export default {
 
             const nextLayerValue = this.layers[z + 1][x][y];
 
-            // console.log(
+            // log(
             //   this.layers[zIndex + 1].map((xLayer) => xLayer.join("-")).join("\n")
             // );
 
@@ -706,7 +733,7 @@ export default {
     },
 
     dropElement(element) {
-      console.log(`Drop element: ${element.name}`);
+      log(`Drop element: ${element.name}`);
 
       element.userData.drop = true;
 
@@ -716,16 +743,16 @@ export default {
 
       const collisionPoints = [];
 
-      for (const { x, y, z, uuid } of indexes) {
+      for (const { x, y, z, pX, pY, pZ, uuid, el } of indexes) {
         for (let zIndex = 0; zIndex < this.zPoints.length; zIndex++) {
           if (this.layers[zIndex + 1] && this.layers[zIndex + 1][x][y]) {
-            collisionPoints.push({ x, y, z, zIndex, uuid });
+            collisionPoints.push({ x, y, z, pX, pY, pZ, zIndex, uuid, el });
           }
         }
       }
 
       if (collisionPoints.length) {
-        // console.log(`Found ${collisionPoints.length} collision points`);
+        // log(`Found ${collisionPoints.length} collision points`);
 
         const uuids = collisionPoints.map((item) => item.uuid);
 
@@ -759,46 +786,26 @@ export default {
     },
 
     colorizeElement(element, layer) {
+      if (!this.isColorizeLevel) {
+        return false;
+      }
+
       const color = this.colorPalette[layer];
 
-      console.log(
+      log(
         `Colorize element ${
           element.name
         } on layer ${layer}: ${color.getHexString()}`,
         `color: #${color.getHexString()}`
       );
 
-      if (Array.isArray(element.material)) {
-        element.material.forEach((material, index) => {
-          // if (!material.name.includes("MainMat")) {
-          //   return false;
-          // }
-
-          const newMaterial = material.clone();
-          newMaterial.map = newMaterial.map.clone();
-          newMaterial.map.repeat.set(2, 2);
-          newMaterial.map.offset.set(0.5, 0);
-          newMaterial.map.needsUpdate = true;
-          newMaterial.color = color;
-
-          element.material[index] = newMaterial;
-        });
-      } else {
-        let newMaterial;
-
-        if (element.material.isMeshNormalMaterial) {
-          newMaterial = new MeshBasicMaterial({ color });
-        } else {
-          newMaterial = element.material.clone();
-          newMaterial.map = newMaterial.map.clone();
-          newMaterial.map.repeat.set(2, 2);
-          newMaterial.map.offset.set(0.5, 0);
-          newMaterial.map.needsUpdate = true;
-          newMaterial.color = color;
+      element.traverse((obj) => {
+        if (!obj.isMesh) {
+          return;
         }
 
-        element.material = newMaterial;
-      }
+        obj.material = new MeshBasicMaterial({ color });
+      });
 
       return true;
     },
@@ -819,7 +826,7 @@ export default {
           continue;
         }
 
-        console.log(`Process layer delete: ${index}`);
+        log(`Process layer delete: ${index}`);
 
         filledLevelsCounter++;
 
@@ -848,7 +855,7 @@ export default {
         const scoreDiff =
           10 * (filledLevelsCounter - 1) * filledLevelsCounter + 10;
 
-        console.log(`Levels ${filledLevelsCounter} score: ${scoreDiff}`);
+        log(`Levels ${filledLevelsCounter} score: ${scoreDiff}`);
 
         this.score += scoreDiff;
       }
@@ -857,17 +864,52 @@ export default {
     },
 
     petrify(element) {
-      console.log(
-        `Petrify element: ${element.name}(${element.position.x.toFixed(
-          1
-        )}-${element.position.y.toFixed(1)}-${element.position.z.toFixed(1)})`
-      );
+      const collisionPoints = this.findCollissionElements(element);
 
       const childs = element.getObjectByName("childs").children;
 
       const indexes = childs.map(this.findElementIndexes);
 
-      for (const { x, y, z, pX, pY, pZ, el } of indexes) {
+      const position = element.position;
+
+      log(
+        `Petrify element: ${element.name}(${position.x.toFixed(
+          1
+        )}-${position.y.toFixed(1)}-${position.z.toFixed(1)})`
+      );
+
+      let zOffset = 0;
+
+      for (let { z, uuid } of indexes) {
+        const collisionPoint = collisionPoints.find(
+          (item) => item.uuid == uuid
+        );
+
+        if (!collisionPoint) {
+          continue;
+        }
+
+        if (!collisionPoint.el.userData.size) {
+          collisionPoint.el.userData.size = getGroupSize(collisionPoint.el);
+        }
+
+        if (
+          collisionPoint &&
+          (collisionPoint.z != collisionPoint.zIndex ||
+            collisionPoint.z != z ||
+            collisionPoint.zIndex != z)
+        ) {
+          const zIndexDiff = collisionPoint.zIndex - collisionPoint.z;
+
+          if ((!zOffset || zOffset != zIndexDiff) && zIndexDiff < 0) {
+            zOffset = zIndexDiff;
+          }
+        }
+      }
+
+      for (let { x, y, z, pX, pY, pZ, el } of indexes) {
+        z += zOffset;
+
         if (z != -1 && x != -1 && y != -1) {
           if (
             this.layers[z] == undefined ||
@@ -884,7 +926,7 @@ export default {
 
             this.updateScore();
 
-            console.log(
+            log(
               `Element already petrified!(${x}-${y}-${z})(${pX}-${pY}-${pZ})`
             );
             this.isEnd = true;
@@ -911,7 +953,10 @@ export default {
 
           this.setLayerPoint(x, y, z);
 
-          el.position.set(pX - this.size / 2, pY - this.size / 2, pZ);
+          this.positionHelper(el, "x", pX - this.size / 2);
+          this.positionHelper(el, "y", pY - this.size / 2);
+          this.positionHelper(el, "z", this.zPoints[z]);
+
           el.userData.static = true;
 
           this.colorizeElement(el, z);
@@ -919,7 +964,7 @@ export default {
           this.layersElements[z].push(el);
           this.scene.add(el);
 
-          if (this.dropSound && this.dropSound.isPlaying) {
+          if (this.dropSound?.isPlaying) {
             this.dropSound.stop();
           }
 
@@ -939,7 +984,7 @@ export default {
       // Check layers
       this.layersCheck();
 
-      // console.log(
+      // log(
       //   this.layers
       //     .map((layer) => {
       //       return layer.map((xLayer) => xLayer.join("-")).join("\n");
@@ -987,16 +1032,16 @@ export default {
       const { x: sizeX, y: sizeY, z: sizeZ } = element.userData.size;
 
       // if (sizeBefore.x != sizeX) {
-      //   console.log("Move to X point");
+      //   log("Move to X point");
       //   element.translateX((sizeBefore.x - sizeX) / 2);
       // }
 
       // if (sizeBefore.y != sizeY) {
-      //   console.log("Move to Y point");
+      //   log("Move to Y point");
       //   element.translateY((sizeBefore.y - sizeY) / 2);
       // }
 
-      // console.log(
+      // log(
       //   element.userData.name,
       //   "position",
       //   {
@@ -1016,7 +1061,7 @@ export default {
       const yPosition = Math.round((position.y - sizeY / 2) * 100) / 100;
 
       if (!xPoints.includes(xPosition)) {
-        // console.log("x before", xPosition);
+        // log("x before", xPosition);
 
         xPoints.forEach((point, index, array) => {
           if (xPosition > point && xPosition < array[index + 1]) {
@@ -1024,11 +1069,11 @@ export default {
           }
         });
 
-        // console.log("x after", element.position.x);
+        // log("x after", element.position.x);
       }
 
       if (!yPoints.includes(yPosition)) {
-        // console.log("y before", yPosition);
+        // log("y before", yPosition);
 
         yPoints.forEach((point, index, array) => {
           if (yPosition > point && yPosition < array[index + 1]) {
@@ -1036,7 +1081,7 @@ export default {
           }
         });
 
-        // console.log("y after", element.position.y);
+        // log("y after", element.position.y);
       }
 
       // Restrain position
@@ -1068,15 +1113,15 @@ export default {
       // element.getWorldPosition(position);
 
       // if (newPosition.x != position.x) {
-      //   console.log(`X: ${position.x} -> ${newPosition.x}`);
+      //   log(`X: ${position.x} -> ${newPosition.x}`);
       // }
 
       // if (newPosition.y != position.y) {
-      //   console.log(`Y: ${position.y} -> ${newPosition.y}`);
+      //   log(`Y: ${position.y} -> ${newPosition.y}`);
       // }
 
       // if (newPosition.z != position.z) {
-      //   console.log(`Z: ${position.z} -> ${newPosition.z}`);
+      //   log(`Z: ${position.z} -> ${newPosition.z}`);
       // }
 
       return element;
@@ -1089,7 +1134,7 @@ export default {
 
       const [width, height, depth] = pitSize.split("x");
 
-      console.log(`Change pit size to ${pitSize}`);
+      log(`Change pit size to ${pitSize}`);
 
       // remove all child
       scene.children
@@ -1196,12 +1241,12 @@ export default {
         if (Array.isArray(child.material)) {
           child.material.forEach((item, index, array) => {
             item.shininess = 0;
-            item.specular = new Color(0x000000);
+            item.specular = new Color(0x00_00_00);
             item.flatShading = true;
           });
         } else {
           child.material.shininess = 0;
-          child.material.specular = new Color(0x000000);
+          child.material.specular = new Color(0x00_00_00);
           child.material.flatShading = true;
         }
       }
@@ -1213,12 +1258,12 @@ export default {
         if (Array.isArray(child.material)) {
           child.material.forEach((item, index, array) => {
             item.shininess = 0;
-            item.specular = new Color(0x000000);
+            item.specular = new Color(0x00_00_00);
             item.flatShading = true;
           });
         } else {
           child.material.shininess = 0;
-          child.material.specular = new Color(0x000000);
+          child.material.specular = new Color(0x00_00_00);
           child.material.flatShading = true;
         }
       }
@@ -1227,7 +1272,7 @@ export default {
     },
 
     updatePreview() {
-      // console.log("Update preview call");
+      // log("Update preview call");
 
       const { next, pitWidth, pitHeight, camera, size } = this;
 
@@ -1300,7 +1345,7 @@ export default {
     },
 
     getRandomForm() {
-      // console.log("Get random form call");
+      // log("Get random form call");
 
       const { size, isSimple, zombieParts, blocksType } = this;
 
@@ -1370,7 +1415,7 @@ export default {
 
       this.restrainElement(element);
 
-      // console.log(
+      // log(
       //   `Created ${element.name}(${element.position.x.toFixed(
       //     1
       //   )}-${element.position.y.toFixed(1)}-${element.position.z.toFixed(1)})`
@@ -1384,10 +1429,10 @@ export default {
 
       const gltf = await loadLights();
 
-      const light = new AmbientLight(0xffffff, 0.02);
+      const light = new AmbientLight(0xff_ff_ff, 0.02);
       scene.add(light);
 
-      const cameraLight = new AmbientLight(0xffffff, 0.08);
+      const cameraLight = new AmbientLight(0xff_ff_ff, 0.08);
       camera.add(cameraLight);
 
       if (!gltf) {
@@ -1491,6 +1536,10 @@ export default {
       let timeDelta = 0;
 
       const animation = () => {
+        if (this.isStop) {
+          return false;
+        }
+
         const delta = clock.getDelta();
 
         if (!this.isPause) {
@@ -1542,53 +1591,53 @@ export default {
     keyupHandler(event) {
       switch (event.code) {
         case "KeyQ":
-          // console.log("Press Q");
+          // log("Press Q");
           this.rotateZPlus();
           break;
         case "KeyE":
-          // console.log("Press E");
+          // log("Press E");
           this.rotateZMinus();
           break;
         case "KeyW":
-          // console.log("Press W");
+          // log("Press W");
           this.rotateXMinus();
           break;
         case "KeyS":
-          // console.log("Press S");
+          // log("Press S");
           this.rotateXPlus();
           break;
         case "KeyA":
-          // console.log("Press A");
+          // log("Press A");
           this.rotateYMinus();
           break;
         case "KeyD":
-          // console.log("Press D");
+          // log("Press D");
           this.rotateYPlus();
           break;
         case "ArrowUp":
-          // console.log("Press Up");
+          // log("Press Up");
           this.moveUp();
           break;
         case "ArrowDown":
-          // console.log("Press Down");
+          // log("Press Down");
           this.moveDown();
           break;
         case "ArrowLeft":
-          // console.log("Press Left");
+          // log("Press Left");
           this.moveLeft();
           break;
         case "ArrowRight":
-          // console.log("Press Right");
+          // log("Press Right");
           this.moveRight();
           break;
         case "Space":
-          // console.log("Press Space");
+          // log("Press Space");
           // this.isPause = !this.isPause;
 
           this.current.userData.drop = true;
           break;
         case "Escape":
-          // console.log("Press Escape");
+          // log("Press Escape");
 
           if (this.isMenu) {
             this.closeMenu();
@@ -1606,9 +1655,25 @@ export default {
     },
 
     parseURLSearchParams() {
-      console.log("Parse URLSearchParams");
+      log("Parse URLSearchParams");
 
       const params = new URLSearchParams(window.location.search);
+
+      for (let [id, value] of params.entries()) {
+        if (value == "true") {
+          value = true;
+        }
+
+        if (value == "false") {
+          value = false;
+        }
+
+        if (id in this.$data) {
+          log(`Update ${id}:${value}`);
+
+          this.$data[id] = value;
+        }
+      }
 
       if (params.has("orbit") && params.get("orbit") == "true") {
         this.orbitControls = true;
@@ -1622,9 +1687,12 @@ export default {
     },
   },
 
+  beforeMount() {
+    this.parseURLSearchParams();
+  },
+
   async mounted() {
     this.loadScore();
-    this.parseURLSearchParams();
 
     await this.loadZombie();
     this.init();

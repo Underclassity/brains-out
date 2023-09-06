@@ -1,6 +1,8 @@
 import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
 import { BufferGeometryLoader } from "three/src/loaders/BufferGeometryLoader.js";
 
+import log from "./log.js";
+
 const castShadow = true;
 const receiveShadow = true;
 
@@ -10,7 +12,7 @@ const receiveShadow = true;
  * @return  {Object}  Promise
  */
 export async function loadZombie() {
-  console.log("Load Zombie model");
+  log("Load Zombie model");
 
   return new Promise((resolve) => {
     const fbxLoader = new FBXLoader();
@@ -34,10 +36,10 @@ export async function loadZombie() {
             // loader.load("/models/T_ColorAtlas16x16.png", (texture) => {
             //   child.material.map = texture;
             //   child.material.needsupdate = true;
-            //   console.log(texture);
+            //   log(texture);
             //   // render(); // only if there is no render loop
             // });
-            // console.log(child.geometry.attributes.uv);
+            // log(child.geometry.attributes.uv);
 
             child.castShadow = castShadow;
             child.receiveShadow = receiveShadow;
@@ -45,15 +47,15 @@ export async function loadZombie() {
         });
         object.scale.set(0.01, 0.01, 0.01);
 
-        console.log("Loaded zombie", object);
+        log("Loaded zombie", object);
 
         resolve(object);
       },
       (xhr) => {
-        console.log(`${(xhr.loaded / xhr.total) * 100}% loaded`);
+        log(`${(xhr.loaded / xhr.total) * 100}% loaded`);
       },
       (error) => {
-        console.log(error);
+        log(error);
         resolve();
       }
     );
@@ -66,7 +68,7 @@ export async function loadZombie() {
  * @return  {Object}  Promise
  */
 export async function loadTestCube() {
-  console.log("Load test cube model");
+  log("Load test cube model");
 
   return new Promise((resolve) => {
     const fbxLoader = new FBXLoader();
@@ -90,10 +92,10 @@ export async function loadTestCube() {
             // loader.load("/models/T_ColorAtlas16x16.png", (texture) => {
             //   child.material.map = texture;
             //   child.material.needsupdate = true;
-            //   console.log(texture);
+            //   log(texture);
             //   // render(); // only if there is no render loop
             // });
-            // console.log(child.geometry.attributes.uv);
+            // log(child.geometry.attributes.uv);
 
             child.castShadow = castShadow;
             child.receiveShadow = receiveShadow;
@@ -101,15 +103,15 @@ export async function loadTestCube() {
         });
         object.scale.set(0.01, 0.01, 0.01);
 
-        console.log("Loaded test cube", object);
+        log("Loaded test cube", object);
 
         resolve(object);
       },
       (xhr) => {
-        console.log(`${(xhr.loaded / xhr.total) * 100}% loaded`);
+        log(`${(xhr.loaded / xhr.total) * 100}% loaded`);
       },
       (error) => {
-        console.log(error);
+        log(error);
         resolve();
       }
     );
@@ -117,7 +119,7 @@ export async function loadTestCube() {
 }
 
 export async function loadPitParts() {
-  console.log("Load pit parts model");
+  log("Load pit parts model");
 
   return new Promise((resolve) => {
     const fbxLoader = new FBXLoader();
@@ -141,10 +143,10 @@ export async function loadPitParts() {
             // loader.load("/models/T_ColorAtlas16x16.png", (texture) => {
             //   child.material.map = texture;
             //   child.material.needsupdate = true;
-            //   console.log(texture);
+            //   log(texture);
             //   // render(); // only if there is no render loop
             // });
-            // console.log(child.geometry.attributes.uv);
+            // log(child.geometry.attributes.uv);
 
             child.castShadow = castShadow;
             child.receiveShadow = receiveShadow;
@@ -154,15 +156,15 @@ export async function loadPitParts() {
         });
         object.scale.set(1, 1, 1);
 
-        console.log("Loaded pit parts", object);
+        log("Loaded pit parts", object);
 
         resolve(object);
       },
       (xhr) => {
-        console.log(`${(xhr.loaded / xhr.total) * 100}% loaded`);
+        log(`${(xhr.loaded / xhr.total) * 100}% loaded`);
       },
       (error) => {
-        console.log(error);
+        log(error);
         resolve();
       }
     );
@@ -170,7 +172,7 @@ export async function loadPitParts() {
 }
 
 export function loadSuzanne() {
-  console.log("Load pit parts model");
+  log("Load pit parts model");
 
   return new Promise((resolve) => {
     const bufferGeometryLoader = new BufferGeometryLoader();
@@ -181,10 +183,10 @@ export function loadSuzanne() {
         resolve(geometry);
       },
       (xhr) => {
-        console.log(`${(xhr.loaded / xhr.total) * 100}% loaded`);
+        log(`${(xhr.loaded / xhr.total) * 100}% loaded`);
       },
       (error) => {
-        console.log(error);
+        log(error);
         resolve();
       }
     );

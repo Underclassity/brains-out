@@ -1,6 +1,7 @@
 import { Vector3, MathUtils } from "three";
 
 import getGroupSize from "../../helpers/get-group-size.js";
+import log from "../../helpers/log.js";
 
 const xAxis = new Vector3(1, 0, 0).normalize();
 const yAxis = new Vector3(0, 1, 0).normalize();
@@ -70,7 +71,7 @@ export function positionHelper(element, axis = "x", value) {
     return false;
   }
 
-  // console.log("position", axis, value);
+  // log("position", axis, value);
 
   switch (axis) {
     case "x":
@@ -101,7 +102,7 @@ export function translateHelper(element, axis = "x", value) {
     return false;
   }
 
-  // console.log("translate", axis, value);
+  // log("translate", axis, value);
 
   switch (axis) {
     case "x":
@@ -119,13 +120,13 @@ export function translateHelper(element, axis = "x", value) {
 }
 
 export function setLayerPoint(x, y, z) {
-  // console.log(`Set layer point ${x}-${y}-${z}`);
+  log(`Set layer point ${x}-${y}-${z}`);
 
   this.layers[z][x][y] = 1;
 
-  // console.log(this.layers[z].map((xLayer) => xLayer.join("-")).join("\n"));
+  // log(this.layers[z].map((xLayer) => xLayer.join("-")).join("\n"));
 
-  // console.log(
+  // log(
   //   this.layers
   //     .map((layer) => {
   //       return layer.map((xLayer) => xLayer.join("-")).join("\n");

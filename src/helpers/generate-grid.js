@@ -1,6 +1,7 @@
 import { Group, PlaneGeometry, LineBasicMaterial, LineSegments } from "three";
 
 import ToQuads from "./to-quads.js";
+import log from "./log.js";
 
 /**
  * Generate grid plane
@@ -12,7 +13,7 @@ import ToQuads from "./to-quads.js";
  * @return  {Object}            Grid plane
  */
 export function generateGrid(width = 10, height = 10, color = 0x808080) {
-  // console.log(`Generate grid ${width}x${height}`);
+  // log(`Generate grid ${width}x${height}`);
 
   const group = new Group();
 

@@ -1,7 +1,11 @@
 // import generateSForm from "../../helpers/generate-s-form.js";
 // import generateThreePoints from "../../helpers/generate-three-points.js";
 
+import { MeshBasicMaterial } from "three";
+
 import getGroupSize from "../../helpers/get-group-size.js";
+import getRandom from "../../helpers/random.js";
+import log from "../../helpers/log.js";
 
 /**
  * Create new element helper
@@ -9,7 +13,7 @@ import getGroupSize from "../../helpers/get-group-size.js";
  * @return  {Object}  Element object
  */
 export function createElement() {
-  console.log("Create element call");
+  log("Create element call");
 
   const element = this.next ? this.next.clone() : this.getRandomForm();
 
@@ -22,6 +26,25 @@ export function createElement() {
 
   element.userData.time = this.time;
   element.userData.static = false;
+
+  if (this.isRandomColor) {
+    let color = getRandom(this.colorPalette, 1)[0];
+
+    while (color == this.prevColor) {
+      color = getRandom(this.colorPalette, 1)[0];
+    }
+
+    // Save prev color
+    this.prevColor = color;
+
+    element.traverse((obj) => {
+      if (!obj.isMesh) {
+        return;
+      }
+
+      obj.material = new MeshBasicMaterial({ color });
+    });
+  }
 
   // set start position on Z axis
   this.positionHelper(element, "z", -element.userData.size.z / 2);
@@ -48,7 +71,7 @@ export function createElement() {
  * @return  {Boolean}  Result
  */
 export function initWaterfall() {
-  console.log("Init waterfall");
+  log("Init waterfall");
 
   let prevCount = undefined;
 
@@ -87,7 +110,7 @@ export function initWaterfall() {
         this.restrainElement(element);
       }
 
-      // console.log(`${index}: ${element.position.z.toFixed(2)}`);
+      // log(`${index}: ${element.position.z.toFixed(2)}`);
 
       const isFreeze = this.collisionElement(element);
 

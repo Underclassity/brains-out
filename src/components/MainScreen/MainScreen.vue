@@ -4,7 +4,7 @@
 
     span.menu-button.link.material-symbols-outlined(v-on:click="openMenu") menu
     div.score-button
-        span(:title="`Min ${minScore} - Max ${maxScore} - Avg ${avgScore}`") Score: {{ score }}
+        span(:title="`Min ${minScore} - Max ${maxScore} - Avg ${avgScore} - Length ${lsScore.length}`") Score: {{ score }}
         span Speed: {{ Math.round(speed * 100) / 100 }}
 
     span.pause-button.link.material-symbols-outlined(v-on:click="pauseCall" v-if="!isPause && helpers") pause
