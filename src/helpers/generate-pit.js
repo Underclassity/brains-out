@@ -185,6 +185,10 @@ export function generatePit(
   simple = false,
   isInstanced = false
 ) {
+  width = parseInt(width, 10);
+  height = parseInt(height, 10);
+  depth = parseInt(depth, 10);
+
   const pit = new Group();
   pit.userData.name = "Pit";
 
