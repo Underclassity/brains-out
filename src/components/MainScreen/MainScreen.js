@@ -138,6 +138,7 @@ export default {
 
       orbitControls: false,
       helpers: false,
+      isTest: false,
 
       sound: "ZombiesAreComing.ogg",
       volume: 0.1,
@@ -1539,19 +1540,35 @@ export default {
       switch (event.code) {
         case "KeyQ":
           // console.log("Press Q");
-          this.rotateZMinus();
+          if (this.isTest) {
+            this.rotateZPlus();
+          } else {
+            this.rotateZMinus();
+          }
           break;
         case "KeyE":
           // console.log("Press E");
-          this.rotateZPlus();
+          if (this.isTest) {
+            this.rotateZMinus();
+          } else {
+            this.rotateZPlus();
+          }
           break;
         case "KeyW":
           // console.log("Press W");
-          this.rotateXPlus();
+          if (this.isTest) {
+            this.rotateXMinus();
+          } else {
+            this.rotateXPlus();
+          }
           break;
         case "KeyS":
           // console.log("Press S");
-          this.rotateXMinus();
+          if (this.isTest) {
+            this.rotateXPlus();
+          } else {
+            this.rotateXMinus();
+          }
           break;
         case "KeyA":
           // console.log("Press A");
@@ -1612,6 +1629,10 @@ export default {
 
       if (params.has("helpers") && params.get("helpers") == "true") {
         this.helpers = true;
+      }
+
+      if (params.has("test") && params.get("test") == "true") {
+        this.isTest = true;
       }
 
       return false;
