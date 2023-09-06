@@ -102,6 +102,7 @@ export default {
       maxSpeed: 10,
       speedStep: 0.2,
       score: 0,
+      lsScore: [],
 
       pitWidth: 5,
       pitHeight: 5,
@@ -192,6 +193,22 @@ export default {
     time() {
       return this.isSmooth ? this.timeDelta : this.second;
     },
+
+    maxScore() {
+      return this.lsScore.length ? Math.max(...this.lsScore) : 0;
+    },
+
+    minScore() {
+      return this.lsScore.length ? Math.min(...this.lsScore) : 0;
+    },
+
+    avgScore() {
+      return this.lsScore.length
+        ? this.lsScore.reduce((prev, curr) => {
+            return prev + curr;
+          }, 0) / this.lsScore.length
+        : 0;
+    },
   },
 
   methods: {
@@ -241,6 +258,44 @@ export default {
       this.updatePreview();
 
       return true;
+    },
+
+    loadScore() {
+      const scoreItems = localStorage.getItem("score");
+      const lsScore = scoreItems ? JSON.parse(scoreItems) : [];
+
+      if (!lsScore.length) {
+        localStorage.setItem("score", JSON.stringify(lsScore));
+      }
+
+      console.log(`Load score ${lsScore} from localStorage`);
+
+      // Update value
+      this.lsScore = lsScore;
+
+      return lsScore;
+    },
+
+    updateScore() {
+      const { score } = this;
+
+      console.log(`Update score ${score} in localStorage`);
+
+      const scoreItems = localStorage.getItem("score");
+      const lsScore = scoreItems ? JSON.parse(scoreItems) : [];
+
+      if (!lsScore.length) {
+        localStorage.setItem("score", JSON.stringify(lsScore));
+      }
+
+      localStorage.setItem("score", JSON.stringify([...lsScore, score]));
+
+      // Update value
+      this.lsScore = [...lsScore, score];
+
+      return localStorage.getItem("score")
+        ? JSON.parse(localStorage.getItem("score"))
+        : [];
     },
 
     openMenu() {
@@ -822,6 +877,8 @@ export default {
 
           if (this.layers[z][x][y] && !element.userData.drop) {
             this.score += indexes.length;
+
+            this.updateScore();
 
             console.log(
               `Element already petrified!(${x}-${y}-${z})(${pX}-${pY}-${pZ})`
@@ -1562,6 +1619,7 @@ export default {
   },
 
   async mounted() {
+    this.loadScore();
     this.parseURLSearchParams();
 
     await this.loadZombie();
