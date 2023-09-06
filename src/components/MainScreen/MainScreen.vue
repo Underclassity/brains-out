@@ -5,7 +5,7 @@
     span.menu-button.link.material-symbols-outlined(v-on:click="openMenu") menu
     div.score-button
         span Score: {{ score }}
-        span Speed: {{ speed }}
+        span Speed: {{ Math.round(speed * 100) / 100 }}
 
     span.pause-button.link.material-symbols-outlined(v-on:click="pauseCall" v-if="!isPause && helpers") pause
     span.play-button.link.material-symbols-outlined(v-on:click="playCall" v-if="isPause && helpers") play_arrow
