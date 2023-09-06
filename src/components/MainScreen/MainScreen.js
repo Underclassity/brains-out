@@ -391,6 +391,10 @@ export default {
 
       const { scene } = this;
 
+      // Reset score and speed
+      this.score = 0;
+      this.speed = this.minSpeed;
+
       this.isEnd = false;
 
       if (this.lights?.l1 && this.lights?.l2 && this.lights?.l3) {
