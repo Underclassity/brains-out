@@ -176,6 +176,10 @@ export default {
       zombieParts: [],
       pitParts: [],
 
+      fps: 0,
+      frames: 0,
+      prevTime: Date.now(),
+
       loopCb: [],
 
       xCPoints: [],
@@ -1536,6 +1540,15 @@ export default {
       let timeDelta = 0;
 
       const animation = () => {
+        this.frames++;
+        const time = Date.now();
+
+        if (time >= this.prevTime + 1000) {
+          this.fps = Math.round((this.frames * 1000) / (time - this.prevTime));
+          this.frames = 0;
+          this.prevTime = time;
+        }
+
         if (this.isStop) {
           return false;
         }
