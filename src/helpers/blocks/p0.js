@@ -1,7 +1,6 @@
-import { Group } from "three";
+import { Group, Vector3 } from "three";
 
 import generateMeshPoint from "../generate-mesh-point.js";
-import getGroupSize from "../get-group-size.js";
 
 /**
  * Generate P0 form (block_images/p0.png)
@@ -27,7 +26,7 @@ export function generateP0Form(size = 0.2, parts = [], isSimple = false) {
   childsGroup.add(mesh);
   pointGroup.add(childsGroup);
 
-  pointGroup.userData.size = getGroupSize(childsGroup);
+  pointGroup.userData.size = new Vector3(1, 1, 1);
 
   return pointGroup;
 }

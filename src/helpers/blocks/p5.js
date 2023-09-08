@@ -1,8 +1,7 @@
-import { Group } from "three";
+import { Group, Vector3 } from "three";
 
 import { positionHelper } from "../../components/MainScreen/transform-helpers.js";
 import generateMeshPoint from "../generate-mesh-point.js";
-import getGroupSize from "../get-group-size.js";
 
 /**
  * Generate P5 form (block_images/p5.png)
@@ -42,7 +41,7 @@ export function generateP5Form(size = 0.2, parts = [], isSimple = false) {
   positionHelper(thirdMesh, "x", -size / 2);
   positionHelper(thirdMesh, "y", size / 2);
 
-  pointGroup.userData.size = getGroupSize(childsGroup);
+  pointGroup.userData.size = new Vector3(2, 2, 1);
 
   return pointGroup;
 }

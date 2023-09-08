@@ -1,8 +1,7 @@
-import { Group } from "three";
+import { Group, Vector3 } from "three";
 
 import { positionHelper } from "../../components/MainScreen/transform-helpers.js";
 import generateMeshPoint from "../generate-mesh-point.js";
-import getGroupSize from "../get-group-size.js";
 
 /**
  * Generate P32 form (block_images/p32.png)
@@ -53,7 +52,7 @@ export function generateP32Form(size = 0.2, parts = [], isSimple = false) {
   positionHelper(fourthPoint, "y", -size / 2);
   positionHelper(fourthPoint, "z", size / 2);
 
-  pointGroup.userData.size = getGroupSize(childsGroup);
+  pointGroup.userData.size = new Vector3(2, 2, 2);
 
   return pointGroup;
 }
