@@ -1602,6 +1602,10 @@ export default {
     },
 
     keyupHandler(event) {
+      if (this.isMenu) {
+        return false;
+      }
+
       switch (event.code) {
         case "KeyQ":
           // log("Press Q");
