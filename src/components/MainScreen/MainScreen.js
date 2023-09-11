@@ -92,7 +92,8 @@ import colorPalette from "./color-palette.js";
 
 import AcceptBugsScreen from "../AcceptBugsScreen/AcceptBugsScreen.vue";
 import LogoScreen from "../LogoScreen/LogoScreen.vue";
-import MenuComponent from "../MenuComponent/MenuComponent.vue";
+// import MenuComponent from "../MenuComponent/MenuComponent.vue";
+import MenuScreen from "../MenuScreen/MenuScreen.vue";
 
 export default {
   name: "MainScreen",
@@ -133,7 +134,7 @@ export default {
       sceneColor: 0x00_0b_12,
 
       isPause: true,
-      isMenu: true,
+      isMenu: false,
       isSmooth: true,
       isSimple: false,
       isEnd: false,
@@ -195,9 +196,10 @@ export default {
   },
 
   components: {
-    MenuComponent,
     AcceptBugsScreen,
     LogoScreen,
+    // MenuComponent,
+    MenuScreen,
   },
 
   computed: {
@@ -327,14 +329,31 @@ export default {
 
     openMenu() {
       log("Open menu");
+
       this.isPause = true;
       this.isMenu = true;
+      this.isLogo = false;
+
+      this.emitter.emit("openMenu");
     },
 
     closeMenu() {
       log("Close menu");
+
       this.isPause = false;
       this.isMenu = false;
+      this.isLogo = false;
+
+      this.emitter.emit("closeMenu");
+    },
+
+    newGameCall() {
+      this.closeMenu();
+      this.newGame();
+    },
+
+    backToGameCall() {
+      this.closeMenu();
     },
 
     changeSpeed(speed) {
@@ -951,6 +970,8 @@ export default {
             );
             this.isEnd = true;
             this.openMenu();
+
+            this.emitter.emit("openEndMenu");
 
             if (this.lights?.l1 && this.lights?.l2 && this.lights?.l3) {
               this.lights.l1.power = 0;
@@ -1733,11 +1754,27 @@ export default {
     window.addEventListener("resize", this.updateRendererSize);
     document.addEventListener("keyup", this.keyupHandler);
     window.addEventListener("click", this.clickListener);
+
+    this.emitter.on("changeBlockType", this.updateBlocksType);
+    this.emitter.on("changeFxVolume", this.updateFxVolume);
+    this.emitter.on("changePitSize", this.changePitSize);
+    this.emitter.on("changeSpeed", this.changeSpeed);
+    this.emitter.on("changeVolume", this.updateVolume);
+
+    this.emitter.on("newGame", this.newGame);
   },
 
   unmounted() {
     window.removeEventListener("resize", this.updateRendererSize);
     document.removeEventListener("keyup", this.keyupHandler);
     window.removeEventListener("click", this.clickListener);
+
+    this.emitter.off("changeBlockType", this.updateBlocksType);
+    this.emitter.off("changeFxVolume", this.updateFxVolume);
+    this.emitter.off("changePitSize", this.changePitSize);
+    this.emitter.off("changeSpeed", this.changeSpeed);
+    this.emitter.off("changeVolume", this.updateVolume);
+
+    this.emitter.off("newGame", this.newGame);
   },
 };
