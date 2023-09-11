@@ -48,11 +48,3 @@ body {
     'GRAD'0,
     'opsz'48
 }
-
-@font-face {
-  font-family 'ZombieFont'
-  src url(fonts/zombie.ttf)
-  font-weight 400
-  font-style normal
-  font-stretch normal
-}
