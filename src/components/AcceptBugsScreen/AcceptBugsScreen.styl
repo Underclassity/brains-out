@@ -1,0 +1,77 @@
+.popup
+    &--overlay
+        width: 100%
+        height: 100%
+        position: fixed
+        top: 0px
+        left: 0px
+        display: flex
+        align-items: center
+        justify-content: center
+        flex-direction: column
+        background-color: black
+
+    &--glare
+        position: relative
+        box-shadow: inset 0px 20px 20px -10px rgba(white, 0.3), inset 0px -20px 20px -10px rgba(black, 0.3)
+
+        &:before
+            content: ''
+            position: absolute
+            top: 20px
+            left: 15px
+            width: 10px
+            height: 10px
+            background-color: rgba(white, 0.2)
+            border-radius: 50%
+
+    &--main
+        max-width: 500px
+        box-sizing: border-box
+        border-radius: 20px
+        border: 5px solid black
+        padding: 40px
+        background-color: orange
+        text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
+
+
+    &--desc
+        font-size: 48px
+        font-family: 'ZombieFont'
+        margin-bottom: 40px
+
+    &--buttons
+        width: 100%
+        display: flex
+        justify-content: center
+        align-items: center
+
+    &--button
+        font-size: 48px
+        line-height: 52px
+        padding: 16px 32px
+        border-radius: 10px
+        border: 2px solid black
+        cursor: pointer
+        user-select: none
+        transition: background-color 300ms ease-in-out
+
+        &--red
+            background-color: red
+
+            &:hover
+                background-color: rgba(red, 0.6)
+
+        &--green
+            background-color: lime
+
+            &:hover
+                background-color: rgba(lime, 0.6)
+
+.v-enter-active
+.v-leave-active
+    transition: opacity 0.5s ease;
+
+.v-enter-from
+.v-leave-to
+    opacity: 0;

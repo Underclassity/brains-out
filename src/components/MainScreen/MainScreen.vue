@@ -69,6 +69,9 @@ MenuComponent(
     v-on:update-blocks-type="updateBlocksType"
     v-on:new-game="newGame"
 )
+
+AcceptBugsScreen(v-if="!isAccepted" v-on:accept="acceptedCall")
+LogoScreen(v-if="isLogo")
 </template>
 
 <script src="./MainScreen.js"></script>

@@ -1,7 +1,16 @@
+import mitt from "mitt";
+
 import { createApp } from "vue";
-import "./style.css";
+
 import App from "./App.vue";
 
 import store from "./store/index.js";
+import "./style.css";
 
-createApp(App).use(store).mount("#app");
+const app = createApp(App).use(store);
+
+const emitter = mitt();
+
+app.config.globalProperties.emitter = emitter;
+
+app.mount("#app");

@@ -15,6 +15,7 @@ import {
 import { loadPitParts, loadZombie } from "../../helpers/load-zombie.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import generatePit from "../../helpers/generate-pit.js";
+import getGroupSize from "../../helpers/get-group-size.js";
 import loadAudio from "../../helpers/audio.js";
 import loadLights from "../../helpers/lights.js";
 import log from "../../helpers/log.js";
@@ -89,8 +90,9 @@ import initPoints from "./init-points.js";
 import colorPalette from "./color-palette.js";
 // import initTest from "./init-test.js";
 
+import AcceptBugsScreen from "../AcceptBugsScreen/AcceptBugsScreen.vue";
+import LogoScreen from "../LogoScreen/LogoScreen.vue";
 import MenuComponent from "../MenuComponent/MenuComponent.vue";
-import getGroupSize from "../../helpers/get-group-size.js";
 
 export default {
   name: "MainScreen",
@@ -138,6 +140,8 @@ export default {
       isControls: false,
       isInstanced: true,
       isStop: false,
+      isAccepted: false,
+      isLogo: false,
 
       isRandomColor: false,
       isColorizeLevel: true,
@@ -192,6 +196,8 @@ export default {
 
   components: {
     MenuComponent,
+    AcceptBugsScreen,
+    LogoScreen,
   },
 
   computed: {
@@ -307,6 +313,16 @@ export default {
       return localStorage.getItem("score")
         ? JSON.parse(localStorage.getItem("score"))
         : [];
+    },
+
+    acceptedCall() {
+      log("Accepted call");
+      this.isAccepted = true;
+      this.isLogo = true;
+
+      setTimeout(() => {
+        this.isLogo = false;
+      }, 2000);
     },
 
     openMenu() {
