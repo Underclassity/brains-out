@@ -114,7 +114,7 @@ export function getRandomForm() {
     formFunctions[Math.floor(Math.random() * formFunctions.length)];
 
   // Create element
-  const element = formFunctions[4](size, zombieParts, isSimple);
+  const element = formFunction(size, zombieParts, isSimple);
 
   this.restrainElement(element);
 

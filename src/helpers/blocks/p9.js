@@ -1,7 +1,10 @@
-import { Group, Vector3 } from "three";
+import { Group, MathUtils, Vector3 } from "three";
 
 import { positionHelper } from "../../components/MainScreen/transform-helpers.js";
-import generateMeshPoint from "../generate-mesh-point.js";
+import generateBodyMeshPoint from "../generate-body-mesh-point.js";
+import generateBrainsMeshPoint from "../generate-brains-mesh-point.js";
+import generateHeadMeshPoint from "../generate-head-mesh-point.js";
+import generateLegsMeshPoint from "../generate-legs-mesh-point.js";
 
 /**
  * Generate P9 form (block_images/p9.png)
@@ -22,10 +25,22 @@ export function generateP9Form(size = 0.2, parts = [], isSimple = false) {
   const childsGroup = new Group();
   childsGroup.name = "childs";
 
-  const firstMesh = generateMeshPoint(size, parts, isSimple);
-  const secondMesh = generateMeshPoint(size, parts, isSimple);
-  const thirdMesh = generateMeshPoint(size, parts, isSimple);
-  const fourthPoint = generateMeshPoint(size, parts, isSimple);
+  const firstMesh = generateHeadMeshPoint(
+    size,
+    parts,
+    isSimple,
+    false,
+    "Z_01_Head2"
+  );
+  const secondMesh = generateBodyMeshPoint(
+    size,
+    parts,
+    isSimple,
+    false,
+    "Z_01_Body1"
+  );
+  const thirdMesh = generateLegsMeshPoint(size, parts, isSimple);
+  const fourthPoint = generateBrainsMeshPoint(size, parts, isSimple);
 
   childsGroup.add(firstMesh);
   childsGroup.add(secondMesh);
@@ -35,15 +50,19 @@ export function generateP9Form(size = 0.2, parts = [], isSimple = false) {
   pointGroup.add(childsGroup);
 
   positionHelper(firstMesh, "x", -size);
-  positionHelper(firstMesh, "y", -size / 2);
+  positionHelper(firstMesh, "y", size / 2);
 
-  positionHelper(secondMesh, "y", -size / 2);
+  positionHelper(secondMesh, "y", size / 2);
 
   positionHelper(thirdMesh, "x", size);
-  positionHelper(thirdMesh, "y", -size / 2);
+  positionHelper(thirdMesh, "y", size / 2);
 
   positionHelper(fourthPoint, "x", -size);
-  positionHelper(fourthPoint, "y", size / 2);
+  positionHelper(fourthPoint, "y", -size / 2);
+
+  firstMesh.rotation.set(MathUtils.degToRad(-90), MathUtils.degToRad(-90), 0);
+  secondMesh.rotation.set(MathUtils.degToRad(-90), MathUtils.degToRad(-90), 0);
+  thirdMesh.rotation.set(MathUtils.degToRad(-90), MathUtils.degToRad(-90), 0);
 
   pointGroup.userData.size = new Vector3(3, 2, 1);
 
