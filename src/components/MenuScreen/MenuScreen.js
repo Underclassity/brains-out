@@ -5,7 +5,7 @@ export default {
 
   data() {
     return {
-      isMenu: true,
+      isMenu: false,
       isNewGame: false,
       isSettings: false,
       isControls: false,
@@ -31,7 +31,33 @@ export default {
     };
   },
 
+  computed: {
+    isShow() {
+      return (
+        this.isMenu ||
+        this.isNewGame ||
+        this.isControls ||
+        this.isSettings ||
+        this.isCredits ||
+        this.isEnd ||
+        this.isContinue
+      );
+    },
+  },
+
   methods: {
+    openStartMenu() {
+      this.isMenu = true;
+      this.isNewGame = false;
+      this.isSettings = false;
+      this.isControls = false;
+      this.isCredits = false;
+      this.isContinue = false;
+      this.isEnd = false;
+
+      log("Open start menu call", this.isShow);
+    },
+
     openMenu() {
       this.isMenu = false;
       this.isNewGame = true;
@@ -40,6 +66,8 @@ export default {
       this.isCredits = false;
       this.isContinue = false;
       this.isEnd = false;
+
+      log("Open menu call", this.isShow);
     },
 
     closeMenu() {
@@ -54,11 +82,11 @@ export default {
       if (this.isStarted) {
         this.$emit("back-to-game");
       }
+
+      log("Close menu call", this.isShow);
     },
 
     newGameCall() {
-      log("New game call");
-
       this.isMenu = false;
       this.isNewGame = true;
       this.isSettings = false;
@@ -66,11 +94,11 @@ export default {
       this.isCredits = false;
       this.isContinue = false;
       this.isEnd = false;
+
+      log("New game call", this.isShow);
     },
 
     settingsCall() {
-      log("Settings call");
-
       this.isMenu = false;
       this.isNewGame = false;
       this.isSettings = true;
@@ -78,11 +106,11 @@ export default {
       this.isCredits = false;
       this.isContinue = false;
       this.isEnd = false;
+
+      log("Settings call", this.isShow);
     },
 
     controlsCall() {
-      log("Controls call");
-
       this.isMenu = false;
       this.isNewGame = false;
       this.isSettings = false;
@@ -90,11 +118,11 @@ export default {
       this.isCredits = false;
       this.isContinue = false;
       this.isEnd = false;
+
+      log("Controls call", this.isShow);
     },
 
     creditsCall() {
-      log("Credits call");
-
       this.isMenu = false;
       this.isNewGame = false;
       this.isSettings = false;
@@ -102,11 +130,11 @@ export default {
       this.isCredits = true;
       this.isContinue = false;
       this.isEnd = false;
+
+      log("Credits call", this.isShow);
     },
 
     endCall() {
-      log("End call");
-
       this.isMenu = false;
       this.isNewGame = false;
       this.isSettings = false;
@@ -114,11 +142,11 @@ export default {
       this.isCredits = false;
       this.isContinue = false;
       this.isEnd = true;
+
+      log("End call".this.isShow);
     },
 
     continueCall() {
-      log("Continue call");
-
       this.isMenu = false;
       this.isNewGame = false;
       this.isSettings = false;
@@ -126,6 +154,8 @@ export default {
       this.isCredits = false;
       this.isContinue = true;
       this.isEnd = false;
+
+      log("Continue call", this.isShow);
     },
 
     startAgainCall() {
@@ -142,11 +172,11 @@ export default {
       this.isEnd = false;
 
       this.$emit("new-game");
+
+      log("Start again call", this.isShow);
     },
 
     backToMenu() {
-      log("Back to menu");
-
       if (this.isEnd) {
         this.isStarted = false;
       }
@@ -162,11 +192,11 @@ export default {
       if (this.isStarted) {
         this.$emit("back-to-game");
       }
+
+      log("Back to menu call", this.isShow);
     },
 
     playClick() {
-      log("Play click");
-
       this.isMenu = false;
       this.isNewGame = false;
       this.isSettings = false;
@@ -178,6 +208,8 @@ export default {
       }
 
       this.$emit("new-game");
+
+      log("Play click call", this.isShow);
     },
 
     prevPitSize() {
@@ -292,5 +324,6 @@ export default {
 
     this.emitter.on("openMenu", this.continueCall);
     this.emitter.on("openEndMenu", this.endCall);
+    this.emitter.on("openStartMenu", this.openStartMenu);
   },
 };

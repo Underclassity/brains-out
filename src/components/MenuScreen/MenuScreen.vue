@@ -1,5 +1,5 @@
 <template lang="pug">
-.menu--overlay(v-if="isMenu || isNewGame || isControls || isSettings || isCredits || isEnd || isContinue")
+.menu--overlay(v-if="isShow")
     .menu--main
         .menu--logo
             img(src="/img/logo-cut.png")
@@ -83,7 +83,7 @@
             .menu--item--green.menu--button(v-on:click="startAgainCall") Start Again
 
         .menu--buttons(v-if="isEnd")
-            .menu--item--red.menu--button(v-on:click="backToMenu") Back
+            .menu--item--red.menu--button(v-on:click="backToMenu") Back to menu
 
         //- Continue items
         .menu--buttons(v-if="isContinue")
@@ -96,7 +96,7 @@
             .menu--item--green.menu--button(v-on:click="closeMenu") Continue
 
         .menu--buttons(v-if="isContinue")
-            .menu--item--red.menu--button(v-on:click="backToMenu") Back
+            .menu--item--red.menu--button(v-on:click="backToMenu") Back to menu
 </template>
 
 <script src="./MenuScreen.js"></script>

@@ -6,7 +6,7 @@
  * @return  {Boolean}      Result
  */
 export function log(msg) {
-  console.debug(msg);
+  console.debug.call(this, ...arguments);
   return true;
 }
 

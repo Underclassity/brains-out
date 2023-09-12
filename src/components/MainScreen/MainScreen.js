@@ -141,6 +141,7 @@ export default {
       isControls: false,
       isInstanced: true,
       isStop: false,
+
       isAccepted: false,
       isLogo: false,
 
@@ -324,6 +325,12 @@ export default {
 
       setTimeout(() => {
         this.isLogo = false;
+
+        this.isPause = true;
+        this.isMenu = true;
+        this.isLogo = false;
+
+        this.emitter.emit("openStartMenu");
       }, 2000);
     },
 
