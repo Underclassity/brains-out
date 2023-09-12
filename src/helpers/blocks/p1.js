@@ -1,4 +1,4 @@
-import { Group, Vector3 } from "three";
+import { Group, Vector3, MathUtils } from "three";
 
 import { positionHelper } from "../../components/MainScreen/transform-helpers.js";
 import generateBodyMeshPoint from "../generate-body-mesh-point.js";
@@ -46,18 +46,45 @@ export function generateP1Form(size = 0.2, parts = [], isSimple = false) {
       break;
     // Var C
     case 2:
-      firstMesh = generateBrainsMeshPoint(size, parts, isSimple);
-      secondMesh = generateHeadMeshPoint(size, parts, isSimple);
+      firstMesh = generateHeadMeshPoint(size, parts, isSimple);
+      secondMesh = generateBrainsMeshPoint(size, parts, isSimple);
       break;
     // Var D
     case 3:
-      firstMesh = generateGutsMeshPoint(size, parts, isSimple);
-      secondMesh = generateBodyMeshPoint(size, parts, isSimple);
+      firstMesh = generateGutsMeshPoint(
+        size,
+        parts,
+        isSimple,
+        false,
+        "Z_01_Guts1"
+      );
+      secondMesh = generateBodyMeshPoint(
+        size,
+        parts,
+        isSimple,
+        false,
+        "Z_01_Body2"
+      );
+      firstMesh.rotation.set(MathUtils.degToRad(-180), 0, 0);
+      secondMesh.rotation.set(MathUtils.degToRad(-180), 0, 0);
       break;
     // Var E
     case 4:
-      firstMesh = generateBodyMeshPoint(size, parts, isSimple);
-      secondMesh = generateBodyMeshPoint(size, parts, isSimple);
+      firstMesh = generateBodyMeshPoint(
+        size,
+        parts,
+        isSimple,
+        false,
+        "Z_01_Body3_1"
+      );
+      secondMesh = generateBodyMeshPoint(
+        size,
+        parts,
+        isSimple,
+        false,
+        "Z_01_Body3_2"
+      );
+      firstMesh.rotation.set(0, MathUtils.degToRad(180), 0);
       break;
     // Var Gnome
     case 5:
@@ -75,11 +102,11 @@ export function generateP1Form(size = 0.2, parts = [], isSimple = false) {
 
   pointGroup.add(childsGroup);
 
-  positionHelper(firstMesh, "x", -size / 2);
+  positionHelper(firstMesh, "y", size / 2);
 
-  positionHelper(secondMesh, "x", size / 2);
+  positionHelper(secondMesh, "y", -size / 2);
 
-  pointGroup.userData.size = new Vector3(2, 1, 1);
+  pointGroup.userData.size = new Vector3(1, 2, 1);
 
   return pointGroup;
 }

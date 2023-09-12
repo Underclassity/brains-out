@@ -8,6 +8,7 @@ import randomBetween from "./random-between.js";
  * @param   {Array}    [parts=[]]         Parts array
  * @param   {Boolean}  [isSimple=false]   Render simple block flag
  * @param   {Boolean}  [line=false]       Render lines flag
+ * @param   {String}   [name=false]       Part name
  *
  * @return  {Object}                      Group objects
  */
@@ -15,8 +16,18 @@ export function generateBrainsMeshPoint(
   size = 0.2,
   parts = [],
   isSimple = false,
-  line = false
+  line = false,
+  name = false
 ) {
+  if (name) {
+    return generateMeshPoint(
+      size,
+      parts.filter((item) => item.name == name),
+      isSimple,
+      line
+    );
+  }
+
   const brainsParts = parts.filter((item) => item.name.includes("Brains"));
 
   const brainsPart = brainsParts[randomBetween(0, brainsParts.length - 1)];

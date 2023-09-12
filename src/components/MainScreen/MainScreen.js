@@ -89,7 +89,7 @@ export default {
       sceneColor: 0x00_0b_12,
 
       isPause: true,
-      isMenu: false,
+      isMenu: true,
       isSmooth: true,
       isSimple: false,
       isEnd: false,
