@@ -1,4 +1,4 @@
-import { Group, Vector3 } from "three";
+import { Group, MathUtils, Vector3 } from "three";
 
 import { positionHelper } from "../../components/MainScreen/transform-helpers.js";
 import generateBodyMeshPoint from "../generate-body-mesh-point.js";
@@ -21,10 +21,28 @@ export function generateP6Form(size = 0.2, parts = [], isSimple = false) {
 
   pointGroup.name = "P6";
 
-  const firstMesh = generateBodyMeshPoint(size, parts, isSimple);
-  const secondMesh = generateBodyMeshPoint(size, parts, isSimple);
+  const firstMesh = generateLegsMeshPoint(
+    size,
+    parts,
+    isSimple,
+    false,
+    "Z_01_Legs1"
+  );
+  const secondMesh = generateBodyMeshPoint(
+    size,
+    parts,
+    isSimple,
+    false,
+    "Z_01_Body3_2"
+  );
   const thirdMesh = generateHeadMeshPoint(size, parts, isSimple);
-  const fourthPoint = generateLegsMeshPoint(size, parts, isSimple);
+  const fourthMesh = generateBodyMeshPoint(
+    size,
+    parts,
+    isSimple,
+    false,
+    "Z_01_Body3_1"
+  );
 
   const childsGroup = new Group();
   childsGroup.name = "childs";
@@ -32,7 +50,7 @@ export function generateP6Form(size = 0.2, parts = [], isSimple = false) {
   childsGroup.add(firstMesh);
   childsGroup.add(secondMesh);
   childsGroup.add(thirdMesh);
-  childsGroup.add(fourthPoint);
+  childsGroup.add(fourthMesh);
 
   pointGroup.add(childsGroup);
 
@@ -45,8 +63,16 @@ export function generateP6Form(size = 0.2, parts = [], isSimple = false) {
   positionHelper(thirdMesh, "x", size / 2);
   positionHelper(thirdMesh, "y", -size / 2);
 
-  positionHelper(fourthPoint, "x", size / 2);
-  positionHelper(fourthPoint, "y", size / 2);
+  positionHelper(fourthMesh, "x", size / 2);
+  positionHelper(fourthMesh, "y", size / 2);
+
+  secondMesh.rotation.set(
+    MathUtils.degToRad(-180),
+    MathUtils.degToRad(90),
+    MathUtils.degToRad(180)
+  );
+  fourthMesh.rotation.set(MathUtils.degToRad(90), 0, MathUtils.degToRad(-90));
+  thirdMesh.rotation.set(MathUtils.degToRad(-90), MathUtils.degToRad(-180), 0);
 
   pointGroup.userData.size = new Vector3(2, 2, 1);
 

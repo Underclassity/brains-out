@@ -1,4 +1,4 @@
-import { Group, Vector3 } from "three";
+import { Group, MathUtils, Vector3 } from "three";
 
 import { positionHelper } from "../../components/MainScreen/transform-helpers.js";
 import generateBodyMeshPoint from "../generate-body-mesh-point.js";
@@ -26,14 +26,32 @@ export function generateP7Form(size = 0.2, parts = [], isSimple = false) {
   childsGroup.name = "childs";
 
   const firstMesh = generateHeadMeshPoint(size, parts, isSimple);
-  const secondMesh = generateBodyMeshPoint(size, parts, isSimple);
-  const thirdMesh = generateLegsMeshPoint(size, parts, isSimple);
-  const fourthPoint = generateGutsMeshPoint(size, parts, isSimple);
+  const secondMesh = generateBodyMeshPoint(
+    size,
+    parts,
+    isSimple,
+    false,
+    "Z_01_Body2"
+  );
+  const thirdMesh = generateLegsMeshPoint(
+    size,
+    parts,
+    isSimple,
+    false,
+    "Z_01_Legs1"
+  );
+  const fourthMesh = generateGutsMeshPoint(
+    size,
+    parts,
+    isSimple,
+    false,
+    "Z_01_Guts1"
+  );
 
   childsGroup.add(firstMesh);
   childsGroup.add(secondMesh);
   childsGroup.add(thirdMesh);
-  childsGroup.add(fourthPoint);
+  childsGroup.add(fourthMesh);
 
   pointGroup.add(childsGroup);
 
@@ -45,7 +63,28 @@ export function generateP7Form(size = 0.2, parts = [], isSimple = false) {
   positionHelper(thirdMesh, "x", size);
   positionHelper(thirdMesh, "y", -size / 2);
 
-  positionHelper(fourthPoint, "y", size / 2);
+  positionHelper(fourthMesh, "y", size / 2);
+
+  firstMesh.rotation.set(
+    MathUtils.degToRad(-90),
+    MathUtils.degToRad(-90),
+    MathUtils.degToRad(90)
+  );
+  secondMesh.rotation.set(
+    MathUtils.degToRad(-90),
+    MathUtils.degToRad(-90),
+    MathUtils.degToRad(90)
+  );
+  thirdMesh.rotation.set(
+    MathUtils.degToRad(-90),
+    MathUtils.degToRad(-90),
+    MathUtils.degToRad(90)
+  );
+  fourthMesh.rotation.set(
+    MathUtils.degToRad(-90),
+    MathUtils.degToRad(-90),
+    MathUtils.degToRad(90)
+  );
 
   pointGroup.userData.size = new Vector3(3, 2, 1);
 
