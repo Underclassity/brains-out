@@ -73,7 +73,6 @@
 AcceptBugsScreen(v-if="!isAccepted" v-on:accept="acceptedCall")
 LogoScreen(v-if="isLogo")
 MenuScreen(
-    v-if="isMenu"
     v-on:new-game="newGameCall"
     v-on:back-to-game="backToGameCall"
 )

@@ -1,10 +1,24 @@
 import log from "../../helpers/log.js";
 
+import logoSrc from "../../assets/img/logo-cut.png";
+
 export default {
   name: "MenuScreen",
 
   data() {
     return {
+      logoSrc,
+
+      flags: {
+        menu: false,
+        new: false,
+        settings: false,
+        controls: false,
+        credits: false,
+        continue: false,
+        end: false,
+      },
+
       isMenu: false,
       isNewGame: false,
       isSettings: false,
@@ -35,51 +49,41 @@ export default {
 
   computed: {
     isShow() {
-      return (
-        this.isMenu ||
-        this.isNewGame ||
-        this.isControls ||
-        this.isSettings ||
-        this.isCredits ||
-        this.isEnd ||
-        this.isContinue
-      );
+      let isShow = false;
+
+      for (const id in this.flags) {
+        if (this.flags[id]) {
+          isShow = true;
+        }
+      }
+
+      return isShow;
     },
   },
 
   methods: {
+    resetFlags() {
+      for (const id in this.flags) {
+        this.flags[id] = false;
+      }
+    },
+
     openStartMenu() {
-      this.isMenu = true;
-      this.isNewGame = false;
-      this.isSettings = false;
-      this.isControls = false;
-      this.isCredits = false;
-      this.isContinue = false;
-      this.isEnd = false;
+      this.resetFlags();
+      this.flags.menu = true;
 
       log("Open start menu call", this.isShow);
     },
 
     openMenu() {
-      this.isMenu = false;
-      this.isNewGame = true;
-      this.isSettings = false;
-      this.isControls = false;
-      this.isCredits = false;
-      this.isContinue = false;
-      this.isEnd = false;
+      this.resetFlags();
+      this.flags.new = true;
 
       log("Open menu call", this.isShow);
     },
 
     closeMenu() {
-      this.isMenu = false;
-      this.isNewGame = false;
-      this.isSettings = false;
-      this.isControls = false;
-      this.isCredits = false;
-      this.isContinue = false;
-      this.isEnd = false;
+      this.resetFlags();
 
       if (this.isStarted) {
         this.$emit("back-to-game");
@@ -89,13 +93,8 @@ export default {
     },
 
     newGameCall() {
-      this.isMenu = false;
-      this.isNewGame = true;
-      this.isSettings = false;
-      this.isControls = false;
-      this.isCredits = false;
-      this.isContinue = false;
-      this.isEnd = false;
+      this.resetFlags();
+      this.flags.new = true;
 
       log("New game call", this.isShow);
     },
@@ -106,49 +105,29 @@ export default {
     },
 
     settingsCall() {
-      this.isMenu = false;
-      this.isNewGame = false;
-      this.isSettings = true;
-      this.isControls = false;
-      this.isCredits = false;
-      this.isContinue = false;
-      this.isEnd = false;
+      this.resetFlags();
+      this.flags.settings = true;
 
       log("Settings call", this.isShow);
     },
 
     controlsCall() {
-      this.isMenu = false;
-      this.isNewGame = false;
-      this.isSettings = false;
-      this.isControls = true;
-      this.isCredits = false;
-      this.isContinue = false;
-      this.isEnd = false;
+      this.resetFlags();
+      this.flags.controls = true;
 
       log("Controls call", this.isShow);
     },
 
     creditsCall() {
-      this.isMenu = false;
-      this.isNewGame = false;
-      this.isSettings = false;
-      this.isControls = false;
-      this.isCredits = true;
-      this.isContinue = false;
-      this.isEnd = false;
+      this.resetFlags();
+      this.flags.credits = true;
 
       log("Credits call", this.isShow);
     },
 
     endCall() {
-      this.isMenu = false;
-      this.isNewGame = false;
-      this.isSettings = false;
-      this.isControls = false;
-      this.isCredits = false;
-      this.isContinue = false;
-      this.isEnd = true;
+      this.resetFlags();
+      this.flags.end = true;
 
       this.isStarted = false;
 
@@ -156,13 +135,8 @@ export default {
     },
 
     continueCall() {
-      this.isMenu = false;
-      this.isNewGame = false;
-      this.isSettings = false;
-      this.isControls = false;
-      this.isCredits = false;
-      this.isContinue = true;
-      this.isEnd = false;
+      this.resetFlags();
+      this.flags.continue = true;
 
       log("Continue call", this.isShow);
     },
@@ -172,13 +146,7 @@ export default {
         this.isStarted = true;
       }
 
-      this.isMenu = false;
-      this.isNewGame = false;
-      this.isSettings = false;
-      this.isControls = false;
-      this.isCredits = false;
-      this.isContinue = false;
-      this.isEnd = false;
+      this.resetFlags();
 
       this.$emit("new-game");
 
@@ -190,14 +158,8 @@ export default {
         this.isStarted = false;
       }
 
-      this.isMenu = this.isStarted ? false : true;
-
-      this.isNewGame = false;
-      this.isSettings = false;
-      this.isControls = false;
-      this.isCredits = false;
-      this.isContinue = false;
-      this.isEnd = false;
+      this.resetFlags();
+      this.flags.menu = this.isStarted ? false : true;
 
       if (this.isStarted) {
         this.$emit("back-to-game");
@@ -210,17 +172,13 @@ export default {
       this.openStartMenu();
 
       this.isStarted = false;
-      this.isEnd = false;
+      this.flags.end = false;
 
       log("Back to menu call", this.isShow);
     },
 
     playClick() {
-      this.isMenu = false;
-      this.isNewGame = false;
-      this.isSettings = false;
-      this.isControls = false;
-      this.isCredits = false;
+      this.resetFlags();
 
       if (!this.isStarted) {
         this.isStarted = true;
