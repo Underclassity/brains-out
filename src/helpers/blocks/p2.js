@@ -34,9 +34,9 @@ export function generateP2Form(size = 0.2, parts = [], isSimple = false) {
 
   pointGroup.add(childsGroup);
 
-  positionHelper(firstMesh, "x", -size);
+  positionHelper(firstMesh, "y", size);
 
-  positionHelper(thirdMesh, "x", size);
+  positionHelper(thirdMesh, "y", -size);
 
   pointGroup.userData.size = new Vector3(3, 1, 1);
 

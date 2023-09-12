@@ -1,4 +1,4 @@
-import { Group, Vector3 } from "three";
+import { Group, Vector3, MathUtils } from "three";
 
 import { positionHelper } from "../../components/MainScreen/transform-helpers.js";
 import generateBodyMeshPoint from "../generate-body-mesh-point.js";
@@ -37,33 +37,129 @@ export function generateP5Form(size = 0.2, parts = [], isSimple = false) {
   switch (type) {
     // Var A
     case 0:
-      firstMesh = generateBrainsMeshPoint(size, parts, isSimple);
-      secondMesh = generateHeadMeshPoint(size, parts, isSimple);
+      firstMesh = generateBrainsMeshPoint(
+        size,
+        parts,
+        isSimple,
+        false,
+        "Z_01_Brains1"
+      );
+      secondMesh = generateHeadMeshPoint(
+        size,
+        parts,
+        isSimple,
+        false,
+        "Z_01_Head2"
+      );
       thirdMesh = generateBodyMeshPoint(size, parts, isSimple);
       break;
     // Var B
     case 1:
       firstMesh = generateHeadMeshPoint(size, parts, isSimple);
-      secondMesh = generateBodyMeshPoint(size, parts, isSimple);
-      thirdMesh = generateGutsMeshPoint(size, parts, isSimple);
+      secondMesh = generateBodyMeshPoint(
+        size,
+        parts,
+        isSimple,
+        false,
+        "Z_01_Body2"
+      );
+      thirdMesh = generateGutsMeshPoint(
+        size,
+        parts,
+        isSimple,
+        false,
+        "Z_01_Guts1"
+      );
+      firstMesh.rotation.set(0, MathUtils.degToRad(-90), 0);
+      secondMesh.rotation.set(0, MathUtils.degToRad(-90), 0);
+      thirdMesh.rotation.set(0, MathUtils.degToRad(-90), 0);
+
       break;
     // Var C
     case 2:
-      firstMesh = generateGutsMeshPoint(size, parts, isSimple);
-      secondMesh = generateBodyMeshPoint(size, parts, isSimple);
-      thirdMesh = generateLegsMeshPoint(size, parts, isSimple);
+      firstMesh = generateLegsMeshPoint(
+        size,
+        parts,
+        isSimple,
+        false,
+        "Z_01_Legs1"
+      );
+      secondMesh = generateBodyMeshPoint(
+        size,
+        parts,
+        isSimple,
+        false,
+        "Z_01_Body2"
+      );
+      thirdMesh = generateGutsMeshPoint(
+        size,
+        parts,
+        isSimple,
+        false,
+        "Z_01_Guts1"
+      );
+      firstMesh.rotation.set(0, MathUtils.degToRad(90), 0);
+      secondMesh.rotation.set(0, MathUtils.degToRad(90), 0);
+      thirdMesh.rotation.set(0, MathUtils.degToRad(90), 0);
+
       break;
     // Var D
     case 3:
       firstMesh = generateHeadMeshPoint(size, parts, isSimple);
-      secondMesh = generateBodyMeshPoint(size, parts, isSimple);
-      thirdMesh = generateBodyMeshPoint(size, parts, isSimple);
+      secondMesh = generateBodyMeshPoint(
+        size,
+        parts,
+        isSimple,
+        false,
+        "Z_01_Body3_1"
+      );
+      thirdMesh = generateBodyMeshPoint(
+        size,
+        parts,
+        isSimple,
+        false,
+        "Z_01_Body3_2"
+      );
+      firstMesh.rotation.set(0, MathUtils.degToRad(-90), 0);
+      secondMesh.rotation.set(0, MathUtils.degToRad(-90), 0);
+      thirdMesh.rotation.set(0, MathUtils.degToRad(-90), 0);
+
       break;
     // Var E
     case 4:
-      firstMesh = generateBodyMeshPoint(size, parts, isSimple);
-      secondMesh = generateBodyMeshPoint(size, parts, isSimple);
-      thirdMesh = generateLegsMeshPoint(size, parts, isSimple);
+      firstMesh = generateLegsMeshPoint(
+        size,
+        parts,
+        isSimple,
+        false,
+        "Z_01_Legs1"
+      );
+      secondMesh = generateBodyMeshPoint(
+        size,
+        parts,
+        isSimple,
+        false,
+        "Z_01_Body3_2"
+      );
+      thirdMesh = generateBodyMeshPoint(
+        size,
+        parts,
+        isSimple,
+        false,
+        "Z_01_Body3_1"
+      );
+      firstMesh.rotation.set(0, MathUtils.degToRad(90), 0);
+      secondMesh.rotation.set(
+        MathUtils.degToRad(-180),
+        MathUtils.degToRad(90),
+        0
+      );
+      thirdMesh.rotation.set(
+        MathUtils.degToRad(-180),
+        MathUtils.degToRad(90),
+        0
+      );
+
       break;
     default:
       firstMesh = generateMeshPoint(size, parts, isSimple);
@@ -79,13 +175,13 @@ export function generateP5Form(size = 0.2, parts = [], isSimple = false) {
   pointGroup.add(childsGroup);
 
   positionHelper(firstMesh, "x", -size / 2);
-  positionHelper(firstMesh, "y", -size / 2);
+  positionHelper(firstMesh, "y", size / 2);
 
   positionHelper(secondMesh, "x", size / 2);
-  positionHelper(secondMesh, "y", -size / 2);
+  positionHelper(secondMesh, "y", size / 2);
 
-  positionHelper(thirdMesh, "x", -size / 2);
-  positionHelper(thirdMesh, "y", size / 2);
+  positionHelper(thirdMesh, "x", size / 2);
+  positionHelper(thirdMesh, "y", -size / 2);
 
   pointGroup.userData.size = new Vector3(2, 2, 1);
 
