@@ -143,7 +143,7 @@ export default {
       this.isContinue = false;
       this.isEnd = true;
 
-      log("End call".this.isShow);
+      log("End call", this.isShow);
     },
 
     continueCall() {
