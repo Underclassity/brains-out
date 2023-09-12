@@ -1,6 +1,7 @@
 import {
   BoxGeometry,
   BoxHelper,
+  Color,
   DynamicDrawUsage,
   Group,
   InstancedMesh,
@@ -9,6 +10,7 @@ import {
   MeshBasicMaterial,
   MeshPhongMaterial,
   Object3D,
+  PlaneGeometry,
   Vector3,
 } from "three";
 
@@ -651,6 +653,49 @@ export function generatePit(
         }
       }
     }
+
+    const pitMaterial = new MeshBasicMaterial({
+      color: new Color(0x381402),
+    });
+    const bottomGeometry = new PlaneGeometry(width, height);
+    const pitBottomMesh = new Mesh(bottomGeometry, pitMaterial);
+
+    const leftRightGeometry = new PlaneGeometry(depth, height);
+    const topBottomGeometry = new PlaneGeometry(depth, width);
+
+    const leftMesh = new Mesh(leftRightGeometry, pitMaterial);
+    const rightMesh = new Mesh(leftRightGeometry, pitMaterial);
+
+    const topMesh = new Mesh(topBottomGeometry, pitMaterial);
+    const bottomMesh = new Mesh(topBottomGeometry, pitMaterial);
+
+    pitBottomMesh.position.setZ(-depth - size * 1.5);
+
+    leftMesh.rotateY(MathUtils.degToRad(90));
+    rightMesh.rotateY(MathUtils.degToRad(-90));
+
+    topMesh.rotateY(MathUtils.degToRad(90));
+    topMesh.rotateX(MathUtils.degToRad(90));
+
+    bottomMesh.rotateY(MathUtils.degToRad(90));
+    bottomMesh.rotateX(MathUtils.degToRad(-90));
+
+    leftMesh.position.setX(-width / 2 - size);
+    rightMesh.position.setX(width / 2 + size);
+
+    topMesh.position.setY(height / 2 + size);
+    bottomMesh.position.setY(-height / 2 - size);
+
+    leftMesh.position.setZ(-depth / 2);
+    rightMesh.position.setZ(-depth / 2);
+    topMesh.position.setZ(-depth / 2);
+    bottomMesh.position.setZ(-depth / 2);
+
+    pit.add(pitBottomMesh);
+    pit.add(leftMesh);
+    pit.add(rightMesh);
+    pit.add(topMesh);
+    pit.add(bottomMesh);
 
     pit.add(pitGroup);
   }
