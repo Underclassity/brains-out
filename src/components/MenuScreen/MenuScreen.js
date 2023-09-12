@@ -21,7 +21,7 @@ export default {
       minSpeed: 0.5,
       speed: 0.5,
       maxSpeed: 10,
-      speedStep: 0.2,
+      speedStep: 0.1,
 
       volume: 0.2,
       fxVolume: 0.6,
