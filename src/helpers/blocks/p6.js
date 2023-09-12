@@ -1,7 +1,9 @@
 import { Group, Vector3 } from "three";
 
 import { positionHelper } from "../../components/MainScreen/transform-helpers.js";
-import generateMeshPoint from "../generate-mesh-point.js";
+import generateBodyMeshPoint from "../generate-body-mesh-point.js";
+import generateHeadMeshPoint from "../generate-head-mesh-point.js";
+import generateLegsMeshPoint from "../generate-legs-mesh-point.js";
 
 /**
  * Generate P6 form (block_images/p6.png)
@@ -19,10 +21,10 @@ export function generateP6Form(size = 0.2, parts = [], isSimple = false) {
 
   pointGroup.name = "P6";
 
-  const firstMesh = generateMeshPoint(size, parts, isSimple);
-  const secondMesh = generateMeshPoint(size, parts, isSimple);
-  const thirdMesh = generateMeshPoint(size, parts, isSimple);
-  const fourthPoint = generateMeshPoint(size, parts, isSimple);
+  const firstMesh = generateBodyMeshPoint(size, parts, isSimple);
+  const secondMesh = generateBodyMeshPoint(size, parts, isSimple);
+  const thirdMesh = generateHeadMeshPoint(size, parts, isSimple);
+  const fourthPoint = generateLegsMeshPoint(size, parts, isSimple);
 
   const childsGroup = new Group();
   childsGroup.name = "childs";

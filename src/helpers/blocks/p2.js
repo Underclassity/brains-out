@@ -1,7 +1,9 @@
 import { Group, Vector3 } from "three";
 
 import { positionHelper } from "../../components/MainScreen/transform-helpers.js";
-import generateMeshPoint from "../generate-mesh-point.js";
+import generateBodyMeshPoint from "../generate-body-mesh-point.js";
+import generateHeadMeshPoint from "../generate-head-mesh-point.js";
+import generateLegsMeshPoint from "../generate-legs-mesh-point.js";
 
 /**
  * Generate P2 form (block_images/p2.png)
@@ -22,9 +24,9 @@ export function generateP2Form(size = 0.2, parts = [], isSimple = false) {
   const childsGroup = new Group();
   childsGroup.name = "childs";
 
-  const firstMesh = generateMeshPoint(size, parts, isSimple);
-  const secondMesh = generateMeshPoint(size, parts, isSimple);
-  const thirdMesh = generateMeshPoint(size, parts, isSimple);
+  const firstMesh = generateHeadMeshPoint(size, parts, isSimple);
+  const secondMesh = generateBodyMeshPoint(size, parts, isSimple);
+  const thirdMesh = generateLegsMeshPoint(size, parts, isSimple);
 
   childsGroup.add(firstMesh);
   childsGroup.add(secondMesh);

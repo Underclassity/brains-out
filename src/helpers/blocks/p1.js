@@ -1,7 +1,13 @@
 import { Group, Vector3 } from "three";
 
 import { positionHelper } from "../../components/MainScreen/transform-helpers.js";
+import generateBodyMeshPoint from "../generate-body-mesh-point.js";
+import generateBrainsMeshPoint from "../generate-brains-mesh-point.js";
+import generateGutsMeshPoint from "../generate-guts-mesh-point.js";
+import generateHeadMeshPoint from "../generate-head-mesh-point.js";
+import generateLegsMeshPoint from "../generate-legs-mesh-point.js";
 import generateMeshPoint from "../generate-mesh-point.js";
+import randomBetween from "../random-between.js";
 
 /**
  * Generate P1 form (block_images/p1.png)
@@ -22,8 +28,47 @@ export function generateP1Form(size = 0.2, parts = [], isSimple = false) {
   const childsGroup = new Group();
   childsGroup.name = "childs";
 
-  const firstMesh = generateMeshPoint(size, parts, isSimple);
-  const secondMesh = generateMeshPoint(size, parts, isSimple);
+  const type = randomBetween(0, 5);
+
+  let firstMesh;
+  let secondMesh;
+
+  switch (type) {
+    // Var A
+    case 0:
+      firstMesh = generateHeadMeshPoint(size, parts, isSimple);
+      secondMesh = generateBodyMeshPoint(size, parts, isSimple);
+      break;
+    // Var B
+    case 1:
+      firstMesh = generateBodyMeshPoint(size, parts, isSimple);
+      secondMesh = generateLegsMeshPoint(size, parts, isSimple);
+      break;
+    // Var C
+    case 2:
+      firstMesh = generateBrainsMeshPoint(size, parts, isSimple);
+      secondMesh = generateHeadMeshPoint(size, parts, isSimple);
+      break;
+    // Var D
+    case 3:
+      firstMesh = generateGutsMeshPoint(size, parts, isSimple);
+      secondMesh = generateBodyMeshPoint(size, parts, isSimple);
+      break;
+    // Var E
+    case 4:
+      firstMesh = generateBodyMeshPoint(size, parts, isSimple);
+      secondMesh = generateBodyMeshPoint(size, parts, isSimple);
+      break;
+    // Var Gnome
+    case 5:
+      firstMesh = generateHeadMeshPoint(size, parts, isSimple);
+      secondMesh = generateLegsMeshPoint(size, parts, isSimple);
+      break;
+    default:
+      firstMesh = generateMeshPoint(size, parts, isSimple);
+      secondMesh = generateMeshPoint(size, parts, isSimple);
+      break;
+  }
 
   childsGroup.add(firstMesh);
   childsGroup.add(secondMesh);
