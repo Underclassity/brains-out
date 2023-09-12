@@ -334,13 +334,13 @@ export default {
     },
 
     disableDevMode() {
-      this.isDev = true;
+      this.isDev = false;
 
       this.emitter.emit("updateDevMode", this.isDev);
     },
 
     enableDevMode() {
-      this.isDev = false;
+      this.isDev = true;
 
       this.emitter.emit("updateDevMode", this.isDev);
     },
