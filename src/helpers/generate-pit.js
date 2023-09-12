@@ -697,6 +697,36 @@ export function generatePit(
     pit.add(topMesh);
     pit.add(bottomMesh);
 
+    const grassPlaneMaterial = new MeshBasicMaterial({
+      color: new Color(0x18ba4b),
+    });
+    const topBottomGrassGeometry = new PlaneGeometry(10 * 2 + width, 9);
+    const leftRightGrassGeometry = new PlaneGeometry(10 - 1, height + 2);
+
+    const topGrassMesh = new Mesh(topBottomGrassGeometry, grassPlaneMaterial);
+    const bottomGrassMesh = new Mesh(
+      topBottomGrassGeometry,
+      grassPlaneMaterial
+    );
+    const leftGrassMesh = new Mesh(leftRightGrassGeometry, grassPlaneMaterial);
+    const rightGrassMesh = new Mesh(leftRightGrassGeometry, grassPlaneMaterial);
+
+    topGrassMesh.position.setY(height / 2 + 10 / 2 + size / 2);
+    bottomGrassMesh.position.setY(-height / 2 - 10 / 2 - size / 2);
+
+    leftGrassMesh.position.setX(-width / 2 - 10 / 2 - size / 2);
+    rightGrassMesh.position.setX(width / 2 + 10 / 2 + size / 2);
+
+    topGrassMesh.position.setZ(-size / 2);
+    bottomGrassMesh.position.setZ(-size / 2);
+    leftGrassMesh.position.setZ(-size / 2);
+    rightGrassMesh.position.setZ(-size / 2);
+
+    pit.add(topGrassMesh);
+    pit.add(bottomGrassMesh);
+    pit.add(leftGrassMesh);
+    pit.add(rightGrassMesh);
+
     pit.add(pitGroup);
   }
 
