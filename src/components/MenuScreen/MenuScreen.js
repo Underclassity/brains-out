@@ -150,6 +150,8 @@ export default {
       this.isContinue = false;
       this.isEnd = true;
 
+      this.isStarted = false;
+
       log("End call", this.isShow);
     },
 
