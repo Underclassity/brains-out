@@ -32,7 +32,7 @@
             .menu--selector--next(v-on:click="nextSpeed" v-if="speed != maxSpeed")
 
         .menu--buttons(v-if="isNewGame")
-            .menu--item--red.menu--button(v-on:click="backToMenu") Back
+            .menu--item--red.menu--button(v-on:click="back") Back
             .menu--item--new.menu--button(v-on:click="playClick") Play
 
         //- Controls items
@@ -45,7 +45,7 @@
         .menu--label(v-if="isControls") Space - Drop
 
         .menu--buttons(v-if="isControls")
-            .menu--item--red.menu--button(v-on:click="backToMenu") Back
+            .menu--item--red.menu--button(v-on:click="back") Back
 
         //- Credits items
         .menu--title(v-if="isCredits") Credits
@@ -55,7 +55,7 @@
         .menu--label(v-if="isCredits") Nikolai
 
         .menu--buttons(v-if="isCredits")
-            .menu--item--red.menu--button(v-on:click="backToMenu") Back
+            .menu--item--red.menu--button(v-on:click="back") Back
 
         //- Settings items
         .menu--title(v-if="isSettings") Settings
@@ -73,7 +73,7 @@
             .menu--selector--next(v-on:click="nextFxVolume" v-if="fxVolume != 1")
 
         .menu--buttons(v-if="isSettings")
-            .menu--item--red.menu--button(v-on:click="backToMenu") Back
+            .menu--item--red.menu--button(v-on:click="back") Back
 
         //- End items
         .menu--buttons(v-if="isEnd")

@@ -176,7 +176,7 @@ export default {
       log("Start again call", this.isShow);
     },
 
-    backToMenu() {
+    back() {
       if (this.isEnd) {
         this.isStarted = false;
       }
@@ -187,11 +187,21 @@ export default {
       this.isSettings = false;
       this.isControls = false;
       this.isCredits = false;
+      this.isContinue = false;
       this.isEnd = false;
 
       if (this.isStarted) {
         this.$emit("back-to-game");
       }
+
+      log("Back call", this.isShow);
+    },
+
+    backToMenu() {
+      this.openStartMenu();
+
+      this.isStarted = false;
+      this.isEnd = false;
 
       log("Back to menu call", this.isShow);
     },
