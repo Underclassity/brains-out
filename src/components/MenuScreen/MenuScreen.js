@@ -264,7 +264,7 @@ export default {
     prevSpeed() {
       this.speed -= this.speedStep;
 
-      this.speed = Math.floor(this.speed * 100) / 100;
+      this.speed = Math.round(this.speed * 100) / 100;
 
       if (this.speed <= this.minSpeed) {
         this.speed = this.minSpeed;
@@ -276,7 +276,7 @@ export default {
     nextSpeed() {
       this.speed += this.speedStep;
 
-      this.speed = Math.floor(this.speed * 100) / 100;
+      this.speed = Math.round(this.speed * 100) / 100;
 
       if (this.speed >= this.maxSpeed) {
         this.speed = this.maxSpeed;
@@ -288,7 +288,7 @@ export default {
     prevVolume() {
       this.volume -= 0.1;
 
-      this.volume = Math.floor(this.volume * 100) / 100;
+      this.volume = Math.round(this.volume * 100) / 100;
 
       if (this.volume <= 0) {
         this.volume = 0;
@@ -300,7 +300,7 @@ export default {
     nextVolume() {
       this.volume += 0.1;
 
-      this.volume = Math.floor(this.volume * 100) / 100;
+      this.volume = Math.round(this.volume * 100) / 100;
 
       if (this.volume >= 1) {
         this.volume = 1;
@@ -312,7 +312,7 @@ export default {
     prevFxVolume() {
       this.fxVolume -= 0.1;
 
-      this.fxVolume = Math.floor(this.fxVolume * 100) / 100;
+      this.fxVolume = Math.round(this.fxVolume * 100) / 100;
 
       if (this.fxVolume <= 0) {
         this.fxVolume = 0;
@@ -324,7 +324,7 @@ export default {
     nextFxVolume() {
       this.fxVolume += 0.1;
 
-      this.fxVolume = Math.floor(this.fxVolume * 100) / 100;
+      this.fxVolume = Math.round(this.fxVolume * 100) / 100;
 
       if (this.fxVolume >= 1) {
         this.fxVolume = 1;
