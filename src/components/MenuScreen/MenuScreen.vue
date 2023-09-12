@@ -72,6 +72,13 @@
             .menu--selector--value {{ fxVolume }}
             .menu--selector--next(v-on:click="nextFxVolume" v-if="fxVolume != 1")
 
+        .menu--selector(v-if="isSettings")
+            .menu--label Dev mode
+            .menu--selector--prev(v-on:click="disableDevMode" v-if="isDev")
+            .menu--selector--value(v-if="isDev") Yes
+            .menu--selector--value(v-if="!isDev") No
+            .menu--selector--next(v-on:click="enableDevMode" v-if="!isDev")
+
         .menu--buttons(v-if="isSettings")
             .menu--item--red.menu--button(v-on:click="back") Back
 
@@ -87,7 +94,7 @@
 
         //- Continue items
         .menu--buttons(v-if="isContinue")
-            .menu--item--green.menu--button(v-on:click="newGameCall") New Game
+            .menu--item--green.menu--button(v-on:click="newGameCallForce") New Game
 
         .menu--buttons(v-if="isContinue")
             .menu--item--green.menu--button(v-on:click="startAgainCall") Start Again

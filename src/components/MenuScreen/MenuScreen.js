@@ -26,6 +26,8 @@ export default {
       volume: 0.2,
       fxVolume: 0.6,
 
+      isDev: false,
+
       blocksTypeOptions: ["flat", "basic", "extended"],
       blockType: "flat",
     };
@@ -96,6 +98,11 @@ export default {
       this.isEnd = false;
 
       log("New game call", this.isShow);
+    },
+
+    newGameCallForce() {
+      this.isStarted = false;
+      this.newGameCall();
     },
 
     settingsCall() {
@@ -322,6 +329,18 @@ export default {
       }
 
       this.emitter.emit("changeFxVolume", this.fxVolume);
+    },
+
+    disableDevMode() {
+      this.isDev = true;
+
+      this.emitter.emit("updateDevMode", this.isDev);
+    },
+
+    enableDevMode() {
+      this.isDev = false;
+
+      this.emitter.emit("updateDevMode", this.isDev);
     },
   },
 
