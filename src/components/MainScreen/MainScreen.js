@@ -403,11 +403,6 @@ export default {
       log(`Dev mode updated: ${devMode}`);
     },
 
-    updateControls(isControls) {
-      this.isControls = isControls;
-      log(`Controls updated: ${isControls}`);
-    },
-
     updateBlocksType(blocksType) {
       this.blocksType = blocksType;
       log(`Update blocks type: ${blocksType}`);
@@ -1724,7 +1719,7 @@ export default {
         }
 
         if (id in this.$data) {
-          log(`Update ${id}:${value}`);
+          log(`Update ${id}`, value);
 
           this.$data[id] = value;
         }

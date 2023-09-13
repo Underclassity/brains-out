@@ -1,6 +1,6 @@
 <template lang="pug">
 .main
-    .container(ref="container" :class="{ 'container--full': !isControls }")
+    .container(ref="container" :class="{ 'container--controls': isControls }")
 
     .navigation
         .navigation--item Best Score: {{ maxScore }}
