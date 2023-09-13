@@ -2,11 +2,11 @@
 .main
     .container(ref="container")
 
-    .navigation--item.navigation--best Best Score: {{ maxScore }}
-
     .navigation
+        .navigation--item Best Score: {{ maxScore }}
         .navigation--item Score: {{ score }}
-        .navigation--item(v-on:click="openMenu") Menu
+
+    .navigation--item.navigation--menu(v-on:click="openMenu") Menu
 
     //- span.menu-button.link.material-symbols-outlined(v-on:click="openMenu") menu
 
