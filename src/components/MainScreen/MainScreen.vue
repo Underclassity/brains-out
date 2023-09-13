@@ -2,7 +2,13 @@
 .main
     .container(ref="container")
 
-    span.menu-button.link.material-symbols-outlined(v-on:click="openMenu") menu
+    .navigation
+        .navigation--item Best Score: {{ maxScore }}
+        .navigation--item Score: {{ score }}
+        .navigation--item(v-on:click="openMenu") Menu
+
+    //- span.menu-button.link.material-symbols-outlined(v-on:click="openMenu") menu
+
     div.score-button(v-if="isDev")
         span(:title="`Min ${minScore} - Max ${maxScore} - Avg ${avgScore} - Length ${lsScore.length}`") Score: {{ score }}
         span Speed: {{ Math.round(speed * 100) / 100 }}

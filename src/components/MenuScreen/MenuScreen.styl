@@ -53,6 +53,7 @@
             position: relative
             cursor: pointer
             margin-right: 8px
+            box-shadow: inset 0px 20px 20px -10px rgba(white, 0.3), inset 0px -20px 20px -10px rgba(black, 0.3)
 
             &:before
                 content: ""
@@ -77,6 +78,7 @@
             position: relative
             cursor: pointer
             margin-left: 8px
+            box-shadow: inset 0px 20px 20px -10px rgba(white, 0.3), inset 0px -20px 20px -10px rgba(black, 0.3)
 
             &:before
                 content: ""
@@ -102,6 +104,18 @@
             font-size: 32px
             background-color: orange
             text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black
+            position: relative
+            box-shadow: inset 0px 20px 20px -10px rgba(white, 0.3), inset 0px -20px 20px -10px rgba(black, 0.3)
+
+            &:before
+                content: ''
+                position: absolute
+                top: 20px
+                left: 15px
+                width: 10px
+                height: 10px
+                background-color: rgba(white, 0.2)
+                border-radius: 50%
 
     &--item
     &--button
@@ -116,6 +130,18 @@
         text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black
         cursor: pointer
         transition: background-color 300ms ease-in-out
+        position: relative
+        box-shadow: inset 0px 20px 20px -10px rgba(white, 0.3), inset 0px -20px 20px -10px rgba(black, 0.3)
+
+        &:before
+            content: ''
+            position: absolute
+            top: 20px
+            left: 15px
+            width: 10px
+            height: 10px
+            background-color: rgba(white, 0.2)
+            border-radius: 50%
 
         &:hover
             background-color: rgba(yellow, 0.6)

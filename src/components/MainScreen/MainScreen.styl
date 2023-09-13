@@ -117,3 +117,42 @@
             right: unset
             bottom: 60px
             left: calc(50% - 30px)
+
+.navigation
+    width: calc(100% - 20px)
+    position: fixed
+    top: 10px
+    left: 10px
+    display: flex
+    align-items: center
+    justify-content: flex-end
+
+    &--item
+        font-size: 40px
+        box-sizing: border-box
+        border-radius: 20px
+        border: 5px solid #222
+        padding: 8px 16px
+        background-color: #e7c335
+        text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black
+        margin-right: 10px
+        transition: background-color 300ms ease-in-out
+        cursor: pointer
+        position: relative
+        box-shadow: inset 0px 20px 20px -10px rgba(white, 0.3), inset 0px -20px 20px -10px rgba(black, 0.3)
+
+        &:before
+            content: ''
+            position: absolute
+            top: 20px
+            left: 15px
+            width: 10px
+            height: 10px
+            background-color: rgba(white, 0.2)
+            border-radius: 50%
+
+        &:hover
+            background-color: rgba(#e7c335, 0.6)
+
+        &:last-child
+            margin-right: 0px

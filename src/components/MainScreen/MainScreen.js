@@ -2,8 +2,13 @@ import {
   AmbientLight,
   Audio,
   AudioListener,
+  BoxGeometry,
+  BoxHelper,
   Clock,
   Color,
+  Group,
+  MathUtils,
+  Mesh,
   MeshBasicMaterial,
   PerspectiveCamera,
   PointLightHelper,
@@ -73,6 +78,7 @@ export default {
       layers: new Array(12),
       layersElements: new Array(12),
       elements: [],
+      pitLevels: undefined,
       colorPalette,
 
       delta: 0,
@@ -219,7 +225,9 @@ export default {
         `Update camera projection call: ${pitWidth}-${pitHeight}-${pitDepth}`
       );
 
-      const maxSize = Math.max(pitWidth, pitHeight, 0) + 1;
+      const offset = camera.aspect > 1 ? 5 : 1;
+
+      const maxSize = Math.max(pitWidth, pitHeight, 0) + offset;
       const fitHeightDistance =
         maxSize / (2 * Math.atan((Math.PI * camera.fov) / 360));
       const fitWidthDistance = fitHeightDistance / camera.aspect;
@@ -458,6 +466,9 @@ export default {
       this.initLayers();
       this.initPoints();
 
+      this.initLevelPreview();
+      this.updateLayersPreview();
+
       this.createElement();
 
       return true;
@@ -481,6 +492,8 @@ export default {
     },
 
     initLayers() {
+      log("Init layers");
+
       const { pitWidth, pitHeight, pitDepth } = this;
 
       log(`Init layers: ${pitDepth}-${pitWidth}-${pitHeight}`);
@@ -993,6 +1006,9 @@ export default {
       // Check layers
       this.layersCheck();
 
+      this.updateLayersPreview();
+      this.updateLayersPreview();
+
       // log(
       //   this.layers
       //     .map((layer) => {
@@ -1229,6 +1245,7 @@ export default {
       this.initLayers();
       this.initPoints();
       this.initLights();
+      this.initLevelPreview();
 
       this.createElement();
 
@@ -1283,7 +1300,7 @@ export default {
     updatePreview() {
       // log("Update preview call");
 
-      const { next, pitWidth, pitHeight, camera, size } = this;
+      const { next, pitLevels, pitWidth, pitHeight, camera, size } = this;
 
       if (next) {
         if (camera.aspect > 1) {
@@ -1299,6 +1316,87 @@ export default {
             1.1 * next.userData.size.z + size / 2
           );
         }
+      }
+
+      if (pitLevels) {
+        if (camera.aspect > 1) {
+          pitLevels.position.set(-pitWidth / 2 - size / 2, 0, 1.1 * 0.2 + size);
+          pitLevels.rotation.set(0, 0, 0);
+        } else {
+          pitLevels.rotation.set(0, 0, MathUtils.degToRad(90));
+
+          pitLevels.position.set(
+            0,
+            -pitHeight / 2 - size * 2,
+            1.1 * 0.2 + size / 2
+          );
+        }
+      }
+
+      return true;
+    },
+
+    initLevelPreview() {
+      const { pitDepth, pitWidth, pitHeight, size } = this;
+
+      if (this.pitLevels) {
+        this.scene.remove(this.pitLevels);
+        if (this.pitLevels.dispose) {
+          this.pitLevels.dispose();
+        }
+        this.pitLevels = undefined;
+      }
+
+      this.pitLevels = new Group();
+      this.pitLevels.scale.set(0.5, 0.5, 0.5);
+
+      this.pitLevels.position.set(-pitWidth / 2 - 1, 0, 1);
+
+      const gridColor = new Color(this.gridColor);
+
+      for (let i = 0; i < pitDepth; i++) {
+        const color = new Color(this.colorPalette[i]);
+
+        const boxMaterial = new MeshBasicMaterial({ color });
+        const boxGeometry = new BoxGeometry(1, 1);
+
+        const boxMesh = new Mesh(boxGeometry, boxMaterial);
+
+        boxMesh.position.set(0, -i - size / 2 + pitDepth / 2, 0);
+
+        // Hide all
+        boxMesh.visible = false;
+
+        // Save level for process
+        boxMesh.name = "level";
+        boxMesh.userData.level = i;
+
+        this.pitLevels.add(boxMesh);
+        this.pitLevels.add(new BoxHelper(boxMesh, gridColor));
+      }
+
+      this.scene.add(this.pitLevels);
+
+      return true;
+    },
+
+    updateLayersPreview() {
+      log("Update layers preview");
+
+      const { layers, pitLevels } = this;
+
+      const meshes = pitLevels.children.filter((item) => item.name == "level");
+
+      for (const [index, zLayer] of layers.entries()) {
+        const layerValues = zLayer.reduce((prev, current) => {
+          prev.push(...current);
+
+          return prev;
+        }, []);
+
+        const mesh = meshes.find((item) => item.userData.level == index);
+
+        mesh.visible = layerValues.includes(1) ? true : false;
       }
 
       return true;
@@ -1450,6 +1548,9 @@ export default {
 
       // Init light
       this.initLights();
+
+      // Levels preview
+      this.initLevelPreview();
 
       // Init test mode
       // initTest.call(this);
