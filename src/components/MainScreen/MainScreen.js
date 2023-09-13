@@ -225,7 +225,7 @@ export default {
         `Update camera projection call: ${pitWidth}-${pitHeight}-${pitDepth}`
       );
 
-      const offset = camera.aspect > 1 ? 5 : 1;
+      const offset = camera.aspect > 1 ? 2.5 : 1;
 
       const maxSize = Math.max(pitWidth, pitHeight, 0) + offset;
       const fitHeightDistance =
