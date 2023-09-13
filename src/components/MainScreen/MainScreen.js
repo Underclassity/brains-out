@@ -1309,9 +1309,9 @@ export default {
       if (next) {
         if (camera.aspect > 1) {
           next.position.set(
-            pitWidth / 2 + size / 2,
-            pitHeight / 2 - size / 2,
-            1.1 * next.userData.size.z + size / 2
+            pitWidth / 2 + size,
+            0,
+            1.1 * next.userData.size.z + size
           );
         } else {
           next.position.set(

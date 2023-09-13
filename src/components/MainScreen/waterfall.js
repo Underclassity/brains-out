@@ -53,7 +53,7 @@ export function createElement() {
   this.moveToRandomCorner(this.current);
   this.next = this.getRandomForm(this.size, this.zombieParts);
   this.next.position.set(0, 0, 0);
-  this.next.scale.set(0.2, 0.2, 0.2);
+  this.next.scale.set(0.5, 0.5, 0.5);
   this.next.userData.size = getGroupSize(this.next);
 
   this.scene.add(element);
