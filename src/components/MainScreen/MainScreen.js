@@ -191,10 +191,6 @@ export default {
           }, 0) / this.lsScore.length
         : 0;
     },
-
-    version() {
-      return import.meta.env.VITE_APP_VERSION;
-    },
   },
 
   methods: {

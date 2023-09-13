@@ -8,8 +8,6 @@
 
     .navigation--item.navigation--menu(v-on:click="openMenu") Menu
 
-    .version Commit: {{ version }}
-
     //- span.menu-button.link.material-symbols-outlined(v-on:click="openMenu") menu
 
     div.score-button(v-if="isDev")

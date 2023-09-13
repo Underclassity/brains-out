@@ -44,6 +44,8 @@ export default {
 
       blocksTypeOptions: ["flat", "basic", "extended"],
       blockType: "flat",
+
+      version: import.meta.env.VITE_APP_VERSION,
     };
   },
 

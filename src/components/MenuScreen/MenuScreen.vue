@@ -48,6 +48,8 @@
             .menu--item--red.menu--button(v-on:click="back") Back
 
         //- Credits items
+        .menu--version(v-show="flags.credits") Commit: {{ version }}
+
         .menu--title(v-show="flags.credits") Credits
 
         .menu--label(v-show="flags.credits") "Two Dudes - One Game" Studio
