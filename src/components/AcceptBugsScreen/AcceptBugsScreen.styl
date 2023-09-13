@@ -34,10 +34,16 @@
         background-color: #E77812
         text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
 
+        @media(max-width 767px)
+            border: 2px solid #222
+
     &--desc
         font-size: 48px
         font-family: 'ZombieFont'
         margin-bottom: 40px
+
+        @media(max-width 767px)
+            font-size: 24px
 
     &--buttons
         width: 100%
@@ -54,6 +60,9 @@
         cursor: pointer
         user-select: none
         transition: background-color 300ms ease-in-out
+
+        @media(max-width 767px)
+            font-size: 24px
 
         &--red
             background-color: red

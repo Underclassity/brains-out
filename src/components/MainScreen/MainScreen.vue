@@ -1,6 +1,6 @@
 <template lang="pug">
 .main
-    .container(ref="container")
+    .container(ref="container" :class="{ 'container--full': !isControls }")
 
     .navigation
         .navigation--item Best Score: {{ maxScore }}
@@ -15,36 +15,37 @@
         span Speed: {{ Math.round(speed * 100) / 100 }}
         span FPS: {{ fps }}
 
-    span.pause-button.link.material-symbols-outlined(v-on:click="pauseCall" v-if="!isPause && helpers") pause
-    span.play-button.link.material-symbols-outlined(v-on:click="playCall" v-if="isPause && helpers") play_arrow
+    span.pause-button.link.material-symbols-outlined(v-on:click="pauseCall" v-if="!isPause && isDev") pause
+    span.play-button.link.material-symbols-outlined(v-on:click="playCall" v-if="isPause && isDev") play_arrow
 
-    .control-item.control-item-left(v-on:click="moveLeft" v-if="isControls")
-        .material-symbols-outlined west
-    .control-item.control-item-right(v-on:click="moveRight" v-if="isControls")
-        .material-symbols-outlined east
+    .controls(v-show="isControls")
+        .control-item.control-item-left(v-on:click="moveLeft" v-if="isControls")
+            .material-symbols-outlined west
+        .control-item.control-item-right(v-on:click="moveRight" v-if="isControls")
+            .material-symbols-outlined east
 
-    .control-item.control-item-top--first(v-on:click="moveUp" v-if="isControls")
-        .material-symbols-outlined north
-    .control-item.control-item-bottom--first(v-on:click="moveDown" v-if="isControls")
-        .material-symbols-outlined south
+        .control-item.control-item-top--first(v-on:click="moveUp" v-if="isControls")
+            .material-symbols-outlined north
+        .control-item.control-item-bottom--first(v-on:click="moveDown" v-if="isControls")
+            .material-symbols-outlined south
 
-    .control-item.control-item-left.control-item-left--first(v-on:click="rotateXMinus" v-if="isControls")
-        .material-symbols-outlined north_west
-    .control-item.control-item-left.control-item-left--last(v-on:click="rotateYMinus" v-if="isControls")
-        .material-symbols-outlined south_west
+        .control-item.control-item-left.control-item-left--first(v-on:click="rotateXMinus" v-if="isControls")
+            .material-symbols-outlined north_west
+        .control-item.control-item-left.control-item-left--last(v-on:click="rotateYMinus" v-if="isControls")
+            .material-symbols-outlined south_west
 
-    .control-item.control-item-right.control-item-right--first(v-on:click="rotateXPlus" v-if="isControls")
-        .material-symbols-outlined north_east
-    .control-item.control-item-right.control-item-right--last(v-on:click="rotateYPlus" v-if="isControls")
-        .material-symbols-outlined south_east
+        .control-item.control-item-right.control-item-right--first(v-on:click="rotateXPlus" v-if="isControls")
+            .material-symbols-outlined north_east
+        .control-item.control-item-right.control-item-right--last(v-on:click="rotateYPlus" v-if="isControls")
+            .material-symbols-outlined south_east
 
-    .control-item.control-item-top--last(v-on:click="rotateZPlus" v-if="isControls")
-        .material-symbols-outlined north_east
-    .control-item.control-item-bottom--last(v-on:click="rotateZMinus" v-if="isControls")
-        .material-symbols-outlined south_east
+        .control-item.control-item-top--last(v-on:click="rotateZPlus" v-if="isControls")
+            .material-symbols-outlined north_east
+        .control-item.control-item-bottom--last(v-on:click="rotateZMinus" v-if="isControls")
+            .material-symbols-outlined south_east
 
-    .control-item.control-item--drop(v-on:click="drop" v-if="isControls")
-        .material-symbols-outlined water_drop
+        .control-item.control-item--drop(v-on:click="drop" v-if="isControls")
+            .material-symbols-outlined water_drop
 
 //- MenuComponent(
 //-     :isMenu="isMenu"
