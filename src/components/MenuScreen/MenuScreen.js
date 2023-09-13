@@ -74,20 +74,20 @@ export default {
     openStartMenu() {
       this.resetFlags();
       this.flags.menu = true;
-
+      navigator.vibrate(100);
       log("Open start menu call", this.isShow);
     },
 
     openMenu() {
       this.resetFlags();
       this.flags.new = true;
-
+      navigator.vibrate(100);
       log("Open menu call", this.isShow);
     },
 
     closeMenu() {
       this.resetFlags();
-
+      navigator.vibrate(100);
       if (this.isStarted) {
         this.$emit("back-to-game");
       }
@@ -98,7 +98,7 @@ export default {
     newGameCall() {
       this.resetFlags();
       this.flags.new = true;
-
+      navigator.vibrate(100);
       log("New game call", this.isShow);
     },
 
@@ -110,28 +110,28 @@ export default {
     settingsCall() {
       this.resetFlags();
       this.flags.settings = true;
-
+      navigator.vibrate(100);
       log("Settings call", this.isShow);
     },
 
     controlsCall() {
       this.resetFlags();
       this.flags.controls = true;
-
+      navigator.vibrate(100);
       log("Controls call", this.isShow);
     },
 
     creditsCall() {
       this.resetFlags();
       this.flags.credits = true;
-
+      navigator.vibrate(100);
       log("Credits call", this.isShow);
     },
 
     endCall() {
       this.resetFlags();
       this.flags.end = true;
-
+      navigator.vibrate(100);
       this.isStarted = false;
 
       log("End call", this.isShow);
@@ -140,7 +140,7 @@ export default {
     continueCall() {
       this.resetFlags();
       this.flags.continue = true;
-
+      navigator.vibrate(100);
       log("Continue call", this.isShow);
     },
 
@@ -150,7 +150,7 @@ export default {
       }
 
       this.resetFlags();
-
+      navigator.vibrate(100);
       this.$emit("new-game");
 
       log("Start again call", this.isShow);
@@ -160,7 +160,7 @@ export default {
       if (this.isEnd) {
         this.isStarted = false;
       }
-
+      navigator.vibrate(100);
       this.resetFlags();
       this.flags.menu = this.isStarted ? false : true;
 
@@ -173,7 +173,7 @@ export default {
 
     backToMenu() {
       this.openStartMenu();
-
+      navigator.vibrate(100);
       this.isStarted = false;
       this.flags.end = false;
 
@@ -182,7 +182,7 @@ export default {
 
     playClick() {
       this.resetFlags();
-
+      navigator.vibrate(100);
       if (!this.isStarted) {
         this.isStarted = true;
       }

@@ -761,6 +761,8 @@ export default {
     dropElement(element) {
       log(`Drop element: ${element.name}`);
 
+      navigator.vibrate(100);
+
       element.userData.drop = true;
 
       const childs = element.getObjectByName("childs").children;
@@ -957,6 +959,8 @@ export default {
             );
             this.isEnd = true;
             this.openMenu();
+
+            navigator.vibrate(500);
 
             this.emitter.emit("openEndMenu");
 
