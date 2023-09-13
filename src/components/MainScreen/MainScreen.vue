@@ -2,8 +2,9 @@
 .main
     .container(ref="container")
 
+    .navigation--item.navigation--best Best Score: {{ maxScore }}
+
     .navigation
-        .navigation--item Best Score: {{ maxScore }}
         .navigation--item Score: {{ score }}
         .navigation--item(v-on:click="openMenu") Menu
 
