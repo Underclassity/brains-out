@@ -402,6 +402,11 @@ export default {
       log(`Dev mode updated: ${devMode}`);
     },
 
+    updateControls(isControls) {
+      this.isControls = isControls;
+      log(`Controls updated: ${isControls}`);
+    },
+
     updateBlocksType(blocksType) {
       this.blocksType = blocksType;
       log(`Update blocks type: ${blocksType}`);
@@ -1751,6 +1756,7 @@ export default {
     this.emitter.on("changePitSize", this.changePitSize);
     this.emitter.on("changeSpeed", this.changeSpeed);
     this.emitter.on("changeVolume", this.updateVolume);
+    this.emitter.on("updateControls", this.updateControls);
     this.emitter.on("updateDevMode", this.updateDevMode);
 
     this.emitter.on("newGame", this.newGame);
@@ -1766,6 +1772,7 @@ export default {
     this.emitter.off("changePitSize", this.changePitSize);
     this.emitter.off("changeSpeed", this.changeSpeed);
     this.emitter.off("changeVolume", this.updateVolume);
+    this.emitter.off("updateControls", this.updateControls);
     this.emitter.off("updateDevMode", this.updateDevMode);
 
     this.emitter.off("newGame", this.newGame);

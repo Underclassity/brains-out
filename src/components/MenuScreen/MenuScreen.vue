@@ -81,6 +81,13 @@
             .menu--selector--value(v-if="!isDev") No
             .menu--selector--next(v-on:click="enableDevMode" v-if="!isDev")
 
+        .menu--selector(v-show="flags.settings")
+            .menu--label Controls
+            .menu--selector--prev(v-on:click="disableControls" v-if="isControls")
+            .menu--selector--value(v-if="isControls") Yes
+            .menu--selector--value(v-if="!isControls") No
+            .menu--selector--next(v-on:click="enableControls" v-if="!isControls")
+
         .menu--buttons(v-show="flags.settings")
             .menu--item--red.menu--button(v-on:click="back") Back
 

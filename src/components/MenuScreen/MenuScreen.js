@@ -41,6 +41,7 @@ export default {
       fxVolume: 0.6,
 
       isDev: false,
+      isControls: false,
 
       blocksTypeOptions: ["flat", "basic", "extended"],
       blockType: "flat",
@@ -303,6 +304,18 @@ export default {
       this.isDev = true;
 
       this.emitter.emit("updateDevMode", this.isDev);
+    },
+
+    disableControls() {
+      this.isControls = false;
+
+      this.emitter.emit("updateControls", this.isControls);
+    },
+
+    enableControls() {
+      this.isControls = true;
+
+      this.emitter.emit("updateControls", this.isControls);
     },
   },
 
