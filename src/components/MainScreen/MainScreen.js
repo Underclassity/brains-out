@@ -361,6 +361,7 @@ export default {
 
     updateControls(isControls) {
       this.isControls = isControls ? true : false;
+      this.updateRendererSize();
       log(`Controls updated: ${this.isControls}`);
     },
 
