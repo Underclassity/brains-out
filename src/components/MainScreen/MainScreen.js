@@ -1014,7 +1014,7 @@ export default {
 
           this.positionHelper(el, "x", pX - this.size / 2);
           this.positionHelper(el, "y", pY - this.size / 2);
-          this.positionHelper(el, "z", this.zPoints[z]);
+          this.positionHelper(el, "z", this.zPoints[z] - this.size / 2);
 
           el.userData.static = true;
 
