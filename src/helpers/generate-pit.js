@@ -376,6 +376,7 @@ export function generatePit(
       part.material = new MeshPhongMaterial({
         color: grassColors[index],
       });
+      part.material.flatShading = true;
 
       // Save grass part
       grassParts[index] = part;
