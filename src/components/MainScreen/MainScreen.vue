@@ -41,14 +41,14 @@
 
             .controls--column.controls--column--buttons
                 .controls--button(v-on:click="moveUp")
-                    span Up
+                    .material-symbols-outlined arrow_upward
                 .controls--buttons
                     .controls--button(v-on:click="moveLeft")
-                        span Left
+                        .material-symbols-outlined arrow_back
                     .controls--button(v-on:click="moveRight")
-                        span Right
+                        .material-symbols-outlined arrow_forward
                 .controls--button(v-on:click="moveDown")
-                    span Down
+                    .material-symbols-outlined arrow_downward
 
         .controls--spacebar
             .controls--button.controls--button--spacebar(v-on:click="drop")
