@@ -1759,6 +1759,8 @@ export default {
     progressCb({ name, total, loaded, percent }) {
       this.loadingProcessCache[name] = { total, loaded, percent };
 
+      log("Loaded: ", this.loadPercent);
+
       if (this.loadPercent == 1) {
         this.isLoading = false;
       }
