@@ -105,6 +105,8 @@ export default {
       isInstanced: true,
       isStop: false,
 
+      isMobile: false,
+
       isAccepted: false,
       isLogo: false,
       isDev: false,
@@ -216,25 +218,34 @@ export default {
 
   methods: {
     updateRendererSize() {
-      clearTimeout(this.resizeTimeout);
-      this.resizeTimeout = setTimeout(() => {
-        log("Resize call");
+      this.isMobile =
+        window.innerWidth / window.innerHeight < 1 && window.innerWidth < 1024
+          ? true
+          : false;
 
-        const { container } = this.$refs;
+      this.$nextTick(function () {
+        clearTimeout(this.resizeTimeout);
+        this.resizeTimeout = setTimeout(() => {
+          log("Resize call");
 
-        const containerRect = container.getBoundingClientRect();
+          const { container } = this.$refs;
 
-        this.camera.aspect = containerRect.width / containerRect.height;
-        this.camera.updateProjectionMatrix();
+          const containerRect = container.getBoundingClientRect();
 
-        if (this.controls) {
-          this.controls.update();
-        }
+          // Set mobile flag
 
-        this.renderer.setSize(containerRect.width, containerRect.height);
+          this.camera.aspect = containerRect.width / containerRect.height;
+          this.camera.updateProjectionMatrix();
 
-        this.updateCameraProjection();
-      }, 10);
+          if (this.controls) {
+            this.controls.update();
+          }
+
+          this.renderer.setSize(containerRect.width, containerRect.height);
+
+          this.updateCameraProjection();
+        }, 10);
+      });
 
       return true;
     },
@@ -1780,6 +1791,7 @@ export default {
     this.init();
 
     window.addEventListener("resize", this.updateRendererSize);
+    window.addEventListener("orientationchange", this.updateRendererSize);
     document.addEventListener("keyup", this.keyupHandler);
     window.addEventListener("click", this.clickListener);
 
@@ -1796,6 +1808,7 @@ export default {
 
   unmounted() {
     window.removeEventListener("resize", this.updateRendererSize);
+    window.removeEventListener("orientationchange", this.updateRendererSize);
     document.removeEventListener("keyup", this.keyupHandler);
     window.removeEventListener("click", this.clickListener);
 

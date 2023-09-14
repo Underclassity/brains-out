@@ -1,6 +1,6 @@
 <template lang="pug">
 .main
-    .container(ref="container" :class="{ 'container--controls': isControls }")
+    .container(ref="container" :class="{ 'container--controls': (isControls || isMobile) }")
 
     .navigation
         .navigation--item Best Score: {{ maxScore }}
@@ -19,7 +19,7 @@
     span.pause-button.link.material-symbols-outlined(v-on:click="pauseCall" v-if="!isPause && isDev") pause
     span.play-button.link.material-symbols-outlined(v-on:click="playCall" v-if="isPause && isDev") play_arrow
 
-    .controls(v-show="isControls")
+    .controls(v-show="isControls || isMobile")
         .controls--columns
             .controls--column
                 .controls--columns
