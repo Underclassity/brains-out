@@ -50,9 +50,10 @@ import getRandomForm from "./get-random-form.js";
 import initPoints from "./init-points.js";
 // import initTest from "./init-test.js";
 
-import AcceptBugsScreen from "../AcceptBugsScreen/AcceptBugsScreen.vue";
-import LogoScreen from "../LogoScreen/LogoScreen.vue";
 // import MenuComponent from "../MenuComponent/MenuComponent.vue";
+import AcceptBugsScreen from "../AcceptBugsScreen/AcceptBugsScreen.vue";
+import LoadingScreen from "../LoadingScreen/LoadingScreen.vue";
+import LogoScreen from "../LogoScreen/LogoScreen.vue";
 import MenuScreen from "../MenuScreen/MenuScreen.vue";
 
 export default {
@@ -107,6 +108,9 @@ export default {
       isLogo: false,
       isDev: false,
 
+      isLoading: true,
+      loadingProcessCache: {},
+
       isRandomColor: false,
       isColorizeLevel: true,
 
@@ -159,9 +163,10 @@ export default {
   },
 
   components: {
-    AcceptBugsScreen,
-    LogoScreen,
     // MenuComponent,
+    AcceptBugsScreen,
+    LoadingScreen,
+    LogoScreen,
     MenuScreen,
   },
 
@@ -190,6 +195,21 @@ export default {
             return prev + curr;
           }, 0) / this.lsScore.length
         : 0;
+    },
+
+    loadPercent() {
+      const { loadingProcessCache } = this;
+
+      // 7 objects to download
+      const count = 7;
+
+      let totalCount = 0;
+
+      for (const id in loadingProcessCache) {
+        totalCount += loadingProcessCache[id].percent;
+      }
+
+      return totalCount / count;
     },
   },
 
@@ -524,7 +544,7 @@ export default {
       // add the audio object to the scene
       scene.add(soundInstance);
 
-      const audioBuffer = await loadAudio(sound);
+      const audioBuffer = await loadAudio(sound, this.progressCb);
 
       soundInstance.setBuffer(audioBuffer);
 
@@ -546,7 +566,7 @@ export default {
       const soundInstance = new Audio(audioListener);
       scene.add(soundInstance);
 
-      const audioBuffer = await loadAudio("fall.wav");
+      const audioBuffer = await loadAudio("fall.wav", this.progressCb);
 
       soundInstance.setBuffer(audioBuffer);
       soundInstance.setVolume(fxVolume);
@@ -565,7 +585,7 @@ export default {
       const soundInstance = new Audio(audioListener);
       scene.add(soundInstance);
 
-      const audioBuffer = await loadAudio("zombieHoouw_1.mp3");
+      const audioBuffer = await loadAudio("zombieHoouw_1.mp3", this.progressCb);
 
       soundInstance.setBuffer(audioBuffer);
       soundInstance.setVolume(fxVolume);
@@ -584,7 +604,7 @@ export default {
       const soundInstance = new Audio(audioListener);
       scene.add(soundInstance);
 
-      const audioBuffer = await loadAudio("Zombie Sound.wav");
+      const audioBuffer = await loadAudio("Zombie Sound.wav", this.progressCb);
 
       soundInstance.setBuffer(audioBuffer);
       soundInstance.setVolume(fxVolume);
@@ -603,7 +623,7 @@ export default {
 
       // Update sound
       if (bgSound) {
-        const audioBuffer = await loadAudio(sound);
+        const audioBuffer = await loadAudio(sound, this.progressCb);
 
         bgSound.stop();
         bgSound.setBuffer(audioBuffer);
@@ -1258,8 +1278,8 @@ export default {
     },
 
     async loadZombie() {
-      const zombie = await loadZombie();
-      const pitParts = await loadPitParts();
+      const zombie = await loadZombie(this.progressCb);
+      const pitParts = await loadPitParts(this.progressCb);
 
       if (!zombie || !pitParts) {
         this.isSimple = true;
@@ -1461,7 +1481,7 @@ export default {
     async initLights() {
       const { scene, camera, pitWidth } = this;
 
-      const gltf = await loadLights();
+      const gltf = await loadLights(this.progressCb);
 
       const light = new AmbientLight(0xff_ff_ff, 0.02);
       scene.add(light);
@@ -1735,6 +1755,14 @@ export default {
 
       return false;
     },
+
+    progressCb({ name, total, loaded, percent }) {
+      this.loadingProcessCache[name] = { total, loaded, percent };
+
+      if (this.loadPercent == 1) {
+        this.isLoading = false;
+      }
+    },
   },
 
   beforeMount() {
@@ -1745,6 +1773,7 @@ export default {
     this.loadScore();
 
     await this.loadZombie();
+    this.initAudio();
     this.init();
 
     window.addEventListener("resize", this.updateRendererSize);

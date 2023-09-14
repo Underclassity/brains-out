@@ -11,7 +11,7 @@ const receiveShadow = true;
  *
  * @return  {Object}  Promise
  */
-export async function loadZombie() {
+export async function loadZombie(cb) {
   log("Load Zombie model");
 
   return new Promise((resolve) => {
@@ -53,6 +53,12 @@ export async function loadZombie() {
       },
       (xhr) => {
         log(`${(xhr.loaded / xhr.total) * 100}% loaded`);
+        cb({
+          name: "zombie",
+          loaded: xhr.loaded,
+          total: xhr.total,
+          percent: xhr.loaded / xhr.total,
+        });
       },
       (error) => {
         log(error);
@@ -67,7 +73,7 @@ export async function loadZombie() {
  *
  * @return  {Object}  Promise
  */
-export async function loadTestCube() {
+export async function loadTestCube(cb) {
   log("Load test cube model");
 
   return new Promise((resolve) => {
@@ -109,6 +115,12 @@ export async function loadTestCube() {
       },
       (xhr) => {
         log(`${(xhr.loaded / xhr.total) * 100}% loaded`);
+        cb({
+          name: "test cube",
+          loaded: xhr.loaded,
+          total: xhr.total,
+          percent: xhr.loaded / xhr.total,
+        });
       },
       (error) => {
         log(error);
@@ -118,7 +130,7 @@ export async function loadTestCube() {
   });
 }
 
-export async function loadPitParts() {
+export async function loadPitParts(cb) {
   log("Load pit parts model");
 
   return new Promise((resolve) => {
@@ -162,6 +174,12 @@ export async function loadPitParts() {
       },
       (xhr) => {
         log(`${(xhr.loaded / xhr.total) * 100}% loaded`);
+        cb({
+          name: "pit",
+          loaded: xhr.loaded,
+          total: xhr.total,
+          percent: xhr.loaded / xhr.total,
+        });
       },
       (error) => {
         log(error);
@@ -171,7 +189,7 @@ export async function loadPitParts() {
   });
 }
 
-export function loadSuzanne() {
+export function loadSuzanne(cb) {
   log("Load pit parts model");
 
   return new Promise((resolve) => {
@@ -184,6 +202,12 @@ export function loadSuzanne() {
       },
       (xhr) => {
         log(`${(xhr.loaded / xhr.total) * 100}% loaded`);
+        cb({
+          name: "suzanne",
+          loaded: xhr.loaded,
+          total: xhr.total,
+          percent: xhr.loaded / xhr.total,
+        });
       },
       (error) => {
         log(error);

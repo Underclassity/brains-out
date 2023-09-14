@@ -9,7 +9,7 @@ import log from "./log.js";
  *
  * @return  {Object}            Promise
  */
-export function loadAudio(filename) {
+export function loadAudio(filename, cb) {
   return new Promise((resolve) => {
     const loader = new AudioLoader();
 
@@ -21,6 +21,12 @@ export function loadAudio(filename) {
 
       (xhr) => {
         log(`${(xhr.loaded / xhr.total) * 100}% loaded`);
+        cb({
+          name: filename,
+          loaded: xhr.loaded,
+          total: xhr.total,
+          percent: xhr.loaded / xhr.total,
+        });
       },
 
       (err) => {

@@ -7,7 +7,7 @@ import log from "./log.js";
  *
  * @return  {Object}  Promise object
  */
-export function loadLights() {
+export function loadLights(cb) {
   return new Promise((resolve) => {
     const loader = new GLTFLoader();
 
@@ -19,6 +19,12 @@ export function loadLights() {
       // called while loading is progressing
       (xhr) => {
         log(`${(xhr.loaded / xhr.total) * 100}% loaded`);
+        cb({
+          name: "lights",
+          loaded: xhr.loaded,
+          total: xhr.total,
+          percent: xhr.loaded / xhr.total,
+        });
       },
       // called when loading has errors
       (error) => {

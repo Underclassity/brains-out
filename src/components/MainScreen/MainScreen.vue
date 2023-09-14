@@ -119,6 +119,7 @@ MenuScreen(
     v-on:new-game="newGameCall"
     v-on:back-to-game="backToGameCall"
 )
+LoadingScreen(v-if="isLoading" :percent="loadPercent")
 </template>
 
 <script src="./MainScreen.js"></script>
