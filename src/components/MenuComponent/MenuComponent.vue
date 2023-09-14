@@ -16,7 +16,7 @@ Transition(:duration="{ enter: 500, leave: 800 }")
                 select(v-model="currentPitSize" v-on:change="changePitSize")
                     option(value='5x5x12') 5x5x12
                     option(value='10x10x12') 10x10x12
-                    option(value='7x4x12') 7x4x12
+                    option(value='7x5x12') 7x5x12
 
             .menu-item
                 span.menu-icon.material-symbols-outlined format_bold

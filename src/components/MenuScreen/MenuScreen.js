@@ -30,7 +30,7 @@ export default {
       isStarted: false,
 
       pitSize: "5x5x12",
-      pitSizes: ["5x5x12", "10x10x12", "7x4x12"],
+      pitSizes: ["5x5x12", "10x10x12", "7x5x12"],
 
       minSpeed: 0.5,
       speed: 0.5,
