@@ -1781,8 +1781,6 @@ export default {
     playMusic() {
       log("Play music");
 
-      this.isPause = false;
-
       if (this.bgSound) {
         this.bgSound.play();
       }
@@ -1790,11 +1788,11 @@ export default {
     pauseMusic() {
       log("Pause music");
 
-      this.isPause = true;
-
       if (this.bgSound) {
         this.bgSound.pause();
       }
+
+      this.openMenu();
     },
   },
 
