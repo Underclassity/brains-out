@@ -32,17 +32,19 @@
         border: 5px solid #222
         padding: 40px
         background-color: #E77812
-        text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
+        -webkit-text-stroke: 1px black;
 
         @media(max-width 767px)
+            padding: 20px
+            width: 95%
             border: 2px solid #222
 
     &--desc
         font-size: 48px
-        font-family: 'ZombieFont'
         margin-bottom: 40px
 
         @media(max-width 767px)
+            margin-bottom: 20px
             font-size: 24px
 
     &--buttons
@@ -62,6 +64,7 @@
         transition: background-color 300ms ease-in-out
 
         @media(max-width 767px)
+            padding: 8px 16px
             font-size: 24px
 
         &--red
