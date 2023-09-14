@@ -246,7 +246,7 @@ export default {
         `Update camera projection call: ${pitWidth}-${pitHeight}-${pitDepth}`
       );
 
-      const offset = camera.aspect > 1 ? 2.5 : 1;
+      const offset = camera.aspect > 1 ? 2.5 : 0;
 
       const maxSize = Math.max(pitWidth, pitHeight, 0) + offset;
       const fitHeightDistance =
@@ -1760,7 +1760,7 @@ export default {
     progressCb({ name, total, loaded, percent }) {
       this.loadingProcessCache[name] = { total, loaded, percent };
 
-      log("Loaded: ", this.loadPercent);
+      log(`Loaded ${name}: ${this.loadPercent.toFixed(2)}`);
 
       if (this.loadPercent >= 1) {
         this.isLoading = false;
