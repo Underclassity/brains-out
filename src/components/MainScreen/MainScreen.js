@@ -1761,7 +1761,7 @@ export default {
 
       log("Loaded: ", this.loadPercent);
 
-      if (this.loadPercent == 1) {
+      if (this.loadPercent >= 1) {
         this.isLoading = false;
       }
     },
