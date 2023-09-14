@@ -66,6 +66,7 @@ export default {
       minSpeed: 0.5,
       speed: 0.5,
       maxSpeed: 10,
+      speedSettings: 0.5,
       speedStep: 0.1,
       score: 0,
       lsScore: [],
@@ -349,7 +350,7 @@ export default {
 
     changeSpeed(speed) {
       log(`Update speed to: ${speed}`);
-      this.speed = parseInt(speed);
+      this.speedSettings = parseInt(speed);
     },
 
     pauseCall() {
@@ -435,7 +436,7 @@ export default {
 
       // Reset score and speed
       this.score = 0;
-      this.speed = this.minSpeed;
+      this.speed = this.speedSettings;
 
       this.isEnd = false;
 
