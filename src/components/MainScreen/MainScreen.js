@@ -1777,6 +1777,21 @@ export default {
         this.isLoading = false;
       }
     },
+
+    playMusic() {
+      log("Play music");
+
+      if (this.bgSound) {
+        this.bgSound.play();
+      }
+    },
+    pauseMusic() {
+      log("Pause music");
+
+      if (this.bgSound) {
+        this.bgSound.pause();
+      }
+    },
   },
 
   beforeMount() {
@@ -1792,6 +1807,8 @@ export default {
 
     window.addEventListener("resize", this.updateRendererSize);
     window.addEventListener("orientationchange", this.updateRendererSize);
+    window.addEventListener("focus", this.playMusic);
+    window.addEventListener("blur", this.pauseMusic);
     document.addEventListener("keyup", this.keyupHandler);
     window.addEventListener("click", this.clickListener);
 
@@ -1809,6 +1826,8 @@ export default {
   unmounted() {
     window.removeEventListener("resize", this.updateRendererSize);
     window.removeEventListener("orientationchange", this.updateRendererSize);
+    window.removeEventListener("focus", this.playMusic);
+    window.removeEventListener("blur", this.pauseMusic);
     document.removeEventListener("keyup", this.keyupHandler);
     window.removeEventListener("click", this.clickListener);
 
