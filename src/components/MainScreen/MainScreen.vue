@@ -24,26 +24,25 @@
             .controls--column
                 .controls--columns
                     .controls--column
+                        //- W
+                        .controls--button.controls--button--s(v-on:click="rotateXPlus")
+                            .material-symbols-outlined switch_access_shortcut
                         //- A
                         .controls--button.controls--button--a(v-on:click="rotateYMinus")
                             .material-symbols-outlined switch_access_shortcut
                         //- Q
                         .controls--button.controls--button--q(v-on:click="rotateZPlus")
                             .material-symbols-outlined forward_media
+                    .controls--column
+                        //- S
+                        .controls--button.controls--button--w(v-on:click="rotateXMinus")
+                            .material-symbols-outlined switch_access_shortcut
                         //- D
                         .controls--button.controls--button--d(v-on:click="rotateYPlus")
-                            .material-symbols-outlined switch_access_shortcut
-
-                    .controls--column
-                        //- W
-                        .controls--button.controls--button--w(v-on:click="rotateXMinus")
                             .material-symbols-outlined switch_access_shortcut
                         //- E
                         .controls--button.controls--button--e(v-on:click="rotateZMinus")
                             .material-symbols-outlined forward_media
-                        //- S
-                        .controls--button.controls--button--s(v-on:click="rotateXPlus")
-                            .material-symbols-outlined switch_access_shortcut
 
             .controls--column.controls--column--buttons
                 .controls--button(v-on:click="moveUp")
