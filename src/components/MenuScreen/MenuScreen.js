@@ -5,6 +5,18 @@ import logoSrc from "../../assets/img/logo-cut.png";
 export default {
   name: "MenuScreen",
 
+  props: {
+    isLogo: {
+      type: Boolean,
+      default: false,
+    },
+
+    isAccepted: {
+      type: Boolean,
+      default: false,
+    },
+  },
+
   data() {
     return {
       logoSrc,
@@ -325,7 +337,7 @@ export default {
         return false;
       }
 
-      if (this.isEnd) {
+      if (this.isLogo || !this.isAccepted) {
         return false;
       }
 
