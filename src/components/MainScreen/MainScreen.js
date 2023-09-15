@@ -1792,7 +1792,7 @@ export default {
         this.bgSound.pause();
       }
 
-      if (!this.isAccepted && this.isLogo) {
+      if (!this.isAccepted || this.isLogo || this.isLoading) {
         return false;
       }
 
