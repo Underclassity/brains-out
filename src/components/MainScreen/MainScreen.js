@@ -1785,18 +1785,13 @@ export default {
         this.bgSound.play();
       }
     },
+
     pauseMusic() {
       log("Pause music");
 
       if (this.bgSound) {
         this.bgSound.pause();
       }
-
-      if (!this.isAccepted || this.isLogo || this.isLoading) {
-        return false;
-      }
-
-      this.openMenu();
     },
   },
 

@@ -315,6 +315,22 @@ export default {
 
       this.emitter.emit("updateControls", this.isControls);
     },
+
+    blurEvent() {
+      if (this.isShow) {
+        return false;
+      }
+
+      if (this.isStarted) {
+        return false;
+      }
+
+      if (this.isEnd) {
+        return false;
+      }
+
+      this.continueCall();
+    },
   },
 
   mounted() {
@@ -327,5 +343,11 @@ export default {
     this.emitter.on("openMenu", this.continueCall);
     this.emitter.on("openEndMenu", this.endCall);
     this.emitter.on("openStartMenu", this.openStartMenu);
+
+    window.addEventListener("blur", this.blurEvent);
+  },
+
+  beforeUnmount() {
+    window.removeEventListener("blur", this.blurEvent);
   },
 };
