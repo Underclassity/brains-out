@@ -1795,7 +1795,6 @@ export default {
 
       this.isPause = true;
       this.isMenu = true;
-      this.isLogo = false;
     },
   },
 
