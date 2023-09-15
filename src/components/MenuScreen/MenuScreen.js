@@ -333,7 +333,7 @@ export default {
         return false;
       }
 
-      if (this.isStarted) {
+      if (!this.isStarted) {
         return false;
       }
 

@@ -1,5 +1,5 @@
 <template lang="pug">
-.menu--overlay(v-show="isShow" :class="{ 'menu--end': flags.end }")
+.menu--overlay(v-show="isShow" :class="{ 'menu--end': flags.end, 'menu--started': isStarted }")
     .menu--main
         .menu--logo
             img(:src="logoSrc")
