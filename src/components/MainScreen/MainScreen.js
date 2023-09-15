@@ -1784,6 +1784,8 @@ export default {
       if (this.bgSound) {
         this.bgSound.play();
       }
+
+      this.isPause = false;
     },
 
     pauseMusic() {
@@ -1792,6 +1794,8 @@ export default {
       if (this.bgSound) {
         this.bgSound.pause();
       }
+
+      this.isPause = true;
     },
   },
 
