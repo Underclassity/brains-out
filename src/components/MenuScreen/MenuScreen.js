@@ -88,9 +88,7 @@ export default {
     closeMenu() {
       this.resetFlags();
 
-      if (this.isStarted) {
-        this.$emit("back-to-game");
-      }
+      this.$emit("back-to-game");
 
       log("Close menu call", this.isShow);
     },

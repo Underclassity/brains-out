@@ -1792,6 +1792,10 @@ export default {
         this.bgSound.pause();
       }
 
+      if (!this.isAccepted && this.isLogo) {
+        return false;
+      }
+
       this.openMenu();
     },
   },
