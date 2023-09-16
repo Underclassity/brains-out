@@ -13,13 +13,13 @@ export function initPoints() {
   this.yPoints = [];
   this.zPoints = [];
 
-  let firstPoint = -pitWidth / 2;
+  let firstPoint = -pitWidth / 2 + size / 2;
 
   for (let i = 0; i < pitWidth; i++) {
     this.xCPoints.push(firstPoint + i);
   }
 
-  firstPoint = -pitHeight / 2;
+  firstPoint = -pitHeight / 2 + size / 2;
 
   for (let i = 0; i < pitHeight; i++) {
     this.yCPoints.push(firstPoint + i);

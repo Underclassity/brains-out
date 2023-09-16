@@ -519,7 +519,8 @@ export default {
         this.layers[z][x] = [];
 
         for (let y = 0; y < pitHeight; y++) {
-          this.layers[z][x][y] = 0;
+          this.setLayerPoint(x, y, z, 0);
+          // this.layers[z][x][y] = 0;
         }
       }
     },
@@ -653,7 +654,7 @@ export default {
     },
 
     findElementIndexes(child) {
-      const { xPoints, yPoints, zPoints, size } = this;
+      const { xCPoints, yCPoints, zPoints, size } = this;
 
       const half = size / 2;
 
@@ -662,16 +663,16 @@ export default {
 
       let { x, y, z } = position;
 
-      x = Math.round(x * 100) / 100 + half;
-      y = Math.round(y * 100) / 100 + half;
+      x = Math.round(x * 100) / 100;
+      y = Math.round(y * 100) / 100;
       z = Math.round(z * 100) / 100 - half;
 
-      let xIndex = xPoints.indexOf(x) || -1;
-      let yIndex = yPoints.indexOf(y) || -1;
+      let xIndex = xCPoints.indexOf(x) || -1;
+      let yIndex = yCPoints.indexOf(y) || -1;
       let zIndex = zPoints.indexOf(z) || -1;
 
       if (xIndex == -1) {
-        xPoints.forEach((point, index, array) => {
+        xCPoints.forEach((point, index, array) => {
           if (x >= point && x < array[index + 1]) {
             xIndex = index;
           }
@@ -679,7 +680,7 @@ export default {
       }
 
       if (yIndex == -1) {
-        yPoints.forEach((point, index, array) => {
+        yCPoints.forEach((point, index, array) => {
           if (y >= point && y < array[index + 1]) {
             yIndex = index;
           }
@@ -696,9 +697,13 @@ export default {
         });
       }
 
+      if (xIndex == -1 || yIndex == -1 || zIndex == -1) {
+        debugger;
+      }
+
       return {
-        x: xIndex - 1,
-        y: yIndex - 1,
+        x: xIndex,
+        y: yIndex,
         z: zIndex,
         pX: x,
         pY: y,
@@ -773,7 +778,7 @@ export default {
           }
         } else {
           throw new Error(
-            `Index not found!(${x}-${y}-${z})(${pX}-${pY}-${pZ})`
+            `Index not found ${child.name}!(${x}-${y}-${z})(${pX}-${pY}-${pZ})`
           );
         }
       }
@@ -1012,8 +1017,8 @@ export default {
 
           this.setLayerPoint(x, y, z);
 
-          this.positionHelper(el, "x", pX - this.size / 2);
-          this.positionHelper(el, "y", pY - this.size / 2);
+          this.positionHelper(el, "x", pX);
+          this.positionHelper(el, "y", pY);
           this.positionHelper(el, "z", this.zPoints[z] - this.size / 2);
 
           el.userData.static = true;
