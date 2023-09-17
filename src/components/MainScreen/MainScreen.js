@@ -70,12 +70,14 @@ export default {
       speedStep: 0.1,
       score: 0,
       lsScore: [],
+      prevScore: 0,
 
       pitWidth: 5,
       pitHeight: 5,
       pitDepth: 12,
 
       blocksType: "flat",
+      blocksTypeOptions: ["flat", "basic", "extended"],
 
       layers: new Array(12),
       layersElements: new Array(12),
@@ -104,6 +106,8 @@ export default {
       isControls: false,
       isInstanced: true,
       isStop: false,
+
+      changeSpeedByLevels: true,
 
       isMobile: false,
 
@@ -159,9 +163,12 @@ export default {
 
       xCPoints: [],
       yCPoints: [],
+      zCPoints: [],
       xPoints: [],
       yPoints: [],
       zPoints: [],
+
+      error: false,
     };
   },
 
@@ -290,6 +297,34 @@ export default {
       this.lsScore = lsScore;
 
       return lsScore;
+    },
+
+    speedUp() {
+      this.speed += this.speedStep;
+
+      log("Update speed to: ", this.speed);
+
+      const newPlaybackRate =
+        (this.speed - this.minSpeed) / this.speedStep / 10 + 1;
+
+      log("Update bg playbackrate to: ", newPlaybackRate);
+
+      this.bgSound.playbackRate = newPlaybackRate;
+
+      return true;
+    },
+
+    changeScore(changeValue) {
+      this.score += changeValue;
+
+      if (this.changeSpeedByLevels) {
+        this.prevScore = this.score;
+      } else if (this.score - this.prevScore >= 50) {
+        this.prevScore = this.score;
+        this.speedUp();
+      }
+
+      return true;
     },
 
     updateScore() {
@@ -653,6 +688,23 @@ export default {
       return bgSound;
     },
 
+    getoLayersElementsLevelPoints() {
+      return this.layersElements
+        .reduce((prev, curr) => {
+          prev.push(...curr);
+          return prev;
+        }, [])
+        .filter((item) => item)
+        .map((item) => item.position)
+        .map((item) => {
+          return {
+            x: this.xCPoints.indexOf(item.x),
+            y: this.yCPoints.indexOf(item.y),
+            z: this.zCPoints.indexOf(item.z),
+          };
+        });
+    },
+
     findElementIndexes(child) {
       const { xCPoints, yCPoints, zPoints, size } = this;
 
@@ -752,15 +804,14 @@ export default {
               this.layers[z + 1][x] == undefined ||
               this.layers[z + 1][x][y] == undefined
             ) {
-              throw new Error(
-                `Layer not found ${element.name}!(${x}-${y}-${z})(${pX.toFixed(
-                  1
-                )}-${pY.toFixed(1)}-${pZ.toFixed(
-                  1
-                )})(${child.position.x.toFixed(1)}-${child.position.y.toFixed(
-                  1
-                )}-${child.position.z.toFixed(1)})`
-              );
+              this.error = `Layer not found ${
+                element.name
+              }!(${x}-${y}-${z})(${pX.toFixed(1)}-${pY.toFixed(1)}-${pZ.toFixed(
+                1
+              )})(${child.position.x.toFixed(1)}-${child.position.y.toFixed(
+                1
+              )}-${child.position.z.toFixed(1)})`;
+              throw new Error(this.error);
             }
 
             const nextLayerValue = this.layers[z + 1][x][y];
@@ -777,9 +828,8 @@ export default {
             isFreeze = true;
           }
         } else {
-          throw new Error(
-            `Index not found ${child.name}!(${x}-${y}-${z})(${pX}-${pY}-${pZ})`
-          );
+          this.error = `Index not found ${child.name}!(${x}-${y}-${z})(${pX}-${pY}-${pZ})`;
+          throw new Error(this.error);
         }
       }
 
@@ -891,7 +941,9 @@ export default {
         filledLevelsCounter++;
 
         // Update speed level
-        this.speed += this.speedStep;
+        if (this.changeSpeedByLevels) {
+          this.speedUp();
+        }
 
         const layerElements = this.layersElements[index];
 
@@ -917,7 +969,7 @@ export default {
 
         log(`Levels ${filledLevelsCounter} score: ${scoreDiff}`);
 
-        this.score += scoreDiff;
+        this.changeScore(scoreDiff);
       }
 
       return true;
@@ -976,14 +1028,12 @@ export default {
             this.layers[z][x] == undefined ||
             this.layers[z][x][y] == undefined
           ) {
-            throw new Error(
-              `Element not found in layers!(${x}-${y}-${z})(${pX}-${pY}-${pZ})`
-            );
+            this.error = `Element not found in layers!(${x}-${y}-${z})(${pX}-${pY}-${pZ})`;
+            throw new Error(this.error);
           }
 
           if (this.layers[z][x][y] && !element.userData.drop) {
-            this.score += indexes.length;
-
+            this.changeScore(indexes.length);
             this.updateScore();
 
             log(
@@ -1013,7 +1063,7 @@ export default {
             return false;
           }
 
-          this.score++;
+          this.changeScore(1);
 
           this.setLayerPoint(x, y, z);
 
@@ -1036,9 +1086,8 @@ export default {
             this.dropSound.play();
           }
         } else {
-          throw new Error(
-            `Index not found!(${x}-${y}-${z})(${pX}-${pY}-${pZ})`
-          );
+          this.error = `Index not found!(${x}-${y}-${z})(${pX}-${pY}-${pZ})`;
+          throw new Error(this.error);
         }
       }
 

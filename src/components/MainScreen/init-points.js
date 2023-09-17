@@ -9,6 +9,7 @@ export function initPoints() {
   // Reset points array
   this.xCPoints = [];
   this.yCPoints = [];
+  this.zCPoints = [];
   this.xPoints = [];
   this.yPoints = [];
   this.zPoints = [];
@@ -41,6 +42,12 @@ export function initPoints() {
 
   for (let i = 0; i < pitDepth; i++) {
     this.zPoints.push(firstPoint - i);
+  }
+
+  firstPoint = -size;
+
+  for (let i = 0; i < pitDepth; i++) {
+    this.zCPoints.push(firstPoint - i);
   }
 
   return true;

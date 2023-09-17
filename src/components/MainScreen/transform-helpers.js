@@ -130,7 +130,7 @@ export function translateHelper(element, axis = "x", value) {
  * @return  {Array}                Array with layers
  */
 export function setLayerPoint(x, y, z, value = 1) {
-  log(`Set layer point ${x}-${y}-${z}`);
+  // log(`Set layer point ${x}-${y}-${z}`);
 
   // const allPointElements = this.layersElements
   //   .reduce((prev, curr) => {
@@ -151,7 +151,8 @@ export function setLayerPoint(x, y, z, value = 1) {
 
   // Check for equal value
   if (this.layers[z][x][y] == value) {
-    throw new Error(`Layer ${x}-${y}-${z} value equal ${value}!`);
+    this.error = `Layer ${x}-${y}-${z} value equal ${value}!`;
+    throw new Error(this.error);
   }
 
   this.layers[z][x][y] = value;

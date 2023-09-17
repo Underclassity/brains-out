@@ -16,6 +16,32 @@
         span Speed: {{ Math.round(speed * 100) / 100 }}
         span FPS: {{ fps }}
 
+        .dev-menu--item
+            span.material-symbols-outlined format_bold
+            span Blocks type
+            select(v-model="blocksType" v-on:change="updateBlocksType")
+                option(v-for="type of blocksTypeOptions" :key="type" :value="type") {{ type }}
+
+        .dev-menu--item
+            span.material-symbols-outlined package_2
+            label(for="simple") Simple view
+            input#simple(type="checkbox" v-model="isSimple" v-on:change="updateSimple(isSimple)")
+
+        .dev-menu--item
+            span.material-symbols-outlined line_curve
+            label(for="instanced") Is instanced
+            input#instanced(type="checkbox" v-model="isInstanced" v-on:change="updateInstanced(isInstanced)")
+
+        .dev-menu--item
+            span.material-symbols-outlined line_curve
+            label(for="smooth") Smooth
+            input#smooth(type="checkbox" v-model="isSmooth" v-on:change="updateSmooth(isSmooth)")
+
+        .dev-menu--item
+            span.material-symbols-outlined switch_access
+            label(for="levels") Change speed by levels
+            input#levels(type="checkbox" v-model="changeSpeedByLevels")
+
     span.pause-button.link.material-symbols-outlined(v-on:click="pauseCall" v-if="!isPause && isDev") pause
     span.play-button.link.material-symbols-outlined(v-on:click="playCall" v-if="isPause && isDev") play_arrow
 
@@ -127,6 +153,9 @@ MenuScreen(
     v-on:back-to-game="backToGameCall"
 )
 LoadingScreen(v-if="isLoading" :percent="loadPercent")
+
+.error-overlay(v-if="error")
+    .error-text {{ error }}
 </template>
 
 <script src="./MainScreen.js"></script>

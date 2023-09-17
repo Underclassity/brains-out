@@ -271,3 +271,48 @@
 
         &:hover
             background-color: #b99816
+
+.dev-menu
+    &--item
+        width: 100%
+        display: flex
+        align-items: center
+        justify-content: space-between
+        margin-bottom: 10px
+
+        span
+        label
+            user-select: none
+
+        select
+        input
+            user-select: none
+            margin-left: 4px
+
+        label
+        .label
+            width: 100%
+
+        label
+        span
+            text-align: left
+
+        &:last-child
+            margin-bottom: 0px
+
+.error
+    &-overlay
+        position fixed
+        top: 0
+        left: 0
+        width: 100%
+        height: 100%
+        display: flex
+        align-items: center
+        justify-content: center
+        background-color: red
+        z-index: 100500
+
+    &--text
+        font-size: 50px
+        line-height: 56px
