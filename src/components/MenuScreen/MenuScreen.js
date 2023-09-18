@@ -1,6 +1,6 @@
 import log from "../../helpers/log.js";
 
-import logoSrc from "../../assets/img/logo-cut.png";
+import logoSrc from "../../assets/img/logo.svg";
 
 export default {
   name: "MenuScreen",

@@ -1,7 +1,7 @@
 <template lang="pug">
 Transition(:duration="{ enter: 500, leave: 800 }")
     .logo
-        img(src="/img/logo.svg")
+        img(:src="logoSrc")
 </template>
 
 <script src="./LogoScreen.js"></script>
