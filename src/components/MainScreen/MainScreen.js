@@ -147,6 +147,10 @@ export default {
 
       resizeTimeout: undefined,
 
+      isRotateRestrain: false,
+      maxRotate: 5,
+      rotateCount: 0,
+
       prevColor: undefined,
       prevCorner: undefined,
       current: undefined,
