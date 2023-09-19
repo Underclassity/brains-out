@@ -21,9 +21,9 @@
 
         .menu--selector(v-show="flags.new")
             .menu--label Block Type
-            .menu--selector--prev(v-on:click="prevBlockType" v-if="blocksTypeOptions.indexOf(blockType) != 0")
-            .menu--selector--value {{ blockType }}
-            .menu--selector--next(v-on:click="nextBlockType" v-if="blocksTypeOptions.indexOf(blockType) != blocksTypeOptions.length - 1")
+            .menu--selector--prev(v-on:click="prevBlockType" v-if="blocksTypeOptions.indexOf(blocksType) != 0")
+            .menu--selector--value {{ blocksType }}
+            .menu--selector--next(v-on:click="nextBlockType" v-if="blocksTypeOptions.indexOf(blocksType) != blocksTypeOptions.length - 1")
 
         .menu--selector(v-show="flags.new")
             .menu--label Speed

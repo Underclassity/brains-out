@@ -1,3 +1,5 @@
+import { mapState } from "vuex";
+
 import {
   AmbientLight,
   Audio,
@@ -75,13 +77,6 @@ export default {
       lsScore: [],
       prevScore: 0,
 
-      pitWidth: 5,
-      pitHeight: 5,
-      pitDepth: 12,
-
-      blocksType: "flat",
-      blocksTypeOptions: ["flat", "basic", "extended"],
-
       layers: new Array(12),
       layersElements: new Array(12),
       elements: [],
@@ -94,8 +89,6 @@ export default {
 
       fov: 70,
       lightPower: 5000,
-
-      pitSize: "5x5x12",
 
       gridColor: 0x9b_43_0e,
       lightColor: 0xfa_fa_fa,
@@ -133,9 +126,6 @@ export default {
       rotationSoundId: ["troll_01.ogg"],
       endGameSoundId: "zombieHoouw_1.aac",
       levelSoundId: "Zombie Sound.aac",
-
-      volume: 0.1,
-      fxVolume: 0.7,
 
       bgSound: undefined,
       bgMenuSound: undefined,
@@ -196,6 +186,19 @@ export default {
   },
 
   computed: {
+    ...mapState([
+      "volume",
+      "fxVolume",
+
+      "pitWidth",
+      "pitHeight",
+      "pitDepth",
+      "pitSize",
+
+      "blocksTypeOptions",
+      "blocksType",
+    ]),
+
     zombie() {
       const { scene } = this;
 
@@ -455,7 +458,6 @@ export default {
     },
 
     updateVolume(volume) {
-      this.volume = volume;
       log(`Update volume: ${volume}`);
 
       if (this.bgSound) {
@@ -468,7 +470,6 @@ export default {
     },
 
     updateFxVolume(fxVolume) {
-      this.fxVolume = fxVolume;
       log(`Update FX volume: ${fxVolume}`);
 
       for (const id in this.dropSounds) {
@@ -494,7 +495,6 @@ export default {
     },
 
     updateBlocksType(blocksType) {
-      this.blocksType = blocksType;
       log(`Update blocks type: ${blocksType}`);
     },
 
@@ -2030,6 +2030,22 @@ export default {
         this.openMenuScreen();
       }
     },
+
+    volume(newValue) {
+      this.updateVolume(newValue);
+    },
+
+    fxVolume(newValue) {
+      this.updateFxVolume(newValue);
+    },
+
+    pitSize(newValue) {
+      this.changePitSize(newValue);
+    },
+
+    blocksType(newValue) {
+      this.updateBlocksType(newValue);
+    },
   },
 
   beforeMount() {
@@ -2050,11 +2066,7 @@ export default {
     document.addEventListener("keyup", this.keyupHandler);
     window.addEventListener("click", this.clickListener);
 
-    this.emitter.on("changeBlockType", this.updateBlocksType);
-    this.emitter.on("changeFxVolume", this.updateFxVolume);
-    this.emitter.on("changePitSize", this.changePitSize);
     this.emitter.on("changeSpeed", this.changeSpeed);
-    this.emitter.on("changeVolume", this.updateVolume);
     this.emitter.on("updateControls", this.updateControls);
     this.emitter.on("updateDevMode", this.updateDevMode);
 
@@ -2072,11 +2084,7 @@ export default {
     document.removeEventListener("keyup", this.keyupHandler);
     window.removeEventListener("click", this.clickListener);
 
-    this.emitter.off("changeBlockType", this.updateBlocksType);
-    this.emitter.off("changeFxVolume", this.updateFxVolume);
-    this.emitter.off("changePitSize", this.changePitSize);
     this.emitter.off("changeSpeed", this.changeSpeed);
-    this.emitter.off("changeVolume", this.updateVolume);
     this.emitter.off("updateControls", this.updateControls);
     this.emitter.off("updateDevMode", this.updateDevMode);
 

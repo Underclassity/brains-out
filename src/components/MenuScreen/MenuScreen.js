@@ -1,3 +1,5 @@
+import { mapState } from "vuex";
+
 import log from "../../helpers/log.js";
 
 import logoSrc from "../../assets/img/green-logo.png";
@@ -41,28 +43,30 @@ export default {
 
       isStarted: false,
 
-      pitSize: "5x5x12",
-      pitSizes: ["5x5x12", "10x10x12", "7x5x12"],
-
       minSpeed: 0.5,
       speed: 0.5,
       maxSpeed: 10,
       speedStep: 0.1,
 
-      volume: 0.2,
-      fxVolume: 0.6,
-
       isDev: false,
       isControls: false,
-
-      blocksTypeOptions: ["flat", "basic", "extended"],
-      blockType: "flat",
 
       version: import.meta.env.VITE_APP_VERSION,
     };
   },
 
   computed: {
+    ...mapState([
+      "volume",
+      "fxVolume",
+
+      "pitSize",
+      "pitSizes",
+
+      "blocksTypeOptions",
+      "blocksType",
+    ]),
+
     isShow() {
       let isShow = false;
 
@@ -203,33 +207,35 @@ export default {
     },
 
     prevPitSize() {
-      this.pitSize = this.pitSizes[this.pitSizes.indexOf(this.pitSize) - 1];
-
-      this.emitter.emit("changePitSize", this.pitSize);
+      this.$store.commit(
+        "updatePitSize",
+        this.pitSizes[this.pitSizes.indexOf(this.pitSize) - 1]
+      );
     },
 
     nextPitSize() {
-      this.pitSize = this.pitSizes[this.pitSizes.indexOf(this.pitSize) + 1];
-
-      this.emitter.emit("changePitSize", this.pitSize);
+      this.$store.commit(
+        "updatePitSize",
+        this.pitSizes[this.pitSizes.indexOf(this.pitSize) + 1]
+      );
     },
 
     prevBlockType() {
-      this.blockType =
+      this.$store.commit(
+        "updateBlockType",
         this.blocksTypeOptions[
-          this.blocksTypeOptions.indexOf(this.blockType) - 1
-        ];
-
-      this.emitter.emit("changeBlockType", this.blockType);
+          this.blocksTypeOptions.indexOf(this.blocksType) - 1
+        ]
+      );
     },
 
     nextBlockType() {
-      this.blockType =
+      this.$store.commit(
+        "updateBlockType",
         this.blocksTypeOptions[
-          this.blocksTypeOptions.indexOf(this.blockType) + 1
-        ];
-
-      this.emitter.emit("changeBlockType", this.blockType);
+          this.blocksTypeOptions.indexOf(this.blocksType) + 1
+        ]
+      );
     },
 
     prevSpeed() {
@@ -257,51 +263,19 @@ export default {
     },
 
     prevVolume() {
-      this.volume -= 0.1;
-
-      this.volume = Math.round(this.volume * 100) / 100;
-
-      if (this.volume <= 0) {
-        this.volume = 0;
-      }
-
-      this.emitter.emit("changeVolume", this.volume);
+      this.$store.commit("updateVolume", -0.1);
     },
 
     nextVolume() {
-      this.volume += 0.1;
-
-      this.volume = Math.round(this.volume * 100) / 100;
-
-      if (this.volume >= 1) {
-        this.volume = 1;
-      }
-
-      this.emitter.emit("changeVolume", this.volume);
+      this.$store.commit("updateVolume", 0.1);
     },
 
     prevFxVolume() {
-      this.fxVolume -= 0.1;
-
-      this.fxVolume = Math.round(this.fxVolume * 100) / 100;
-
-      if (this.fxVolume <= 0) {
-        this.fxVolume = 0;
-      }
-
-      this.emitter.emit("changeFxVolume", this.fxVolume);
+      this.$store.commit("updateFxVolume", -0.1);
     },
 
     nextFxVolume() {
-      this.fxVolume += 0.1;
-
-      this.fxVolume = Math.round(this.fxVolume * 100) / 100;
-
-      if (this.fxVolume >= 1) {
-        this.fxVolume = 1;
-      }
-
-      this.emitter.emit("changeFxVolume", this.fxVolume);
+      this.$store.commit("updateFxVolume", 0.1);
     },
 
     disableDevMode() {
@@ -356,7 +330,7 @@ export default {
   },
 
   mounted() {
-    // this.emitter.emit("changeBlockType", this.blockType);
+    // this.emitter.emit("changeBlockType", this.blocksType);
     // this.emitter.emit("changePitSize", this.pitSize);
     // this.emitter.emit("changeSpeed", this.speed);
     // this.emitter.emit("changeVolume", this.volume);
