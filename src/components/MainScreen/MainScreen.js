@@ -124,7 +124,7 @@ export default {
       orbitControls: false,
       helpers: false,
 
-      sound: "ZombiesAreComing.ogg",
+      sound: "ZombiesAreComing.aac",
       volume: 0.1,
       fxVolume: 0.7,
 
@@ -618,7 +618,7 @@ export default {
       const soundInstance = new Audio(audioListener);
       scene.add(soundInstance);
 
-      const audioBuffer = await loadAudio("fall.wav", this.progressCb);
+      const audioBuffer = await loadAudio("fall.aac", this.progressCb);
 
       soundInstance.setBuffer(audioBuffer);
       soundInstance.setVolume(fxVolume);
@@ -637,7 +637,7 @@ export default {
       const soundInstance = new Audio(audioListener);
       scene.add(soundInstance);
 
-      const audioBuffer = await loadAudio("zombieHoouw_1.mp3", this.progressCb);
+      const audioBuffer = await loadAudio("zombieHoouw_1.aac", this.progressCb);
 
       soundInstance.setBuffer(audioBuffer);
       soundInstance.setVolume(fxVolume);
@@ -656,7 +656,7 @@ export default {
       const soundInstance = new Audio(audioListener);
       scene.add(soundInstance);
 
-      const audioBuffer = await loadAudio("Zombie Sound.wav", this.progressCb);
+      const audioBuffer = await loadAudio("Zombie Sound.aac", this.progressCb);
 
       soundInstance.setBuffer(audioBuffer);
       soundInstance.setVolume(fxVolume);
