@@ -87,9 +87,6 @@ export default {
       timeDelta: 0,
       second: 0,
 
-      fov: 70,
-      lightPower: 5000,
-
       gridColor: 0x9b_43_0e,
       lightColor: 0xfa_fa_fa,
       sceneColor: 0x00_0b_12,
@@ -102,6 +99,7 @@ export default {
       isControls: false,
       isInstanced: true,
       isStop: false,
+      isPetrify: false,
 
       changeSpeedByLevels: true,
 
@@ -197,6 +195,9 @@ export default {
 
       "blocksTypeOptions",
       "blocksType",
+
+      "fov",
+      "lightPower",
     ]),
 
     zombie() {
@@ -845,9 +846,9 @@ export default {
         });
       }
 
-      if (xIndex == -1 || yIndex == -1 || zIndex == -1) {
-        debugger;
-      }
+      // if (xIndex == -1 || yIndex == -1 || zIndex == -1) {
+      //   debugger;
+      // }
 
       return {
         x: xIndex,
@@ -1072,6 +1073,8 @@ export default {
     },
 
     petrify(element) {
+      this.isPetrify = true;
+
       const collisionPoints = this.findCollissionElements(element);
 
       const childs = element.getObjectByName("childs").children;
@@ -1207,6 +1210,8 @@ export default {
       //     })
       //     .join("\n" + new Array(pitWidth).join("-") + "\n")
       // );
+
+      this.isPetrify = false;
 
       return true;
     },

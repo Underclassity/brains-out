@@ -13,6 +13,10 @@ import log from "../../helpers/log.js";
  * @return  {Object}  Element object
  */
 export function createElement() {
+  if (this.isPetrify) {
+    return false;
+  }
+
   log("Create element call");
 
   const element = this.next ? this.next.clone() : this.getRandomForm();
