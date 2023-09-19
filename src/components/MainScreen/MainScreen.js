@@ -1152,18 +1152,15 @@ export default {
           this.layersElements[z].push(el);
           this.scene.add(el);
 
-          let isPlaying = false;
-
           for (const id in this.dropSounds) {
             if (this.dropSounds[id].isPlaying) {
-              isPlaying = true;
-              // this.dropSounds[id].stop();
+              this.dropSounds[id].stop();
             }
           }
 
           const randomId = randomBetween(0, this.fallSoundId.length - 1);
 
-          if (this.dropSounds[this.fallSoundId[randomId]] && !isPlaying) {
+          if (this.dropSounds[this.fallSoundId[randomId]]) {
             this.dropSounds[this.fallSoundId[randomId]].play();
           }
         } else {
