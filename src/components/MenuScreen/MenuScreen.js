@@ -72,12 +72,6 @@ export default {
         }
       }
 
-      if (isShow) {
-        this.emitter.emit("openMenuScreen");
-      } else {
-        this.emitter.emit("closeMenuScreen");
-      }
-
       return isShow;
     },
   },
@@ -348,6 +342,16 @@ export default {
       }
 
       this.continueCall();
+    },
+  },
+
+  watch: {
+    isShow(newValue, oldValue) {
+      if (newValue) {
+        this.emitter.emit("openMenuScreen");
+      } else {
+        this.emitter.emit("closeMenuScreen");
+      }
     },
   },
 

@@ -130,7 +130,7 @@ export default {
       bgSoundId: "ZombiesAreComing.aac",
       bgMenuSoundId: "Rising.ogg",
       fallSoundId: ["burp_01.ogg", "burp_02.ogg"],
-      rotationSoundId: ["troll_01.ogg", "troll_02.ogg", "troll_03.ogg"],
+      rotationSoundId: ["troll_01.ogg"],
       endGameSoundId: "zombieHoouw_1.aac",
       levelSoundId: "Zombie Sound.aac",
 
@@ -225,8 +225,8 @@ export default {
     loadPercent() {
       const { loadingProcessCache } = this;
 
-      // 12 objects to download
-      const count = 12;
+      // 10 objects to download
+      const count = 10;
 
       let totalCount = 0;
 
@@ -622,9 +622,6 @@ export default {
       soundInstance.setLoop(true);
       soundInstance.setVolume(volume);
 
-      // play the audio
-      soundInstance.play();
-
       this.bgSound = soundInstance;
     },
 
@@ -738,22 +735,22 @@ export default {
     },
 
     async initAudio() {
-      const { scene, bgSoundId, camera, bgSound } = this;
+      const { scene, camera, bgSound } = this;
 
-      if (!scene || !camera || !bgSoundId) {
+      if (!scene || !camera) {
         return false;
       }
 
-      // Update sound
-      if (bgSound) {
-        const audioBuffer = await loadAudio(bgSoundId, this.progressCb);
+      // // Update sound
+      // if (bgSound) {
+      //   const audioBuffer = await loadAudio(bgSoundId, this.progressCb);
 
-        bgSound.stop();
-        bgSound.setBuffer(audioBuffer);
-        bgSound.play();
+      //   bgSound.stop();
+      //   bgSound.setBuffer(audioBuffer);
+      //   bgSound.play();
 
-        return true;
-      }
+      //   return true;
+      // }
 
       await this.initBgSound();
       await this.initBgMenuSound();
@@ -1870,9 +1867,9 @@ export default {
     },
 
     clickListener() {
-      if (this.bgSound) {
-        this.bgSound.play();
-      }
+      // if (this.bgSound) {
+      //   this.bgSound.play();
+      // }
     },
 
     parseURLSearchParams() {
@@ -1929,6 +1926,10 @@ export default {
     },
 
     openMenuScreen() {
+      if (this.bgMenuSound?.isPlaying) {
+        return false;
+      }
+
       log("Opened menu screen");
 
       const fadeOutTween = new TWEEN.Tween({ volume: 0 });
@@ -1960,6 +1961,10 @@ export default {
     },
 
     closeMenuScreen() {
+      if (this.bgSound?.isPlaying) {
+        return false;
+      }
+
       log("Closed menu screen");
 
       const fadeOutTween = new TWEEN.Tween({ volume: 0 });
@@ -1988,6 +1993,14 @@ export default {
 
       fadeInTween.start();
       fadeOutTween.start();
+    },
+  },
+
+  watch: {
+    isLogo(newValue, oldValue) {
+      if (newValue) {
+        this.openMenuScreen();
+      }
     },
   },
 
