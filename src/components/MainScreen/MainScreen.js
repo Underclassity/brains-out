@@ -623,6 +623,16 @@ export default {
       soundInstance.setVolume(volume);
 
       this.bgSound = soundInstance;
+
+      let counter = 0;
+      while (
+        Math.round(this.bgSound.getVolume() * 100) / 100 != volume &&
+        counter <= 100
+      ) {
+        this.bgSound.setVolume(volume);
+        counter++;
+        await new Promise((resolve) => setTimeout(resolve, 100));
+      }
     },
 
     async initBgMenuSound() {
@@ -647,7 +657,19 @@ export default {
       soundInstance.setLoop(true);
       soundInstance.setVolume(volume);
 
+      // soundInstance.play();
+
       this.bgMenuSound = soundInstance;
+
+      let counter = 0;
+      while (
+        Math.round(this.bgMenuSound.getVolume() * 100) / 100 != volume &&
+        counter <= 100
+      ) {
+        this.bgMenuSound.setVolume(volume);
+        counter++;
+        await new Promise((resolve) => setTimeout(resolve, 100));
+      }
     },
 
     async initDropSound() {
