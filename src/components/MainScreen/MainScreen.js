@@ -1932,27 +1932,29 @@ export default {
 
       log("Opened menu screen");
 
-      const fadeOutTween = new TWEEN.Tween({ volume: 0 });
+      const fadeOutTween = new TWEEN.Tween({
+        volume: this.bgMenuSound.getVolume(),
+      });
       fadeOutTween.to({ volume: this.volume }, 700);
       fadeOutTween.onUpdate(({ volume }) => {
-        if (this.bgMenuSound && !this.bgMenuSound.isPlaying) {
-          this.bgMenuSound.play();
-        }
-
         if (this.bgMenuSound) {
           this.bgMenuSound.setVolume(volume);
         }
+
+        if (this.bgMenuSound && !this.bgMenuSound.isPlaying) {
+          this.bgMenuSound.play();
+        }
       });
 
-      const fadeInTween = new TWEEN.Tween({ volume: this.volume });
+      const fadeInTween = new TWEEN.Tween({ volume: this.bgSound.getVolume() });
       fadeInTween.to({ volume: 0 }, 700);
       fadeInTween.onUpdate(({ volume }) => {
-        if (this.bgSound) {
-          this.bgSound.setVolume(volume);
-        }
-
         if (volume == 0 && this.bgSound) {
           this.bgSound.pause();
+        }
+
+        if (this.bgSound) {
+          this.bgSound.setVolume(volume);
         }
       });
 
@@ -1967,27 +1969,31 @@ export default {
 
       log("Closed menu screen");
 
-      const fadeOutTween = new TWEEN.Tween({ volume: 0 });
+      const fadeOutTween = new TWEEN.Tween({
+        volume: this.bgSound.getVolume(),
+      });
       fadeOutTween.to({ volume: this.volume }, 700);
       fadeOutTween.onUpdate(({ volume }) => {
-        if (this.bgSound && !this.bgSound.isPlaying) {
-          this.bgSound.play();
-        }
-
         if (this.bgSound) {
           this.bgSound.setVolume(volume);
         }
+
+        if (this.bgSound && !this.bgSound.isPlaying) {
+          this.bgSound.play();
+        }
       });
 
-      const fadeInTween = new TWEEN.Tween({ volume: this.volume });
+      const fadeInTween = new TWEEN.Tween({
+        volume: this.bgMenuSound.getVolume(),
+      });
       fadeInTween.to({ volume: 0 }, 700);
       fadeInTween.onUpdate(({ volume }) => {
-        if (this.bgMenuSound) {
-          this.bgMenuSound.setVolume(volume);
-        }
-
         if (volume == 0 && this.bgMenuSound) {
           this.bgMenuSound.pause();
+        }
+
+        if (this.bgMenuSound) {
+          this.bgMenuSound.setVolume(volume);
         }
       });
 
