@@ -6,10 +6,17 @@ import randomBetween from "../../helpers/random-between.js";
  * @return  {Boolean}  Result
  */
 export function playRandomRotateSound() {
+  let isPlaying = false;
+
   for (const id in this.rotateSounds) {
     if (this.rotateSounds[id].isPlaying) {
-      this.rotateSounds[id].stop();
+      isPlaying = true;
+      // this.rotateSounds[id].stop();
     }
+  }
+
+  if (isPlaying) {
+    return false;
   }
 
   const randomId = randomBetween(0, this.rotationSoundId.length - 1);

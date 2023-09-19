@@ -1152,15 +1152,18 @@ export default {
           this.layersElements[z].push(el);
           this.scene.add(el);
 
+          let isPlaying = false;
+
           for (const id in this.dropSounds) {
             if (this.dropSounds[id].isPlaying) {
-              this.dropSounds[id].stop();
+              isPlaying = true;
+              // this.dropSounds[id].stop();
             }
           }
 
           const randomId = randomBetween(0, this.fallSoundId.length - 1);
 
-          if (this.dropSounds[this.fallSoundId[randomId]]) {
+          if (this.dropSounds[this.fallSoundId[randomId]] && !isPlaying) {
             this.dropSounds[this.fallSoundId[randomId]].play();
           }
         } else {
@@ -1933,7 +1936,7 @@ export default {
       log("Opened menu screen");
 
       const fadeOutTween = new TWEEN.Tween({ volume: 0 });
-      fadeOutTween.to({ volume: this.volume });
+      fadeOutTween.to({ volume: this.volume }, 700);
       fadeOutTween.onUpdate(({ volume }) => {
         if (this.bgMenuSound && !this.bgMenuSound.isPlaying) {
           this.bgMenuSound.play();
@@ -1945,7 +1948,7 @@ export default {
       });
 
       const fadeInTween = new TWEEN.Tween({ volume: this.volume });
-      fadeInTween.to({ volume: 0 });
+      fadeInTween.to({ volume: 0 }, 700);
       fadeInTween.onUpdate(({ volume }) => {
         if (this.bgSound) {
           this.bgSound.setVolume(volume);
@@ -1968,7 +1971,7 @@ export default {
       log("Closed menu screen");
 
       const fadeOutTween = new TWEEN.Tween({ volume: 0 });
-      fadeOutTween.to({ volume: this.volume });
+      fadeOutTween.to({ volume: this.volume }, 700);
       fadeOutTween.onUpdate(({ volume }) => {
         if (this.bgSound && !this.bgSound.isPlaying) {
           this.bgSound.play();
@@ -1980,7 +1983,7 @@ export default {
       });
 
       const fadeInTween = new TWEEN.Tween({ volume: this.volume });
-      fadeInTween.to({ volume: 0 });
+      fadeInTween.to({ volume: 0 }, 700);
       fadeInTween.onUpdate(({ volume }) => {
         if (this.bgMenuSound) {
           this.bgMenuSound.setVolume(volume);
