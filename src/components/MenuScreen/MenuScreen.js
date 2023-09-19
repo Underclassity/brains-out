@@ -72,6 +72,12 @@ export default {
         }
       }
 
+      if (isShow) {
+        this.emitter.emit("openMenuScreen");
+      } else {
+        this.emitter.emit("closeMenuScreen");
+      }
+
       return isShow;
     },
   },

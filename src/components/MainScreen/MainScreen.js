@@ -17,6 +17,8 @@ import {
   WebGLRenderer,
 } from "three";
 
+import * as TWEEN from "@tweenjs/tween.js";
+
 import { loadPitParts, loadZombie } from "../../helpers/load-zombie.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import generatePit from "../../helpers/generate-pit.js";
@@ -37,6 +39,7 @@ import {
   rotateYPlus,
   rotateZMinus,
   rotateZPlus,
+  playRandomRotateSound,
 } from "./move.js";
 import {
   positionHelper,
@@ -124,14 +127,22 @@ export default {
       orbitControls: false,
       helpers: false,
 
-      sound: "ZombiesAreComing.aac",
+      bgSoundId: "ZombiesAreComing.aac",
+      bgMenuSoundId: "Rising.ogg",
+      fallSoundId: ["burp_01.ogg", "burp_02.ogg"],
+      rotationSoundId: ["troll_01.ogg", "troll_02.ogg", "troll_03.ogg"],
+      endGameSoundId: "zombieHoouw_1.aac",
+      levelSoundId: "Zombie Sound.aac",
+
       volume: 0.1,
       fxVolume: 0.7,
 
       bgSound: undefined,
-      dropSound: undefined,
+      bgMenuSound: undefined,
       endSound: undefined,
       clearSound: undefined,
+      rotateSounds: {},
+      dropSounds: {},
 
       camera: undefined,
       scene: undefined,
@@ -214,8 +225,8 @@ export default {
     loadPercent() {
       const { loadingProcessCache } = this;
 
-      // 7 objects to download
-      const count = 7;
+      // 12 objects to download
+      const count = 12;
 
       let totalCount = 0;
 
@@ -437,7 +448,7 @@ export default {
     },
 
     updateSound(sound) {
-      this.sound = sound;
+      this.bgSoundId = sound;
       log(`Update sound: ${sound}`);
 
       this.initAudio();
@@ -450,14 +461,18 @@ export default {
       if (this.bgSound) {
         this.bgSound.setVolume(volume);
       }
+
+      if (this.bgMenuSound) {
+        this.bgMenuSound.setVolume(volume);
+      }
     },
 
     updateFxVolume(fxVolume) {
       this.fxVolume = fxVolume;
       log(`Update FX volume: ${fxVolume}`);
 
-      if (this.dropSound) {
-        this.dropSound.setVolume(fxVolume);
+      for (const id in this.dropSounds) {
+        this.dropSounds[id].setVolume(fxVolume);
       }
 
       if (this.endSound) {
@@ -466,6 +481,10 @@ export default {
 
       if (this.clearSound) {
         this.clearSound.setVolume(fxVolume);
+      }
+
+      for (const id in this.rotateSounds) {
+        this.rotateSounds[id].setVolume(fxVolume);
       }
     },
 
@@ -582,7 +601,7 @@ export default {
     },
 
     async initBgSound() {
-      const { scene, sound, camera, volume } = this;
+      const { scene, bgSoundId, camera, volume } = this;
 
       // instantiate a listener
       const audioListener = new AudioListener();
@@ -596,7 +615,7 @@ export default {
       // add the audio object to the scene
       scene.add(soundInstance);
 
-      const audioBuffer = await loadAudio(sound, this.progressCb);
+      const audioBuffer = await loadAudio(bgSoundId, this.progressCb);
 
       soundInstance.setBuffer(audioBuffer);
 
@@ -609,27 +628,54 @@ export default {
       this.bgSound = soundInstance;
     },
 
-    async initDropSound() {
-      const { scene, camera, fxVolume } = this;
+    async initBgMenuSound() {
+      const { scene, bgMenuSoundId, camera, volume } = this;
 
+      // instantiate a listener
       const audioListener = new AudioListener();
+
+      // add the listener to the camera
       camera.add(audioListener);
 
+      // instantiate audio object
       const soundInstance = new Audio(audioListener);
+
+      // add the audio object to the scene
       scene.add(soundInstance);
 
-      const audioBuffer = await loadAudio("fall.aac", this.progressCb);
+      const audioBuffer = await loadAudio(bgMenuSoundId, this.progressCb);
 
       soundInstance.setBuffer(audioBuffer);
-      soundInstance.setVolume(fxVolume);
 
-      this.dropSound = soundInstance;
+      soundInstance.setLoop(true);
+      soundInstance.setVolume(volume);
 
-      return soundInstance;
+      this.bgMenuSound = soundInstance;
+    },
+
+    async initDropSound() {
+      const { scene, camera, fallSoundId, fxVolume } = this;
+
+      for (const id of fallSoundId) {
+        const audioListener = new AudioListener();
+        camera.add(audioListener);
+
+        const soundInstance = new Audio(audioListener);
+        scene.add(soundInstance);
+
+        const audioBuffer = await loadAudio(id, this.progressCb);
+
+        soundInstance.setBuffer(audioBuffer);
+        soundInstance.setVolume(fxVolume);
+
+        this.dropSounds[id] = soundInstance;
+      }
+
+      return true;
     },
 
     async initEndSound() {
-      const { scene, camera, fxVolume } = this;
+      const { scene, camera, endGameSoundId, fxVolume } = this;
 
       const audioListener = new AudioListener();
       camera.add(audioListener);
@@ -637,7 +683,7 @@ export default {
       const soundInstance = new Audio(audioListener);
       scene.add(soundInstance);
 
-      const audioBuffer = await loadAudio("zombieHoouw_1.aac", this.progressCb);
+      const audioBuffer = await loadAudio(endGameSoundId, this.progressCb);
 
       soundInstance.setBuffer(audioBuffer);
       soundInstance.setVolume(fxVolume);
@@ -648,7 +694,7 @@ export default {
     },
 
     async initClearSound() {
-      const { scene, camera, fxVolume } = this;
+      const { scene, camera, levelSoundId, fxVolume } = this;
 
       const audioListener = new AudioListener();
       camera.add(audioListener);
@@ -656,7 +702,7 @@ export default {
       const soundInstance = new Audio(audioListener);
       scene.add(soundInstance);
 
-      const audioBuffer = await loadAudio("Zombie Sound.aac", this.progressCb);
+      const audioBuffer = await loadAudio(levelSoundId, this.progressCb);
 
       soundInstance.setBuffer(audioBuffer);
       soundInstance.setVolume(fxVolume);
@@ -666,16 +712,41 @@ export default {
       return soundInstance;
     },
 
-    async initAudio() {
-      const { scene, sound, camera, bgSound } = this;
+    async initRotateSounds() {
+      const { rotationSoundId, scene, fxVolume, camera } = this;
 
-      if (!scene || !camera || !sound) {
+      for (const id of rotationSoundId) {
+        if (this.rotateSounds[id]) {
+          continue;
+        }
+
+        const audioListener = new AudioListener();
+        camera.add(audioListener);
+
+        const soundInstance = new Audio(audioListener);
+        scene.add(soundInstance);
+
+        const audioBuffer = await loadAudio(id, this.progressCb);
+
+        soundInstance.setBuffer(audioBuffer);
+        soundInstance.setVolume(fxVolume);
+
+        this.rotateSounds[id] = soundInstance;
+      }
+
+      return true;
+    },
+
+    async initAudio() {
+      const { scene, bgSoundId, camera, bgSound } = this;
+
+      if (!scene || !camera || !bgSoundId) {
         return false;
       }
 
       // Update sound
       if (bgSound) {
-        const audioBuffer = await loadAudio(sound, this.progressCb);
+        const audioBuffer = await loadAudio(bgSoundId, this.progressCb);
 
         bgSound.stop();
         bgSound.setBuffer(audioBuffer);
@@ -685,9 +756,11 @@ export default {
       }
 
       await this.initBgSound();
+      await this.initBgMenuSound();
       await this.initDropSound();
       await this.initEndSound();
       await this.initClearSound();
+      await this.initRotateSounds();
 
       return bgSound;
     },
@@ -1082,12 +1155,16 @@ export default {
           this.layersElements[z].push(el);
           this.scene.add(el);
 
-          if (this.dropSound?.isPlaying) {
-            this.dropSound.stop();
+          for (const id in this.dropSounds) {
+            if (this.dropSounds[id].isPlaying) {
+              this.dropSounds[id].stop();
+            }
           }
 
-          if (this.dropSound) {
-            this.dropSound.play();
+          const randomId = randomBetween(0, this.fallSoundId.length - 1);
+
+          if (this.dropSounds[this.fallSoundId[randomId]]) {
+            this.dropSounds[this.fallSoundId[randomId]].play();
           }
         } else {
           this.error = `Index not found!(${x}-${y}-${z})(${pX}-${pY}-${pZ})`;
@@ -1131,6 +1208,8 @@ export default {
     rotateYPlus,
     rotateZMinus,
     rotateZPlus,
+
+    playRandomRotateSound,
 
     createElement,
     initWaterfall,
@@ -1701,6 +1780,8 @@ export default {
         // controls.update();
 
         renderer.render(scene, camera);
+
+        TWEEN.update();
       };
 
       const renderer = new WebGLRenderer({
@@ -1838,21 +1919,75 @@ export default {
 
     playMusic() {
       log("Play music");
-
-      if (this.bgSound) {
-        this.bgSound.play();
-      }
     },
 
     pauseMusic() {
       log("Pause music");
 
-      if (this.bgSound) {
-        this.bgSound.pause();
-      }
-
       this.isPause = true;
       this.isMenu = true;
+    },
+
+    openMenuScreen() {
+      log("Opened menu screen");
+
+      const fadeOutTween = new TWEEN.Tween({ volume: 0 });
+      fadeOutTween.to({ volume: this.volume });
+      fadeOutTween.onUpdate(({ volume }) => {
+        if (this.bgMenuSound && !this.bgMenuSound.isPlaying) {
+          this.bgMenuSound.play();
+        }
+
+        if (this.bgMenuSound) {
+          this.bgMenuSound.setVolume(volume);
+        }
+      });
+
+      const fadeInTween = new TWEEN.Tween({ volume: this.volume });
+      fadeInTween.to({ volume: 0 });
+      fadeInTween.onUpdate(({ volume }) => {
+        if (this.bgSound) {
+          this.bgSound.setVolume(volume);
+        }
+
+        if (volume == 0 && this.bgSound) {
+          this.bgSound.pause();
+        }
+      });
+
+      fadeInTween.start();
+      fadeOutTween.start();
+    },
+
+    closeMenuScreen() {
+      log("Closed menu screen");
+
+      const fadeOutTween = new TWEEN.Tween({ volume: 0 });
+      fadeOutTween.to({ volume: this.volume });
+      fadeOutTween.onUpdate(({ volume }) => {
+        if (this.bgSound && !this.bgSound.isPlaying) {
+          this.bgSound.play();
+        }
+
+        if (this.bgSound) {
+          this.bgSound.setVolume(volume);
+        }
+      });
+
+      const fadeInTween = new TWEEN.Tween({ volume: this.volume });
+      fadeInTween.to({ volume: 0 });
+      fadeInTween.onUpdate(({ volume }) => {
+        if (this.bgMenuSound) {
+          this.bgMenuSound.setVolume(volume);
+        }
+
+        if (volume == 0 && this.bgMenuSound) {
+          this.bgMenuSound.pause();
+        }
+      });
+
+      fadeInTween.start();
+      fadeOutTween.start();
     },
   },
 
@@ -1882,6 +2017,9 @@ export default {
     this.emitter.on("updateControls", this.updateControls);
     this.emitter.on("updateDevMode", this.updateDevMode);
 
+    this.emitter.on("openMenuScreen", this.openMenuScreen);
+    this.emitter.on("closeMenuScreen", this.closeMenuScreen);
+
     this.emitter.on("newGame", this.newGame);
   },
 
@@ -1900,6 +2038,9 @@ export default {
     this.emitter.off("changeVolume", this.updateVolume);
     this.emitter.off("updateControls", this.updateControls);
     this.emitter.off("updateDevMode", this.updateDevMode);
+
+    this.emitter.off("openMenuScreen", this.openMenuScreen);
+    this.emitter.off("closeMenuScreen", this.closeMenuScreen);
 
     this.emitter.off("newGame", this.newGame);
   },
