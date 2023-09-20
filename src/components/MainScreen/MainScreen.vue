@@ -52,6 +52,16 @@
             label(for="shaders") Shaders
             input#shaders(type="checkbox" v-model="isShaders")
 
+        .dev-menu--item
+            span.material-symbols-outlined paragliding
+            label(for="glitch") Glitch
+            input#glitch(type="checkbox" v-model="isGlitch")
+
+        .dev-menu--item
+            span.material-symbols-outlined palette
+            label(for="technicolor") Technicolor
+            input#technicolor(type="checkbox" v-model="isTechnicolor")
+
     .dev-buttons
         span.dev-button.material-symbols-outlined(v-on:click="pauseCall" v-if="!isPause && isDev") pause
         span.dev-button.material-symbols-outlined(v-on:click="playCall" v-if="isPause && isDev") play_arrow

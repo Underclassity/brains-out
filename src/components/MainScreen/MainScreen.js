@@ -23,6 +23,9 @@ import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { GlitchPass } from "three/addons/postprocessing/GlitchPass.js";
 import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
+import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
+
+import { TechnicolorShader } from "three/addons/shaders/TechnicolorShader.js";
 
 import * as TWEEN from "@tweenjs/tween.js";
 
@@ -138,6 +141,12 @@ export default {
 
       isShaders: false,
       composer: undefined,
+
+      isGlitch: false,
+      isTechnicolor: false,
+
+      glitchPass: undefined,
+      technicolorShaderPass: undefined,
 
       lights: {
         l1: undefined,
@@ -278,7 +287,7 @@ export default {
           }
 
           this.renderer.setSize(containerRect.width, containerRect.height);
-          this.composer.setSize(containerRect.width, containerRect.height);
+          // this.composer.setSize(containerRect.width, containerRect.height);
 
           this.updateCameraProjection();
         }, 10);
@@ -1849,6 +1858,7 @@ export default {
       this.renderer = renderer;
 
       const composer = new EffectComposer(renderer);
+      composer.setPixelRatio(this.pixelRatio);
       composer.setSize(width, height);
       this.composer = composer;
 
@@ -1856,7 +1866,20 @@ export default {
       composer.addPass(renderPass);
 
       const glitchPass = new GlitchPass();
+      glitchPass.enabled = this.isGlitch;
       composer.addPass(glitchPass);
+      this.glitchPass = glitchPass;
+
+      const technicolorShaderPass = new ShaderPass(TechnicolorShader);
+      technicolorShaderPass.enabled = this.isTechnicolor;
+      composer.addPass(technicolorShaderPass);
+      this.technicolorShaderPass = technicolorShaderPass;
+
+      // const digitalGlitchShaderPass = new ShaderPass(DigitalGlitch);
+      // composer.addPass(digitalGlitchShaderPass);
+
+      // const gammaCorrectionShaderPass = new ShaderPass(GammaCorrectionShader);
+      // composer.addPass(gammaCorrectionShaderPass);
 
       const outputPass = new OutputPass();
       composer.addPass(outputPass);
@@ -2096,6 +2119,14 @@ export default {
 
     blocksType(newValue) {
       this.updateBlocksType(newValue);
+    },
+
+    isGlitch(newValue) {
+      this.glitchPass.enabled = newValue;
+    },
+
+    isTechnicolor(newValue) {
+      this.technicolorShaderPass.enabled = newValue;
     },
   },
 
