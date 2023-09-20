@@ -3,7 +3,7 @@
     .container(ref="container" :class="{ 'container--controls': (isControls || isMobile) }")
 
     .navigation
-        .navigation--item Best Score: {{ maxScore }}
+        .navigation--item Best Score: {{ score > maxScore ? score : maxScore }}
         .navigation--item Score: {{ score }}
 
     .navigation--item.navigation--menu(v-on:click="openMenu")
