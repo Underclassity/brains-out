@@ -43,9 +43,9 @@ export default createStore({
     volume: 0.1,
     fxVolume: 0.3,
 
-    isRotateRestrain: false,
-    maxRotate: 5,
-    rotateCount: 0,
+    // isRotateRestrain: false,
+    // maxRotate: 5,
+    // rotateCount: 0,
   },
   getters: {},
   mutations: {
