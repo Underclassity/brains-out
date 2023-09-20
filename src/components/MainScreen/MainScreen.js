@@ -2048,6 +2048,10 @@ export default {
   },
 
   watch: {
+    isRotateRestrain() {
+      this.rotateCount = 0;
+    },
+
     isLogo(newValue, oldValue) {
       if (newValue) {
         this.openMenuScreen();
