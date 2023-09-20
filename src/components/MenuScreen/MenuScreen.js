@@ -43,11 +43,6 @@ export default {
 
       isStarted: false,
 
-      minSpeed: 0.5,
-      speed: 0.5,
-      maxSpeed: 10,
-      speedStep: 0.1,
-
       isDev: false,
       isControls: false,
 
@@ -65,6 +60,11 @@ export default {
 
       "blocksTypeOptions",
       "blocksType",
+
+      "settingsSpeed",
+      "speedStep",
+      "minSpeed",
+      "maxSpeed",
     ]),
 
     isShow() {
@@ -239,27 +239,11 @@ export default {
     },
 
     prevSpeed() {
-      this.speed -= this.speedStep;
-
-      this.speed = Math.round(this.speed * 100) / 100;
-
-      if (this.speed <= this.minSpeed) {
-        this.speed = this.minSpeed;
-      }
-
-      this.emitter.emit("changeSpeed", this.speed);
+      this.$store.commit("updateSettingsSpeed", -this.speedStep);
     },
 
     nextSpeed() {
-      this.speed += this.speedStep;
-
-      this.speed = Math.round(this.speed * 100) / 100;
-
-      if (this.speed >= this.maxSpeed) {
-        this.speed = this.maxSpeed;
-      }
-
-      this.emitter.emit("changeSpeed", this.speed);
+      this.$store.commit("updateSettingsSpeed", this.speedStep);
     },
 
     prevVolume() {
@@ -330,12 +314,6 @@ export default {
   },
 
   mounted() {
-    // this.emitter.emit("changeBlockType", this.blocksType);
-    // this.emitter.emit("changePitSize", this.pitSize);
-    // this.emitter.emit("changeSpeed", this.speed);
-    // this.emitter.emit("changeVolume", this.volume);
-    // this.emitter.emit("changeFxVolume", this.fxVolume);
-
     this.emitter.on("openMenu", this.continueCall);
     this.emitter.on("openEndMenu", this.endCall);
     this.emitter.on("openStartMenu", this.openStartMenu);

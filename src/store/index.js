@@ -10,11 +10,12 @@ export default createStore({
 
     minSpeed: 0.5,
     speed: 0.5,
+    settingsSpeed: 0.5,
     maxSpeed: 10,
     speedStep: 0.1,
+
     score: 0,
     lsScore: [],
-    prevScore: 0,
 
     pitWidth: 5,
     pitHeight: 5,
@@ -64,6 +65,58 @@ export default createStore({
       state.pitDepth = pitDepth;
 
       state.pitSize = newPitSizeString;
+    },
+
+    updateSpeed(state, value) {
+      let newSpeed = roundValue(state.speed + value);
+
+      if (newSpeed >= state.maxSpeed) {
+        newSpeed = state.maxSpeed;
+      }
+
+      if (newSpeed <= state.minSpeed) {
+        newSpeed = state.minSpeed;
+      }
+
+      state.speed = newSpeed;
+    },
+
+    setSpeed(state, newSpeed) {
+      if (newSpeed >= state.maxSpeed) {
+        newSpeed = state.maxSpeed;
+      }
+
+      if (newSpeed <= state.minSpeed) {
+        newSpeed = state.minSpeed;
+      }
+
+      state.speed = newSpeed;
+    },
+
+    updateSettingsSpeed(state, value) {
+      let newSpeed = roundValue(state.settingsSpeed + value);
+
+      if (newSpeed >= state.maxSpeed) {
+        newSpeed = state.maxSpeed;
+      }
+
+      if (newSpeed <= state.minSpeed) {
+        newSpeed = state.minSpeed;
+      }
+
+      state.settingsSpeed = newSpeed;
+    },
+
+    setSettingsSpeed(state, newSpeed) {
+      if (newSpeed >= state.maxSpeed) {
+        newSpeed = state.maxSpeed;
+      }
+
+      if (newSpeed <= state.minSpeed) {
+        newSpeed = state.minSpeed;
+      }
+
+      state.settingsSpeed = newSpeed;
     },
 
     updateVolume(state, value) {
@@ -129,6 +182,35 @@ export default createStore({
 
       state.blocksType = newBlockType;
     },
+
+    updateScore(state, value) {
+      let newScore = roundValue(state.score + value);
+
+      // Restrain volume
+      if (newScore <= 0) {
+        newScore = 0;
+      }
+
+      state.score = newScore;
+    },
+
+    setVolume(state, newScore) {
+      // Restrain volume
+      if (newScore <= 0) {
+        newScore = 0;
+      }
+
+      state.score = roundValue(newScore);
+    },
+
+    saveScore(state) {
+      state.lsScore.push(state.score);
+      state.score = 0;
+    },
+
+    resetScore(state) {
+      state.score = 0;
+    },
   },
   actions: {},
   modules: {},
@@ -136,6 +218,8 @@ export default createStore({
     vuejsStorage({
       keys: [
         "size",
+        "settingsSpeed",
+        "lsScore",
         "pitWidth",
         "pitHeight",
         "pitDepth",

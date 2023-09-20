@@ -68,13 +68,6 @@ export default {
     return {
       size: 1,
 
-      minSpeed: 0.5,
-      speed: 0.5,
-      maxSpeed: 10,
-      speedSettings: 0.5,
-      speedStep: 0.1,
-      score: 0,
-      lsScore: [],
       prevScore: 0,
 
       layers: new Array(12),
@@ -200,6 +193,15 @@ export default {
 
       "fov",
       "lightPower",
+
+      "minSpeed",
+      "speed",
+      "settingsSpeed",
+      "maxSpeed",
+      "speedStep",
+
+      "score",
+      "lsScore",
     ]),
 
     zombie() {
@@ -304,24 +306,8 @@ export default {
       return true;
     },
 
-    loadScore() {
-      const scoreItems = localStorage.getItem("score");
-      const lsScore = scoreItems ? JSON.parse(scoreItems) : [];
-
-      if (!lsScore.length) {
-        localStorage.setItem("score", JSON.stringify(lsScore));
-      }
-
-      log(`Load score ${lsScore} from localStorage`);
-
-      // Update value
-      this.lsScore = lsScore;
-
-      return lsScore;
-    },
-
     speedUp() {
-      this.speed += this.speedStep;
+      this.$store.commit("updateSpeed", this.speedStep);
 
       log("Update speed to: ", this.speed);
 
@@ -336,7 +322,7 @@ export default {
     },
 
     changeScore(changeValue) {
-      this.score += changeValue;
+      this.$store.commit("updateScore", changeValue);
 
       if (this.changeSpeedByLevels) {
         this.prevScore = this.score;
@@ -346,28 +332,6 @@ export default {
       }
 
       return true;
-    },
-
-    updateScore() {
-      const { score } = this;
-
-      log(`Update score ${score} in localStorage`);
-
-      const scoreItems = localStorage.getItem("score");
-      const lsScore = scoreItems ? JSON.parse(scoreItems) : [];
-
-      if (!lsScore.length) {
-        localStorage.setItem("score", JSON.stringify(lsScore));
-      }
-
-      localStorage.setItem("score", JSON.stringify([...lsScore, score]));
-
-      // Update value
-      this.lsScore = [...lsScore, score];
-
-      return localStorage.getItem("score")
-        ? JSON.parse(localStorage.getItem("score"))
-        : [];
     },
 
     acceptedCall() {
@@ -413,11 +377,6 @@ export default {
 
     backToGameCall() {
       this.closeMenu();
-    },
-
-    changeSpeed(speed) {
-      log(`Update speed to: ${speed}`);
-      this.speedSettings = parseInt(speed);
     },
 
     pauseCall() {
@@ -507,8 +466,8 @@ export default {
       const { scene } = this;
 
       // Reset score and speed
-      this.score = 0;
-      this.speed = this.speedSettings;
+      this.$store.commit("resetScore");
+      this.$store.commit("setSpeed", this.settingsSpeed);
 
       this.isEnd = false;
       this.isPetrify = false;
@@ -1186,7 +1145,7 @@ export default {
 
           if (this.layers[z][x][y] && !element.userData.drop) {
             this.changeScore(indexes.length);
-            this.updateScore();
+            this.$store.commit("saveScore");
 
             log(
               `Element already petrified!(${x}-${y}-${z})(${pX}-${pY}-${pZ})`
@@ -1422,8 +1381,8 @@ export default {
           scene.remove(child);
         });
 
-      this.score = 0;
-      this.speed = this.minSpeed;
+      this.$store.commit("resetScore");
+      this.$store.commit("setSpeed", this.settingsSpeed);
 
       // reset elements array
       if (this.elements.length) {
@@ -2008,7 +1967,7 @@ export default {
       log("Pause music");
 
       this.isPause = true;
-      // this.isMenu = true;
+      this.isMenu = true;
     },
 
     openMenuScreen() {
@@ -2117,8 +2076,6 @@ export default {
   },
 
   async mounted() {
-    this.loadScore();
-
     await this.loadZombie();
     this.initAudio();
     this.init();
@@ -2130,7 +2087,6 @@ export default {
     document.addEventListener("keyup", this.keyupHandler);
     window.addEventListener("click", this.clickListener);
 
-    this.emitter.on("changeSpeed", this.changeSpeed);
     this.emitter.on("updateControls", this.updateControls);
     this.emitter.on("updateDevMode", this.updateDevMode);
 
@@ -2148,7 +2104,6 @@ export default {
     document.removeEventListener("keyup", this.keyupHandler);
     window.removeEventListener("click", this.clickListener);
 
-    this.emitter.off("changeSpeed", this.changeSpeed);
     this.emitter.off("updateControls", this.updateControls);
     this.emitter.off("updateDevMode", this.updateDevMode);
 

@@ -27,9 +27,9 @@
 
         .menu--selector(v-show="flags.new")
             .menu--label Speed
-            .menu--selector--prev(v-on:click="prevSpeed" v-if="speed != minSpeed")
-            .menu--selector--value {{ speed }}
-            .menu--selector--next(v-on:click="nextSpeed" v-if="speed != maxSpeed")
+            .menu--selector--prev(v-on:click="prevSpeed" v-if="settingsSpeed != minSpeed")
+            .menu--selector--value {{ settingsSpeed }}
+            .menu--selector--next(v-on:click="nextSpeed" v-if="settingsSpeed != maxSpeed")
 
         .menu--buttons(v-show="flags.new")
             .menu--item--red.menu--button(v-on:click="back") Back
