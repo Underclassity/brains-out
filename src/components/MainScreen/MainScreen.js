@@ -511,6 +511,7 @@ export default {
       this.speed = this.speedSettings;
 
       this.isEnd = false;
+      this.isPetrify = false;
 
       if (this.lights?.l1 && this.lights?.l2 && this.lights?.l3) {
         this.lights.l1.power = this.lightPower;
