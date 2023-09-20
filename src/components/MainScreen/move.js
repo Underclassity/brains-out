@@ -83,6 +83,12 @@ export function moveDown() {
  * @return  {Object}  Current element
  */
 export function rotateXPlus() {
+  if (this.isRotateRestrain && this.rotateCount == this.maxRotate) {
+    return false;
+  }
+
+  this.rotateCount += 1;
+
   this.rotateHelper(this.current, "x", 90);
   this.restrainElement(this.current);
 
@@ -97,6 +103,12 @@ export function rotateXPlus() {
  * @return  {Object}  Current element
  */
 export function rotateXMinus() {
+  if (this.isRotateRestrain && this.rotateCount == this.maxRotate) {
+    return false;
+  }
+
+  this.rotateCount += 1;
+
   this.rotateHelper(this.current, "x", -90);
   this.restrainElement(this.current);
 
@@ -111,6 +123,12 @@ export function rotateXMinus() {
  * @return  {Object}  Current element
  */
 export function rotateYPlus() {
+  if (this.isRotateRestrain && this.rotateCount == this.maxRotate) {
+    return false;
+  }
+
+  this.rotateCount += 1;
+
   this.rotateHelper(this.current, "y", 90);
   this.restrainElement(this.current);
 
@@ -125,6 +143,12 @@ export function rotateYPlus() {
  * @return  {Object}  Current element
  */
 export function rotateYMinus() {
+  if (this.isRotateRestrain && this.rotateCount == this.maxRotate) {
+    return false;
+  }
+
+  this.rotateCount += 1;
+
   this.rotateHelper(this.current, "y", -90);
   this.restrainElement(this.current);
 
@@ -139,6 +163,12 @@ export function rotateYMinus() {
  * @return  {Object}  Current element
  */
 export function rotateZPlus() {
+  if (this.isRotateRestrain && this.rotateCount == this.maxRotate) {
+    return false;
+  }
+
+  this.rotateCount += 1;
+
   this.rotateHelper(this.current, "z", 90);
   this.restrainElement(this.current);
 
@@ -153,6 +183,12 @@ export function rotateZPlus() {
  * @return  {Object}  Current element
  */
 export function rotateZMinus() {
+  if (this.isRotateRestrain && this.rotateCount == this.maxRotate) {
+    return false;
+  }
+
+  this.rotateCount += 1;
+
   this.rotateHelper(this.current, "z", -90);
   this.restrainElement(this.current);
 

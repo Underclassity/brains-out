@@ -42,6 +42,11 @@
             label(for="levels") Change speed by levels
             input#levels(type="checkbox" v-model="changeSpeedByLevels")
 
+        .dev-menu--item
+            span.material-symbols-outlined settings_backup_restore
+            label(for="rotateRestrain") Restrain rotates by {{ maxRotate + 1 }}
+            input#rotateRestrain(type="checkbox" v-model="isRotateRestrain")
+
     .dev-buttons
         span.dev-button.material-symbols-outlined(v-on:click="pauseCall" v-if="!isPause && isDev") pause
         span.dev-button.material-symbols-outlined(v-on:click="playCall" v-if="isPause && isDev") play_arrow

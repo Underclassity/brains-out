@@ -17,6 +17,9 @@ export function createElement() {
     return false;
   }
 
+  // Reset rotate count
+  this.rotateCount = 0;
+
   log("Create element call");
 
   const element = this.next ? this.next.clone() : this.getRandomForm();
