@@ -25,6 +25,13 @@ import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
 
+import { DotScreenPass } from "three/addons/postprocessing/DotScreenPass.js";
+import { FilmPass } from "three/addons/postprocessing/FilmPass.js";
+import { SAOPass } from "three/addons/postprocessing/SAOPass.js";
+import { SSAOPass } from "three/addons/postprocessing/SSAOPass.js";
+import { SSRPass } from "three/addons/postprocessing/SSRPass.js";
+import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
+
 import { TechnicolorShader } from "three/addons/shaders/TechnicolorShader.js";
 
 import * as TWEEN from "@tweenjs/tween.js";
@@ -142,11 +149,23 @@ export default {
       isShaders: false,
       composer: undefined,
 
+      isDotScreenPass: false,
+      isFilmPass: false,
       isGlitch: false,
+      isSAOPass: false,
+      isSSAOPass: false,
+      isSSRPass: false,
       isTechnicolor: false,
+      isUnrealBloomPass: false,
 
+      dotScreenPass: undefined,
+      filmPass: undefined,
       glitchPass: undefined,
+      SAOComposerPass: undefined,
+      SSAOComposerPass: undefined,
+      SSRComposerPass: undefined,
       technicolorShaderPass: undefined,
+      UnrealBloomComposerPass: undefined,
 
       lights: {
         l1: undefined,
@@ -1875,11 +1894,41 @@ export default {
       composer.addPass(technicolorShaderPass);
       this.technicolorShaderPass = technicolorShaderPass;
 
-      // const digitalGlitchShaderPass = new ShaderPass(DigitalGlitch);
-      // composer.addPass(digitalGlitchShaderPass);
+      const dotScreenPass = new DotScreenPass();
+      dotScreenPass.enabled = this.isDotScreenPass;
+      composer.addPass(dotScreenPass);
+      this.dotScreenPass = dotScreenPass;
 
-      // const gammaCorrectionShaderPass = new ShaderPass(GammaCorrectionShader);
-      // composer.addPass(gammaCorrectionShaderPass);
+      const SAOComposerPass = new SAOPass(scene, camera);
+      SAOComposerPass.enabled = this.isSAOPass;
+      composer.addPass(SAOComposerPass);
+      this.SAOComposerPass = SAOComposerPass;
+
+      const filmPass = new FilmPass();
+      filmPass.enabled = this.isFilmPass;
+      composer.addPass(filmPass);
+      this.filmPass = filmPass;
+
+      const SSAOComposerPass = new SSAOPass(scene, camera);
+      SSAOComposerPass.enabled = this.isSSAOPass;
+      composer.addPass(SSAOComposerPass);
+      this.SSAOComposerPass = SSAOComposerPass;
+
+      const SSRComposerPass = new SSRPass({
+        renderer,
+        scene,
+        camera,
+        width,
+        height,
+      });
+      SSRComposerPass.enabled = this.isSSRPass;
+      composer.addPass(SSRComposerPass);
+      this.SSRComposerPass = SSRComposerPass;
+
+      const UnrealBloomComposerPass = new UnrealBloomPass();
+      UnrealBloomComposerPass.enabled = this.isUnrealBloomPass;
+      composer.addPass(UnrealBloomComposerPass);
+      this.UnrealBloomComposerPass = UnrealBloomComposerPass;
 
       const outputPass = new OutputPass();
       composer.addPass(outputPass);
@@ -2127,6 +2176,30 @@ export default {
 
     isTechnicolor(newValue) {
       this.technicolorShaderPass.enabled = newValue;
+    },
+
+    isDotScreenPass(newValue) {
+      this.dotScreenPass.enabled = newValue;
+    },
+
+    isFilmPass(newValue) {
+      this.filmPass.enabled = newValue;
+    },
+
+    isSAOPass(newValue) {
+      this.SAOComposerPass.enabled = newValue;
+    },
+
+    isSSAOPass(newValue) {
+      this.SSAOComposerPass.enabled = newValue;
+    },
+
+    isSSRPass(newValue) {
+      this.SSRComposerPass.enabled = newValue;
+    },
+
+    isUnrealBloomPass(newValue) {
+      this.UnrealBloomComposerPass.enabled = newValue;
     },
   },
 

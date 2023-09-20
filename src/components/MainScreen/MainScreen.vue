@@ -53,14 +53,44 @@
             input#shaders(type="checkbox" v-model="isShaders")
 
         .dev-menu--item
-            span.material-symbols-outlined paragliding
+            span.material-symbols-outlined stroke_full
             label(for="glitch") Glitch
             input#glitch(type="checkbox" v-model="isGlitch")
 
         .dev-menu--item
-            span.material-symbols-outlined palette
+            span.material-symbols-outlined stroke_full
             label(for="technicolor") Technicolor
             input#technicolor(type="checkbox" v-model="isTechnicolor")
+
+        .dev-menu--item
+            span.material-symbols-outlined stroke_full
+            label(for="DotScreenPass") DotScreenPass
+            input#DotScreenPass(type="checkbox" v-model="isDotScreenPass")
+
+        .dev-menu--item
+            span.material-symbols-outlined stroke_full
+            label(for="FilmPass") FilmPass
+            input#FilmPass(type="checkbox" v-model="isFilmPass")
+
+        .dev-menu--item
+            span.material-symbols-outlined stroke_full
+            label(for="SAOPass") SAOPass
+            input#SAOPass(type="checkbox" v-model="isSAOPass")
+
+        .dev-menu--item
+            span.material-symbols-outlined stroke_full
+            label(for="SSAOPass") SSAOPass
+            input#SSAOPass(type="checkbox" v-model="isSSAOPass")
+
+        .dev-menu--item
+            span.material-symbols-outlined stroke_full
+            label(for="SSRPass") SSRPass
+            input#SSRPass(type="checkbox" v-model="isSSRPass")
+
+        .dev-menu--item
+            span.material-symbols-outlined stroke_full
+            label(for="UnrealBloomPass") UnrealBloomPass
+            input#UnrealBloomPass(type="checkbox" v-model="isUnrealBloomPass")
 
     .dev-buttons
         span.dev-button.material-symbols-outlined(v-on:click="pauseCall" v-if="!isPause && isDev") pause
