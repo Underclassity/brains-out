@@ -40,7 +40,7 @@ export default createStore({
     isColorizeLevel: true,
 
     volume: 0.1,
-    fxVolume: 0.7,
+    fxVolume: 0.3,
 
     isRotateRestrain: false,
     maxRotate: 5,
@@ -48,18 +48,6 @@ export default createStore({
   },
   getters: {},
   mutations: {
-    incrementSpeed(state) {
-      state.speed += state.minSpeed;
-    },
-
-    resetSpeed(state) {
-      state.speed = state.minSpeed;
-    },
-
-    updateScore(state, value) {
-      state.score += value;
-    },
-
     changeBlockType(state, newBlockType) {
       state.blocksType = newBlockType;
     },
