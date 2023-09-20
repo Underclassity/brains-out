@@ -42,8 +42,11 @@
             label(for="levels") Change speed by levels
             input#levels(type="checkbox" v-model="changeSpeedByLevels")
 
-    span.pause-button.link.material-symbols-outlined(v-on:click="pauseCall" v-if="!isPause && isDev") pause
-    span.play-button.link.material-symbols-outlined(v-on:click="playCall" v-if="isPause && isDev") play_arrow
+    .dev-buttons
+        span.dev-button.material-symbols-outlined(v-on:click="pauseCall" v-if="!isPause && isDev") pause
+        span.dev-button.material-symbols-outlined(v-on:click="playCall" v-if="isPause && isDev") play_arrow
+
+        span.dev-button.material-symbols-outlined(v-on:click="layersCheck(true)" v-if="isDev") layers_clear
 
     .controls(v-show="isControls || isMobile")
         .controls--columns

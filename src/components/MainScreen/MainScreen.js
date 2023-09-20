@@ -121,15 +121,7 @@ export default {
       bgSoundId: "ZombiesAreComing.aac",
       bgMenuSoundId: "Rising.ogg",
       fallSoundId: ["burp_01.ogg", "burp_02.ogg"],
-      rotationSoundId: [
-        "spell_fire_01.ogg",
-        "spell_fire_02.ogg",
-        "spell_fire_03.ogg",
-        "spell_fire_04.ogg",
-        "spell_fire_05.ogg",
-        "spell_fire_06.ogg",
-        "spell_fire_07.ogg",
-      ],
+      rotationSoundId: ["spell_fire_01.ogg", "spell_fire_02.ogg"],
       endGameSoundId: "zombieHoouw_1.aac",
       levelSoundId: "Zombie Sound.aac",
 
@@ -239,8 +231,8 @@ export default {
     loadPercent() {
       const { loadingProcessCache } = this;
 
-      // 10 objects to download
-      const count = 10;
+      // 11 objects to download
+      const count = 11;
 
       let totalCount = 0;
 
@@ -1029,7 +1021,74 @@ export default {
       return true;
     },
 
-    layersCheck() {
+    deleteLayer(zIndex) {
+      const layerElements = this.layersElements[zIndex];
+
+      if (!layerElements.length) {
+        return false;
+      }
+
+      log(`Process layer delete: ${zIndex}`);
+
+      // Update speed level
+      if (this.changeSpeedByLevels) {
+        this.speedUp();
+      }
+
+      // Delete all layer elements
+      for (const element of layerElements) {
+        this.scene.remove(element);
+      }
+
+      // Move all elements upper to 1 block down
+      this.layersElements.forEach((elements, index) => {
+        if (index < zIndex) {
+          elements.forEach((el) => {
+            if (!el) {
+              return false;
+            }
+
+            el.position.setZ(el.position.z - this.size);
+            this.restrainElement(el);
+
+            // console.log({
+            //   x: el.position.x.toFixed(1),
+            //   y: el.position.y.toFixed(1),
+            //   z: el.position.z.toFixed(1),
+            // });
+          });
+        }
+      });
+
+      this.layersElements[zIndex] = [];
+
+      // Move all elements by one level
+      this.layers.splice(zIndex, 1);
+      this.layersElements.splice(zIndex, 1);
+      this.layers.unshift(0);
+      this.layersElements.unshift([]);
+      this.initLayer(0);
+
+      this.layersElements.forEach((elements, index) => {
+        elements.forEach((el) => {
+          this.colorizeElement(el, index);
+        });
+      });
+
+      // console.log(
+      //   this.layersElements
+      //     .map((elements) => elements.filter((item) => item).length)
+      //     .join("-")
+      // );
+
+      if (this.clearSound) {
+        this.clearSound.play();
+      }
+
+      this.updateLayersPreview();
+    },
+
+    layersCheck(random = false, force = false) {
       const { layers } = this;
 
       let filledLevelsCounter = 0;
@@ -1041,34 +1100,15 @@ export default {
           return prev;
         }, []);
 
-        if (layerValues.includes(0)) {
+        const randomFlag = random ? Math.random() <= 0.2 : false;
+
+        if (layerValues.includes(0) && !randomFlag && !force) {
           continue;
         }
 
-        log(`Process layer delete: ${index}`);
+        this.deleteLayer(index);
 
         filledLevelsCounter++;
-
-        // Update speed level
-        if (this.changeSpeedByLevels) {
-          this.speedUp();
-        }
-
-        const layerElements = this.layersElements[index];
-
-        // Delete all layer elements
-        for (const element of layerElements) {
-          this.scene.remove(element);
-        }
-
-        // Move all elements by one level
-        this.layers.splice(index, 1);
-        this.layers.unshift(0);
-        this.initLayer(0);
-
-        if (this.clearSound) {
-          this.clearSound.play();
-        }
       }
 
       // Update score by tetris formula: https://en.wikipedia.org/wiki/Tetris
@@ -1212,7 +1252,6 @@ export default {
       // Check layers
       this.layersCheck();
 
-      this.updateLayersPreview();
       this.updateLayersPreview();
 
       // log(
@@ -1604,6 +1643,13 @@ export default {
           return prev;
         }, []);
 
+        const layerElements = this.layersElements[index].filter((item) => item);
+
+        if (layerValues.includes(1) != layerElements.length > 0) {
+          this.error = `Layer values ${index} not equal to layer elements!`;
+          throw new Error(this.error);
+        }
+
         const mesh = meshes.find((item) => item.userData.level == index);
 
         mesh.visible = layerValues.includes(1) ? true : false;
@@ -1961,7 +2007,7 @@ export default {
       log("Pause music");
 
       this.isPause = true;
-      this.isMenu = true;
+      // this.isMenu = true;
     },
 
     openMenuScreen() {

@@ -23,32 +23,43 @@
     top: 4px
     right: 4px
 
-.menu-button,
-.pause-button,
-.play-button,
+.dev-buttons
+    position: fixed
+    bottom: 10px
+    left: 10px
+    display: flex
+    justify-content: space-between
+    align-items: center
+
+.dev-button
+    background-color: rgba(#333, 0.8)
+    color: #fff
+    border-radius: 20px
+    user-select: none
+    padding: 10px
+    margin-right: 10px
+    cursor: pointer
+    transition: background-color 300ms ease-in-out, color 300ms ease-in-out
+
+    &:hover
+        color: #000
+        background-color: rgba(#333, 0.4)
+
+    &:last-child
+        margin-right: 0px
+
 .score-button
     position: fixed
     padding: 10px
     background-color: rgba(#333, 0.8)
     border-radius: 20px
     user-select: none
-
-.menu-button
-    top: 10px
-    right: 10px
-
-.score-button
     top: 10px
     left: 10px
     display: flex
     flex-direction: column
     align-items: flex-start
     justify-content: flex-start
-
-.pause-button,
-.play-button
-    bottom: 10px
-    left: 10px
 
 .controls
     width: 100%
@@ -313,6 +324,6 @@
         background-color: red
         z-index: 100500
 
-    &--text
+    &-text
         font-size: 50px
         line-height: 56px

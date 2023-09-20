@@ -5,6 +5,7 @@ import {
   Mesh,
   MeshNormalMaterial,
   WireframeGeometry,
+  Vector3,
 } from "three";
 
 import randomBetween from "./random-between.js";
@@ -44,6 +45,8 @@ export function generateMeshPoint(
     mesh.name = "point";
   }
 
+  mesh.userData.size = new Vector3(1, 1, 1);
+
   if (!line && !isSimple) {
     return mesh;
   }
@@ -58,6 +61,8 @@ export function generateMeshPoint(
 
   group.add(mesh);
   group.add(lineFrame);
+
+  group.userData.size = new Vector3(1, 1, 1);
 
   return group;
 }
