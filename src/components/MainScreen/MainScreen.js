@@ -121,7 +121,15 @@ export default {
       bgSoundId: "ZombiesAreComing.aac",
       bgMenuSoundId: "Rising.ogg",
       fallSoundId: ["burp_01.ogg", "burp_02.ogg"],
-      rotationSoundId: ["troll_01.ogg"],
+      rotationSoundId: [
+        "spell_fire_01.ogg",
+        "spell_fire_02.ogg",
+        "spell_fire_03.ogg",
+        "spell_fire_04.ogg",
+        "spell_fire_05.ogg",
+        "spell_fire_06.ogg",
+        "spell_fire_07.ogg",
+      ],
       endGameSoundId: "zombieHoouw_1.aac",
       levelSoundId: "Zombie Sound.aac",
 
@@ -160,6 +168,8 @@ export default {
 
       fps: 0,
       frames: 0,
+      pixelRatio: window.devicePixelRatio,
+      antialias: true,
       prevTime: Date.now(),
 
       loopCb: [],
@@ -775,12 +785,14 @@ export default {
       //   return true;
       // }
 
-      await this.initBgSound();
-      await this.initBgMenuSound();
-      await this.initDropSound();
-      await this.initEndSound();
-      await this.initClearSound();
-      await this.initRotateSounds();
+      await Promise.all([
+        this.initBgSound(),
+        this.initBgMenuSound(),
+        this.initDropSound(),
+        this.initEndSound(),
+        this.initClearSound(),
+        this.initRotateSounds(),
+      ]);
 
       return bgSound;
     },
@@ -1809,11 +1821,11 @@ export default {
       };
 
       const renderer = new WebGLRenderer({
-        antialias: true,
+        antialias: this.antialias,
         powerPreference: "high-performance",
       });
       renderer.setSize(width, height);
-      renderer.setPixelRatio(window.devicePixelRatio);
+      renderer.setPixelRatio(this.pixelRatio);
       renderer.setAnimationLoop(animation);
       renderer.gammaFactor = 2.2;
       container.appendChild(renderer.domElement);
