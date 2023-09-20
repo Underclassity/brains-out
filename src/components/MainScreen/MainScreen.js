@@ -2050,6 +2050,8 @@ export default {
 
       log(`Loaded ${name}: ${this.loadPercent.toFixed(2)}`);
 
+      this.$store.commit("reportETA", this.loadPercent);
+
       if (this.loadPercent >= 1) {
         this.isLoading = false;
       }

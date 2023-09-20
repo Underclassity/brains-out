@@ -1,6 +1,7 @@
-import vuejsStorage from "vuejs-storage";
+import makeEta from "simple-eta";
 
 import { createStore } from "vuex";
+import vuejsStorage from "vuejs-storage";
 
 import roundValue from "../helpers/round-value.js";
 
@@ -46,6 +47,8 @@ export default createStore({
     // isRotateRestrain: false,
     // maxRotate: 5,
     // rotateCount: 0,
+
+    eta: makeEta({ min: 0, max: 100, autostart: true }),
   },
   getters: {},
   mutations: {
@@ -210,6 +213,10 @@ export default createStore({
 
     resetScore(state) {
       state.score = 0;
+    },
+
+    reportETA(state, percent) {
+      state.eta.report(percent * 100);
     },
   },
   actions: {},

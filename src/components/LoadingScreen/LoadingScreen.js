@@ -1,3 +1,5 @@
+import { mapState } from "vuex";
+
 export default {
   name: "LoadingScreen",
 
@@ -13,6 +15,10 @@ export default {
       intervalId: undefined,
       count: 0,
     };
+  },
+
+  computed: {
+    ...mapState(["eta"]),
   },
 
   mounted() {
