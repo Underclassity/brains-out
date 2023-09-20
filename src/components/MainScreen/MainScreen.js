@@ -19,6 +19,11 @@ import {
   WebGLRenderer,
 } from "three";
 
+import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+import { GlitchPass } from "three/addons/postprocessing/GlitchPass.js";
+import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
+import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
+
 import * as TWEEN from "@tweenjs/tween.js";
 
 import { loadPitParts, loadZombie } from "../../helpers/load-zombie.js";
@@ -130,6 +135,9 @@ export default {
       renderer: undefined,
       controls: undefined,
       pit: undefined,
+
+      isShaders: false,
+      composer: undefined,
 
       lights: {
         l1: undefined,
@@ -249,9 +257,7 @@ export default {
   methods: {
     updateRendererSize() {
       this.isMobile =
-        window.innerWidth / window.innerHeight < 1 && window.innerWidth < 1024
-          ? true
-          : false;
+        window.innerWidth / window.innerHeight < 1 && window.innerWidth < 1024;
 
       this.$nextTick(function () {
         clearTimeout(this.resizeTimeout);
@@ -272,6 +278,7 @@ export default {
           }
 
           this.renderer.setSize(containerRect.width, containerRect.height);
+          this.composer.setSize(containerRect.width, containerRect.height);
 
           this.updateCameraProjection();
         }, 10);
@@ -1821,7 +1828,11 @@ export default {
 
         // controls.update();
 
-        renderer.render(scene, camera);
+        if (this.isShaders) {
+          composer.render();
+        } else {
+          renderer.render(scene, camera);
+        }
 
         TWEEN.update();
       };
@@ -1836,6 +1847,19 @@ export default {
       renderer.gammaFactor = 2.2;
       container.appendChild(renderer.domElement);
       this.renderer = renderer;
+
+      const composer = new EffectComposer(renderer);
+      composer.setSize(width, height);
+      this.composer = composer;
+
+      const renderPass = new RenderPass(scene, camera);
+      composer.addPass(renderPass);
+
+      const glitchPass = new GlitchPass();
+      composer.addPass(glitchPass);
+
+      const outputPass = new OutputPass();
+      composer.addPass(outputPass);
 
       if (this.orbitControls) {
         const controls = new OrbitControls(camera, renderer.domElement);
