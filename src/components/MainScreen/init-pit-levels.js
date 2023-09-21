@@ -9,13 +9,15 @@ import {
 
 import log from "../../helpers/log.js";
 
+const hideOpacity = 0.2;
+
 /**
  * Init pit levels preview
  *
  * @return  {Boolean}  Result
  */
 export function initLevelPreview() {
-  const { pitDepth, pitWidth, pitHeight, size } = this;
+  const { pitDepth, pitWidth, size } = this;
 
   if (this.pitLevels) {
     this.scene.remove(this.pitLevels);
@@ -35,7 +37,7 @@ export function initLevelPreview() {
   for (let i = 0; i < pitDepth; i++) {
     const color = new Color(this.colorPalette[i]);
 
-    const boxMaterial = new MeshBasicMaterial({ color });
+    const boxMaterial = new MeshBasicMaterial({ color, transparent: true });
     const boxGeometry = new BoxGeometry(1, 1);
 
     const boxMesh = new Mesh(boxGeometry, boxMaterial);
@@ -43,7 +45,8 @@ export function initLevelPreview() {
     boxMesh.position.set(0, -i - size / 2 + pitDepth / 2, 0);
 
     // Hide all
-    boxMesh.visible = false;
+    // boxMesh.visible = false;
+    boxMesh.material.opacity = hideOpacity;
 
     // Save level for process
     boxMesh.name = "level";
@@ -86,7 +89,8 @@ export function updateLayersPreview() {
 
     const mesh = meshes.find((item) => item.userData.level == index);
 
-    mesh.visible = layerValues.includes(1) ? true : false;
+    // mesh.visible = layerValues.includes(1) ? true : false;
+    mesh.material.opacity = layerValues.includes(1) ? 1 : hideOpacity;
   }
 
   return true;
