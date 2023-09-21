@@ -7,6 +7,8 @@ import {
   MeshBasicMaterial,
 } from "three";
 
+import log from "../../helpers/log.js";
+
 /**
  * Init pit levels preview
  *
@@ -41,8 +43,7 @@ export function initLevelPreview() {
     boxMesh.position.set(0, -i - size / 2 + pitDepth / 2, 0);
 
     // Hide all
-    // boxMesh.visible = false;
-    boxMesh.opacity = 0.1;
+    boxMesh.visible = false;
 
     // Save level for process
     boxMesh.name = "level";
@@ -85,8 +86,7 @@ export function updateLayersPreview() {
 
     const mesh = meshes.find((item) => item.userData.level == index);
 
-    // mesh.visible = layerValues.includes(1) ? true : false;
-    mesh.opacity = layerValues.includes(1) ? 1 : 0.1;
+    mesh.visible = layerValues.includes(1) ? true : false;
   }
 
   return true;
