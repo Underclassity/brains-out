@@ -111,6 +111,7 @@ export default {
 
       isRandomColor: false,
       isColorizeLevel: true,
+      isRotateAnimation: false,
 
       orbitControls: false,
       helpers: false,

@@ -1,7 +1,9 @@
 import { Vector3, MathUtils } from "three";
 
+import * as TWEEN from "@tweenjs/tween.js";
+
 import getGroupSize from "../../helpers/get-group-size.js";
-import log from "../../helpers/log.js";
+// import log from "../../helpers/log.js";
 
 const xAxis = new Vector3(1, 0, 0).normalize();
 const yAxis = new Vector3(0, 1, 0).normalize();
@@ -43,11 +45,26 @@ export function rotateHelper(element, axisType = "x", angle = 90) {
 
   const childs = element.getObjectByName("childs");
 
-  if (childs) {
+  if (childs && !this.isRotateAnimation) {
     childs.rotateOnWorldAxis(axis, angleValue);
 
     // Update size after rotate
     element.userData.size = getGroupSize(element.getObjectByName("childs"));
+  } else if (childs && this.isRotateAnimation) {
+    let prev = 0;
+    const animation = new TWEEN.Tween({
+      value: 0,
+    });
+    animation.to({ value: angleValue }, 150);
+    animation.onUpdate(({ value }) => {
+      childs.rotateOnWorldAxis(axis, value - prev);
+
+      prev = value;
+    });
+    animation.onComplete(() => {
+      element.userData.size = getGroupSize(element.getObjectByName("childs"));
+    });
+    animation.start();
   }
 
   if (this?.restrainElement) {

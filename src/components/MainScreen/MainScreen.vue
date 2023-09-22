@@ -48,6 +48,11 @@
             input#rotateRestrain(type="checkbox" v-model="isRotateRestrain")
 
         .dev-menu--item
+            span.material-symbols-outlined screen_rotation_alt
+            label(for="rotateAnimation") Rotate animation
+            input#rotateAnimation(type="checkbox" v-model="isRotateAnimation")
+
+        .dev-menu--item
             span.material-symbols-outlined stroke_full
             label(for="shaders") Shaders
             input#shaders(type="checkbox" v-model="isShaders")
