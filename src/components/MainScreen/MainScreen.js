@@ -1,4 +1,4 @@
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 
 import {
   AmbientLight,
@@ -70,8 +70,6 @@ export default {
 
   data() {
     return {
-      size: 1,
-
       prevScore: 0,
 
       layers: new Array(12),
@@ -206,6 +204,8 @@ export default {
 
   computed: {
     ...mapState([
+      "size",
+
       "volume",
       "fxVolume",
 
@@ -230,6 +230,8 @@ export default {
       "lsScore",
     ]),
 
+    ...mapGetters(["maxScore", "minScore", "avgScore"]),
+
     zombie() {
       const { scene } = this;
 
@@ -238,22 +240,6 @@ export default {
 
     time() {
       return this.isSmooth ? this.timeDelta : this.second;
-    },
-
-    maxScore() {
-      return this.lsScore.length ? Math.max(...this.lsScore) : 0;
-    },
-
-    minScore() {
-      return this.lsScore.length ? Math.min(...this.lsScore) : 0;
-    },
-
-    avgScore() {
-      return this.lsScore.length
-        ? this.lsScore.reduce((prev, curr) => {
-            return prev + curr;
-          }, 0) / this.lsScore.length
-        : 0;
     },
 
     loadPercent() {

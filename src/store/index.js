@@ -44,13 +44,31 @@ export default createStore({
     volume: 0.1,
     fxVolume: 0.3,
 
+    version: import.meta.env.VITE_APP_VERSION,
+
     // isRotateRestrain: false,
     // maxRotate: 5,
     // rotateCount: 0,
 
     eta: makeEta({ min: 0, max: 100, autostart: true }),
   },
-  getters: {},
+  getters: {
+    maxScore(state) {
+      return state.lsScore.length ? Math.max(...state.lsScore) : 0;
+    },
+
+    minScore(state) {
+      return state.lsScore.length ? Math.min(...state.lsScore) : 0;
+    },
+
+    avgScore(state) {
+      return state.lsScore.length
+        ? state.lsScore.reduce((prev, curr) => {
+            return prev + curr;
+          }, 0) / state.lsScore.length
+        : 0;
+    },
+  },
   mutations: {
     changeBlockType(state, newBlockType) {
       state.blocksType = newBlockType;

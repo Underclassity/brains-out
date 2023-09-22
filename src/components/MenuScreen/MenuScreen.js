@@ -45,8 +45,6 @@ export default {
 
       isDev: false,
       isControls: false,
-
-      version: import.meta.env.VITE_APP_VERSION,
     };
   },
 
@@ -65,6 +63,8 @@ export default {
       "speedStep",
       "minSpeed",
       "maxSpeed",
+
+      "version",
     ]),
 
     isShow() {
