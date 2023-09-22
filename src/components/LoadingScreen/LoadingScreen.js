@@ -19,8 +19,10 @@ export default {
 
   computed: {
     ...mapState(["eta"]),
+  },
 
-    estimate() {
+  methods: {
+    getEstimate() {
       const estimate = this.eta.estimate();
 
       return estimate == Infinity ? 10 : estimate.toFixed(2);

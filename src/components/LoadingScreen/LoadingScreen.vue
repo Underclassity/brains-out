@@ -1,7 +1,7 @@
 <template lang="pug">
 Transition(:duration="{ enter: 500, leave: 800 }")
     .loading
-        .loading--title Loading(ETA: {{ estimate }} sec)
+        .loading--title Loading(ETA: {{ getEstimate() }} sec)
             .loading--dots {{ new Array(count).join('.') }}
 
         .loading--bar--container.loading--glare
