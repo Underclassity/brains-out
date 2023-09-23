@@ -582,7 +582,7 @@ export default {
     initClearSound,
     initRotateSounds,
 
-    getoLayersElementsLevelPoints() {
+    getLayersElementsLevelPoints() {
       return this.layersElements
         .reduce((prev, curr) => {
           prev.push(...curr);
@@ -591,10 +591,34 @@ export default {
         .filter((item) => item)
         .map((item) => item.position)
         .map((item) => {
+          const x = this.xCPoints.includes(item.x)
+            ? this.xCPoints.indexOf(item.x)
+            : this.xPoints.indexOf(item.x);
+
+          const y = this.yCPoints.includes(item.y)
+            ? this.yCPoints.indexOf(item.y)
+            : this.yPoints.indexOf(item.y);
+
+          let z = this.zCPoints.includes(item.z)
+            ? this.zCPoints.indexOf(item.z)
+            : this.zPoints.indexOf(item.z);
+
+          if (z == -1) {
+            this.zCPoints.forEach((point, index, array) => {
+              if (item.z <= point && item.z > array[index + 1]) {
+                z = index;
+              } else if (item.z <= array[array.length - 1]) {
+                z = array.length - 1;
+              } else {
+                z = 0;
+              }
+            });
+          }
+
           return {
-            x: this.xCPoints.indexOf(item.x),
-            y: this.yCPoints.indexOf(item.y),
-            z: this.zCPoints.indexOf(item.z),
+            x,
+            y,
+            z,
           };
         });
     },
@@ -608,6 +632,19 @@ export default {
       child.getWorldPosition(position);
 
       let { x, y, z } = position;
+
+      if (child.userData.layer) {
+        return {
+          x: child.userData.layer.x,
+          y: child.userData.layer.y,
+          z: child.userData.layer.z,
+          pX: x,
+          pY: y,
+          pZ: z,
+          uuid: child.uuid,
+          el: child.clone(),
+        };
+      }
 
       x = Math.round(x * 100) / 100;
       y = Math.round(y * 100) / 100;
@@ -660,7 +697,7 @@ export default {
     },
 
     findCollissionElements(element) {
-      log(`Find collision elements: ${element.name}`);
+      // log(`Find collision elements: ${element.name}`);
 
       const childs = element.getObjectByName("childs").children;
 
@@ -679,6 +716,74 @@ export default {
       return collisionPoints;
     },
 
+    isCollision(element) {
+      const layerPoints = this.getLayersElementsLevelPoints();
+
+      if (!layerPoints.length) {
+        return false;
+      }
+
+      const elementPoints = element
+        .getObjectByName("childs")
+        .children.map((item) => item.position)
+        .map((item) => {
+          const x = this.xCPoints.includes(item.x)
+            ? this.xCPoints.indexOf(item.x)
+            : this.xPoints.indexOf(item.x);
+
+          const y = this.yCPoints.includes(item.y)
+            ? this.yCPoints.indexOf(item.y)
+            : this.yPoints.indexOf(item.y);
+
+          let z = this.zCPoints.includes(item.z)
+            ? this.zCPoints.indexOf(item.z)
+            : this.zPoints.indexOf(item.z);
+
+          if (z == -1) {
+            this.zCPoints.forEach((point, index, array) => {
+              if (item.z <= point && item.z > array[index + 1]) {
+                z = index;
+              } else if (item.z <= array[array.length - 1]) {
+                z = array.length - 1;
+              } else {
+                z = 0;
+              }
+            });
+          }
+
+          return {
+            x,
+            y,
+            z,
+          };
+        });
+
+      for (const point of elementPoints) {
+        const zCollisionPoints = layerPoints.filter((item) => {
+          return item.x == point.x && item.y == point.y;
+        });
+
+        const xyCollisionPoints = layerPoints.filter(
+          (item) => item.z == point.z && item.x != point.x && item.y != point.y
+        );
+
+        const coverCollisionPoints = layerPoints.find(
+          (item) => item.x == point.x && item.y == point.y && item.z == point.z
+        );
+
+        if (coverCollisionPoints) {
+          console.error("COVER");
+          console.log(coverCollisionPoints);
+        }
+
+        if (!xyCollisionPoints.length && !zCollisionPoints.length) {
+          continue;
+        }
+
+        console.log(xyCollisionPoints, zCollisionPoints);
+      }
+    },
+
     collisionElement(element) {
       const childs = element.getObjectByName("childs").children;
 
@@ -692,23 +797,25 @@ export default {
         const { x, y, z, pX, pY, pZ } = this.findElementIndexes(child);
 
         if (z != -1 && x != -1 && y != -1) {
-          if (this.layers[z + 1]) {
+          const layer = this.layers[z + 1];
+
+          if (layer) {
             if (
-              this.layers[z + 1] == undefined ||
-              this.layers[z + 1][x] == undefined ||
-              this.layers[z + 1][x][y] == undefined
+              layer == undefined ||
+              layer[x] == undefined ||
+              layer[x][y] == undefined
             ) {
               this.error = `Layer not found ${
                 element.name
-              }!(${x}-${y}-${z})(${pX.toFixed(1)}-${pY.toFixed(1)}-${pZ.toFixed(
+              }!(${x}/${y}/${z})(${pX.toFixed(1)}/${pY.toFixed(1)}/${pZ.toFixed(
                 1
-              )})(${child.position.x.toFixed(1)}-${child.position.y.toFixed(
+              )})(${child.position.x.toFixed(1)}/${child.position.y.toFixed(
                 1
-              )}-${child.position.z.toFixed(1)})`;
+              )}/${child.position.z.toFixed(1)})`;
               throw new Error(this.error);
             }
 
-            const nextLayerValue = this.layers[z + 1][x][y];
+            const nextLayerValue = layer[x][y];
 
             // log(
             //   this.layers[zIndex + 1].map((xLayer) => xLayer.join("-")).join("\n")
@@ -722,7 +829,7 @@ export default {
             isFreeze = true;
           }
         } else {
-          this.error = `Index not found ${child.name}!(${x}-${y}-${z})(${pX}-${pY}-${pZ})`;
+          this.error = `Index not found ${child.name}!(${x}/${y}/${z})(${pX}/${pY}/${pZ})`;
           throw new Error(this.error);
         }
       }
@@ -966,17 +1073,19 @@ export default {
       for (let { x, y, z, pX, pY, pZ, el } of indexes) {
         z += zOffset;
 
+        const layer = this.layers[z];
+
         if (z != -1 && x != -1 && y != -1) {
           if (
-            this.layers[z] == undefined ||
-            this.layers[z][x] == undefined ||
-            this.layers[z][x][y] == undefined
+            layer == undefined ||
+            layer[x] == undefined ||
+            layer[x][y] == undefined
           ) {
-            this.error = `Element not found in layers!(${x}-${y}-${z})(${pX}-${pY}-${pZ})`;
+            this.error = `Element not found in layers!(${x}/${y}/${z})(${pX}/${pY}/${pZ})`;
             throw new Error(this.error);
           }
 
-          if (this.layers[z][x][y] && !element.userData.drop) {
+          if (layer[x][y] && !element.userData.drop) {
             this.changeScore(indexes.length);
             this.$store.commit("saveScore");
 
@@ -1016,6 +1125,11 @@ export default {
           this.positionHelper(el, "z", this.zPoints[z] - this.size / 2);
 
           el.userData.static = true;
+          el.userData.layer = {
+            x,
+            y,
+            z,
+          };
 
           this.colorizeElement(el, z);
 
@@ -1034,7 +1148,7 @@ export default {
             this.dropSounds[this.fallSoundId[randomId]].play();
           }
         } else {
-          this.error = `Index not found!(${x}-${y}-${z})(${pX}-${pY}-${pZ})`;
+          this.error = `Index not found!(${x}/${y}/${z})(${pX}/${pY}/${pZ})`;
           throw new Error(this.error);
         }
       }

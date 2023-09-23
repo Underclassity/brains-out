@@ -168,7 +168,7 @@ export function setLayerPoint(x, y, z, value = 1) {
 
   // Check for equal value
   if (this.layers[z][x][y] == value) {
-    this.error = `Layer ${x}-${y}-${z} value equal ${value}!`;
+    this.error = `Layer ${x}/${y}/${z} value equal ${value}!`;
     throw new Error(this.error);
   }
 
