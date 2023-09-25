@@ -22,6 +22,7 @@ import getGroupSize from "../../helpers/get-group-size.js";
 import loadLights from "../../helpers/lights.js";
 import log from "../../helpers/log.js";
 import randomBetween from "../../helpers/random-between.js";
+import roundValue from "../../helpers/round-value.js";
 
 import {
   moveDown,
@@ -69,6 +70,7 @@ import AcceptBugsScreen from "../AcceptBugsScreen/AcceptBugsScreen.vue";
 import LoadingScreen from "../LoadingScreen/LoadingScreen.vue";
 import LogoScreen from "../LogoScreen/LogoScreen.vue";
 import MenuScreen from "../MenuScreen/MenuScreen.vue";
+import generateP0Form from "../../helpers/blocks/p0.js";
 
 export default {
   name: "MainScreen",
@@ -589,7 +591,16 @@ export default {
           return prev;
         }, [])
         .filter((item) => item)
-        .map((item) => item.position)
+        .map((item) => {
+          const itemPosition = new Vector3();
+          item.getWorldPosition(itemPosition);
+
+          return {
+            x: roundValue(itemPosition.x),
+            y: roundValue(itemPosition.y),
+            z: roundValue(itemPosition.z),
+          };
+        })
         .map((item) => {
           const x = this.xCPoints.includes(item.x)
             ? this.xCPoints.indexOf(item.x)
@@ -720,12 +731,21 @@ export default {
       const layerPoints = this.getLayersElementsLevelPoints();
 
       if (!layerPoints.length) {
-        return false;
+        return { xy: [], z: false };
       }
 
       const elementPoints = element
         .getObjectByName("childs")
-        .children.map((item) => item.position)
+        .children.map((item) => {
+          const itemPosition = new Vector3();
+          item.getWorldPosition(itemPosition);
+
+          return {
+            x: roundValue(itemPosition.x),
+            y: roundValue(itemPosition.y),
+            z: roundValue(itemPosition.z),
+          };
+        })
         .map((item) => {
           const x = this.xCPoints.includes(item.x)
             ? this.xCPoints.indexOf(item.x)
@@ -758,14 +778,49 @@ export default {
           };
         });
 
-      for (const point of elementPoints) {
-        const zCollisionPoints = layerPoints.filter((item) => {
-          return item.x == point.x && item.y == point.y;
-        });
+      let xyPoints = [];
+      let zPoints = [];
 
-        const xyCollisionPoints = layerPoints.filter(
-          (item) => item.z == point.z && item.x != point.x && item.y != point.y
-        );
+      for (const point of elementPoints) {
+        const zCollisionPoints = layerPoints
+          .filter((item) => {
+            return item.x == point.x && item.y == point.y;
+          })
+          .reduce((prev, curr) => {
+            return !prev.length || prev[0].z > curr.z ? [curr] : prev;
+          }, []);
+
+        const xyCollisionPoints = layerPoints
+          .filter((item) => item.z == point.z)
+          .map((item) => {
+            let dir = "left";
+
+            const isRight = item.x - 1 == point.x && item.y == point.y;
+            const isLeft = item.x + 1 == point.x && item.y == point.y;
+            const isTop = item.y - 1 == point.y && item.x == point.x;
+            const isBottom = item.y + 1 == point.y && item.x == point.x;
+
+            if (isRight) {
+              dir = "right";
+            }
+
+            if (isTop) {
+              dir = "top";
+            }
+
+            if (isBottom) {
+              dir = "bottom";
+            }
+
+            const isPoint = isLeft || isRight || isBottom || isTop;
+
+            if (isPoint) {
+              return { dir, point, item };
+            }
+
+            return false;
+          })
+          .filter((item) => item);
 
         const coverCollisionPoints = layerPoints.find(
           (item) => item.x == point.x && item.y == point.y && item.z == point.z
@@ -776,12 +831,21 @@ export default {
           console.log(coverCollisionPoints);
         }
 
-        if (!xyCollisionPoints.length && !zCollisionPoints.length) {
-          continue;
-        }
-
-        console.log(xyCollisionPoints, zCollisionPoints);
+        xyPoints.push(...xyCollisionPoints);
+        zPoints.push(...zCollisionPoints);
       }
+
+      xyPoints = xyPoints.filter(
+        (value, index, array) => array.indexOf(value) === index
+      );
+      zPoints = zPoints.filter(
+        (value, index, array) => array.indexOf(value) === index
+      );
+
+      return {
+        xy: xyPoints,
+        z: zPoints,
+      };
     },
 
     collisionElement(element) {
@@ -1732,6 +1796,18 @@ export default {
       }
 
       this.updateRendererSize();
+
+      // Add test points
+      // for (let i = 0; i > -this.pitDepth; i--) {
+      //   const onePoint = generateP0Form(this.size, false, true);
+      //   onePoint.position.set(-10, -10, i);
+      //   this.restrainElement(onePoint);
+      //   this.scene.add(onePoint);
+
+      //   if (this.layersElements[i]) {
+      //     this.layersElements[i].push(onePoint);
+      //   }
+      // }
     },
 
     keyupHandler(event) {
