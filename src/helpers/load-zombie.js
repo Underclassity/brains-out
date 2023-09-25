@@ -29,7 +29,7 @@ export async function loadZombie(cb) {
         // })
         // object.scale.set(.01, .01, .01)
 
-        object.traverse(function (child) {
+        object.traverse((child) => {
           if (child.isMesh) {
             // const loader = new THREE.TextureLoader();
 
@@ -47,7 +47,10 @@ export async function loadZombie(cb) {
         });
         object.scale.set(0.01, 0.01, 0.01);
 
-        log("Loaded zombie", object);
+        log(
+          "Loaded zombie parts: ",
+          object.children.map((item) => item.name)
+        );
 
         resolve(object);
       },
@@ -91,7 +94,7 @@ export async function loadTestCube(cb) {
         // })
         // object.scale.set(.01, .01, .01)
 
-        object.traverse(function (child) {
+        object.traverse((child) => {
           if (child.isMesh) {
             // const loader = new THREE.TextureLoader();
 
@@ -109,7 +112,7 @@ export async function loadTestCube(cb) {
         });
         object.scale.set(0.01, 0.01, 0.01);
 
-        log("Loaded test cube", object);
+        log("Loaded test cube: ", object);
 
         resolve(object);
       },
@@ -148,27 +151,32 @@ export async function loadPitParts(cb) {
         // })
         // object.scale.set(.01, .01, .01)
 
-        object.traverse(function (child) {
-          if (child.isMesh) {
-            // const loader = new THREE.TextureLoader();
-
-            // loader.load("/models/T_ColorAtlas16x16.png", (texture) => {
-            //   child.material.map = texture;
-            //   child.material.needsupdate = true;
-            //   log(texture);
-            //   // render(); // only if there is no render loop
-            // });
-            // log(child.geometry.attributes.uv);
-
-            child.castShadow = castShadow;
-            child.receiveShadow = receiveShadow;
-
-            child.scale.set(1, 1, 1);
+        object.traverse((child) => {
+          if (!child.isMesh) {
+            return;
           }
+
+          // const loader = new THREE.TextureLoader();
+
+          // loader.load("/models/T_ColorAtlas16x16.png", (texture) => {
+          //   child.material.map = texture;
+          //   child.material.needsupdate = true;
+          //   log(texture);
+          //   // render(); // only if there is no render loop
+          // });
+          // log(child.geometry.attributes.uv);
+
+          child.castShadow = castShadow;
+          child.receiveShadow = receiveShadow;
+
+          child.scale.set(1, 1, 1);
         });
         object.scale.set(1, 1, 1);
 
-        log("Loaded pit parts", object);
+        log(
+          "Loaded pit parts: ",
+          object.children.map((item) => item.name)
+        );
 
         resolve(object);
       },

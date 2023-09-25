@@ -1,13 +1,11 @@
 import { mapState, mapGetters } from "vuex";
 
 import {
-  AmbientLight,
   Clock,
   Color,
   MathUtils,
   MeshBasicMaterial,
   PerspectiveCamera,
-  PointLightHelper,
   Scene,
   Vector3,
   WebGLRenderer,
@@ -19,7 +17,6 @@ import { loadPitParts, loadZombie } from "../../helpers/load-zombie.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import generatePit from "../../helpers/generate-pit.js";
 import getGroupSize from "../../helpers/get-group-size.js";
-import loadLights from "../../helpers/lights.js";
 import log from "../../helpers/log.js";
 import randomBetween from "../../helpers/random-between.js";
 import roundValue from "../../helpers/round-value.js";
@@ -58,6 +55,8 @@ import {
   getLayerColor,
   isLayerVisible,
 } from "./init-pit-levels.js";
+import { initLights } from "./init-lights.js";
+import { initLayer, initLayers } from "./init-layers.js";
 import { initWaterfall, createElement } from "./waterfall.js";
 import initShaders from "./init-shaders.js";
 import colorPalette from "./color-palette.js";
@@ -70,7 +69,7 @@ import AcceptBugsScreen from "../AcceptBugsScreen/AcceptBugsScreen.vue";
 import LoadingScreen from "../LoadingScreen/LoadingScreen.vue";
 import LogoScreen from "../LogoScreen/LogoScreen.vue";
 import MenuScreen from "../MenuScreen/MenuScreen.vue";
-import generateP0Form from "../../helpers/blocks/p0.js";
+// import generateP0Form from "../../helpers/blocks/p0.js";
 
 export default {
   name: "MainScreen",
@@ -660,54 +659,8 @@ export default {
       return true;
     },
 
-    /**
-     * Init layer helper
-     *
-     * @param   {Number}  z  Layer index
-     *
-     * @return  {Boolean}    Result
-     */
-    initLayer(z) {
-      // log(`Init layer ${z}`);
-
-      const { pitWidth, pitHeight } = this;
-
-      this.layers[z] = [];
-      this.layersElements[z] = new Array(pitWidth * pitHeight);
-
-      for (let x = 0; x < pitWidth; x++) {
-        this.layers[z][x] = [];
-
-        for (let y = 0; y < pitHeight; y++) {
-          this.setLayerPoint(x, y, z, 0);
-          // this.layers[z][x][y] = 0;
-        }
-      }
-
-      return true;
-    },
-
-    /**
-     * Init layers objects and arrays
-     *
-     * @return  {Boolean}  Result
-     */
-    initLayers() {
-      log("Init layers");
-
-      const { pitWidth, pitHeight, pitDepth } = this;
-
-      log(`Init layers: ${pitDepth}-${pitWidth}-${pitHeight}`);
-
-      this.layers = [];
-      this.layersElements = [];
-
-      for (let z = 0; z < pitDepth; z++) {
-        this.initLayer(z);
-      }
-
-      return true;
-    },
+    initLayer,
+    initLayers,
 
     initAudio,
     initBgSound,
@@ -1856,70 +1809,7 @@ export default {
 
     getRandomForm,
 
-    /**
-     * Init scene lights
-     *
-     * @return  {Boolean}  Result
-     */
-    async initLights() {
-      const { scene, camera, pitWidth } = this;
-
-      const gltf = await loadLights(this.progressCb);
-
-      const light = new AmbientLight(0xff_ff_ff, 0.02);
-      scene.add(light);
-
-      const cameraLight = new AmbientLight(0xff_ff_ff, 0.08);
-      camera.add(cameraLight);
-
-      if (!gltf) {
-        const light = new AmbientLight(this.lightColor);
-        scene.add(light);
-        return false;
-      }
-
-      const lights = gltf.scene.children;
-
-      const l1 = lights[0].clone();
-      const l2 = lights[1].clone();
-      const l3 = lights[2].clone();
-
-      l1.position.set(-pitWidth / 2, 0, 5);
-      l2.position.set(pitWidth / 2, 0, 5);
-      l3.position.set(0, 0, 5);
-
-      l1.power = this.lightPower;
-      l2.power = this.lightPower;
-      l3.power = 0;
-
-      // Save lights for process
-      this.lights.l1 = l1;
-      this.lights.l2 = l2;
-      this.lights.l3 = l3;
-
-      // hide red light
-      l3.visible = false;
-
-      scene.add(l1);
-      scene.add(l2);
-      scene.add(l3);
-
-      if (this.helpers) {
-        const sphereSize = 1;
-
-        let pointLightHelper = new PointLightHelper(l1, sphereSize);
-        scene.add(pointLightHelper);
-
-        pointLightHelper = new PointLightHelper(l2, sphereSize);
-        scene.add(pointLightHelper);
-
-        pointLightHelper = new PointLightHelper(l3, sphereSize);
-        scene.add(pointLightHelper);
-      }
-
-      return true;
-    },
-
+    initLights,
     initPoints,
 
     /**
