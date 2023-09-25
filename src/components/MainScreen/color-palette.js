@@ -15,10 +15,10 @@ export const colorPalette = [
 
   // https://www.color-hex.com/color-palette/21598
   // new Color("rgb(223, 169, 0)"),
-  // new Color("rgb(255, 255, 243)"),
-  // new Color("rgb(124, 255, 0)"),
-  // new Color("rgb(146, 145, 142)"),
-  // new Color("rgb(164, 236, 238)"),
+  new Color("rgb(255, 255, 243)"),
+  new Color("rgb(124, 255, 0)"),
+  new Color("rgb(146, 145, 142)"),
+  new Color("rgb(164, 236, 238)"),
 
   // https://www.color-hex.com/color-palette/46469
   new Color("rgb(159, 20, 20)"),
