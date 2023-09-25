@@ -36,7 +36,6 @@ export default {
       isMenu: false,
       isNewGame: false,
       isSettings: false,
-      isControls: false,
       isCredits: false,
       isContinue: false,
       isEnd: false,

@@ -3,9 +3,10 @@ import makeEta from "simple-eta";
 import { createStore } from "vuex";
 import vuejsStorage from "vuejs-storage";
 
+import log from "../helpers/log.js";
 import roundValue from "../helpers/round-value.js";
 
-export default createStore({
+export const store = createStore({
   state: {
     size: 1,
 
@@ -285,3 +286,31 @@ export default createStore({
     }),
   ],
 });
+
+function parseURLSearchParams() {
+  log("Parse URLSearchParams");
+
+  const params = new URLSearchParams(window.location.search);
+
+  for (let [id, value] of params.entries()) {
+    if (value == "true") {
+      value = true;
+    }
+
+    if (value == "false") {
+      value = false;
+    }
+
+    if (id in store.state) {
+      log(`Update ${id}`, value);
+
+      store.state[id] = value;
+    }
+  }
+
+  return false;
+}
+
+parseURLSearchParams();
+
+export default store;
