@@ -267,6 +267,11 @@ export default {
   },
 
   methods: {
+    /**
+     * Update render side
+     *
+     * @return  {Boolean}  Result
+     */
     updateRendererSize() {
       this.isMobile =
         window.innerWidth / window.innerHeight < 1 && window.innerWidth < 1024;
@@ -299,6 +304,11 @@ export default {
       return true;
     },
 
+    /**
+     * Update camera projection
+     *
+     * @return  {Boolean}  Result
+     */
     updateCameraProjection() {
       const { camera, controls, pitWidth, pitHeight, pitDepth } = this;
 
@@ -325,6 +335,11 @@ export default {
       return true;
     },
 
+    /**
+     * Update speed by up value
+     *
+     * @return  {Boolean}  Result
+     */
     speedUp() {
       this.$store.commit("updateSpeed", this.speedStep);
 
@@ -340,6 +355,13 @@ export default {
       return true;
     },
 
+    /**
+     * Change score value
+     *
+     * @param   {Number}  changeValue  Value diff
+     *
+     * @return  {Boolean}              Result
+     */
     changeScore(changeValue) {
       this.$store.commit("updateScore", changeValue);
 
@@ -353,6 +375,11 @@ export default {
       return true;
     },
 
+    /**
+     * Accepted call press
+     *
+     * @return  {Boolean}  Result
+     */
     acceptedCall() {
       log("Accepted call");
       this.isAccepted = true;
@@ -367,8 +394,15 @@ export default {
 
         this.emitter.emit("openStartMenu");
       }, 2000);
+
+      return true;
     },
 
+    /**
+     * Open menu call
+     *
+     * @return  {Boolean}  Result
+     */
     openMenu() {
       log("Open menu");
 
@@ -377,8 +411,15 @@ export default {
       this.isLogo = false;
 
       this.emitter.emit("openMenu");
+
+      return true;
     },
 
+    /**
+     * Close menu call
+     *
+     * @return  {Boolean}  Result
+     */
     closeMenu() {
       log("Close menu");
 
@@ -387,36 +428,85 @@ export default {
       this.isLogo = false;
 
       this.emitter.emit("closeMenu");
+
+      return true;
     },
 
+    /**
+     * New game call helper
+     *
+     * @return  {Boolean}  Result
+     */
     newGameCall() {
       this.closeMenu();
       this.newGame();
+
+      return true;
     },
 
+    /**
+     * Back to game call helper
+     *
+     * @return  {Boolean}  Result
+     */
     backToGameCall() {
       this.closeMenu();
+
+      return true;
     },
 
+    /**
+     * Pause call helper
+     *
+     * @return  {Boolean}  Result
+     */
     pauseCall() {
       log("Pause call");
       this.isPause = true;
+
+      return true;
     },
 
+    /**
+     * Play call helper
+     *
+     * @return  {Boolean}  Result
+     */
     playCall() {
       log("Play call");
       this.isPause = false;
+
+      return true;
     },
 
+    /**
+     * Change smooth flag helper
+     *
+     * @param   {Boolean}  isSmooth  New smooth flag
+     *
+     * @return  {Boolean}            Result
+     */
     updateSmooth(isSmooth) {
       this.isSmooth = isSmooth ? true : false;
       log(`Smooth updated: ${this.isSmooth}`);
+
+      return true;
     },
 
+    /**
+     * Update instanced flag
+     *
+     * @param   {Boolean}  isInstanced  New instanced flag
+     *
+     * @return  {Boolean}               Result
+     */
     updateInstanced(isInstanced) {
       this.isInstanced = isInstanced ? true : false;
       log(`Instanced updated: ${this.isInstanced}`);
+
       this.newGame();
+
+      return true;
     },
 
     updateSimple(isSimple) {
@@ -437,6 +527,13 @@ export default {
       this.initAudio();
     },
 
+    /**
+     * Update volume helper
+     *
+     * @param   {Number}  volume  New volume value
+     *
+     * @return  {Boolean}         Result
+     */
     updateVolume(volume) {
       log(`Update volume: ${volume}`);
 
@@ -449,6 +546,13 @@ export default {
       }
     },
 
+    /**
+     * Update FX volume
+     *
+     * @param   {Number}  fxVolume  New FX volume value
+     *
+     * @return  {Boolean}           Result
+     */
     updateFxVolume(fxVolume) {
       log(`Update FX volume: ${fxVolume}`);
 
@@ -467,12 +571,27 @@ export default {
       for (const id in this.rotateSounds) {
         this.rotateSounds[id].setVolume(fxVolume * 0.5);
       }
+
+      return true;
     },
 
+    /**
+     * Update blocks type helper
+     *
+     * @param   {String}  blocksType  New blocks type
+     *
+     * @return  {Boolean}             Result
+     */
     updateBlocksType(blocksType) {
       log(`Update blocks type: ${blocksType}`);
+      return true;
     },
 
+    /**
+     * New game call helper
+     *
+     * @return  {Boolean}  Result
+     */
     newGame() {
       log("New game call");
 
@@ -541,6 +660,13 @@ export default {
       return true;
     },
 
+    /**
+     * Init layer helper
+     *
+     * @param   {Number}  z  Layer index
+     *
+     * @return  {Boolean}    Result
+     */
     initLayer(z) {
       // log(`Init layer ${z}`);
 
@@ -557,8 +683,15 @@ export default {
           // this.layers[z][x][y] = 0;
         }
       }
+
+      return true;
     },
 
+    /**
+     * Init layers objects and arrays
+     *
+     * @return  {Boolean}  Result
+     */
     initLayers() {
       log("Init layers");
 
@@ -584,6 +717,11 @@ export default {
     initClearSound,
     initRotateSounds,
 
+    /**
+     * Get layers elements points
+     *
+     * @return  {Array}  Array with points
+     */
     getLayersElementsLevelPoints() {
       return this.layersElements
         .reduce((prev, curr) => {
@@ -634,6 +772,13 @@ export default {
         });
     },
 
+    /**
+     * Find element indexes
+     *
+     * @param   {Object}  child  Element
+     *
+     * @return  {Object}         Indexes object
+     */
     findElementIndexes(child) {
       const { xCPoints, yCPoints, zPoints, size } = this;
 
@@ -707,6 +852,13 @@ export default {
       };
     },
 
+    /**
+     * Find collision elements helper
+     *
+     * @param   {Object}  element  Element
+     *
+     * @return  {Array}            Collision points
+     */
     findCollissionElements(element) {
       // log(`Find collision elements: ${element.name}`);
 
@@ -727,7 +879,14 @@ export default {
       return collisionPoints;
     },
 
-    isCollision(element) {
+    /**
+     * Get collision points for element
+     *
+     * @param   {Object}  element  Element
+     *
+     * @return  {Object}           Object with points array
+     */
+    getCollisionPoints(element) {
       const layerPoints = this.getLayersElementsLevelPoints();
 
       if (!layerPoints.length) {
@@ -848,6 +1007,13 @@ export default {
       };
     },
 
+    /**
+     * Collision element check helper
+     *
+     * @param   {Object}  element  Element
+     *
+     * @return  {Boolean}          Result
+     */
     collisionElement(element) {
       const childs = element.getObjectByName("childs").children;
 
@@ -901,10 +1067,23 @@ export default {
       return isFreeze;
     },
 
+    /**
+     * Drop element key handler helper
+     *
+     * @return  {Boolean}  Result
+     */
     drop() {
       this.dropElement(this.current);
+      return true;
     },
 
+    /**
+     * Drop element helper
+     *
+     * @param   {Object}  element  Element
+     *
+     * @return  {Boolean}          Result
+     */
     dropElement(element) {
       log(`Drop element: ${element.name}`);
 
@@ -960,6 +1139,14 @@ export default {
       return element;
     },
 
+    /**
+     * Colorize element
+     *
+     * @param   {Object}  element  Element
+     * @param   {Number}  layer    Layer index
+     *
+     * @return  {Boolean}          Result
+     */
     colorizeElement(element, layer) {
       if (!this.isColorizeLevel) {
         return false;
@@ -985,6 +1172,13 @@ export default {
       return true;
     },
 
+    /**
+     * Delete layer helper
+     *
+     * @param   {Number}  zIndex  Layer index
+     *
+     * @return  {Boolean}         Result
+     */
     deleteLayer(zIndex) {
       const layerElements = this.layersElements[zIndex];
 
@@ -1050,8 +1244,18 @@ export default {
       }
 
       // this.updateLayersPreview();
+
+      return true;
     },
 
+    /**
+     * Check layer helper
+     *
+     * @param   {Boolean}  [random=false]  Check random flag
+     * @param   {Boolean}  [force=false]   Force delete flag
+     *
+     * @return  {Boolean}                  Result
+     */
     layersCheck(random = false, force = false) {
       const { layers } = this;
 
@@ -1088,6 +1292,13 @@ export default {
       return true;
     },
 
+    /**
+     * Petrify element helper
+     *
+     * @param   {Object}  element  Element
+     *
+     * @return  {Boolean}          Result
+     */
     petrify(element) {
       this.isPetrify = true;
 
@@ -1260,6 +1471,13 @@ export default {
     createElement,
     initWaterfall,
 
+    /**
+     * Restrain element position
+     *
+     * @param   {Object}  element  Element
+     *
+     * @return  {Boolean}          Result
+     */
     restrainElement(element) {
       if (!element) {
         return false;
@@ -1372,6 +1590,13 @@ export default {
       return element;
     },
 
+    /**
+     * Change pit size helper
+     *
+     * @param   {String}  pitSize  New pit size string
+     *
+     * @return  {Boolean}          Result
+     */
     changePitSize(pitSize) {
       const { scene, renderer, size } = this;
 
@@ -1472,6 +1697,11 @@ export default {
       return true;
     },
 
+    /**
+     * Load zombie helper
+     *
+     * @return  {Boolean}  Result
+     */
     async loadZombie() {
       const zombie = await loadZombie(this.progressCb);
       const pitParts = await loadPitParts(this.progressCb);
@@ -1517,6 +1747,11 @@ export default {
       return true;
     },
 
+    /**
+     * Update element preview helper
+     *
+     * @return  {Boolean}  Result
+     */
     updatePreview() {
       // log("Update preview call");
 
@@ -1563,6 +1798,13 @@ export default {
 
     initShaders,
 
+    /**
+     * Move element to corner helper
+     *
+     * @param   {Object}  element  Element
+     *
+     * @return  {Boolean}          Result
+     */
     moveToRandomCorner(element) {
       const { pitWidth, pitHeight } = this;
 
@@ -1614,6 +1856,11 @@ export default {
 
     getRandomForm,
 
+    /**
+     * Init scene lights
+     *
+     * @return  {Boolean}  Result
+     */
     async initLights() {
       const { scene, camera, pitWidth } = this;
 
@@ -1675,6 +1922,11 @@ export default {
 
     initPoints,
 
+    /**
+     * Init all
+     *
+     * @return  {Boolean}  Result
+     */
     init() {
       const { container } = this.$refs;
 
@@ -1874,6 +2126,11 @@ export default {
       }
     },
 
+    /**
+     * Parse and set params by URL search
+     *
+     * @return  {Boolean}  Result
+     */
     parseURLSearchParams() {
       log("Parse URLSearchParams");
 
@@ -1903,9 +2160,19 @@ export default {
         this.helpers = true;
       }
 
-      return false;
+      return true;
     },
 
+    /**
+     * Progress download callback helper
+     *
+     * @param   {String}  name     Download filename
+     * @param   {Number}  total    Total downloaded number
+     * @param   {Number}  loaded   Downloaded number
+     * @param   {Number}  percent  Percent
+     *
+     * @return  {Boolean}          Update result
+     */
     progressCb({ name, total, loaded, percent }) {
       this.loadingProcessCache[name] = { total, loaded, percent };
 
@@ -1916,6 +2183,8 @@ export default {
       if (this.loadPercent >= 1) {
         this.isLoading = false;
       }
+
+      return true;
     },
 
     playMusic() {
@@ -1929,6 +2198,11 @@ export default {
       this.isMenu = true;
     },
 
+    /**
+     * Open menu screen helper
+     *
+     * @return  {Boolean}  Result
+     */
     openMenuScreen() {
       if (this.bgMenuSound?.isPlaying) {
         return false;
@@ -1964,8 +2238,15 @@ export default {
 
       fadeInTween.start();
       fadeOutTween.start();
+
+      return true;
     },
 
+    /**
+     * Close menu screen helper
+     *
+     * @return  {Boolean}  Result
+     */
     closeMenuScreen() {
       if (this.bgSound?.isPlaying) {
         return false;
@@ -2003,6 +2284,8 @@ export default {
 
       fadeInTween.start();
       fadeOutTween.start();
+
+      return true;
     },
   },
 

@@ -96,6 +96,13 @@ export function updateLayersPreview() {
   return true;
 }
 
+/**
+ * Check is layer visible
+ *
+ * @param   {Number}  index   Layer index value
+ *
+ * @return  {Boolean}         Result
+ */
 export function isLayerVisible(index) {
   const { layers } = this;
 
@@ -112,6 +119,13 @@ export function isLayerVisible(index) {
   return layerValues.includes(1) ? true : false;
 }
 
+/**
+ * Get layer color string base on layer index
+ *
+ * @param   {Number}  index  Layer index value
+ *
+ * @return  {String}         Color style string
+ */
 export function getLayerColor(index) {
   const { colorPalette } = this;
 

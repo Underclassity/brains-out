@@ -13,6 +13,14 @@ import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js"
 
 import { TechnicolorShader } from "three/addons/shaders/TechnicolorShader.js";
 
+/**
+ * Init shaders on scene
+ *
+ * @param   {Number}  width   Width
+ * @param   {Number}  height  Height
+ *
+ * @return  {Boolean}         Result
+ */
 export function initShaders(width, height) {
   const { renderer, scene, camera } = this;
 

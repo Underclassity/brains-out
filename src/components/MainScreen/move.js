@@ -27,7 +27,7 @@ export function playRandomRotateSound() {
  * @return  {Object}  Current element
  */
 export function moveLeft() {
-  const { xy } = this.isCollision(this.current);
+  const { xy } = this.getCollisionPoints(this.current);
 
   if (xy?.length && xy.find((item) => item.dir == "left")) {
     return false;
@@ -47,7 +47,7 @@ export function moveLeft() {
  * @return  {Object}  Current element
  */
 export function moveRight() {
-  const { xy } = this.isCollision(this.current);
+  const { xy } = this.getCollisionPoints(this.current);
 
   if (xy?.length && xy.find((item) => item.dir == "right")) {
     return false;
@@ -67,7 +67,7 @@ export function moveRight() {
  * @return  {Object}  Current element
  */
 export function moveUp() {
-  const { xy } = this.isCollision(this.current);
+  const { xy } = this.getCollisionPoints(this.current);
 
   if (xy?.length && xy.find((item) => item.dir == "top")) {
     return false;
@@ -87,7 +87,7 @@ export function moveUp() {
  * @return  {Object}  Current element
  */
 export function moveDown() {
-  const { xy } = this.isCollision(this.current);
+  const { xy } = this.getCollisionPoints(this.current);
 
   if (xy?.length && xy.find((item) => item.dir == "bottom")) {
     return false;
