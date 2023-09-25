@@ -51,7 +51,12 @@ import {
   initClearSound,
   initRotateSounds,
 } from "./init-audio.js";
-import { initLevelPreview, updateLayersPreview } from "./init-pit-levels.js";
+import {
+  // initLevelPreview,
+  // updateLayersPreview,
+  getLayerColor,
+  isLayerVisible,
+} from "./init-pit-levels.js";
 import { initWaterfall, createElement } from "./waterfall.js";
 import initShaders from "./init-shaders.js";
 import colorPalette from "./color-palette.js";
@@ -526,8 +531,8 @@ export default {
       this.initLayers();
       this.initPoints();
 
-      this.initLevelPreview();
-      this.updateLayersPreview();
+      // this.initLevelPreview();
+      // this.updateLayersPreview();
 
       this.createElement();
 
@@ -980,7 +985,7 @@ export default {
         this.clearSound.play();
       }
 
-      this.updateLayersPreview();
+      // this.updateLayersPreview();
     },
 
     layersCheck(random = false, force = false) {
@@ -1154,7 +1159,7 @@ export default {
       // Check layers
       this.layersCheck();
 
-      this.updateLayersPreview();
+      // this.updateLayersPreview();
 
       // log(
       //   this.layers
@@ -1396,7 +1401,7 @@ export default {
       this.initLayers();
       this.initPoints();
       this.initLights();
-      this.initLevelPreview();
+      // this.initLevelPreview();
 
       this.createElement();
 
@@ -1487,8 +1492,10 @@ export default {
       return true;
     },
 
-    initLevelPreview,
-    updateLayersPreview,
+    // initLevelPreview,
+    getLayerColor,
+    isLayerVisible,
+    // updateLayersPreview,
 
     initShaders,
 
@@ -1640,7 +1647,7 @@ export default {
       this.initLights();
 
       // Levels preview
-      this.initLevelPreview();
+      // this.initLevelPreview();
 
       // Init test mode
       // initTest.call(this);

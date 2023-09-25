@@ -96,4 +96,32 @@ export function updateLayersPreview() {
   return true;
 }
 
+export function isLayerVisible(index) {
+  const { layers } = this;
+
+  if (!layers[index]) {
+    return false;
+  }
+
+  const layerValues = layers[index].reduce((prev, current) => {
+    prev.push(...current);
+
+    return prev;
+  }, []);
+
+  return layerValues.includes(1) ? true : false;
+}
+
+export function getLayerColor(index) {
+  const { colorPalette } = this;
+
+  const isVisible = this.isLayerVisible(index);
+
+  if (isVisible) {
+    return `background-color: #${colorPalette[index].getHexString()}`;
+  }
+
+  return "background-color: unset";
+}
+
 export default initLevelPreview;
