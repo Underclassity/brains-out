@@ -3,11 +3,10 @@
   "short_name": "Brains Out",
   "theme_color": "#557239",
   "background_color": "#fafafa",
-  "display": "standalone",
+  "display": "fullscreen",
   "scope": "./",
   "start_url": "./",
-  "icons": [
-    {
+  "icons": [{
       "src": "icons/icon-72x72.png",
       "sizes": "72x72",
       "type": "image/png",
