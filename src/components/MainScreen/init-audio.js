@@ -215,7 +215,7 @@ export async function initRotateSounds() {
     const audioBuffer = await loadAudio(id, this.progressCb);
 
     soundInstance.setBuffer(audioBuffer);
-    soundInstance.setVolume(fxVolume);
+    soundInstance.setVolume(fxVolume * 0.5);
 
     this.rotateSounds[id] = soundInstance;
   }

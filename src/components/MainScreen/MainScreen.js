@@ -458,7 +458,7 @@ export default {
       }
 
       for (const id in this.rotateSounds) {
-        this.rotateSounds[id].setVolume(fxVolume);
+        this.rotateSounds[id].setVolume(fxVolume * 0.5);
       }
     },
 
