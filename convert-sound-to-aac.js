@@ -42,14 +42,14 @@ const soundFolderPath = path.resolve("public", "sound");
     const code = await new Promise((resolve) => {
       const spawnedProcess = spawn("ffmpeg", [
         "-i",
-        `"${filepath}"`,
+        `${filepath}`,
         "-strict",
         "experimental",
         "-codec:a",
         "aac",
         "-b:a",
         "128k",
-        `"${newFilepath}"`,
+        `${newFilepath}`,
       ]);
 
       // spawnedProcess.stdout.on("data", (data) => {

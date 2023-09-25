@@ -117,7 +117,7 @@ export default {
       bgSoundId: "ZombiesAreComing.aac",
       bgMenuSoundId: "Rising.ogg",
       fallSoundId: ["burp_01.ogg", "burp_02.ogg"],
-      rotationSoundId: ["spell_fire_01.ogg", "spell_fire_02.ogg"],
+      rotationSoundId: ["zombie-1.aac", "zombie-2.aac", "zombie-3.aac"],
       endGameSoundId: "zombieHoouw_1.aac",
       levelSoundId: "Zombie Sound.aac",
 
@@ -245,8 +245,8 @@ export default {
     loadPercent() {
       const { loadingProcessCache } = this;
 
-      // 11 objects to download
-      const count = 11;
+      // 12 objects to download
+      const count = 12;
 
       let totalCount = 0;
 
