@@ -42,9 +42,6 @@ export default {
       isEnd: false,
 
       isStarted: false,
-
-      isDev: false,
-      isControls: false,
     };
   },
 
@@ -65,6 +62,9 @@ export default {
       "maxSpeed",
 
       "version",
+
+      "isDev",
+      "isControls",
     ]),
 
     isShow() {
@@ -263,27 +263,19 @@ export default {
     },
 
     disableDevMode() {
-      this.isDev = false;
-
-      this.emitter.emit("updateDevMode", this.isDev);
+      this.$store.commit("disableDev");
     },
 
     enableDevMode() {
-      this.isDev = true;
-
-      this.emitter.emit("updateDevMode", this.isDev);
+      this.$store.commit("enableDev");
     },
 
     disableControls() {
-      this.isControls = false;
-
-      this.emitter.emit("updateControls", this.isControls);
+      this.$store.commit("disableControls");
     },
 
     enableControls() {
-      this.isControls = true;
-
-      this.emitter.emit("updateControls", this.isControls);
+      this.$store.commit("enableControls");
     },
 
     blurEvent() {

@@ -37,6 +37,7 @@ export default createStore({
     changeSpeedByLevels: true,
 
     isDev: false,
+    isControls: false,
 
     isRandomColor: false,
     isColorizeLevel: true,
@@ -235,6 +236,30 @@ export default createStore({
 
     reportETA(state, percent) {
       state.eta.report(percent * 100);
+    },
+
+    enableControls(state) {
+      state.isControls = true;
+    },
+
+    disableControls(state) {
+      state.isControls = false;
+    },
+
+    updateControls(state, value) {
+      state.isControls = value ? true : false;
+    },
+
+    enableDev(state) {
+      state.isDev = true;
+    },
+
+    disableDev(state) {
+      state.isDev = false;
+    },
+
+    updateDev(state, value) {
+      state.isDev = value ? true : false;
     },
   },
   actions: {},

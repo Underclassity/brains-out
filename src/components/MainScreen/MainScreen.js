@@ -91,7 +91,6 @@ export default {
       isSmooth: true,
       isSimple: false,
       isEnd: false,
-      isControls: false,
       isInstanced: true,
       isStop: false,
       isPetrify: false,
@@ -102,7 +101,6 @@ export default {
 
       isAccepted: false,
       isLogo: false,
-      isDev: false,
 
       isLoading: true,
       loadingProcessCache: {},
@@ -117,7 +115,7 @@ export default {
       bgSoundId: "ZombiesAreComing.aac",
       bgMenuSoundId: "Rising.ogg",
       fallSoundId: ["burp_01.ogg", "burp_02.ogg"],
-      rotationSoundId: ["zombie-1.aac", "zombie-2.aac", "zombie-3.aac"],
+      rotationSoundId: ["zombie-5.aac", "zombie-6.aac"],
       endGameSoundId: "zombieHoouw_1.aac",
       levelSoundId: "Zombie Sound.aac",
 
@@ -228,6 +226,9 @@ export default {
 
       "score",
       "lsScore",
+
+      "isDev",
+      "isControls",
     ]),
 
     ...mapGetters(["maxScore", "minScore", "avgScore"]),
@@ -245,8 +246,8 @@ export default {
     loadPercent() {
       const { loadingProcessCache } = this;
 
-      // 12 objects to download
-      const count = 12;
+      // 11 objects to download
+      const count = 11;
 
       let totalCount = 0;
 
@@ -417,8 +418,7 @@ export default {
       this.newGame();
     },
 
-    updateControls(isControls) {
-      this.isControls = isControls ? true : false;
+    updateControls() {
       this.updateRendererSize();
       log(`Controls updated: ${this.isControls}`);
     },
@@ -460,11 +460,6 @@ export default {
       for (const id in this.rotateSounds) {
         this.rotateSounds[id].setVolume(fxVolume);
       }
-    },
-
-    updateDevMode(devMode) {
-      this.isDev = devMode;
-      log(`Dev mode updated: ${devMode}`);
     },
 
     updateBlocksType(blocksType) {
@@ -1796,12 +1791,6 @@ export default {
       }
     },
 
-    clickListener() {
-      // if (this.bgSound) {
-      //   this.bgSound.play();
-      // }
-    },
-
     parseURLSearchParams() {
       log("Parse URLSearchParams");
 
@@ -1992,6 +1981,10 @@ export default {
     isUnrealBloomPass(newValue) {
       this.UnrealBloomComposerPass.enabled = newValue;
     },
+
+    isControls() {
+      this.updateControls();
+    },
   },
 
   beforeMount() {
@@ -2008,10 +2001,6 @@ export default {
     window.addEventListener("focus", this.playMusic);
     window.addEventListener("blur", this.pauseMusic);
     document.addEventListener("keyup", this.keyupHandler);
-    window.addEventListener("click", this.clickListener);
-
-    this.emitter.on("updateControls", this.updateControls);
-    this.emitter.on("updateDevMode", this.updateDevMode);
 
     this.emitter.on("openMenuScreen", this.openMenuScreen);
     this.emitter.on("closeMenuScreen", this.closeMenuScreen);
@@ -2025,10 +2014,6 @@ export default {
     window.removeEventListener("focus", this.playMusic);
     window.removeEventListener("blur", this.pauseMusic);
     document.removeEventListener("keyup", this.keyupHandler);
-    window.removeEventListener("click", this.clickListener);
-
-    this.emitter.off("updateControls", this.updateControls);
-    this.emitter.off("updateDevMode", this.updateDevMode);
 
     this.emitter.off("openMenuScreen", this.openMenuScreen);
     this.emitter.off("closeMenuScreen", this.closeMenuScreen);

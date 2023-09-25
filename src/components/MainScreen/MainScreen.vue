@@ -171,37 +171,6 @@
         //- .control-item.control-item--drop(v-on:click="drop" v-if="isControls")
         //-     .material-symbols-outlined water_drop
 
-//- MenuComponent(
-//-     :isMenu="isMenu"
-//-     :isEnd="isEnd"
-//-     :isControls="isControls"
-//-     :isSimple="isSimple"
-//-     :isInstanced="isInstanced"
-//-     :inputSound="sound"
-//-     :inputVolume="volume"
-//-     :inputFxVolume="fxVolume"
-//-     :inputBlocksType="blocksType"
-//-     :pitSize="pitSize"
-//-     :speed="speed"
-//-     :minSpeed="minSpeed"
-//-     :maxSpeed="maxSpeed"
-//-     :speedStep="speedStep"
-//-     :smooth="isSmooth"
-//-     :score="score"
-//-     v-on:close-menu="closeMenu"
-//-     v-on:change-pit-size="changePitSize"
-//-     v-on:change-speed="changeSpeed"
-//-     v-on:update-smooth="updateSmooth"
-//-     v-on:update-instanced="updateInstanced"
-//-     v-on:update-simple="updateSimple"
-//-     v-on:update-controls="updateControls"
-//-     v-on:update-sound="updateSound"
-//-     v-on:update-volume="updateVolume"
-//-     v-on:update-fx-volume="updateFxVolume"
-//-     v-on:update-blocks-type="updateBlocksType"
-//-     v-on:new-game="newGame"
-//- )
-
 AcceptBugsScreen(v-if="!isAccepted" v-on:accept="acceptedCall")
 LogoScreen(v-if="isLogo")
 MenuScreen(
