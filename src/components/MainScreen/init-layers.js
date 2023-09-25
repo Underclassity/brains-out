@@ -48,4 +48,55 @@ export function initLayers() {
   return true;
 }
 
+/**
+ * Set layer point helper
+ *
+ * @param   {Number}   x           X layer position
+ * @param   {Number}   y           Y layer position
+ * @param   {Number}   z           Z layer position
+ * @param   {Number}   [value=1]   Value
+ *
+ * @return  {Array}                Array with layers
+ */
+export function setLayerPoint(x, y, z, value = 1) {
+  // log(`Set layer point ${x}-${y}-${z}`);
+
+  // const allPointElements = this.layersElements
+  //   .reduce((prev, curr) => {
+  //     prev.push(...curr);
+  //     return prev;
+  //   }, [])
+  //   .filter((item) => item)
+  //   .map((item) => item.position)
+  //   .map((item) => `${item.x}-${item.y}-${item.z}`);
+
+  // if (allPointElements.length) {
+  //   const inElements = allPointElements.includes(`${x}-${y}-${z}`);
+
+  //   if (inElements) {
+  //     debugger;
+  //   }
+  // }
+
+  // Check for equal value
+  if (this.layers[z][x][y] == value) {
+    this.error = `Layer ${x}/${y}/${z} value equal ${value}!`;
+    throw new Error(this.error);
+  }
+
+  this.layers[z][x][y] = value;
+
+  // log(this.layers[z].map((xLayer) => xLayer.join("-")).join("\n"));
+
+  // log(
+  //   this.layers
+  //     .map((layer) => {
+  //       return layer.map((xLayer) => xLayer.join("-")).join("\n");
+  //     })
+  //     .join("\n" + new Array(pitWidth).join("-") + "\n")
+  // );
+
+  return this.layers;
+}
+
 export default initLayers;

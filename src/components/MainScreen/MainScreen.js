@@ -38,7 +38,6 @@ import {
   positionHelper,
   rotateHelper,
   translateHelper,
-  setLayerPoint,
 } from "./transform-helpers.js";
 import {
   initAudio,
@@ -56,7 +55,7 @@ import {
   isLayerVisible,
 } from "./init-pit-levels.js";
 import { initLights } from "./init-lights.js";
-import { initLayer, initLayers } from "./init-layers.js";
+import { initLayer, initLayers, setLayerPoint } from "./init-layers.js";
 import { initWaterfall, createElement } from "./waterfall.js";
 import initShaders from "./init-shaders.js";
 import colorPalette from "./color-palette.js";
