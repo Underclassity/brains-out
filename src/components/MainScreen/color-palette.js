@@ -23,7 +23,7 @@ export const colorPalette = [
   // https://www.color-hex.com/color-palette/46469
   new Color("rgb(159, 20, 20)"),
   new Color("rgb(71, 30, 30)"),
-  new Color("rgb(246, 11, 11)"),
+  // new Color("rgb(246, 11, 11)"),
   new Color("rgb(15, 144, 23)"),
   new Color("rgb(167, 11, 186)"),
 
