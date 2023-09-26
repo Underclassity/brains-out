@@ -13,6 +13,8 @@ import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js"
 
 import { TechnicolorShader } from "three/addons/shaders/TechnicolorShader.js";
 
+import log from "../../helpers/log.js";
+
 /**
  * Init shaders on scene
  *
@@ -22,63 +24,66 @@ import { TechnicolorShader } from "three/addons/shaders/TechnicolorShader.js";
  * @return  {Boolean}         Result
  */
 export function initShaders(width, height) {
-  const { renderer, scene, camera } = this;
+  log(`Init shaders: ${width}x${height}`);
 
-  const composer = new EffectComposer(renderer);
+  const composer = new EffectComposer(this.renderer);
   composer.setPixelRatio(this.pixelRatio);
   composer.setSize(width, height);
   this.composer = composer;
 
-  const renderPass = new RenderPass(scene, camera);
-  composer.addPass(renderPass);
+  const renderPass = new RenderPass(this.scene, this.camera);
 
   const glitchPass = new GlitchPass();
   glitchPass.enabled = this.isGlitch;
-  composer.addPass(glitchPass);
   this.glitchPass = glitchPass;
 
   const technicolorShaderPass = new ShaderPass(TechnicolorShader);
   technicolorShaderPass.enabled = this.isTechnicolor;
-  composer.addPass(technicolorShaderPass);
   this.technicolorShaderPass = technicolorShaderPass;
 
   const dotScreenPass = new DotScreenPass();
   dotScreenPass.enabled = this.isDotScreenPass;
-  composer.addPass(dotScreenPass);
   this.dotScreenPass = dotScreenPass;
 
-  const SAOComposerPass = new SAOPass(scene, camera);
+  const SAOComposerPass = new SAOPass(this.scene, this.camera);
   SAOComposerPass.enabled = this.isSAOPass;
-  composer.addPass(SAOComposerPass);
   this.SAOComposerPass = SAOComposerPass;
 
   const filmPass = new FilmPass();
   filmPass.enabled = this.isFilmPass;
-  composer.addPass(filmPass);
   this.filmPass = filmPass;
 
-  const SSAOComposerPass = new SSAOPass(scene, camera);
+  const SSAOComposerPass = new SSAOPass(this.scene, this.camera);
   SSAOComposerPass.enabled = this.isSSAOPass;
-  composer.addPass(SSAOComposerPass);
   this.SSAOComposerPass = SSAOComposerPass;
 
   const SSRComposerPass = new SSRPass({
-    renderer,
-    scene,
-    camera,
+    renderer: this.renderer,
+    scene: this.scene,
+    camera: this.camera,
     width,
     height,
   });
   SSRComposerPass.enabled = this.isSSRPass;
-  composer.addPass(SSRComposerPass);
   this.SSRComposerPass = SSRComposerPass;
 
   const UnrealBloomComposerPass = new UnrealBloomPass();
   UnrealBloomComposerPass.enabled = this.isUnrealBloomPass;
-  composer.addPass(UnrealBloomComposerPass);
   this.UnrealBloomComposerPass = UnrealBloomComposerPass;
 
   const outputPass = new OutputPass();
+
+  composer.addPass(renderPass);
+
+  composer.addPass(glitchPass);
+  composer.addPass(technicolorShaderPass);
+  composer.addPass(dotScreenPass);
+  composer.addPass(SAOComposerPass);
+  composer.addPass(filmPass);
+  composer.addPass(SSAOComposerPass);
+  composer.addPass(SSRComposerPass);
+  composer.addPass(UnrealBloomComposerPass);
+
   composer.addPass(outputPass);
 
   return true;

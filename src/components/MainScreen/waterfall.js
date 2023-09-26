@@ -6,6 +6,7 @@ import { MeshBasicMaterial, Vector3 } from "three";
 import getGroupSize from "../../helpers/get-group-size.js";
 import getRandom from "../../helpers/random.js";
 import log from "../../helpers/log.js";
+// import roundValue from "../../helpers/round-value.js";
 
 /**
  * Create new element helper
@@ -118,7 +119,36 @@ export function initWaterfall() {
       }
 
       const isFreeze = this.collisionElement(element);
-      const { z } = this.getCollisionPoints(element);
+      const { z, cover } = this.getCollisionPoints(element);
+
+      if (cover?.length) {
+        for (const { item, point } of cover) {
+          if (item.z == 0 && point.z) {
+            this.endGameCall(this.current);
+            return false;
+          }
+
+          const pointElement = element.getObjectByProperty("uuid", point.uuid);
+
+          const itemPosition = new Vector3();
+          pointElement.getWorldPosition(itemPosition);
+
+          const layerPosition = this.zCPoints[item.z];
+
+          const diff = layerPosition - itemPosition.z;
+
+          // Translate back
+          this.translateHelper(element, "z", -diff);
+
+          element.userData.static = true;
+          array[index] = undefined;
+          this.petrify(element);
+
+          this.createElement();
+
+          return true;
+        }
+      }
 
       if (z?.length) {
         let minDiff = undefined;
@@ -133,14 +163,22 @@ export function initWaterfall() {
 
           const diff = layerPosition - itemPosition.z;
 
+          if (item.z - point.z == 1) {
+            minDiff = 0;
+          }
+
+          if (minDiff == 0) {
+            continue;
+          }
+
           if (minDiff == undefined) {
             minDiff = diff;
-          } else if (diff < minDiff) {
+          } else if (diff > minDiff) {
             minDiff = diff;
           }
         }
 
-        if (minDiff >= 0 && !isFreeze) {
+        if (minDiff >= 0) {
           // Translate back
           this.translateHelper(element, "z", -minDiff);
 
@@ -149,18 +187,16 @@ export function initWaterfall() {
           this.petrify(element);
 
           this.createElement();
+
+          return true;
         }
+      } else if (isFreeze) {
+        element.userData.static = true;
+        array[index] = undefined;
+        this.petrify(element);
+
+        this.createElement();
       }
-
-      if (!isFreeze) {
-        return false;
-      }
-
-      element.userData.static = true;
-      array[index] = undefined;
-      this.petrify(element);
-
-      this.createElement();
 
       return true;
     });

@@ -16,7 +16,7 @@ import * as TWEEN from "@tweenjs/tween.js";
 import { loadPitParts, loadZombie } from "../../helpers/load-zombie.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import generatePit from "../../helpers/generate-pit.js";
-import getGroupSize from "../../helpers/get-group-size.js";
+// import getGroupSize from "../../helpers/get-group-size.js";
 import log from "../../helpers/log.js";
 import randomBetween from "../../helpers/random-between.js";
 import roundValue from "../../helpers/round-value.js";
@@ -708,12 +708,24 @@ export default {
 
           if (z == -1) {
             this.zCPoints.forEach((point, index, array) => {
-              if (item.z <= point && item.z > array[index + 1]) {
-                z = index;
-              } else if (item.z <= array[array.length - 1]) {
+              if (z != -1) {
+                return true;
+              }
+
+              if (item.z <= array[array.length - 1]) {
                 z = array.length - 1;
-              } else {
+                return true;
+              }
+
+              if (item.z >= array[0]) {
                 z = 0;
+                return true;
+              }
+
+              const nextPoint = array[index + 1];
+
+              if (item.z <= point && item.z > nextPoint) {
+                z = index;
               }
             });
           }
@@ -722,6 +734,73 @@ export default {
             x,
             y,
             z,
+          };
+        });
+    },
+
+    /**
+     * Get element layers points
+     *
+     * @param   {Object}  element  Element
+     *
+     * @return  {Array}            Points array
+     */
+    getElementLayerPoints(element) {
+      return element
+        .getObjectByName("childs")
+        .children.map((item) => {
+          const itemPosition = new Vector3();
+          item.getWorldPosition(itemPosition);
+
+          return {
+            x: roundValue(itemPosition.x),
+            y: roundValue(itemPosition.y),
+            z: roundValue(itemPosition.z),
+            uuid: item.uuid,
+          };
+        })
+        .map((item) => {
+          const x = this.xCPoints.includes(item.x)
+            ? this.xCPoints.indexOf(item.x)
+            : this.xPoints.indexOf(item.x);
+
+          const y = this.yCPoints.includes(item.y)
+            ? this.yCPoints.indexOf(item.y)
+            : this.yPoints.indexOf(item.y);
+
+          let z = this.zCPoints.includes(item.z)
+            ? this.zCPoints.indexOf(item.z)
+            : this.zPoints.indexOf(item.z);
+
+          if (z == -1) {
+            this.zCPoints.forEach((point, index, array) => {
+              if (z != -1) {
+                return true;
+              }
+
+              if (item.z <= array[array.length - 1]) {
+                z = array.length - 1;
+                return true;
+              }
+
+              if (item.z >= array[0]) {
+                z = 0;
+                return true;
+              }
+
+              const nextPoint = array[index + 1];
+
+              if (item.z <= point && item.z > nextPoint) {
+                z = index;
+              }
+            });
+          }
+
+          return {
+            x,
+            y,
+            z,
+            uuid: item.uuid,
           };
         });
     },
@@ -842,59 +921,11 @@ export default {
      */
     getCollisionPoints(element) {
       const layerPoints = this.getLayersElementsLevelPoints();
-
-      if (!layerPoints.length) {
-        return { xy: [], z: false };
-      }
-
-      const elementPoints = element
-        .getObjectByName("childs")
-        .children.map((item) => {
-          const itemPosition = new Vector3();
-          item.getWorldPosition(itemPosition);
-
-          return {
-            x: roundValue(itemPosition.x),
-            y: roundValue(itemPosition.y),
-            z: roundValue(itemPosition.z),
-            uuid: item.uuid,
-          };
-        })
-        .map((item) => {
-          const x = this.xCPoints.includes(item.x)
-            ? this.xCPoints.indexOf(item.x)
-            : this.xPoints.indexOf(item.x);
-
-          const y = this.yCPoints.includes(item.y)
-            ? this.yCPoints.indexOf(item.y)
-            : this.yPoints.indexOf(item.y);
-
-          let z = this.zCPoints.includes(item.z)
-            ? this.zCPoints.indexOf(item.z)
-            : this.zPoints.indexOf(item.z);
-
-          if (z == -1) {
-            this.zCPoints.forEach((point, index, array) => {
-              if (item.z <= point && item.z > array[index + 1]) {
-                z = index;
-              } else if (item.z <= array[array.length - 1]) {
-                z = array.length - 1;
-              } else {
-                z = 0;
-              }
-            });
-          }
-
-          return {
-            x,
-            y,
-            z,
-            uuid: item.uuid,
-          };
-        });
+      const elementPoints = this.getElementLayerPoints(element);
 
       let xyPoints = [];
       let zPoints = [];
+      let coverPoints = [];
 
       for (const point of elementPoints) {
         const zCollisionPoints = layerPoints
@@ -940,15 +971,23 @@ export default {
           })
           .filter((item) => item);
 
-        // const coverCollisionPoints = layerPoints.find(
-        //   (item) => item.x == point.x && item.y == point.y && item.z == point.z
-        // );
+        const coverCollisionPoints = layerPoints
+          .map((item) => {
+            const isCover =
+              item.x == point.x && item.y == point.y && item.z == point.z;
 
-        // if (coverCollisionPoints) {
-        //   console.error("COVER");
-        //   console.log(coverCollisionPoints);
-        // }
+            if (isCover) {
+              return {
+                item,
+                point,
+              };
+            }
 
+            return false;
+          })
+          .filter((item) => item);
+
+        coverPoints.push(...coverCollisionPoints);
         xyPoints.push(...xyCollisionPoints);
         zPoints.push(...zCollisionPoints);
       }
@@ -959,10 +998,15 @@ export default {
       zPoints = zPoints.filter(
         (value, index, array) => array.indexOf(value) === index
       );
+      coverPoints = coverPoints.filter(
+        (value, index, array) => array.indexOf(value) === index
+      );
 
       return {
         xy: xyPoints,
         z: zPoints,
+        points: elementPoints,
+        cover: coverPoints,
       };
     },
 
@@ -1050,50 +1094,99 @@ export default {
 
       element.userData.drop = true;
 
-      const childs = element.getObjectByName("childs").children;
+      const { z, points } = this.getCollisionPoints(element);
 
-      const indexes = childs.map(this.findElementIndexes);
+      if (z.length) {
+        let minDiff = undefined;
 
-      const collisionPoints = [];
+        for (const { item, point } of z) {
+          const pointElement = element.getObjectByProperty("uuid", point.uuid);
 
-      for (const { x, y, z, pX, pY, pZ, uuid, el } of indexes) {
-        for (let zIndex = 0; zIndex < this.zPoints.length; zIndex++) {
-          if (this.layers[zIndex + 1] && this.layers[zIndex + 1][x][y]) {
-            collisionPoints.push({ x, y, z, pX, pY, pZ, zIndex, uuid, el });
+          const itemPosition = new Vector3();
+          pointElement.getWorldPosition(itemPosition);
+
+          const layerPosition = this.zCPoints[item.z - 1];
+
+          const diff = layerPosition - itemPosition.z;
+
+          if (minDiff == undefined) {
+            minDiff = diff;
+          } else if (diff > minDiff) {
+            minDiff = diff;
           }
         }
-      }
 
-      if (collisionPoints.length) {
-        // log(`Found ${collisionPoints.length} collision points`);
-
-        const uuids = collisionPoints.map((item) => item.uuid);
-
-        const maxZ = Math.max(...collisionPoints.map(({ z }) => z));
-
-        const { uuid } = indexes.find(
-          (item) => item.z === maxZ && uuids.includes(item.uuid)
-        );
-        const maxPoint = childs.find((item) => item.uuid === uuid);
-
-        const collisionZ = collisionPoints.find(
-          (item) => item.uuid == uuid
-        ).zIndex;
-
-        const maxPointPosition = new Vector3();
-        maxPoint.getWorldPosition(maxPointPosition);
-
-        const tZ = this.zPoints[collisionZ] - maxPointPosition.z;
-
-        this.translateHelper(element, "z", tZ);
+        this.translateHelper(element, "z", minDiff);
       } else {
-        this.positionHelper(
-          element,
-          "z",
-          this.zPoints[this.zPoints.length - 1]
+        const lowerPoint = points.reduce((prev, curr) => {
+          if (curr.z > prev.z) {
+            return curr;
+          }
+
+          return prev;
+        }, points[0]);
+
+        const lowerElement = element.getObjectByProperty(
+          "uuid",
+          lowerPoint.uuid
         );
-        this.restrainElement(element);
+
+        const itemPosition = new Vector3();
+        lowerElement.getWorldPosition(itemPosition);
+
+        const layerPosition = this.zCPoints[this.zCPoints.length - 1];
+
+        const diff = layerPosition - itemPosition.z;
+
+        this.translateHelper(element, "z", diff);
       }
+
+      this.restrainElement(element);
+
+      // const childs = element.getObjectByName("childs").children;
+
+      // const indexes = childs.map(this.findElementIndexes);
+
+      // const collisionPoints = [];
+
+      // for (const { x, y, z, pX, pY, pZ, uuid, el } of indexes) {
+      //   for (let zIndex = 0; zIndex < this.zPoints.length; zIndex++) {
+      //     if (this.layers[zIndex + 1] && this.layers[zIndex + 1][x][y]) {
+      //       collisionPoints.push({ x, y, z, pX, pY, pZ, zIndex, uuid, el });
+      //     }
+      //   }
+      // }
+
+      // if (collisionPoints.length) {
+      //   // log(`Found ${collisionPoints.length} collision points`);
+
+      //   const uuids = collisionPoints.map((item) => item.uuid);
+
+      //   const maxZ = Math.max(...collisionPoints.map(({ z }) => z));
+
+      //   const { uuid } = indexes.find(
+      //     (item) => item.z === maxZ && uuids.includes(item.uuid)
+      //   );
+      //   const maxPoint = childs.find((item) => item.uuid === uuid);
+
+      //   const collisionZ = collisionPoints.find(
+      //     (item) => item.uuid == uuid
+      //   ).zIndex;
+
+      //   const maxPointPosition = new Vector3();
+      //   maxPoint.getWorldPosition(maxPointPosition);
+
+      //   const tZ = this.zPoints[collisionZ] - maxPointPosition.z;
+
+      //   this.translateHelper(element, "z", tZ);
+      // } else {
+      //   this.positionHelper(
+      //     element,
+      //     "z",
+      //     this.zPoints[this.zPoints.length - 1]
+      //   );
+      //   this.restrainElement(element);
+      // }
 
       return element;
     },
@@ -1252,6 +1345,47 @@ export default {
     },
 
     /**
+     * End game call helper
+     *
+     * @param   {Object}  element   Current element to petrify
+     *
+     * @return  {Boolean}           Result
+     */
+    endGameCall(element) {
+      const elementPoints = this.getElementLayerPoints(element);
+
+      log(`End game call on element: ${element.name}`);
+
+      this.changeScore(elementPoints.length);
+      this.$store.commit("saveScore");
+
+      this.isEnd = true;
+      navigator.vibrate(500);
+
+      this.openMenu();
+      this.emitter.emit("openEndMenu");
+
+      if (this.lights?.l1 && this.lights?.l2 && this.lights?.l3) {
+        this.lights.l1.power = 0;
+        this.lights.l1.visible = false;
+        this.lights.l2.power = 0;
+        this.lights.l2.visible = false;
+        this.lights.l3.power = this.lightPower;
+        this.lights.l3.visible = true;
+      }
+
+      this.scene.remove(element);
+
+      if (this.endSound) {
+        this.endSound.play();
+      }
+
+      this.isPetrify = false;
+
+      return true;
+    },
+
+    /**
      * Petrify element helper
      *
      * @param   {Object}  element  Element
@@ -1261,131 +1395,177 @@ export default {
     petrify(element) {
       this.isPetrify = true;
 
-      const collisionPoints = this.findCollissionElements(element);
+      const elementPoints = this.getElementLayerPoints(element);
 
-      const childs = element.getObjectByName("childs").children;
-
-      const indexes = childs.map(this.findElementIndexes);
-
-      const position = element.position;
-
-      log(
-        `Petrify element: ${element.name}(${position.x.toFixed(
-          1
-        )}-${position.y.toFixed(1)}-${position.z.toFixed(1)})`
-      );
-
-      let zOffset = 0;
-
-      for (let { z, uuid } of indexes) {
-        const collisionPoint = collisionPoints.find(
-          (item) => item.uuid == uuid
-        );
-
-        if (!collisionPoint) {
-          continue;
+      for (const { x, y, z, uuid } of elementPoints) {
+        if (this.layers[z][x][y]) {
+          this.endGameCall(element);
+          return false;
         }
 
-        if (!collisionPoint.el.userData.size) {
-          collisionPoint.el.userData.size = getGroupSize(collisionPoint.el);
-        }
+        const el = element.getObjectByProperty("uuid", uuid);
 
-        if (
-          collisionPoint &&
-          (collisionPoint.z != collisionPoint.zIndex ||
-            collisionPoint.z != z ||
-            collisionPoint.zIndex != z)
-        ) {
-          const zIndexDiff = collisionPoint.zIndex - collisionPoint.z;
+        const itemPosition = new Vector3();
+        el.getWorldPosition(itemPosition);
 
-          if ((!zOffset || zOffset != zIndexDiff) && zIndexDiff < 0) {
-            zOffset = zIndexDiff;
+        this.positionHelper(el, "x", itemPosition.x);
+        this.positionHelper(el, "y", itemPosition.y);
+        this.positionHelper(el, "z", itemPosition.z);
+
+        this.changeScore(1);
+
+        this.setLayerPoint(x, y, z);
+
+        el.userData.static = true;
+        el.userData.layer = {
+          x,
+          y,
+          z,
+        };
+
+        this.colorizeElement(el, z);
+
+        this.layersElements[z].push(el);
+        this.scene.add(el);
+
+        for (const id in this.dropSounds) {
+          if (this.dropSounds[id].isPlaying) {
+            this.dropSounds[id].stop();
           }
         }
-      }
 
-      for (let { x, y, z, pX, pY, pZ, el } of indexes) {
-        z += zOffset;
+        const randomId = randomBetween(0, this.fallSoundId.length - 1);
 
-        const layer = this.layers[z];
-
-        if (z != -1 && x != -1 && y != -1) {
-          if (
-            layer == undefined ||
-            layer[x] == undefined ||
-            layer[x][y] == undefined
-          ) {
-            this.error = `Element not found in layers!(${x}/${y}/${z})(${pX}/${pY}/${pZ})`;
-            throw new Error(this.error);
-          }
-
-          if (layer[x][y] && !element.userData.drop) {
-            this.changeScore(indexes.length);
-            this.$store.commit("saveScore");
-
-            log(
-              `Element already petrified!(${x}-${y}-${z})(${pX}-${pY}-${pZ})`
-            );
-            this.isEnd = true;
-            this.openMenu();
-
-            navigator.vibrate(500);
-
-            this.emitter.emit("openEndMenu");
-
-            if (this.lights?.l1 && this.lights?.l2 && this.lights?.l3) {
-              this.lights.l1.power = 0;
-              this.lights.l1.visible = false;
-              this.lights.l2.power = 0;
-              this.lights.l2.visible = false;
-              this.lights.l3.power = this.lightPower;
-              this.lights.l3.visible = true;
-            }
-
-            this.scene.remove(element);
-
-            if (this.endSound) {
-              this.endSound.play();
-            }
-            return false;
-          }
-
-          this.changeScore(1);
-
-          this.setLayerPoint(x, y, z);
-
-          this.positionHelper(el, "x", pX);
-          this.positionHelper(el, "y", pY);
-          this.positionHelper(el, "z", this.zPoints[z] - this.size / 2);
-
-          el.userData.static = true;
-          el.userData.layer = {
-            x,
-            y,
-            z,
-          };
-
-          this.colorizeElement(el, z);
-
-          this.layersElements[z].push(el);
-          this.scene.add(el);
-
-          for (const id in this.dropSounds) {
-            if (this.dropSounds[id].isPlaying) {
-              this.dropSounds[id].stop();
-            }
-          }
-
-          const randomId = randomBetween(0, this.fallSoundId.length - 1);
-
-          if (this.dropSounds[this.fallSoundId[randomId]]) {
-            this.dropSounds[this.fallSoundId[randomId]].play();
-          }
-        } else {
-          this.error = `Index not found!(${x}/${y}/${z})(${pX}/${pY}/${pZ})`;
-          throw new Error(this.error);
+        if (this.dropSounds[this.fallSoundId[randomId]]) {
+          this.dropSounds[this.fallSoundId[randomId]].play();
         }
       }
+
+      // const collisionPoints = this.findCollissionElements(element);
+
+      // const childs = element.getObjectByName("childs").children;
+
+      // const indexes = childs.map(this.findElementIndexes);
+
+      // const position = element.position;
+
+      // log(
+      //   `Petrify element: ${element.name}(${position.x.toFixed(
+      //     1
+      //   )}-${position.y.toFixed(1)}-${position.z.toFixed(1)})`
+      // );
+
+      // let zOffset = 0;
+
+      // for (let { z, uuid } of indexes) {
+      //   const collisionPoint = collisionPoints.find(
+      //     (item) => item.uuid == uuid
+      //   );
+
+      //   if (!collisionPoint) {
+      //     continue;
+      //   }
+
+      //   if (!collisionPoint.el.userData.size) {
+      //     collisionPoint.el.userData.size = getGroupSize(collisionPoint.el);
+      //   }
+
+      //   if (
+      //     collisionPoint &&
+      //     (collisionPoint.z != collisionPoint.zIndex ||
+      //       collisionPoint.z != z ||
+      //       collisionPoint.zIndex != z)
+      //   ) {
+      //     const zIndexDiff = collisionPoint.zIndex - collisionPoint.z;
+
+      //     if ((!zOffset || zOffset != zIndexDiff) && zIndexDiff < 0) {
+      //       zOffset = zIndexDiff;
+      //     }
+      //   }
+      // }
+
+      // for (let { x, y, z, pX, pY, pZ, el } of indexes) {
+      //   z += zOffset;
+
+      //   const layer = this.layers[z];
+
+      //   if (z != -1 && x != -1 && y != -1) {
+      //     if (
+      //       layer == undefined ||
+      //       layer[x] == undefined ||
+      //       layer[x][y] == undefined
+      //     ) {
+      //       this.error = `Element not found in layers!(${x}/${y}/${z})(${pX}/${pY}/${pZ})`;
+      //       throw new Error(this.error);
+      //     }
+
+      //     if (layer[x][y] && !element.userData.drop) {
+      //       this.changeScore(indexes.length);
+      //       this.$store.commit("saveScore");
+
+      //       log(
+      //         `Element already petrified!(${x}-${y}-${z})(${pX}-${pY}-${pZ})`
+      //       );
+      //       this.isEnd = true;
+      //       this.openMenu();
+
+      //       navigator.vibrate(500);
+
+      //       this.emitter.emit("openEndMenu");
+
+      //       if (this.lights?.l1 && this.lights?.l2 && this.lights?.l3) {
+      //         this.lights.l1.power = 0;
+      //         this.lights.l1.visible = false;
+      //         this.lights.l2.power = 0;
+      //         this.lights.l2.visible = false;
+      //         this.lights.l3.power = this.lightPower;
+      //         this.lights.l3.visible = true;
+      //       }
+
+      //       this.scene.remove(element);
+
+      //       if (this.endSound) {
+      //         this.endSound.play();
+      //       }
+      //       return false;
+      //     }
+
+      //     this.changeScore(1);
+
+      //     this.setLayerPoint(x, y, z);
+
+      //     this.positionHelper(el, "x", pX);
+      //     this.positionHelper(el, "y", pY);
+      //     this.positionHelper(el, "z", this.zPoints[z] - this.size / 2);
+
+      //     el.userData.static = true;
+      //     el.userData.layer = {
+      //       x,
+      //       y,
+      //       z,
+      //     };
+
+      //     this.colorizeElement(el, z);
+
+      //     this.layersElements[z].push(el);
+      //     this.scene.add(el);
+
+      //     for (const id in this.dropSounds) {
+      //       if (this.dropSounds[id].isPlaying) {
+      //         this.dropSounds[id].stop();
+      //       }
+      //     }
+
+      //     const randomId = randomBetween(0, this.fallSoundId.length - 1);
+
+      //     if (this.dropSounds[this.fallSoundId[randomId]]) {
+      //       this.dropSounds[this.fallSoundId[randomId]].play();
+      //     }
+      //   } else {
+      //     this.error = `Index not found!(${x}/${y}/${z})(${pX}/${pY}/${pZ})`;
+      //     throw new Error(this.error);
+      //   }
+      // }
 
       // Remove element after process layers
       this.scene.remove(element);
@@ -1914,9 +2094,9 @@ export default {
         // controls.update();
 
         if (this.isShaders) {
-          composer.render();
+          this.composer.render();
         } else {
-          renderer.render(scene, camera);
+          this.renderer.render(scene, camera);
         }
 
         TWEEN.update();
@@ -1932,8 +2112,6 @@ export default {
       renderer.gammaFactor = 2.2;
       container.appendChild(renderer.domElement);
       this.renderer = renderer;
-
-      this.initShaders(width, height);
 
       if (this.orbitControls) {
         const controls = new OrbitControls(camera, renderer.domElement);
@@ -1955,6 +2133,10 @@ export default {
       //     this.layersElements[i].push(onePoint);
       //   }
       // }
+
+      this.initShaders(width, height);
+
+      return true;
     },
 
     keyupHandler(event) {

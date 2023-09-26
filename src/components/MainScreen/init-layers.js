@@ -1,4 +1,7 @@
+// import { BoxGeometry, BoxHelper, Mesh, MeshBasicMaterial } from "three";
+
 import log from "../../helpers/log.js";
+
 /**
  * Init layer helper
  *
@@ -85,6 +88,19 @@ export function setLayerPoint(x, y, z, value = 1) {
   }
 
   this.layers[z][x][y] = value;
+
+  // if (value) {
+  //   const geometry = new BoxGeometry(this.size, this.size);
+  //   const material = new MeshBasicMaterial();
+  //   const boxMesh = new Mesh(geometry, material);
+
+  //   boxMesh.position.set(this.xCPoints[x], this.yCPoints[y], this.zCPoints[z]);
+  //   boxMesh.visible = false;
+
+  //   const boxGeometry = new BoxHelper(boxMesh);
+
+  //   this.scene.add(boxGeometry);
+  // }
 
   // log(this.layers[z].map((xLayer) => xLayer.join("-")).join("\n"));
 
