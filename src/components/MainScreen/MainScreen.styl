@@ -48,18 +48,21 @@
     &:last-child
         margin-right: 0px
 
-.score-button
+.dev-menu
     position: fixed
     padding: 10px
     background-color: rgba(#333, 0.8)
     border-radius: 20px
     user-select: none
-    top: 10px
-    left: 10px
+    bottom: 10px
+    right: 10px
     display: flex
     flex-direction: column
     align-items: flex-start
     justify-content: flex-start
+
+    @media(max-width 768px)
+        bottom: calc(40% + 10px)
 
 .controls
     width: 100%
@@ -291,6 +294,11 @@
         justify-content: space-between
         margin-bottom: 10px
 
+        @media(max-width 768px)
+            font-size: 16px
+            line-height: 20px
+            margin-bottom: 4px
+
         span
         label
             user-select: none
@@ -333,7 +341,7 @@
         flex-wrap: nowrap
         top: calc(60% - 50px)
         left: 50%
-        transform: translateX(-50%) rotate(180deg)
+        transform: translateX(-50%)
 
 .level-item
     width: 60px

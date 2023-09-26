@@ -11,14 +11,14 @@
 
     //- span.menu-button.link.material-symbols-outlined(v-on:click="openMenu") menu
 
-    div.score-button(v-if="isDev")
+    div.dev-menu(v-if="isDev")
         span(:title="`Min ${minScore} - Max ${maxScore} - Avg ${avgScore} - Length ${lsScore.length}`") Score: {{ score }}
         span Speed: {{ Math.round(speed * 100) / 100 }}
         span FPS: {{ fps }}
 
         .dev-menu--item
             span.material-symbols-outlined format_bold
-            span Blocks type
+            span.label Blocks type
             select(v-model="blocksType" v-on:change="updateBlocksType")
                 option(v-for="type of blocksTypeOptions" :key="type" :value="type") {{ type }}
 
