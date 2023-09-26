@@ -30,7 +30,14 @@ export function createElement() {
   element.position.set(0, 0, 0);
   element.rotation.set(0, 0, 0);
   element.scale.set(1, 1, 1);
-  element.userData.size = getGroupSize(element);
+
+  element.userData.size = element.userData?.size
+    ? new Vector3(
+        element.userData.size.x * 2,
+        element.userData.size.y * 2,
+        element.userData.size.z * 2
+      )
+    : getGroupSize(element);
 
   element.userData.time = this.time;
   element.userData.static = false;
@@ -62,7 +69,13 @@ export function createElement() {
   this.next = this.getRandomForm(this.size, this.zombieParts);
   this.next.position.set(0, 0, 0);
   this.next.scale.set(0.5, 0.5, 0.5);
-  this.next.userData.size = getGroupSize(this.next);
+  this.next.userData.size = this.next.userData?.size
+    ? new Vector3(
+        this.next.userData.size.x / 2,
+        this.next.userData.size.y / 2,
+        this.next.userData.size.z / 2
+      )
+    : getGroupSize(this.next);
 
   this.scene.add(element);
   this.scene.add(this.next);

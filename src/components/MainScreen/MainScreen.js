@@ -684,6 +684,17 @@ export default {
         }, [])
         .filter((item) => item)
         .map((item) => {
+          if (item.userData.static && item.userData.layer) {
+            const { x, y, z } = item.userData.layer;
+
+            return {
+              x,
+              y,
+              z,
+              static: true,
+            };
+          }
+
           const itemPosition = new Vector3();
           item.getWorldPosition(itemPosition);
 
@@ -694,6 +705,12 @@ export default {
           };
         })
         .map((item) => {
+          if (item?.static) {
+            const { x, y, z } = item;
+
+            return { x, y, z };
+          }
+
           const x = this.xCPoints.includes(item.x)
             ? this.xCPoints.indexOf(item.x)
             : this.xPoints.indexOf(item.x);
@@ -1018,53 +1035,65 @@ export default {
      * @return  {Boolean}          Result
      */
     collisionElement(element) {
-      const childs = element.getObjectByName("childs").children;
+      const elementPoints = this.getElementLayerPoints(element);
 
       let isFreeze = false;
 
-      for (const child of childs) {
+      for (const { x, y, z } of elementPoints) {
         if (isFreeze) {
           continue;
         }
 
-        const { x, y, z, pX, pY, pZ } = this.findElementIndexes(child);
+        const layer = this.layers[z + 1];
 
-        if (z != -1 && x != -1 && y != -1) {
-          const layer = this.layers[z + 1];
+        if (layer) {
+          const nextLayerValue = layer[x][y];
 
-          if (layer) {
-            if (
-              layer == undefined ||
-              layer[x] == undefined ||
-              layer[x][y] == undefined
-            ) {
-              this.error = `Layer not found ${
-                element.name
-              }!(${x}/${y}/${z})(${pX.toFixed(1)}/${pY.toFixed(1)}/${pZ.toFixed(
-                1
-              )})(${child.position.x.toFixed(1)}/${child.position.y.toFixed(
-                1
-              )}/${child.position.z.toFixed(1)})`;
-              throw new Error(this.error);
-            }
-
-            const nextLayerValue = layer[x][y];
-
-            // log(
-            //   this.layers[zIndex + 1].map((xLayer) => xLayer.join("-")).join("\n")
-            // );
-
-            if (nextLayerValue) {
-              isFreeze = true;
-            }
-          } else {
-            // Reached end
+          if (nextLayerValue) {
             isFreeze = true;
           }
         } else {
-          this.error = `Index not found ${child.name}!(${x}/${y}/${z})(${pX}/${pY}/${pZ})`;
-          throw new Error(this.error);
+          isFreeze = true;
         }
+
+        // const { x, y, z, pX, pY, pZ } = this.findElementIndexes(child);
+
+        // if (z != -1 && x != -1 && y != -1) {
+        //   const layer = this.layers[z + 1];
+
+        //   if (layer) {
+        //     if (
+        //       layer == undefined ||
+        //       layer[x] == undefined ||
+        //       layer[x][y] == undefined
+        //     ) {
+        //       this.error = `Layer not found ${
+        //         element.name
+        //       }!(${x}/${y}/${z})(${pX.toFixed(1)}/${pY.toFixed(1)}/${pZ.toFixed(
+        //         1
+        //       )})(${child.position.x.toFixed(1)}/${child.position.y.toFixed(
+        //         1
+        //       )}/${child.position.z.toFixed(1)})`;
+        //       throw new Error(this.error);
+        //     }
+
+        //     const nextLayerValue = layer[x][y];
+
+        //     // log(
+        //     //   this.layers[zIndex + 1].map((xLayer) => xLayer.join("-")).join("\n")
+        //     // );
+
+        //     if (nextLayerValue) {
+        //       isFreeze = true;
+        //     }
+        //   } else {
+        //     // Reached end
+        //     isFreeze = true;
+        //   }
+        // } else {
+        //   this.error = `Index not found ${child.name}!(${x}/${y}/${z})(${pX}/${pY}/${pZ})`;
+        //   throw new Error(this.error);
+        // }
       }
 
       return isFreeze;
