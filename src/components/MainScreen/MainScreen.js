@@ -99,6 +99,7 @@ export default {
       isInstanced: true,
       isStop: false,
       isPetrify: false,
+      isFastDrop: true,
 
       changeSpeedByLevels: true,
 
@@ -660,6 +661,7 @@ export default {
 
     initLayer,
     initLayers,
+    setLayerPoint,
 
     initAudio,
     initBgSound,
@@ -855,6 +857,7 @@ export default {
             x: roundValue(itemPosition.x),
             y: roundValue(itemPosition.y),
             z: roundValue(itemPosition.z),
+            uuid: item.uuid,
           };
         })
         .map((item) => {
@@ -886,6 +889,7 @@ export default {
             x,
             y,
             z,
+            uuid: item.uuid,
           };
         });
 
@@ -899,7 +903,10 @@ export default {
           })
           .reduce((prev, curr) => {
             return !prev.length || prev[0].z > curr.z ? [curr] : prev;
-          }, []);
+          }, [])
+          .map((item) => {
+            return { dir: "bottom", item, point };
+          });
 
         const xyCollisionPoints = layerPoints
           .filter((item) => item.z == point.z)
@@ -926,21 +933,21 @@ export default {
             const isPoint = isLeft || isRight || isBottom || isTop;
 
             if (isPoint) {
-              return { dir, point, item };
+              return { dir, item, point };
             }
 
             return false;
           })
           .filter((item) => item);
 
-        const coverCollisionPoints = layerPoints.find(
-          (item) => item.x == point.x && item.y == point.y && item.z == point.z
-        );
+        // const coverCollisionPoints = layerPoints.find(
+        //   (item) => item.x == point.x && item.y == point.y && item.z == point.z
+        // );
 
-        if (coverCollisionPoints) {
-          console.error("COVER");
-          console.log(coverCollisionPoints);
-        }
+        // if (coverCollisionPoints) {
+        //   console.error("COVER");
+        //   console.log(coverCollisionPoints);
+        // }
 
         xyPoints.push(...xyCollisionPoints);
         zPoints.push(...zCollisionPoints);
@@ -1404,7 +1411,6 @@ export default {
     positionHelper,
     rotateHelper,
     translateHelper,
-    setLayerPoint,
 
     moveUp,
     moveDown,
@@ -1435,7 +1441,7 @@ export default {
         return false;
       }
 
-      const { pitWidth, pitHeight, pitDepth, xPoints, yPoints } = this;
+      const { pitWidth, pitHeight, pitDepth, xPoints, yPoints, size } = this;
 
       // element.updateMatrixWorld();
 
@@ -1516,8 +1522,8 @@ export default {
         this.positionHelper(element, "y", pitHeight / 2 - sizeY / 2);
       }
 
-      if (position.z <= -pitDepth + sizeZ / 2) {
-        this.positionHelper(element, "z", -pitDepth + sizeZ / 2);
+      if (position.z <= -pitDepth + sizeZ / 2 - size / 2) {
+        this.positionHelper(element, "z", -pitDepth + sizeZ / 2 - size / 2);
       }
 
       if (position.z >= -sizeZ / 2) {

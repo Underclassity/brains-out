@@ -1,7 +1,7 @@
 // import generateSForm from "../../helpers/generate-s-form.js";
 // import generateThreePoints from "../../helpers/generate-three-points.js";
 
-import { MeshBasicMaterial } from "three";
+import { MeshBasicMaterial, Vector3 } from "three";
 
 import getGroupSize from "../../helpers/get-group-size.js";
 import getRandom from "../../helpers/random.js";
@@ -108,7 +108,7 @@ export function initWaterfall() {
       const elSize = element.userData.size;
       const elSpeed = element.userData.drop ? this.maxSpeed : this.speed;
 
-      if (element.userData.drop) {
+      if (element.userData.drop && this.isFastDrop) {
         this.dropElement(element);
       } else {
         const newZPosition = -(this.time - elTime) * elSpeed - elSize.z / 2;
@@ -117,9 +117,40 @@ export function initWaterfall() {
         this.restrainElement(element);
       }
 
-      // log(`${index}: ${element.position.z.toFixed(2)}`);
-
       const isFreeze = this.collisionElement(element);
+      const { z } = this.getCollisionPoints(element);
+
+      if (z?.length) {
+        let minDiff = undefined;
+
+        for (const { item, point } of z) {
+          const pointElement = element.getObjectByProperty("uuid", point.uuid);
+
+          const itemPosition = new Vector3();
+          pointElement.getWorldPosition(itemPosition);
+
+          const layerPosition = this.zCPoints[item.z];
+
+          const diff = layerPosition - itemPosition.z;
+
+          if (minDiff == undefined) {
+            minDiff = diff;
+          } else if (diff < minDiff) {
+            minDiff = diff;
+          }
+        }
+
+        if (minDiff >= 0 && !isFreeze) {
+          // Translate back
+          this.translateHelper(element, "z", -minDiff);
+
+          element.userData.static = true;
+          array[index] = undefined;
+          this.petrify(element);
+
+          this.createElement();
+        }
+      }
 
       if (!isFreeze) {
         return false;

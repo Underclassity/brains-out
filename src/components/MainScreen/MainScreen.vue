@@ -38,6 +38,11 @@
             input#smooth(type="checkbox" v-model="isSmooth" v-on:change="updateSmooth(isSmooth)")
 
         .dev-menu--item
+            span.material-symbols-outlined dropdown
+            label(for="fastdrop") Fast drop
+            input#fastdrop(type="checkbox" v-model="isFastDrop")
+
+        .dev-menu--item
             span.material-symbols-outlined switch_access
             label(for="levels") Change speed by levels
             input#levels(type="checkbox" v-model="changeSpeedByLevels")
