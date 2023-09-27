@@ -109,7 +109,9 @@ export const store = createStore({
         newSpeed = state.minSpeed;
       }
 
-      state.speed = newSpeed;
+      if (state.speed != newSpeed) {
+        state.speed = newSpeed;
+      }
     },
 
     setSpeed(state, newSpeed) {
@@ -121,7 +123,9 @@ export const store = createStore({
         newSpeed = state.minSpeed;
       }
 
-      state.speed = newSpeed;
+      if (state.speed != newSpeed) {
+        state.speed = newSpeed;
+      }
     },
 
     updateSettingsSpeed(state, value) {
@@ -135,7 +139,9 @@ export const store = createStore({
         newSpeed = state.minSpeed;
       }
 
-      state.settingsSpeed = newSpeed;
+      if (state.settingsSpeed != newSpeed) {
+        state.settingsSpeed = newSpeed;
+      }
     },
 
     setSettingsSpeed(state, newSpeed) {
@@ -147,7 +153,9 @@ export const store = createStore({
         newSpeed = state.minSpeed;
       }
 
-      state.settingsSpeed = newSpeed;
+      if (state.settingsSpeed != newSpeed) {
+        state.settingsSpeed = newSpeed;
+      }
     },
 
     updateVolume(state, value) {
