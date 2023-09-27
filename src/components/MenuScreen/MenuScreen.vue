@@ -116,4 +116,4 @@
 </template>
 
 <script src="./MenuScreen.js"></script>
-<style src="./MenuScreen.styl" lang="styl"></style>
+<style src="./MenuScreen.styl" lang="stylus"></style>

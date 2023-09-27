@@ -194,4 +194,4 @@ LoadingScreen(v-if="isLoading" :percent="loadPercent")
 </template>
 
 <script src="./MainScreen.js"></script>
-<style src="./MainScreen.styl" lang="styl"></style>
+<style src="./MainScreen.styl" lang="stylus"></style>

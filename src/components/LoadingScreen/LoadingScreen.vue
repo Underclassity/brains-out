@@ -9,4 +9,4 @@ Transition(:duration="{ enter: 500, leave: 800 }")
 </template>
 
 <script src="./LoadingScreen.js"></script>
-<style src="./LoadingScreen.styl" lang="styl"></style>
+<style src="./LoadingScreen.styl" lang="stylus"></style>

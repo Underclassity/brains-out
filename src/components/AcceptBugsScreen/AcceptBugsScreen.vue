@@ -8,4 +8,4 @@ Transition(:duration="{ enter: 500, leave: 800 }")
 </template>
 
 <script src="./AcceptBugsScreen.js"></script>
-<style src="./AcceptBugsScreen.styl" lang="styl"></style>
+<style src="./AcceptBugsScreen.styl" lang="stylus"></style>
