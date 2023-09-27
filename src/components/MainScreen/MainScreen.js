@@ -2150,9 +2150,18 @@ export default {
         // controls.update();
 
         if (this.isShaders) {
-          this.composer.render();
+          // this.scene.traverse((item) => {
+          //   try {
+          //     console.log(item.modelViewMatrix);
+          //   } catch (error) {
+          //     console.log(error);
+          //     debugger;
+          //   }
+          // });
+
+          composer.render();
         } else {
-          this.renderer.render(scene, camera);
+          renderer.render(scene, camera);
         }
 
         TWEEN.update();
@@ -2168,6 +2177,9 @@ export default {
       renderer.gammaFactor = 2.2;
       container.appendChild(renderer.domElement);
       this.renderer = renderer;
+
+      const composer = this.initShaders(width, height, renderer, scene, camera);
+      this.composer = composer;
 
       if (this.orbitControls) {
         const controls = new OrbitControls(camera, renderer.domElement);
@@ -2189,8 +2201,6 @@ export default {
       //     this.layersElements[i].push(onePoint);
       //   }
       // }
-
-      this.initShaders(width, height);
 
       return true;
     },

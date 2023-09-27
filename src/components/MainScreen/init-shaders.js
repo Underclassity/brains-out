@@ -18,20 +18,22 @@ import log from "../../helpers/log.js";
 /**
  * Init shaders on scene
  *
- * @param   {Number}  width   Width
- * @param   {Number}  height  Height
+ * @param   {Number}  width     Width
+ * @param   {Number}  height    Height
+ * @param   {Object}  renderer  Renderer
+ * @param   {Object}  scene     Scene
+ * @param   {Object}  camera    Camera
  *
- * @return  {Boolean}         Result
+ * @return  {Object}            Composer
  */
-export function initShaders(width, height) {
+export function initShaders(width, height, renderer, scene, camera) {
   log(`Init shaders: ${width}x${height}`);
 
-  const composer = new EffectComposer(this.renderer);
+  const composer = new EffectComposer(renderer);
   composer.setPixelRatio(this.pixelRatio);
   composer.setSize(width, height);
-  this.composer = composer;
 
-  const renderPass = new RenderPass(this.scene, this.camera);
+  const renderPass = new RenderPass(scene, camera);
 
   const glitchPass = new GlitchPass();
   glitchPass.enabled = this.isGlitch;
@@ -45,7 +47,7 @@ export function initShaders(width, height) {
   dotScreenPass.enabled = this.isDotScreenPass;
   this.dotScreenPass = dotScreenPass;
 
-  const SAOComposerPass = new SAOPass(this.scene, this.camera);
+  const SAOComposerPass = new SAOPass(scene, camera);
   SAOComposerPass.enabled = this.isSAOPass;
   this.SAOComposerPass = SAOComposerPass;
 
@@ -53,14 +55,14 @@ export function initShaders(width, height) {
   filmPass.enabled = this.isFilmPass;
   this.filmPass = filmPass;
 
-  const SSAOComposerPass = new SSAOPass(this.scene, this.camera);
+  const SSAOComposerPass = new SSAOPass(scene, camera);
   SSAOComposerPass.enabled = this.isSSAOPass;
   this.SSAOComposerPass = SSAOComposerPass;
 
   const SSRComposerPass = new SSRPass({
-    renderer: this.renderer,
-    scene: this.scene,
-    camera: this.camera,
+    renderer,
+    scene,
+    camera,
     width,
     height,
   });
@@ -86,7 +88,7 @@ export function initShaders(width, height) {
 
   composer.addPass(outputPass);
 
-  return true;
+  return composer;
 }
 
 export default initShaders;
