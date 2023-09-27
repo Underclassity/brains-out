@@ -6,6 +6,8 @@ import vuejsStorage from "vuejs-storage";
 import log from "../helpers/log.js";
 import roundValue from "../helpers/round-value.js";
 
+import achievements from "./achievements.js";
+
 export const store = createStore({
   state: {
     size: 1,
@@ -53,6 +55,10 @@ export const store = createStore({
     // rotateCount: 0,
 
     eta: makeEta({ min: 0, max: 100, autostart: true }),
+
+    achievements,
+
+    userAchievements: [],
   },
   getters: {
     maxScore(state) {
@@ -263,7 +269,17 @@ export const store = createStore({
       state.isDev = value ? true : false;
     },
   },
-  actions: {},
+  actions: {
+    addAchievement({ state }, achievement) {
+      if (state.userAchievements.includes(achievement)) {
+        return false;
+      }
+
+      state.userAchievements.push(achievement);
+
+      return true;
+    },
+  },
   modules: {},
   plugins: [
     vuejsStorage({
@@ -279,6 +295,7 @@ export const store = createStore({
         "fov",
         "volume",
         "fxVolume",
+        "userAchievements",
       ],
       namespace: "brains-out",
       driver: vuejsStorage.drivers.sessionStorage,

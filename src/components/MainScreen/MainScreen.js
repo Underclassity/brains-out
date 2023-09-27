@@ -2403,6 +2403,24 @@ export default {
   },
 
   watch: {
+    rotateCount(newValue) {
+      if (newValue >= 50) {
+        this.emitter.emit("addAchievement", "keep-it-rolling");
+      }
+    },
+
+    speed(newValue) {
+      if (newValue == this.maxSpeed) {
+        this.emitter.emit("addAchievement", "fast-and-furious");
+      }
+    },
+
+    score(newValue) {
+      if (newValue >= 2000) {
+        this.emitter.emit("addAchievement", "proud-of-you");
+      }
+    },
+
     isRotateRestrain() {
       this.rotateCount = 0;
     },

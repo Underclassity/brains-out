@@ -25,6 +25,7 @@
         padding: 40px
         background-color: #E77812
         -webkit-text-stroke: 1px black
+        max-width: 700px
 
         @media(max-width 767px)
             border: 2px solid #222
@@ -211,3 +212,51 @@
 
         &:last-child
             margin-bottom: 0px
+
+    &--columns
+        width: 100%
+        display: flex
+        align-items: stretch
+        justify-content: stretch
+        flex-wrap: wrap
+
+    &--achievement
+        width: calc(100% / 3 - 10px)
+        display: flex
+        align-items: center
+        justify-content: flex-start
+        flex-direction: column
+        margin-bottom: 10px
+        margin-right: 10px
+        padding: 10px
+        border: 2px solid black
+        border-radius: 20px
+        box-sizing: border-box
+        background-color: #E7C512
+        box-shadow: inset 0px 20px 20px -10px rgba(white, 0.3), inset 0px -20px 20px -10px rgba(black, 0.3)
+
+        &:before
+            content: ""
+            position: absolute
+            top: -50%
+            left: -50%
+            border-left: solid 0px transparent
+            border-right: solid 44px orange
+            border-top: solid 20px transparent
+            border-bottom: solid 20px transparent
+            transform: translate(5px, -50%)
+
+        &--icon
+            width: 50px
+            heightL 50px
+            font-size: 50px
+            line-height: 50px
+            margin-bottom: 10px
+
+        &--title
+            font-size: 24px
+            line-height: 32px
+            margin-bottom: 8px
+
+        &:nth-child(3n)
+            margin-right: 0px

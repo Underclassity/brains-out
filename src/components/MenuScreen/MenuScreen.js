@@ -30,6 +30,7 @@ export default {
         controls: false,
         credits: false,
         continue: false,
+        achievements: false,
         end: false,
       },
 
@@ -64,6 +65,9 @@ export default {
 
       "isDev",
       "isControls",
+
+      "achievements",
+      "userAchievements",
     ]),
 
     isShow() {
@@ -125,6 +129,13 @@ export default {
       this.flags.settings = true;
 
       log("Settings call", this.isShow);
+    },
+
+    achievementsCall() {
+      this.resetFlags();
+      this.flags.achievements = true;
+
+      log("Achievements call", this.isShow);
     },
 
     controlsCall() {

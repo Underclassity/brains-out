@@ -8,6 +8,7 @@
         .menu--item.menu--item--new(v-show="flags.menu" v-on:click="newGameCall") New Game
         .menu--item(v-show="flags.menu" v-on:click="settingsCall") Settings
         .menu--item(v-show="flags.menu" v-on:click="controlsCall") Controls
+        .menu--item(v-show="flags.menu" v-on:click="achievementsCall") Achievements
         .menu--item(v-show="flags.menu" v-on:click="creditsCall") Credits
 
         //- New game items
@@ -113,6 +114,21 @@
 
         .menu--buttons(v-show="flags.continue")
             .menu--item--red.menu--button(v-on:click="backToMenu") Back to menu
+
+        //- Achiements items
+        .menu--title(v-show="flags.achievements") Achievements
+
+        .menu--columns(v-show="flags.achievements")
+            .menu--achievement(v-for="(item, name) in achievements" :key="name")
+                .menu--achievement--icon.material-symbols-outlined(v-if="!userAchievements.includes(name)") lock
+                .menu--achievement--title(v-if="!userAchievements.includes(name)") Unclock in game
+
+                .menu--achievement--icon.material-symbols-outlined(v-if="userAchievements.includes(name)") {{ item.icon }}
+                .menu--achievement--title(v-if="userAchievements.includes(name)") {{ item.title }}
+                .menu--achievement--desc(v-if="userAchievements.includes(name)") {{ item.desc }}
+
+        .menu--buttons(v-show="flags.achievements")
+            .menu--item--red.menu--button(v-on:click="back") Back
 </template>
 
 <script src="./MenuScreen.js"></script>
