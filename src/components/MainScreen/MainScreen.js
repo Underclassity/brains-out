@@ -1404,6 +1404,10 @@ export default {
       this.openMenu();
       this.emitter.emit("openEndMenu");
 
+      if (this.score <= this.pitDepth) {
+        this.emitter.emit("addAchievement", "are-you-playing");
+      }
+
       if (this.lights?.l1 && this.lights?.l2 && this.lights?.l3) {
         this.lights.l1.power = 0;
         this.lights.l1.visible = false;

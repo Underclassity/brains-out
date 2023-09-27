@@ -20,13 +20,13 @@ export const achievements = {
     title: "Still playing",
     desc: "End 50 games",
   },
-
-  // Not done yet
   "are-you-playing": {
     icon: "playing_cards",
     title: "Are you playing?",
     desc: "End game with less points than pit depth",
   },
+
+  // Not done yet
   zombieland: {
     icon: "psychology",
     title: "Zombieland",
