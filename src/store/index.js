@@ -244,7 +244,6 @@ export const store = createStore({
 
     saveScore(state) {
       state.lsScore.push(state.score);
-      state.score = 0;
     },
 
     resetScore(state) {
