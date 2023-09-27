@@ -12,7 +12,7 @@
     //- span.menu-button.link.material-symbols-outlined(v-on:click="openMenu") menu
 
     div.dev-menu(v-if="isDev")
-        span Score {{ score }} / Avg {{ avgScore }}
+        span Score {{ score }} / Avg {{ avgScore.toFixed(2) }}
         span Min {{ minScore }} / Max {{ maxScore }}
         span Speed: {{ Math.round(speed * 100) / 100 }}
         span FPS: {{ fps }}
