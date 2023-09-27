@@ -15,6 +15,11 @@ export const achievements = {
     title: "Proud of you",
     desc: "Make more than 2000 points",
   },
+  "still-playing": {
+    icon: "toys",
+    title: "Still playing",
+    desc: "End 50 games",
+  },
 
   // Not done yet
   "are-you-playing": {
@@ -26,11 +31,6 @@ export const achievements = {
     icon: "psychology",
     title: "Zombieland",
     desc: "Clear level with heads only",
-  },
-  "still-playing": {
-    icon: "toys",
-    title: "Still playing",
-    desc: "End 50 games",
   },
 };
 

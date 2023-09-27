@@ -21,6 +21,8 @@ export const store = createStore({
     score: 0,
     lsScore: [],
 
+    endGameCounter: 0,
+
     pitWidth: 5,
     pitHeight: 5,
     pitDepth: 12,
@@ -268,6 +270,10 @@ export const store = createStore({
     updateDev(state, value) {
       state.isDev = value ? true : false;
     },
+
+    incrementEndGameCounter(state) {
+      state.endGameCounter += 1;
+    },
   },
   actions: {
     addAchievement({ state }, achievement) {
@@ -296,6 +302,7 @@ export const store = createStore({
         "volume",
         "fxVolume",
         "userAchievements",
+        "endGameCounter",
       ],
       namespace: "brains-out",
       driver: vuejsStorage.drivers.sessionStorage,

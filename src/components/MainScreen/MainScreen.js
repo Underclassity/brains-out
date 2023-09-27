@@ -232,6 +232,7 @@ export default {
 
       "score",
       "lsScore",
+      "endGameCounter",
 
       "isDev",
       "isControls",
@@ -1395,6 +1396,8 @@ export default {
       this.changeScore(elementPoints.length);
       this.$store.commit("saveScore");
 
+      this.$store.commit("incrementEndGameCounter");
+
       this.isEnd = true;
       navigator.vibrate(500);
 
@@ -2403,6 +2406,12 @@ export default {
   },
 
   watch: {
+    endGameCounter(newValue) {
+      if (newValue >= 50) {
+        this.emitter.emit("addAchievement", "still-playing");
+      }
+    },
+
     rotateCount(newValue) {
       if (newValue >= 50) {
         this.emitter.emit("addAchievement", "keep-it-rolling");
