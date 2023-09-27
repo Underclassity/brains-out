@@ -1378,6 +1378,10 @@ export default {
 
       // Update score by tetris formula: https://en.wikipedia.org/wiki/Tetris
       if (filledLevelsCounter) {
+        if (filledLevelsCounter >= 3) {
+          this.emitter.emit("addAchievement", "sanitizer");
+        }
+
         const scoreDiff =
           10 * (filledLevelsCounter - 1) * filledLevelsCounter + 10;
 

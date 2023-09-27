@@ -30,6 +30,11 @@ export const achievements = {
     title: "Zombieland",
     desc: "Clear level with heads only",
   },
+  sanitizer: {
+    icon: "sanitizer",
+    title: "Sanitizer",
+    desc: "Clear more than 3 levels at one time",
+  },
 
   // Not done yet
 };
