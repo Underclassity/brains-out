@@ -1282,6 +1282,14 @@ export default {
         this.speedUp();
       }
 
+      const headElements = layerElements.filter((item) =>
+        item.name.includes("Head")
+      );
+
+      if (headElements.length == layerElements.length) {
+        this.emitter.emit("addAchievement", "zombieland");
+      }
+
       // Delete all layer elements
       for (const element of layerElements) {
         this.scene.remove(element);

@@ -25,13 +25,13 @@ export const achievements = {
     title: "Are you playing?",
     desc: "End game with less points than pit depth",
   },
-
-  // Not done yet
   zombieland: {
     icon: "psychology",
     title: "Zombieland",
     desc: "Clear level with heads only",
   },
+
+  // Not done yet
 };
 
 export default achievements;
