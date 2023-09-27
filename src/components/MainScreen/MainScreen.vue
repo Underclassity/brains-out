@@ -12,7 +12,8 @@
     //- span.menu-button.link.material-symbols-outlined(v-on:click="openMenu") menu
 
     div.dev-menu(v-if="isDev")
-        span(:title="`Min ${minScore} - Max ${maxScore} - Avg ${avgScore} - Length ${lsScore.length}`") Score: {{ score }}
+        span Score {{ score }} / Avg {{ avgScore }}
+        span Min {{ minScore }} / Max {{ maxScore }}
         span Speed: {{ Math.round(speed * 100) / 100 }}
         span FPS: {{ fps }}
 
