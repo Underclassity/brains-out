@@ -51,11 +51,12 @@ export function rotateHelper(element, axisType = "x", angle = 90) {
     // Update size after rotate
     element.userData.size = getGroupSize(element.getObjectByName("childs"));
   } else if (childs && this.isRotateAnimation) {
+    this.isRotating = true;
     let prev = 0;
     const animation = new TWEEN.Tween({
       value: 0,
     });
-    animation.to({ value: angleValue }, 150);
+    animation.to({ value: angleValue }, 50);
     animation.onUpdate(({ value }) => {
       childs.rotateOnWorldAxis(axis, value - prev);
 
@@ -63,13 +64,13 @@ export function rotateHelper(element, axisType = "x", angle = 90) {
     });
     animation.onComplete(() => {
       element.userData.size = getGroupSize(element.getObjectByName("childs"));
+      this.restrainElement(element);
+      this.isRotating = false;
     });
     animation.start();
   }
 
-  if (this?.restrainElement) {
-    this.restrainElement(element);
-  }
+  this.restrainElement(element);
 
   return element;
 }

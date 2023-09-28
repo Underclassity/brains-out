@@ -133,6 +133,11 @@ export function initWaterfall() {
         this.restrainElement(element);
       }
 
+      // Dont check on rotation
+      if (this.isRotateAnimation && this.isRotating) {
+        return false;
+      }
+
       const isFreeze = this.collisionElement(element);
       const { z, cover } = this.getCollisionPoints(element);
 
