@@ -51,10 +51,10 @@
         //- Credits items
         .menu--version(v-show="flags.credits") Commit: {{ version }}
 
-        .menu--title(v-show="flags.credits") Credits
+        .menu--assets--title(v-show="flags.credits") Authors
 
-        .menu--label(v-show="flags.credits") Ivan
-        .menu--label(v-show="flags.credits") Nikolai
+        a.menu--link(v-show="flags.credits" href="https://www.linkedin.com/in/ivan-gornovskiy-a1a290282/") Ivan Gornovskiy
+        a.menu--link(v-show="flags.credits" href="https://www.linkedin.com/in/nikolai-gavrev-6010ba215/") Nikolai Gavrev
 
         .menu--assets--title(v-show="flags.credits") Assets
 
