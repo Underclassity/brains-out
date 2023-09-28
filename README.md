@@ -20,10 +20,7 @@ Core dependencies:
 - `stylus` - style support
 - `pug` - template helper
 
-Search params:
-
-- `orbit=true` - enable OrbitControls
-- `helpers=true` - enable helpers for lights, objects and etc.
+Forms images - [link](./block_images/README.md)
 
 Credits:
 - ["Zombies' March"](https://opengameart.org/content/zombies-march) - yd - [![License: CC0-1.0](https://img.shields.io/badge/License-CC0_1.0-lightgrey.svg)](http://creativecommons.org/publicdomain/zero/1.0/)
