@@ -53,7 +53,6 @@
 
         .menu--title(v-show="flags.credits") Credits
 
-        .menu--label(v-show="flags.credits") "Two Dudes - One Game" Studio
         .menu--label(v-show="flags.credits") Ivan
         .menu--label(v-show="flags.credits") Nikolai
 
