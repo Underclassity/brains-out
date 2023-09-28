@@ -57,6 +57,15 @@
         .menu--label(v-show="flags.credits") Ivan
         .menu--label(v-show="flags.credits") Nikolai
 
+        .menu--assets--title(v-show="flags.credits") Assets
+
+        .menu--assets(v-show="flags.credits" v-for="asset of assets" :key="asset.title")
+            a.menu--assets--link(:href="asset.link") {{ asset.title }}
+            .menu--assets--author - {{ asset.author }}
+            a.menu--assets--link(v-if="asset.authorLink" :href="asset.authorLink" ) ({{ asset.authorLink }})
+            a(:href="asset.licenseLink")
+                img.menu--assets--license(:src="asset.licenseImage")
+
         .menu--buttons(v-show="flags.credits")
             .menu--item--red.menu--button(v-on:click="back") Back
 

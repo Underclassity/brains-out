@@ -1,5 +1,7 @@
 import { mapState } from "vuex";
 
+import assets from "../../store/assets.js";
+
 import log from "../../helpers/log.js";
 
 import logoSrc from "../../assets/img/green-logo.png";
@@ -42,6 +44,8 @@ export default {
       isEnd: false,
 
       isStarted: false,
+
+      assets,
     };
   },
 
