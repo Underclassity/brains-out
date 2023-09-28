@@ -1479,6 +1479,8 @@ export default {
           z,
         };
 
+        el.applyQuaternion(element.getObjectByName("childs").quaternion);
+
         this.colorizeElement(el, z);
 
         this.layersElements[z].push(el);
