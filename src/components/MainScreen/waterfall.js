@@ -31,13 +31,15 @@ export function createElement() {
   element.rotation.set(0, 0, 0);
   element.scale.set(1, 1, 1);
 
-  element.userData.size = element.userData?.size
-    ? new Vector3(
-        element.userData.size.x * 2,
-        element.userData.size.y * 2,
-        element.userData.size.z * 2
-      )
-    : getGroupSize(element);
+  if (this.next != undefined) {
+    element.userData.size = element.userData?.size
+      ? new Vector3(
+          element.userData.size.x * 2,
+          element.userData.size.y * 2,
+          element.userData.size.z * 2
+        )
+      : getGroupSize(element);
+  }
 
   element.userData.time = this.time;
   element.userData.static = false;
