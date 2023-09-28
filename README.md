@@ -4,7 +4,7 @@
 
 Made by:
 
-- [Ivan Gornovskiy](www.linkedin.com/in/ivan-gornovskiy-a1a290282/)
+- [Ivan Gornovskiy](https://www.linkedin.com/in/ivan-gornovskiy-a1a290282/)
 - [Nikolai Gavrev](https://www.linkedin.com/in/nikolai-gavrev-6010ba215/)
 
 Development:
