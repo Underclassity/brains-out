@@ -19,7 +19,6 @@ Core dependencies:
 - `vuex` - store support
 - `stylus` - style support
 - `pug` - template helper
-- `hammer.js` - gestures helper
 
 Search params:
 
