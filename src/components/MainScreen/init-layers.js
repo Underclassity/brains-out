@@ -1,4 +1,4 @@
-// import { BoxGeometry, BoxHelper, Mesh, MeshBasicMaterial } from "three";
+import { BoxGeometry, BoxHelper, Mesh, MeshBasicMaterial } from "three";
 
 import log from "../../helpers/log.js";
 
@@ -16,9 +16,11 @@ export function initLayer(z) {
 
   this.layers[z] = [];
   this.layersElements[z] = new Array(pitWidth * pitHeight);
+  this.layersHelpers[z] = new Array(pitWidth * pitHeight);
 
   for (let x = 0; x < pitWidth; x++) {
     this.layers[z][x] = [];
+    this.layersHelpers[z][x] = [];
 
     for (let y = 0; y < pitHeight; y++) {
       this.setLayerPoint(x, y, z, 0);
@@ -43,6 +45,7 @@ export function initLayers() {
 
   this.layers = [];
   this.layersElements = [];
+  this.layersHelpers = [];
 
   for (let z = 0; z < pitDepth; z++) {
     this.initLayer(z);
@@ -89,18 +92,34 @@ export function setLayerPoint(x, y, z, value = 1) {
 
   this.layers[z][x][y] = value;
 
-  // if (value) {
-  //   const geometry = new BoxGeometry(this.size, this.size);
-  //   const material = new MeshBasicMaterial();
-  //   const boxMesh = new Mesh(geometry, material);
+  try {
+    if (value && this.layersHelpers[z][x][y] === undefined) {
+      const geometry = new BoxGeometry(this.size, this.size);
+      const material = new MeshBasicMaterial();
+      const boxMesh = new Mesh(geometry, material);
 
-  //   boxMesh.position.set(this.xCPoints[x], this.yCPoints[y], this.zCPoints[z]);
-  //   boxMesh.visible = false;
+      boxMesh.position.set(
+        this.xCPoints[x],
+        this.yCPoints[y],
+        this.zCPoints[z]
+      );
+      boxMesh.visible = false;
 
-  //   const boxGeometry = new BoxHelper(boxMesh);
+      const levelHelper = new BoxHelper(boxMesh);
 
-  //   this.scene.add(boxGeometry);
-  // }
+      this.scene.add(levelHelper);
+
+      levelHelper.visible = this.isLevelHelpers;
+
+      // Save helper
+      this.layersHelpers[z][x][y] = levelHelper;
+    } else if (value) {
+      console.log(value, this.layersHelpers[z][x][y]);
+    }
+  } catch (error) {
+    console.error(error);
+    debugger;
+  }
 
   // log(this.layers[z].map((xLayer) => xLayer.join("-")).join("\n"));
 

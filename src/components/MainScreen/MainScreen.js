@@ -77,8 +77,10 @@ export default {
     return {
       prevScore: 0,
 
+      // Init like 12 points depth pit
       layers: new Array(12),
       layersElements: new Array(12),
+      layersHelpers: new Array(12),
       elements: [],
       pitLevels: undefined,
       colorPalette,
@@ -100,6 +102,7 @@ export default {
       isStop: false,
       isPetrify: false,
       isFastDrop: true,
+      isLevelHelpers: false,
 
       changeSpeedByLevels: true,
 
@@ -1306,17 +1309,19 @@ export default {
 
             el.position.setZ(el.position.z - this.size);
             this.restrainElement(el);
-
-            // console.log({
-            //   x: el.position.x.toFixed(1),
-            //   y: el.position.y.toFixed(1),
-            //   z: el.position.z.toFixed(1),
-            // });
           });
         }
       });
 
-      this.layersElements[zIndex] = [];
+      this.layersHelpers[zIndex]
+        .reduce((prev, curr) => {
+          if (Array.isArray(curr)) {
+            prev.push(...curr);
+          }
+
+          return prev;
+        }, [])
+        .forEach((item) => this.scene.remove(item));
 
       // Move all elements by one level
       this.layers.splice(zIndex, 1);
@@ -2520,6 +2525,26 @@ export default {
 
     isControls() {
       this.updateControls();
+    },
+
+    isLevelHelpers(value) {
+      this.layersHelpers
+        .reduce((prev, curr) => {
+          if (Array.isArray(curr)) {
+            prev.push(...curr);
+          }
+
+          return prev;
+        }, [])
+        .reduce((prev, curr) => {
+          if (Array.isArray(curr)) {
+            prev.push(...curr);
+          }
+
+          return prev;
+        }, [])
+        .filter((item) => item)
+        .forEach((item) => (item.visible = value));
     },
   },
 

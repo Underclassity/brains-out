@@ -44,6 +44,11 @@
             input#colorize(type="checkbox" v-model="isColorizeLevel")
 
         .dev-menu--item
+            span.material-symbols-outlined floor
+            label(for="levelHelpers") Is level helpers
+            input#levelHelpers(type="checkbox" v-model="isLevelHelpers")
+
+        .dev-menu--item
             span.material-symbols-outlined dropdown
             label(for="fastdrop") Fast drop
             input#fastdrop(type="checkbox" v-model="isFastDrop")
