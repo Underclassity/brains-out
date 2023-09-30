@@ -284,6 +284,10 @@ export const store = createStore({
   },
   actions: {
     addAchievement({ state }, achievement) {
+      if (state.isDev) {
+        return false;
+      }
+
       if (state.userAchievements.includes(achievement)) {
         return false;
       }
