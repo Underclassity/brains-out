@@ -1279,6 +1279,8 @@ export default {
         return false;
       }
 
+      const { size } = this;
+
       log(`Process layer delete: ${zIndex}`);
 
       // Update speed level
@@ -1299,20 +1301,7 @@ export default {
         this.scene.remove(element);
       }
 
-      // Move all elements upper to 1 block down
-      this.layersElements.forEach((elements, index) => {
-        if (index < zIndex) {
-          elements.forEach((el) => {
-            if (!el) {
-              return false;
-            }
-
-            el.position.setZ(el.position.z - this.size);
-            this.restrainElement(el);
-          });
-        }
-      });
-
+      // Delete helpers for layer
       this.layersHelpers[zIndex]
         .reduce((prev, curr) => {
           if (Array.isArray(curr)) {
@@ -1323,12 +1312,64 @@ export default {
         }, [])
         .forEach((item) => this.scene.remove(item));
 
+      // Move all elements upper to 1 block down
+      this.layersElements.forEach((elements, index) => {
+        if (index < zIndex) {
+          elements.forEach((el) => {
+            if (!el) {
+              return false;
+            }
+
+            el.position.setZ(el.position.z - size);
+            this.restrainElement(el);
+          });
+        }
+      });
+
+      // Move all helpers upper too
+      this.layersHelpers.forEach((helpers, index) => {
+        if (index < zIndex) {
+          helpers
+            .reduce((prev, curr) => {
+              if (Array.isArray(curr)) {
+                prev.push(...curr);
+              }
+
+              return prev;
+            }, [])
+            .forEach((el) => {
+              if (!el) {
+                return false;
+              }
+
+              el.position.setZ(el.position.z - size);
+            });
+        }
+      });
+
       // Move all elements by one level
       this.layers.splice(zIndex, 1);
       this.layersElements.splice(zIndex, 1);
       this.layers.unshift(0);
       this.layersElements.unshift([]);
       this.initLayer(0);
+
+      const layers = this.layers
+        .map((layer, index) => {
+          const layerValues = layer.reduce((prev, curr) => {
+            prev.push(...curr);
+            return prev;
+          }, []);
+
+          if (layerValues.includes(1)) {
+            return index;
+          }
+
+          return false;
+        })
+        .filter((item) => item);
+
+      log(`Layers indexes after delete layer ${zIndex}`, layers);
 
       this.layersElements.forEach((elements, index) => {
         elements.forEach((el) => {
