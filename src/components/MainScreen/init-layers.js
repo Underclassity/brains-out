@@ -14,13 +14,11 @@ export function initLayer(z) {
 
   const { pitWidth, pitHeight } = this;
 
-  this.layers[z] = [];
+  this.layers[z] = new Array(pitWidth);
   this.layersElements[z] = new Array(pitWidth * pitHeight);
-  this.layersHelpers[z] = new Array(pitWidth * pitHeight);
 
   for (let x = 0; x < pitWidth; x++) {
-    this.layers[z][x] = [];
-    this.layersHelpers[z][x] = [];
+    this.layers[z][x] = new Array(pitHeight);
 
     for (let y = 0; y < pitHeight; y++) {
       this.setLayerPoint(x, y, z, 0);
@@ -43,9 +41,9 @@ export function initLayers() {
 
   log(`Init layers: ${pitDepth}-${pitWidth}-${pitHeight}`);
 
-  this.layers = [];
-  this.layersElements = [];
-  this.layersHelpers = [];
+  this.layers = new Array(pitDepth);
+  this.layersElements = new Array(pitDepth);
+  this.layersHelpers = new Array(pitDepth);
 
   for (let z = 0; z < pitDepth; z++) {
     this.initLayer(z);
@@ -92,34 +90,7 @@ export function setLayerPoint(x, y, z, value = 1) {
 
   this.layers[z][x][y] = value;
 
-  try {
-    if (value && this.layersHelpers[z][x][y] === undefined) {
-      const geometry = new BoxGeometry(this.size, this.size);
-      const material = new MeshBasicMaterial();
-      const boxMesh = new Mesh(geometry, material);
-
-      boxMesh.position.set(
-        this.xCPoints[x],
-        this.yCPoints[y],
-        this.zCPoints[z]
-      );
-      boxMesh.visible = false;
-
-      const levelHelper = new BoxHelper(boxMesh);
-
-      this.scene.add(levelHelper);
-
-      levelHelper.visible = this.isLevelHelpers;
-
-      // Save helper
-      this.layersHelpers[z][x][y] = levelHelper;
-    } else if (value) {
-      console.log(value, this.layersHelpers[z][x][y]);
-    }
-  } catch (error) {
-    console.error(error);
-    debugger;
-  }
+  this.updateLayersView();
 
   // log(this.layers[z].map((xLayer) => xLayer.join("-")).join("\n"));
 
@@ -132,6 +103,65 @@ export function setLayerPoint(x, y, z, value = 1) {
   // );
 
   return this.layers;
+}
+
+/**
+ * Update layers preview
+ *
+ * @return  {Boolean}  Result
+ */
+export function updateLayersView() {
+  log("Update layers view");
+
+  const {
+    size,
+    isLevelHelpers,
+    scene,
+    xCPoints,
+    yCPoints,
+    zCPoints,
+    pitWidth,
+    pitHeight,
+    pitDepth,
+  } = this;
+
+  // Delete helpers for layer
+  this.layersHelpers.forEach((item) => scene.remove(item));
+
+  // Reset array
+  this.layersHelpers = new Array(pitWidth * pitHeight * pitDepth);
+
+  this.layers.forEach((layer, zIndex) => {
+    layer.forEach((xLayer, xIndex) => {
+      xLayer.forEach((value, yIndex) => {
+        if (!value) {
+          return false;
+        }
+
+        const geometry = new BoxGeometry(size, size);
+        const material = new MeshBasicMaterial();
+        const boxMesh = new Mesh(geometry, material);
+
+        boxMesh.position.set(
+          xCPoints[xIndex],
+          yCPoints[yIndex],
+          zCPoints[zIndex]
+        );
+        boxMesh.visible = false;
+
+        const levelHelper = new BoxHelper(boxMesh);
+
+        scene.add(levelHelper);
+
+        levelHelper.visible = isLevelHelpers;
+
+        // Save helper
+        this.layersHelpers.push(levelHelper);
+      });
+    });
+  });
+
+  return true;
 }
 
 export default initLayers;

@@ -55,7 +55,12 @@ import {
   isLayerVisible,
 } from "./init-pit-levels.js";
 import { initLights } from "./init-lights.js";
-import { initLayer, initLayers, setLayerPoint } from "./init-layers.js";
+import {
+  initLayer,
+  initLayers,
+  setLayerPoint,
+  updateLayersView,
+} from "./init-layers.js";
 import { initWaterfall, createElement } from "./waterfall.js";
 import initShaders from "./init-shaders.js";
 import colorPalette from "./color-palette.js";
@@ -80,7 +85,7 @@ export default {
       // Init like 12 points depth pit
       layers: new Array(12),
       layersElements: new Array(12),
-      layersHelpers: new Array(12),
+      layersHelpers: new Array(),
       elements: [],
       pitLevels: undefined,
       colorPalette,
@@ -674,6 +679,7 @@ export default {
     initLayer,
     initLayers,
     setLayerPoint,
+    updateLayersView,
 
     initAudio,
     initBgSound,
@@ -1301,17 +1307,6 @@ export default {
         this.scene.remove(element);
       }
 
-      // Delete helpers for layer
-      this.layersHelpers[zIndex]
-        .reduce((prev, curr) => {
-          if (Array.isArray(curr)) {
-            prev.push(...curr);
-          }
-
-          return prev;
-        }, [])
-        .forEach((item) => this.scene.remove(item));
-
       // Move all elements upper to 1 block down
       this.layersElements.forEach((elements, index) => {
         if (index < zIndex) {
@@ -1323,27 +1318,6 @@ export default {
             el.position.setZ(el.position.z - size);
             this.restrainElement(el);
           });
-        }
-      });
-
-      // Move all helpers upper too
-      this.layersHelpers.forEach((helpers, index) => {
-        if (index < zIndex) {
-          helpers
-            .reduce((prev, curr) => {
-              if (Array.isArray(curr)) {
-                prev.push(...curr);
-              }
-
-              return prev;
-            }, [])
-            .forEach((el) => {
-              if (!el) {
-                return false;
-              }
-
-              el.position.setZ(el.position.z - size);
-            });
         }
       });
 
@@ -1376,6 +1350,8 @@ export default {
           this.colorizeElement(el, index);
         });
       });
+
+      this.updateLayersView();
 
       // console.log(
       //   this.layersElements
@@ -2569,23 +2545,7 @@ export default {
     },
 
     isLevelHelpers(value) {
-      this.layersHelpers
-        .reduce((prev, curr) => {
-          if (Array.isArray(curr)) {
-            prev.push(...curr);
-          }
-
-          return prev;
-        }, [])
-        .reduce((prev, curr) => {
-          if (Array.isArray(curr)) {
-            prev.push(...curr);
-          }
-
-          return prev;
-        }, [])
-        .filter((item) => item)
-        .forEach((item) => (item.visible = value));
+      this.layersHelpers.forEach((item) => (item.visible = value));
     },
   },
 
