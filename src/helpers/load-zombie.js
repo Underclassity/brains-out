@@ -197,32 +197,4 @@ export async function loadPitParts(cb) {
   });
 }
 
-export function loadSuzanne(cb) {
-  log("Load pit parts model");
-
-  return new Promise((resolve) => {
-    const bufferGeometryLoader = new BufferGeometryLoader();
-    bufferGeometryLoader.load(
-      "models/suzanne_buffergeometry.json",
-      (geometry) => {
-        geometry.name = "suzanne";
-        resolve(geometry);
-      },
-      (xhr) => {
-        log(`${(xhr.loaded / xhr.total) * 100}% loaded`);
-        cb({
-          name: "suzanne",
-          loaded: xhr.loaded,
-          total: xhr.total,
-          percent: xhr.loaded / xhr.total,
-        });
-      },
-      (error) => {
-        log(error);
-        resolve();
-      }
-    );
-  });
-}
-
 export default loadZombie;

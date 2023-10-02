@@ -224,23 +224,6 @@ export function generatePit(
   const pit = new Group();
   pit.userData.name = "Pit";
 
-  // for (const part of pitParts) {
-  //   if (!part.isObject3D) {
-  //     suzanne = part;
-  //     continue;
-  //   }
-
-  //   if (Array.isArray(part.material)) {
-  //     part.material.forEach((item, index) => {
-  //       if (item.isMeshPhongMaterial) {
-  //         part.material[index] = new MeshBasicMaterial({ color: item.color });
-  //       }
-  //     });
-  //   } else if (part.material.isMeshPhongMaterial) {
-  //     part.material = new MeshBasicMaterial({ color: part.material.color });
-  //   }
-  // }
-
   if (simple) {
     const bottomPlane = generateGrid(width, height, color);
     bottomPlane.position.z = -depth;
