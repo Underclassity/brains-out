@@ -128,9 +128,9 @@ export default {
       helpers: false,
 
       bgSoundId: "ZombiesAreComing.aac",
-      bgMenuSoundId: "Rising.ogg",
-      fallSoundId: ["burp_01.ogg", "burp_02.ogg"],
-      rotationSoundId: ["cloth3.ogg"],
+      bgMenuSoundId: "Rising.aac",
+      fallSoundId: ["burp_01.aac", "burp_02.aac"],
+      rotationSoundId: ["cloth3.aac"],
       endGameSoundId: "zombieHoouw_1.aac",
       levelSoundId: "Zombie Sound.aac",
 

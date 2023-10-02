@@ -5,6 +5,7 @@ import assets from "../../store/assets.js";
 import log from "../../helpers/log.js";
 
 import logoSrc from "../../assets/img/green-logo.png";
+import logoWebpSrc from "../../assets/img/green-logo.webp";
 
 export default {
   name: "MenuScreen",
@@ -24,6 +25,7 @@ export default {
   data() {
     return {
       logoSrc,
+      logoWebpSrc,
 
       flags: {
         menu: false,

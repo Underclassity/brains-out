@@ -1,4 +1,5 @@
 import logoSrc from "../../assets/img/green-logo.png";
+import logoWebpSrc from "../../assets/img/green-logo.webp";
 
 export default {
   name: "LogoScreen",
@@ -6,6 +7,7 @@ export default {
   data() {
     return {
       logoSrc,
+      logoWebpSrc,
     };
   },
 };
