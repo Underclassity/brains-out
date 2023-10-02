@@ -85,7 +85,7 @@ export default {
       // Init like 12 points depth pit
       layers: new Array(12),
       layersElements: new Array(12),
-      layersHelpers: new Array(),
+      layersHelpers: {},
       elements: [],
       pitLevels: undefined,
       colorPalette,
@@ -1906,8 +1906,8 @@ export default {
       this.updateCameraProjection();
 
       // Init layers after resize
-      this.initLayers();
       this.initPoints();
+      this.initLayers();
       this.initLights();
       // this.initLevelPreview();
 
@@ -2112,8 +2112,8 @@ export default {
       this.pit = pit;
 
       // Init layers
-      this.initLayers();
       this.initPoints();
+      this.initLayers();
 
       // Init light
       this.initLights();
@@ -2545,7 +2545,7 @@ export default {
     },
 
     isLevelHelpers(value) {
-      this.layersHelpers.forEach((item) => (item.visible = value));
+      this.updateLayersView();
     },
   },
 
