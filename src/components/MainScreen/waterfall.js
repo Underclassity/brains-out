@@ -198,9 +198,11 @@ export function initWaterfall() {
           }
         }
 
-        if (minDiff >= 0) {
+        if (minDiff >= 0 || isFreeze) {
           // Translate back
-          this.translateHelper(element, "z", -minDiff);
+          if (!isFreeze) {
+            this.translateHelper(element, "z", -minDiff);
+          }
 
           element.userData.static = true;
           array[index] = undefined;
