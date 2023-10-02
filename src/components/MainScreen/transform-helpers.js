@@ -23,6 +23,10 @@ export function rotateHelper(element, axisType = "x", angle = 90) {
     return false;
   }
 
+  if (this.isRotating) {
+    return false;
+  }
+
   const angleValue = MathUtils.degToRad(angle);
 
   let axis = xAxis;
