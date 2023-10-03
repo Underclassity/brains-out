@@ -3,6 +3,7 @@
     .menu--main
         .menu--logo
             picture
+                source(:srcset="logoAvifSrc" type="image/avif")
                 source(:srcset="logoWebpSrc" type="image/webp")
                 img(:src="logoSrc")
 

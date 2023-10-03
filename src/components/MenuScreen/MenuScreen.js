@@ -6,6 +6,7 @@ import log from "../../helpers/log.js";
 
 import logoSrc from "../../assets/img/green-logo.png";
 import logoWebpSrc from "../../assets/img/green-logo.webp";
+import logoAvifSrc from "../../assets/img/green-logo.avif";
 
 export default {
   name: "MenuScreen",
@@ -26,6 +27,7 @@ export default {
     return {
       logoSrc,
       logoWebpSrc,
+      logoAvifSrc,
 
       flags: {
         menu: false,
