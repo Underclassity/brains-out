@@ -7,7 +7,11 @@
     "dev": "vite",
     "build:js": "vue-tsc && vite build",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "butler push dist underclassity/brains-out:html5",
+    "deploy:test": "butler push dist underclassity/brains-out:test",
+    "predeploy": "vite build",
+    "predeploy:test": "vite build"
   },
   "dependencies": {
     "@tweenjs/tween.js": "^21.0.0",

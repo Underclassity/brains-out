@@ -6,6 +6,7 @@ const commitHash = process.execSync("git rev-parse --short HEAD").toString();
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: "",
   plugins: [vue()],
   define: {
     "import.meta.env.VITE_APP_VERSION": JSON.stringify(commitHash),
