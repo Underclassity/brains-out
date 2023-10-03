@@ -2,10 +2,7 @@
 .menu--overlay(v-show="isShow" :class="{ 'menu--end': flags.end, 'menu--started': isStarted }")
     .menu--main
         .menu--logo
-            picture
-                source(:srcset="logoAvifSrc" type="image/avif")
-                source(:srcset="logoWebpSrc" type="image/webp")
-                img(:src="logoSrc")
+            img(:src="logoSrc")
 
         //- Menu items
         .menu--item.menu--item--new(v-show="flags.menu" v-on:click="newGameCall") New Game
