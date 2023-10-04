@@ -1,9 +1,9 @@
 export const achievements = {
   // Done logic
-  "keep-it-rolling": {
+  "keep-rolling": {
     icon: "imagesearch_roller",
-    title: "Keep it rolling",
-    desc: "Rotate one form more than 50 times",
+    title: "Keep rollin",
+    desc: "Rotate one form more than 83 times",
   },
   "fast-and-furious": {
     icon: "speed",
@@ -13,27 +13,32 @@ export const achievements = {
   "proud-of-you": {
     icon: "mountain_flag",
     title: "Proud of you",
-    desc: "Make more than 2000 points",
+    desc: "Make more than 300 points",
   },
   "still-playing": {
     icon: "toys",
     title: "Still playing",
-    desc: "End 50 games",
+    desc: "End 13 games",
   },
   "are-you-playing": {
     icon: "playing_cards",
     title: "Are you playing?",
-    desc: "End game with less points than pit depth",
+    desc: "End game with less moves than pit depth",
   },
   zombieland: {
     icon: "psychology",
     title: "Zombieland",
     desc: "Clear level with heads only",
   },
-  sanitizer: {
-    icon: "sanitizer",
+  combo: {
+    icon: "C-c-combo!",
     title: "Sanitizer",
     desc: "Clear more than 3 levels at one time",
+  },
+  "speedy-and-glorious": {
+    icon: "trophy",
+    title: "Speedy and glorious",
+    desc: "Сomplete a level after completing the previous one",
   },
 
   // Not done yet

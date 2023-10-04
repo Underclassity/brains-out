@@ -180,6 +180,9 @@ export default {
       maxRotate: 5,
       rotateCount: 0,
 
+      isPrevCleared: false,
+      movesCounter: 0,
+
       prevColor: undefined,
       prevCorner: undefined,
       current: undefined,
@@ -622,6 +625,8 @@ export default {
 
       this.isEnd = false;
       this.isPetrify = false;
+
+      this.movesCounter = 0;
 
       if (this.lights?.l1 && this.lights?.l2 && this.lights?.l3) {
         this.lights.l1.power = this.lightPower;
@@ -1404,8 +1409,14 @@ export default {
 
       // Update score by tetris formula: https://en.wikipedia.org/wiki/Tetris
       if (filledLevelsCounter) {
+        if (this.isPrevCleared) {
+          this.emitter.emit("addAchievement", "speedy-and-glorious");
+        }
+
+        this.isPrevCleared = true;
+
         if (filledLevelsCounter >= 3) {
-          this.emitter.emit("addAchievement", "sanitizer");
+          this.emitter.emit("addAchievement", "combo");
         }
 
         const scoreDiff =
@@ -1414,6 +1425,8 @@ export default {
         log(`Levels ${filledLevelsCounter} score: ${scoreDiff}`);
 
         this.changeScore(scoreDiff);
+      } else {
+        this.isPrevCleared = false;
       }
 
       return true;
@@ -1433,7 +1446,11 @@ export default {
 
       this.changeScore(elementPoints.length);
 
-      if (this.score <= this.pitDepth) {
+      // if (this.score <= this.pitDepth) {
+      //   this.emitter.emit("addAchievement", "are-you-playing");
+      // }
+
+      if (this.movesCounter <= this.pitDepth) {
         this.emitter.emit("addAchievement", "are-you-playing");
       }
 
@@ -2254,6 +2271,8 @@ export default {
         return false;
       }
 
+      this.movesCounter += 1;
+
       switch (code) {
         case "KeyQ":
           // log("Press Q");
@@ -2478,13 +2497,13 @@ export default {
 
   watch: {
     endGameCounter(newValue) {
-      if (newValue >= 50) {
+      if (newValue >= 13) {
         this.emitter.emit("addAchievement", "still-playing");
       }
     },
 
     rotateCount(newValue) {
-      if (newValue >= 50) {
+      if (newValue >= 83) {
         this.emitter.emit("addAchievement", "keep-it-rolling");
       }
     },
@@ -2496,7 +2515,7 @@ export default {
     },
 
     score(newValue) {
-      if (newValue >= 2000) {
+      if (newValue >= 300) {
         this.emitter.emit("addAchievement", "proud-of-you");
       }
     },
