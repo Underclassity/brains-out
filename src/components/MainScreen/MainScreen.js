@@ -1069,7 +1069,7 @@ export default {
 
         const layer = this.layers[z + 1];
 
-        if (layer) {
+        if (Array.isArray(layer)) {
           const nextLayerValue = layer[x][y];
 
           if (nextLayerValue) {
