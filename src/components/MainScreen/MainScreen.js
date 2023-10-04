@@ -127,6 +127,8 @@ export default {
       orbitControls: false,
       helpers: false,
 
+      isKeyPressed: false,
+
       bgSoundId: "ZombiesAreComing.aac",
       bgMenuSoundId: "Rising.aac",
       fallSoundId: ["burp_01.aac", "burp_02.aac"],
@@ -2247,10 +2249,20 @@ export default {
       return true;
     },
 
+    keyUpHandler() {
+      this.isKeyPressed = false;
+    },
+
     keyHandler({ code }) {
       if (this.isMenu) {
         return false;
       }
+
+      if (this.isKeyPressed) {
+        return false;
+      }
+
+      this.isKeyPressed = true;
 
       this.movesCounter += 1;
 
@@ -2583,6 +2595,7 @@ export default {
     window.addEventListener("blur", this.pauseMusic);
 
     document.addEventListener("keydown", this.keyHandler);
+    document.addEventListener("keyup", this.keyUpHandler);
 
     this.emitter.on("openMenuScreen", this.openMenuScreen);
     this.emitter.on("closeMenuScreen", this.closeMenuScreen);
@@ -2597,6 +2610,7 @@ export default {
     window.removeEventListener("blur", this.pauseMusic);
 
     document.removeEventListener("keydown", this.keyHandler);
+    document.removeEventListener("keyup", this.keyUpHandler);
 
     this.emitter.off("openMenuScreen", this.openMenuScreen);
     this.emitter.off("closeMenuScreen", this.closeMenuScreen);
