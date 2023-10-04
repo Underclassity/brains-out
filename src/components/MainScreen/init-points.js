@@ -44,7 +44,7 @@ export function initPoints() {
     this.zPoints.push(firstPoint - i);
   }
 
-  firstPoint = -size;
+  firstPoint = 0;
 
   for (let i = 0; i < pitDepth; i++) {
     this.zCPoints.push(firstPoint - i);

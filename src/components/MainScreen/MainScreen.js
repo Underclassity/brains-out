@@ -1803,8 +1803,8 @@ export default {
         this.positionHelper(element, "y", pitHeight / 2 - sizeY / 2);
       }
 
-      if (position.z <= -pitDepth + sizeZ / 2 - size / 2) {
-        this.positionHelper(element, "z", -pitDepth + sizeZ / 2 - size / 2);
+      if (position.z <= -pitDepth + sizeZ / 2 + size / 2) {
+        this.positionHelper(element, "z", -pitDepth + sizeZ / 2 + size / 2);
       }
 
       if (position.z >= -sizeZ / 2) {
