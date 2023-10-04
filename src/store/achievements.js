@@ -23,7 +23,7 @@ export const achievements = {
   "are-you-playing": {
     icon: "playing_cards",
     title: "Are you playing?",
-    desc: "End game with less moves than pit depth",
+    desc: "End game without pressing any keys",
   },
   zombieland: {
     icon: "psychology",

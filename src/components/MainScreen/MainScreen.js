@@ -1447,7 +1447,7 @@ export default {
       //   this.emitter.emit("addAchievement", "are-you-playing");
       // }
 
-      if (this.movesCounter <= this.pitDepth) {
+      if (this.movesCounter == 0) {
         this.emitter.emit("addAchievement", "are-you-playing");
       }
 
