@@ -2582,7 +2582,7 @@ export default {
     window.addEventListener("focus", this.playMusic);
     window.addEventListener("blur", this.pauseMusic);
 
-    document.addEventListener("keyup", this.keyHandler);
+    document.addEventListener("keypress", this.keyHandler);
 
     this.emitter.on("openMenuScreen", this.openMenuScreen);
     this.emitter.on("closeMenuScreen", this.closeMenuScreen);
@@ -2596,7 +2596,7 @@ export default {
     window.removeEventListener("focus", this.playMusic);
     window.removeEventListener("blur", this.pauseMusic);
 
-    document.removeEventListener("keyup", this.keyHandler);
+    document.removeEventListener("keypress", this.keyHandler);
 
     this.emitter.off("openMenuScreen", this.openMenuScreen);
     this.emitter.off("closeMenuScreen", this.closeMenuScreen);
