@@ -197,8 +197,7 @@ export default {
       antialias: true,
       prevTime: Date.now(),
 
-      keyCheckInterval: undefined,
-      keys: {},
+      keyPressTime: Date.now(),
 
       loopCb: [],
 
@@ -2250,26 +2249,16 @@ export default {
       return true;
     },
 
-    keyUpHandler(event) {
-      this.keys[event.code] = false;
-    },
-
-    keyDownHandler(event) {
-      this.keys[event.code] = true;
-    },
-
-    checkKeysPress() {
-      for (const code in this.keys) {
-        if (this.keys[code]) {
-          this.keyupHandler(code);
-        }
-      }
-    },
-
-    keyupHandler(code) {
+    keyHandler({ code }) {
       if (this.isMenu) {
         return false;
       }
+
+      if (Date.now() - this.keyPressTime < 100) {
+        return false;
+      }
+
+      this.keyPressTime = Date.now();
 
       this.movesCounter += 1;
 
@@ -2601,10 +2590,7 @@ export default {
     window.addEventListener("focus", this.playMusic);
     window.addEventListener("blur", this.pauseMusic);
 
-    document.addEventListener("keydown", this.keyDownHandler);
-    document.addEventListener("keyup", this.keyUpHandler);
-
-    this.keyCheckInterval = setInterval(this.checkKeysPress, 50);
+    document.addEventListener("keydown", this.keyHandler);
 
     this.emitter.on("openMenuScreen", this.openMenuScreen);
     this.emitter.on("closeMenuScreen", this.closeMenuScreen);
@@ -2618,12 +2604,7 @@ export default {
     window.removeEventListener("focus", this.playMusic);
     window.removeEventListener("blur", this.pauseMusic);
 
-    document.removeEventListener("keydown", this.keyDownHandler);
-    document.removeEventListener("keyup", this.keyUpHandler);
-
-    if (this.keyCheckInterval) {
-      clearInterval(this.keyCheckInterval);
-    }
+    document.removeEventListener("keydown", this.keyHandler);
 
     this.emitter.off("openMenuScreen", this.openMenuScreen);
     this.emitter.off("closeMenuScreen", this.closeMenuScreen);
