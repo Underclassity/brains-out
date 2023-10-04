@@ -10,8 +10,8 @@
     "preview": "vite preview",
     "deploy": "butler push dist underclassity/brains-out:html5",
     "deploy:test": "butler push dist underclassity/brains-out:test",
-    "predeploy": "vite build",
-    "predeploy:test": "vite build"
+    "predeploy": "vite build --mode prod",
+    "predeploy:test": "vite build --mode prod"
   },
   "dependencies": {
     "@tweenjs/tween.js": "^21.0.0",

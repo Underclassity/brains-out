@@ -83,7 +83,7 @@
             .menu--selector--value {{ fxVolume }}
             .menu--selector--next(v-on:click="nextFxVolume" v-if="fxVolume != 1")
 
-        .menu--selector(v-show="flags.settings")
+        .menu--selector(v-show="flags.settings && isDevApproved")
             .menu--label Dev mode
             .menu--selector--prev(v-on:click="disableDevMode" v-if="isDev")
             .menu--selector--value(v-if="isDev") Yes

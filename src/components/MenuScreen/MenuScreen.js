@@ -46,6 +46,8 @@ export default {
       isStarted: false,
 
       assets,
+
+      isDevApproved: !import.meta.env?.VITE_IS_DEV_MODE,
     };
   },
 
