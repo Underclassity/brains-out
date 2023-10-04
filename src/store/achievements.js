@@ -31,8 +31,8 @@ export const achievements = {
     desc: "Clear level with heads only",
   },
   combo: {
-    icon: "C-c-combo!",
-    title: "Sanitizer",
+    icon: "sanitizer",
+    title: "C-c-combo!",
     desc: "Clear more than 3 levels at one time",
   },
   "speedy-and-glorious": {
