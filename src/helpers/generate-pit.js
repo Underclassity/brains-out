@@ -196,6 +196,74 @@ function splitNParts(num, parts) {
 }
 
 /**
+ * Add planes helpers
+ *
+ * @param   {Number}  width   Pit width
+ * @param   {Number}  height  Pit height
+ * @param   {Number}  depth   Pit depth
+ * @param   {Number}  size    Block size
+ * @param   {Object}  pit     Group object
+ *
+ * @return  {Boolean}         Result
+ */
+export function addPlaneHelpers(width, height, depth, size, pit) {
+  const pitMaterial = new MeshBasicMaterial({
+    color: new Color(0x381402),
+  });
+  const bottomGeometry = new PlaneGeometry(width, height);
+  const pitBottomMesh = new Mesh(bottomGeometry, pitMaterial);
+  const leftRightGeometry = new PlaneGeometry(depth, height);
+  const topBottomGeometry = new PlaneGeometry(depth, width);
+  const leftMesh = new Mesh(leftRightGeometry, pitMaterial);
+  const rightMesh = new Mesh(leftRightGeometry, pitMaterial);
+  const topMesh = new Mesh(topBottomGeometry, pitMaterial);
+  const bottomMesh = new Mesh(topBottomGeometry, pitMaterial);
+  pitBottomMesh.position.setZ(-depth * 1.5);
+  leftMesh.rotateY(MathUtils.degToRad(90));
+  rightMesh.rotateY(MathUtils.degToRad(-90));
+  topMesh.rotateY(MathUtils.degToRad(90));
+  topMesh.rotateX(MathUtils.degToRad(90));
+  bottomMesh.rotateY(MathUtils.degToRad(90));
+  bottomMesh.rotateX(MathUtils.degToRad(-90));
+  leftMesh.position.setX(-width / 2 - size);
+  rightMesh.position.setX(width / 2 + size);
+  topMesh.position.setY(height / 2 + size);
+  bottomMesh.position.setY(-height / 2 - size);
+  leftMesh.position.setZ(-depth / 2);
+  rightMesh.position.setZ(-depth / 2);
+  topMesh.position.setZ(-depth / 2);
+  bottomMesh.position.setZ(-depth / 2);
+  pit.add(pitBottomMesh);
+  pit.add(leftMesh);
+  pit.add(rightMesh);
+  pit.add(topMesh);
+  pit.add(bottomMesh);
+  const grassPlaneMaterial = new MeshBasicMaterial({
+    color: new Color(0x18ba4b),
+  });
+  const topBottomGrassGeometry = new PlaneGeometry(10 * 2 + width, 9);
+  const leftRightGrassGeometry = new PlaneGeometry(10 - 1, height + 2);
+  const topGrassMesh = new Mesh(topBottomGrassGeometry, grassPlaneMaterial);
+  const bottomGrassMesh = new Mesh(topBottomGrassGeometry, grassPlaneMaterial);
+  const leftGrassMesh = new Mesh(leftRightGrassGeometry, grassPlaneMaterial);
+  const rightGrassMesh = new Mesh(leftRightGrassGeometry, grassPlaneMaterial);
+  topGrassMesh.position.setY(height / 2 + 10 / 2 + size / 2);
+  bottomGrassMesh.position.setY(-height / 2 - 10 / 2 - size / 2);
+  leftGrassMesh.position.setX(-width / 2 - 10 / 2 - size / 2);
+  rightGrassMesh.position.setX(width / 2 + 10 / 2 + size / 2);
+  topGrassMesh.position.setZ(-size / 2);
+  bottomGrassMesh.position.setZ(-size / 2);
+  leftGrassMesh.position.setZ(-size / 2);
+  rightGrassMesh.position.setZ(-size / 2);
+  pit.add(topGrassMesh);
+  pit.add(bottomGrassMesh);
+  pit.add(leftGrassMesh);
+  pit.add(rightGrassMesh);
+
+  return true;
+}
+
+/**
  * Generate pit
  *
  * @param   {Number}    width      Pit width
@@ -324,9 +392,9 @@ export function generatePit(
     const groundGrassCount = width * 2 + height * 2 + 4;
     const groundCount =
       width * height +
-      2 * width * depth +
-      2 * height * depth +
-      4 * (depth + 1) +
+      2 * width * (depth - 1) +
+      2 * height * (depth - 1) +
+      4 * depth +
       (width + height) * 2;
     const grassCount =
       (width + 20) * (height + 20) -
@@ -404,14 +472,14 @@ export function generatePit(
           groundCounter,
           x,
           y,
-          -depth - size
+          -depth
         );
       }
     }
 
-    // Generate top and bottom walls
-    for (let x = -hWidth + hSize; x < hWidth; x++) {
-      for (let z = -depth; z < 0; z++) {
+    for (let z = -depth + 1; z < 0; z++) {
+      // Generate top and bottom walls
+      for (let x = -hWidth + hSize; x < hWidth; x++) {
         groundCounter = putMeshHelper(
           isInstanced,
           groundMesh,
@@ -438,11 +506,9 @@ export function generatePit(
           z
         );
       }
-    }
 
-    // Generate left and right walls
-    for (let y = -hHeight + hSize; y < hHeight; y++) {
-      for (let z = -depth; z < 0; z++) {
+      // Generate left and right walls
+      for (let y = -hHeight + hSize; y < hHeight; y++) {
         groundCounter = putMeshHelper(
           isInstanced,
           groundMesh,
@@ -472,7 +538,7 @@ export function generatePit(
     }
 
     // Hide blocks
-    for (let z = -depth; z < 0; z++) {
+    for (let z = -depth + 1; z < 0; z++) {
       groundCounter = putMeshHelper(
         isInstanced,
         groundMesh,
@@ -537,7 +603,7 @@ export function generatePit(
         groundCounter,
         x,
         -hHeight - hSize,
-        -depth - 1
+        -depth
       );
 
       groundCounter = putMeshHelper(
@@ -550,7 +616,7 @@ export function generatePit(
         groundCounter,
         x,
         hHeight + hSize,
-        -depth - 1
+        -depth
       );
     }
 
@@ -565,7 +631,7 @@ export function generatePit(
         groundCounter,
         -hWidth - hSize,
         y,
-        -depth - 1
+        -depth
       );
 
       groundCounter = putMeshHelper(
@@ -578,7 +644,7 @@ export function generatePit(
         groundCounter,
         hWidth + hSize,
         y,
-        -depth - 1
+        -depth
       );
     }
 
@@ -638,78 +704,7 @@ export function generatePit(
       }
     }
 
-    const pitMaterial = new MeshBasicMaterial({
-      color: new Color(0x381402),
-    });
-    const bottomGeometry = new PlaneGeometry(width, height);
-    const pitBottomMesh = new Mesh(bottomGeometry, pitMaterial);
-
-    const leftRightGeometry = new PlaneGeometry(depth, height);
-    const topBottomGeometry = new PlaneGeometry(depth, width);
-
-    const leftMesh = new Mesh(leftRightGeometry, pitMaterial);
-    const rightMesh = new Mesh(leftRightGeometry, pitMaterial);
-
-    const topMesh = new Mesh(topBottomGeometry, pitMaterial);
-    const bottomMesh = new Mesh(topBottomGeometry, pitMaterial);
-
-    pitBottomMesh.position.setZ(-depth - size * 1.5);
-
-    leftMesh.rotateY(MathUtils.degToRad(90));
-    rightMesh.rotateY(MathUtils.degToRad(-90));
-
-    topMesh.rotateY(MathUtils.degToRad(90));
-    topMesh.rotateX(MathUtils.degToRad(90));
-
-    bottomMesh.rotateY(MathUtils.degToRad(90));
-    bottomMesh.rotateX(MathUtils.degToRad(-90));
-
-    leftMesh.position.setX(-width / 2 - size);
-    rightMesh.position.setX(width / 2 + size);
-
-    topMesh.position.setY(height / 2 + size);
-    bottomMesh.position.setY(-height / 2 - size);
-
-    leftMesh.position.setZ(-depth / 2);
-    rightMesh.position.setZ(-depth / 2);
-    topMesh.position.setZ(-depth / 2);
-    bottomMesh.position.setZ(-depth / 2);
-
-    pit.add(pitBottomMesh);
-    pit.add(leftMesh);
-    pit.add(rightMesh);
-    pit.add(topMesh);
-    pit.add(bottomMesh);
-
-    const grassPlaneMaterial = new MeshBasicMaterial({
-      color: new Color(0x18ba4b),
-    });
-    const topBottomGrassGeometry = new PlaneGeometry(10 * 2 + width, 9);
-    const leftRightGrassGeometry = new PlaneGeometry(10 - 1, height + 2);
-
-    const topGrassMesh = new Mesh(topBottomGrassGeometry, grassPlaneMaterial);
-    const bottomGrassMesh = new Mesh(
-      topBottomGrassGeometry,
-      grassPlaneMaterial
-    );
-    const leftGrassMesh = new Mesh(leftRightGrassGeometry, grassPlaneMaterial);
-    const rightGrassMesh = new Mesh(leftRightGrassGeometry, grassPlaneMaterial);
-
-    topGrassMesh.position.setY(height / 2 + 10 / 2 + size / 2);
-    bottomGrassMesh.position.setY(-height / 2 - 10 / 2 - size / 2);
-
-    leftGrassMesh.position.setX(-width / 2 - 10 / 2 - size / 2);
-    rightGrassMesh.position.setX(width / 2 + 10 / 2 + size / 2);
-
-    topGrassMesh.position.setZ(-size / 2);
-    bottomGrassMesh.position.setZ(-size / 2);
-    leftGrassMesh.position.setZ(-size / 2);
-    rightGrassMesh.position.setZ(-size / 2);
-
-    pit.add(topGrassMesh);
-    pit.add(bottomGrassMesh);
-    pit.add(leftGrassMesh);
-    pit.add(rightGrassMesh);
+    addPlaneHelpers(width, height, depth, size, pit);
 
     pit.add(pitGroup);
   }
