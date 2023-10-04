@@ -2497,7 +2497,7 @@ export default {
 
     rotateCount(newValue) {
       if (newValue >= 83) {
-        this.emitter.emit("addAchievement", "keep-it-rolling");
+        this.emitter.emit("addAchievement", "keep-rolling");
       }
     },
 
