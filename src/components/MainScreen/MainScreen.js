@@ -194,6 +194,8 @@ export default {
       antialias: true,
       prevTime: Date.now(),
 
+      isKeyPressed: false,
+
       loopCb: [],
 
       xCPoints: [],
@@ -2235,6 +2237,12 @@ export default {
         return false;
       }
 
+      if (this.isKeyPressed) {
+        return false;
+      }
+
+      this.isKeyPressed = true;
+
       switch (event.code) {
         case "KeyQ":
           // log("Press Q");
@@ -2292,6 +2300,8 @@ export default {
           }
           break;
       }
+
+      this.isKeyPressed = false;
     },
 
     /**
@@ -2562,7 +2572,7 @@ export default {
     window.addEventListener("orientationchange", this.updateRendererSize);
     window.addEventListener("focus", this.playMusic);
     window.addEventListener("blur", this.pauseMusic);
-    document.addEventListener("keyup", this.keyupHandler);
+    document.addEventListener("keydown", this.keyupHandler);
 
     this.emitter.on("openMenuScreen", this.openMenuScreen);
     this.emitter.on("closeMenuScreen", this.closeMenuScreen);
@@ -2575,7 +2585,7 @@ export default {
     window.removeEventListener("orientationchange", this.updateRendererSize);
     window.removeEventListener("focus", this.playMusic);
     window.removeEventListener("blur", this.pauseMusic);
-    document.removeEventListener("keyup", this.keyupHandler);
+    document.removeEventListener("keydown", this.keyupHandler);
 
     this.emitter.off("openMenuScreen", this.openMenuScreen);
     this.emitter.off("closeMenuScreen", this.closeMenuScreen);
