@@ -194,7 +194,8 @@ export default {
       antialias: true,
       prevTime: Date.now(),
 
-      isKeyPressed: false,
+      keyCheckInterval: undefined,
+      keys: {},
 
       loopCb: [],
 
@@ -2232,18 +2233,28 @@ export default {
       return true;
     },
 
-    keyupHandler(event) {
+    keyUpHandler(event) {
+      this.keys[event.code] = false;
+    },
+
+    keyDownHandler(event) {
+      this.keys[event.code] = true;
+    },
+
+    checkKeysPress() {
+      for (const code in this.keys) {
+        if (this.keys[code]) {
+          this.keyupHandler(code);
+        }
+      }
+    },
+
+    keyupHandler(code) {
       if (this.isMenu) {
         return false;
       }
 
-      if (this.isKeyPressed) {
-        return false;
-      }
-
-      this.isKeyPressed = true;
-
-      switch (event.code) {
+      switch (code) {
         case "KeyQ":
           // log("Press Q");
           this.rotateZPlus();
@@ -2300,8 +2311,6 @@ export default {
           }
           break;
       }
-
-      this.isKeyPressed = false;
     },
 
     /**
@@ -2572,7 +2581,11 @@ export default {
     window.addEventListener("orientationchange", this.updateRendererSize);
     window.addEventListener("focus", this.playMusic);
     window.addEventListener("blur", this.pauseMusic);
-    document.addEventListener("keydown", this.keyupHandler);
+
+    document.addEventListener("keydown", this.keyDownHandler);
+    document.addEventListener("keyup", this.keyUpHandler);
+
+    this.keyCheckInterval = setInterval(this.checkKeysPress, 50);
 
     this.emitter.on("openMenuScreen", this.openMenuScreen);
     this.emitter.on("closeMenuScreen", this.closeMenuScreen);
@@ -2585,7 +2598,13 @@ export default {
     window.removeEventListener("orientationchange", this.updateRendererSize);
     window.removeEventListener("focus", this.playMusic);
     window.removeEventListener("blur", this.pauseMusic);
-    document.removeEventListener("keydown", this.keyupHandler);
+
+    document.removeEventListener("keydown", this.keyDownHandler);
+    document.removeEventListener("keyup", this.keyUpHandler);
+
+    if (this.keyCheckInterval) {
+      clearInterval(this.keyCheckInterval);
+    }
 
     this.emitter.off("openMenuScreen", this.openMenuScreen);
     this.emitter.off("closeMenuScreen", this.closeMenuScreen);
