@@ -197,8 +197,6 @@ export default {
       antialias: true,
       prevTime: Date.now(),
 
-      keyPressTime: Date.now(),
-
       loopCb: [],
 
       xCPoints: [],
@@ -2254,12 +2252,6 @@ export default {
         return false;
       }
 
-      if (Date.now() - this.keyPressTime < 100) {
-        return false;
-      }
-
-      this.keyPressTime = Date.now();
-
       this.movesCounter += 1;
 
       switch (code) {
@@ -2590,7 +2582,7 @@ export default {
     window.addEventListener("focus", this.playMusic);
     window.addEventListener("blur", this.pauseMusic);
 
-    document.addEventListener("keydown", this.keyHandler);
+    document.addEventListener("keyup", this.keyHandler);
 
     this.emitter.on("openMenuScreen", this.openMenuScreen);
     this.emitter.on("closeMenuScreen", this.closeMenuScreen);
@@ -2604,7 +2596,7 @@ export default {
     window.removeEventListener("focus", this.playMusic);
     window.removeEventListener("blur", this.pauseMusic);
 
-    document.removeEventListener("keydown", this.keyHandler);
+    document.removeEventListener("keyup", this.keyHandler);
 
     this.emitter.off("openMenuScreen", this.openMenuScreen);
     this.emitter.off("closeMenuScreen", this.closeMenuScreen);
