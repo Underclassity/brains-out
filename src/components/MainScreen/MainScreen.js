@@ -1804,8 +1804,8 @@ export default {
         this.positionHelper(element, "z", -pitDepth + sizeZ / 2 + size / 2);
       }
 
-      if (position.z >= -sizeZ / 2) {
-        this.positionHelper(element, "z", -sizeZ / 2);
+      if (position.z >= 0) {
+        this.positionHelper(element, "z", 0);
       }
 
       // const newPosition = new Vector3();
