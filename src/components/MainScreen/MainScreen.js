@@ -709,17 +709,6 @@ export default {
         }, [])
         .filter((item) => item)
         .map((item) => {
-          if (item.userData.static && item.userData.layer) {
-            const { x, y, z } = item.userData.layer;
-
-            return {
-              x,
-              y,
-              z,
-              static: true,
-            };
-          }
-
           const itemPosition = new Vector3();
           item.getWorldPosition(itemPosition);
 
