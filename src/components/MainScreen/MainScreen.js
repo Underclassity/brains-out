@@ -985,7 +985,7 @@ export default {
       for (const point of elementPoints) {
         const zCollisionPoints = layerPoints
           .filter((item) => {
-            return item.x == point.x && item.y == point.y;
+            return item.x == point.x && item.y == point.y && point.z < item.z;
           })
           .reduce((prev, curr) => {
             return !prev.length || prev[0].z > curr.z ? [curr] : prev;
