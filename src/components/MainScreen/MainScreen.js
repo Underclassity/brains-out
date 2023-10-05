@@ -1314,13 +1314,13 @@ export default {
         this.speedUp();
       }
 
-      const headElements = layerElements.filter((item) =>
-        item.name.includes("Head")
-      );
+      // const headElements = layerElements.filter((item) =>
+      //   item.name.includes("Head")
+      // );
 
-      if (headElements.length == layerElements.length) {
-        this.emitter.emit("addAchievement", "zombieland");
-      }
+      // if (headElements.length == layerElements.length) {
+      //   this.emitter.emit("addAchievement", "zombieland");
+      // }
 
       // Delete all layer elements
       for (const element of layerElements) {
@@ -2518,11 +2518,11 @@ export default {
       }
     },
 
-    speed(newValue) {
-      if (newValue == this.maxSpeed) {
-        this.emitter.emit("addAchievement", "fast-and-furious");
-      }
-    },
+    // speed(newValue) {
+    //   if (newValue == this.maxSpeed) {
+    //     this.emitter.emit("addAchievement", "fast-and-furious");
+    //   }
+    // },
 
     score(newValue) {
       if (newValue >= 300) {

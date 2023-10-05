@@ -5,11 +5,6 @@ export const achievements = {
     title: "Keep rollin",
     desc: "Rotate one form more than 83 times",
   },
-  "fast-and-furious": {
-    icon: "speed",
-    title: "fast and furious",
-    desc: "Reach max speed",
-  },
   "proud-of-you": {
     icon: "mountain_flag",
     title: "Proud of you",
@@ -25,11 +20,6 @@ export const achievements = {
     title: "Are you playing?",
     desc: "End game without pressing any keys",
   },
-  zombieland: {
-    icon: "psychology",
-    title: "Zombieland",
-    desc: "Clear level with heads only",
-  },
   combo: {
     icon: "sanitizer",
     title: "C-c-combo!",
@@ -42,6 +32,16 @@ export const achievements = {
   },
 
   // Not done yet
+  // "fast-and-furious": {
+  //   icon: "speed",
+  //   title: "fast and furious",
+  //   desc: "Reach max speed",
+  // },
+  // zombieland: {
+  //   icon: "psychology",
+  //   title: "Zombieland",
+  //   desc: "Clear level with heads only",
+  // },
 };
 
 export default achievements;
