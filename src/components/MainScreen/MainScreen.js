@@ -371,7 +371,9 @@ export default {
 
       log("Update bg playbackrate to: ", newPlaybackRate);
 
-      this.bgSound.playbackRate = newPlaybackRate;
+      if (this.bgSound) {
+        this.bgSound.playbackRate = newPlaybackRate;
+      }
 
       return true;
     },
@@ -679,6 +681,10 @@ export default {
       // this.updateLayersPreview();
 
       this.createElement();
+
+      if (this.bgSound) {
+        this.bgSound.playbackRate = 1;
+      }
 
       return true;
     },
