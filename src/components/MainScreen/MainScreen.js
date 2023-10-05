@@ -373,7 +373,11 @@ export default {
       log("Update bg playbackrate to: ", newPlaybackRate);
 
       if (this.bgSound) {
+        log("Change bg sound playbackrate to: ", newPlaybackRate);
+
+        this.bgSound.pause();
         this.bgSound.playbackRate = newPlaybackRate;
+        this.bgSound.play();
       }
 
       return true;
