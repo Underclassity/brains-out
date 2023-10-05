@@ -10,6 +10,7 @@
         .menu--item(v-show="flags.menu" v-on:click="controlsCall") Controls
         .menu--item(v-show="flags.menu" v-on:click="achievementsCall") Achievements
         .menu--item(v-show="flags.menu" v-on:click="creditsCall") Credits
+        .menu--item(v-show="flags.menu && isShare" v-on:click="shareCall") Share!
 
         //- New game items
         .menu--title(v-show="flags.new") Game Preferences

@@ -45,6 +45,8 @@ export default {
 
       isStarted: false,
 
+      isShare: "share" in navigator,
+
       assets,
 
       isDevApproved: !import.meta.env?.VITE_IS_DEV_MODE,
@@ -308,6 +310,19 @@ export default {
       }
 
       this.continueCall();
+    },
+
+    async shareCall() {
+      log("Share call");
+
+      try {
+        await navigator.share({
+          url: window.location.href,
+          title: "Brains Out - The Game",
+        });
+      } catch (error) {
+        log(error);
+      }
     },
   },
 
