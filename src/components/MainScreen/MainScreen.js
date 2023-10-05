@@ -709,6 +709,17 @@ export default {
         }, [])
         .filter((item) => item)
         .map((item) => {
+          if (item.userData.static && item.userData.layer) {
+            const { x, y, z } = item.userData.layer;
+
+            return {
+              x,
+              y,
+              z,
+              static: true,
+            };
+          }
+
           const itemPosition = new Vector3();
           item.getWorldPosition(itemPosition);
 
@@ -770,6 +781,67 @@ export default {
     },
 
     /**
+     * Get element layer point for given item
+     *
+     * @param   {Object}  item  Item
+     *
+     * @return  {Object}        Points object
+     */
+    getElementLayerPointsForItem(item) {
+      const itemPosition = new Vector3();
+      item.getWorldPosition(itemPosition);
+
+      const positionObject = {
+        x: roundValue(itemPosition.x),
+        y: roundValue(itemPosition.y),
+        z: roundValue(itemPosition.z),
+      };
+
+      const x = this.xCPoints.includes(positionObject.x)
+        ? this.xCPoints.indexOf(positionObject.x)
+        : this.xPoints.indexOf(positionObject.x);
+
+      const y = this.yCPoints.includes(positionObject.y)
+        ? this.yCPoints.indexOf(positionObject.y)
+        : this.yPoints.indexOf(positionObject.y);
+
+      let z = this.zCPoints.includes(positionObject.z)
+        ? this.zCPoints.indexOf(positionObject.z)
+        : this.zPoints.indexOf(positionObject.z);
+
+      if (z == -1) {
+        this.zCPoints.forEach((point, index, array) => {
+          if (z != -1) {
+            return true;
+          }
+
+          if (positionObject.z <= array[array.length - 1]) {
+            z = array.length - 1;
+            return true;
+          }
+
+          if (positionObject.z >= array[0]) {
+            z = 0;
+            return true;
+          }
+
+          const nextPoint = array[index + 1];
+
+          if (positionObject.z <= point && positionObject.z > nextPoint) {
+            z = index;
+          }
+        });
+      }
+
+      return {
+        x,
+        y,
+        z,
+        uuid: item.uuid,
+      };
+    },
+
+    /**
      * Get element layers points
      *
      * @param   {Object}  element  Element
@@ -779,61 +851,7 @@ export default {
     getElementLayerPoints(element) {
       return element
         .getObjectByName("childs")
-        .children.map((item) => {
-          const itemPosition = new Vector3();
-          item.getWorldPosition(itemPosition);
-
-          return {
-            x: roundValue(itemPosition.x),
-            y: roundValue(itemPosition.y),
-            z: roundValue(itemPosition.z),
-            uuid: item.uuid,
-          };
-        })
-        .map((item) => {
-          const x = this.xCPoints.includes(item.x)
-            ? this.xCPoints.indexOf(item.x)
-            : this.xPoints.indexOf(item.x);
-
-          const y = this.yCPoints.includes(item.y)
-            ? this.yCPoints.indexOf(item.y)
-            : this.yPoints.indexOf(item.y);
-
-          let z = this.zCPoints.includes(item.z)
-            ? this.zCPoints.indexOf(item.z)
-            : this.zPoints.indexOf(item.z);
-
-          if (z == -1) {
-            this.zCPoints.forEach((point, index, array) => {
-              if (z != -1) {
-                return true;
-              }
-
-              if (item.z <= array[array.length - 1]) {
-                z = array.length - 1;
-                return true;
-              }
-
-              if (item.z >= array[0]) {
-                z = 0;
-                return true;
-              }
-
-              const nextPoint = array[index + 1];
-
-              if (item.z <= point && item.z > nextPoint) {
-                z = index;
-              }
-            });
-          }
-
-          return {
-            x,
-            y,
-            z,
-            uuid: item.uuid,
-          };
-        });
+        .children.map((item) => this.getElementLayerPointsForItem(item));
     },
 
     /**
@@ -1313,6 +1331,10 @@ export default {
 
             el.position.setZ(el.position.z - size);
             this.restrainElement(el);
+
+            const { x, y, z } = this.getElementLayerPointsForItem(el);
+
+            el.userData.layer = { x, y, z };
           });
         }
       });
