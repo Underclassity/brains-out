@@ -32,6 +32,7 @@ import {
   rotateYPlus,
   rotateZMinus,
   rotateZPlus,
+  randomRotate,
   playRandomRotateSound,
 } from "./move.js";
 import {
@@ -1720,6 +1721,7 @@ export default {
     rotateYPlus,
     rotateZMinus,
     rotateZPlus,
+    randomRotate,
 
     playRandomRotateSound,
 
@@ -2307,6 +2309,9 @@ export default {
         case "KeyD":
           // log("Press D");
           this.rotateYPlus();
+          break;
+        case "KeyR":
+          this.randomRotate();
           break;
         case "ArrowUp":
           // log("Press Up");

@@ -1,3 +1,4 @@
+import log from "../../helpers/log.js";
 import randomBetween from "../../helpers/random-between.js";
 
 /**
@@ -219,6 +220,35 @@ export function rotateZMinus() {
   this.playRandomRotateSound();
 
   return this.current;
+}
+
+export function randomRotate() {
+  // log("Random rotate call");
+
+  const rotateNumber = randomBetween(0, 5);
+
+  switch (rotateNumber) {
+    case 0:
+      this.rotateXMinus();
+      break;
+    case 1:
+      this.rotateXPlus();
+      break;
+    case 2:
+      this.rotateYMinus();
+      break;
+    case 3:
+      this.rotateYPlus();
+      break;
+    case 4:
+      this.rotateZMinus();
+      break;
+    case 5:
+      this.rotateZPlus();
+      break;
+  }
+
+  return true;
 }
 
 export default moveRight;
