@@ -357,18 +357,9 @@ export default {
       return true;
     },
 
-    /**
-     * Update speed by up value
-     *
-     * @return  {Boolean}  Result
-     */
-    speedUp() {
-      this.$store.commit("updateSpeed", this.speedStep);
-
-      log("Update speed to: ", this.speed);
-
+    updatePlaybackRate() {
       const newPlaybackRate =
-        (this.speed - this.minSpeed) / this.speedStep / 10 / 5 + 1;
+        (this.speed - this.minSpeed) / this.speedStep / 10 / 7 + 1;
 
       log("Update bg playbackrate to: ", newPlaybackRate);
 
@@ -379,6 +370,21 @@ export default {
         this.bgSound.playbackRate = newPlaybackRate;
         this.bgSound.play();
       }
+
+      return true;
+    },
+
+    /**
+     * Update speed by up value
+     *
+     * @return  {Boolean}  Result
+     */
+    speedUp() {
+      this.$store.commit("updateSpeed", this.speedStep);
+
+      log("Update speed to: ", this.speed);
+
+      this.updatePlaybackRate();
 
       return true;
     },
@@ -2527,16 +2533,18 @@ export default {
       }
     },
 
-    // speed(newValue) {
-    //   if (newValue == this.maxSpeed) {
-    //     this.emitter.emit("addAchievement", "fast-and-furious");
-    //   }
-    // },
+    speed(newValue) {
+      if (newValue == this.maxSpeed) {
+        this.emitter.emit("addAchievement", "fast-and-furious");
+      }
+    },
 
     score(newValue) {
       if (newValue >= 300) {
         this.emitter.emit("addAchievement", "proud-of-you");
       }
+
+      this.updatePlaybackRate();
     },
 
     isRotateRestrain() {

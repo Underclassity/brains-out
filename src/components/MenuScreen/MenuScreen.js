@@ -257,11 +257,11 @@ export default {
     },
 
     prevSpeed() {
-      this.$store.commit("updateSettingsSpeed", -this.speedStep);
+      this.$store.commit("updateSettingsSpeed", -this.speedStep * 5);
     },
 
     nextSpeed() {
-      this.$store.commit("updateSettingsSpeed", this.speedStep);
+      this.$store.commit("updateSettingsSpeed", this.speedStep * 5);
     },
 
     prevVolume() {

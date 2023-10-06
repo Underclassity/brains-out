@@ -339,7 +339,11 @@ function parseURLSearchParams() {
     if (id in store.state) {
       log(`Update ${id}`, value);
 
-      store.state[id] = value;
+      if (["speed", "volume", "fxVolume", "settingsSpeed"].includes(id)) {
+        store.state[id] = parseFloat(value, 10);
+      } else {
+        store.state[id] = value;
+      }
     }
   }
 
