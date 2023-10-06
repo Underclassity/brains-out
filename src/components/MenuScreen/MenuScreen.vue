@@ -131,10 +131,8 @@
             .menu--achievement(v-for="(item, name) in achievements" :key="name")
                 .menu--achievement--row
                     .menu--achievement--icon.material-symbols-outlined(v-if="!userAchievements.includes(name)") lock
-                    .menu--achievement--title(v-if="!userAchievements.includes(name)") Unclock in game
-
                     .menu--achievement--icon.material-symbols-outlined(v-if="userAchievements.includes(name)") {{ item.icon }}
-                    .menu--achievement--title(v-if="userAchievements.includes(name)") {{ item.title }}
+                    .menu--achievement--title {{ item.title }}
                 .menu--achievement--desc(v-if="userAchievements.includes(name)") {{ item.desc }}
 
         .menu--buttons(v-show="flags.achievements")
