@@ -368,7 +368,7 @@ export default {
       log("Update speed to: ", this.speed);
 
       const newPlaybackRate =
-        (this.speed - this.minSpeed) / this.speedStep / 10 + 1;
+        (this.speed - this.minSpeed) / this.speedStep / 10 / 5 + 1;
 
       log("Update bg playbackrate to: ", newPlaybackRate);
 
