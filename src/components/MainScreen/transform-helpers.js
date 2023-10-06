@@ -49,11 +49,28 @@ export function rotateHelper(element, axisType = "x", angle = 90) {
 
   const childs = element.getObjectByName("childs");
 
+  let dummy = childs.clone();
+  dummy.rotateOnWorldAxis(axis, angleValue);
+  dummy.userData.size = getGroupSize(dummy);
+  this.restrainElement(dummy);
+
+  const { xy } = this.getCollisionPoints(element);
+
+  if (xy?.length) {
+    if (dummy.dispose) {
+      dummy.dispose();
+    }
+
+    dummy = null;
+
+    return false;
+  }
+
   if (childs && !this.isRotateAnimation) {
     childs.rotateOnWorldAxis(axis, angleValue);
 
     // Update size after rotate
-    element.userData.size = getGroupSize(element.getObjectByName("childs"));
+    element.userData.size = dummy.userData.size.clone();
   } else if (childs && this.isRotateAnimation) {
     this.isRotating = true;
     let prev = 0;
@@ -76,6 +93,11 @@ export function rotateHelper(element, axisType = "x", angle = 90) {
 
   this.restrainElement(element);
 
+  if (dummy.dispose) {
+    dummy.dispose();
+  }
+
+  dummy = null;
   return element;
 }
 
