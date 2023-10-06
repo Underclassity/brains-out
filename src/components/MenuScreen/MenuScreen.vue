@@ -105,8 +105,8 @@
         .menu--buttons(v-show="flags.end")
             .menu--item--green.menu--button(v-on:click="newGameCall") New Game
 
-        .menu--buttons(v-show="flags.end")
-            .menu--item--green.menu--button(v-on:click="startAgainCall") Start Again
+        //- .menu--buttons(v-show="flags.end")
+        //-     .menu--item--green.menu--button(v-on:click="startAgainCall") Start Again
 
         .menu--buttons(v-show="flags.end")
             .menu--item--red.menu--button(v-on:click="backToMenu") Back to menu
@@ -115,8 +115,8 @@
         .menu--buttons(v-show="flags.continue")
             .menu--item--green.menu--button(v-on:click="newGameCallForce") New Game
 
-        .menu--buttons(v-show="flags.continue")
-            .menu--item--green.menu--button(v-on:click="startAgainCall") Start Again
+        //- .menu--buttons(v-show="flags.continue")
+        //-     .menu--item--green.menu--button(v-on:click="startAgainCall") Start Again
 
         .menu--buttons(v-show="flags.continue")
             .menu--item--green.menu--button(v-on:click="closeMenu") Continue
