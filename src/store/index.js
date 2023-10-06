@@ -43,6 +43,7 @@ export const store = createStore({
 
     isDev: false,
     isControls: false,
+    isVibration: true,
 
     isRandomColor: false,
     isColorizeLevel: true,
@@ -278,6 +279,18 @@ export const store = createStore({
       state.isDev = value ? true : false;
     },
 
+    enableVibration(state) {
+      state.isVibration = true;
+    },
+
+    disableVibration(state) {
+      state.isVibration = false;
+    },
+
+    updateVibration(state, value) {
+      state.isVibration = value ? true : false;
+    },
+
     incrementEndGameCounter(state) {
       state.endGameCounter += 1;
     },
@@ -314,6 +327,7 @@ export const store = createStore({
         "fxVolume",
         "userAchievements",
         "endGameCounter",
+        "isVibration",
       ],
       namespace: "brains-out",
       driver: vuejsStorage.drivers.sessionStorage,

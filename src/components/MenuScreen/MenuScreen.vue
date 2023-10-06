@@ -92,6 +92,13 @@
             .menu--selector--next(v-on:click="enableDevMode" v-if="!isDev")
 
         .menu--selector(v-show="flags.settings")
+            .menu--label Vibration
+            .menu--selector--prev(v-on:click="disableVibration" v-if="isVibration")
+            .menu--selector--value(v-if="isVibration") Yes
+            .menu--selector--value(v-if="!isVibration") No
+            .menu--selector--next(v-on:click="enableVibration" v-if="!isVibration")
+
+        .menu--selector(v-show="flags.settings")
             .menu--label Controls
             .menu--selector--prev(v-on:click="disableControls" v-if="isControls")
             .menu--selector--value(v-if="isControls") Yes

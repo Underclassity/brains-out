@@ -250,6 +250,7 @@ export default {
 
       "isDev",
       "isControls",
+      "isVibration",
     ]),
 
     ...mapGetters(["maxScore", "minScore", "avgScore"]),
@@ -1167,7 +1168,9 @@ export default {
     dropElement(element) {
       log(`Drop element: ${element.name}`);
 
-      navigator.vibrate(100);
+      if (this.isVibration) {
+        navigator.vibrate(100);
+      }
 
       element.userData.drop = true;
 
@@ -1485,7 +1488,10 @@ export default {
       this.$store.commit("incrementEndGameCounter");
 
       this.isEnd = true;
-      navigator.vibrate(500);
+
+      if (this.isVibration) {
+        navigator.vibrate(500);
+      }
 
       this.openMenu();
       this.emitter.emit("openEndMenu");
@@ -1635,8 +1641,6 @@ export default {
       //       );
       //       this.isEnd = true;
       //       this.openMenu();
-
-      //       navigator.vibrate(500);
 
       //       this.emitter.emit("openEndMenu");
 

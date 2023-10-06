@@ -73,6 +73,7 @@ export default {
 
       "isDev",
       "isControls",
+      "isVibration",
 
       "achievements",
       "userAchievements",
@@ -286,6 +287,14 @@ export default {
 
     enableDevMode() {
       this.$store.commit("enableDev");
+    },
+
+    disableVibration() {
+      this.$store.commit("disableVibration");
+    },
+
+    enableVibration() {
+      this.$store.commit("enableVibration");
     },
 
     disableControls() {
