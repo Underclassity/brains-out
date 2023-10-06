@@ -58,6 +58,8 @@ export default {
       "volume",
       "fxVolume",
 
+      "score",
+
       "pitSize",
       "pitSizes",
 
@@ -324,10 +326,13 @@ export default {
     async shareCall() {
       log("Share call");
 
+      const { score } = this;
+
       try {
         await navigator.share({
           url: window.location.href,
           title: "Brains Out - The Game",
+          text: `I've reached ${score} score! can you beat my score?`,
         });
       } catch (error) {
         log(error);
