@@ -197,7 +197,7 @@ MenuScreen(
 )
 LoadingScreen(v-if="isLoading" :percent="loadPercent")
 
-.levels(v-show="!isMenu")
+.levels(v-show="!isMenu" :style="levelsOffsetStyle")
     .level-item(v-for="(value, index) of layers.slice().reverse()" :key="index" :style="getLayerColor(index)")
 
 .error-overlay(v-if="error")

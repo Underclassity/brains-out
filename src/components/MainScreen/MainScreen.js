@@ -113,6 +113,9 @@ export default {
 
       isMobile: false,
 
+      viewWidth: undefined,
+      viewHeight: undefined,
+
       isAccepted: false,
       isLogo: false,
 
@@ -286,6 +289,19 @@ export default {
 
       return totalCount / count;
     },
+
+    levelsOffsetStyle() {
+      const { viewWidth, pitWidth, size, isMobile } = this;
+
+      if (!viewWidth || isMobile) {
+        return "";
+      }
+
+      const leftPercent =
+        ((viewWidth / 2 - pitWidth / 2 - size) / viewWidth) * 100;
+
+      return `left:calc(${leftPercent}% - 90px / 2);`;
+    },
   },
 
   methods: {
@@ -347,6 +363,11 @@ export default {
       const distance = 2 * Math.max(fitHeightDistance, fitWidthDistance);
 
       camera.position.setZ(distance - maxSize);
+
+      const vFOV = MathUtils.degToRad(camera.fov); // convert vertical fov to radians
+
+      this.viewHeight = 2 * Math.tan(vFOV / 2) * (distance - maxSize); // visible height
+      this.viewWidth = this.viewHeight * camera.aspect; // visible width
 
       if (controls) {
         controls.update();
