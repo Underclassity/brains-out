@@ -146,6 +146,11 @@ export default {
       rotateSounds: {},
       dropSounds: {},
 
+      bgPlaying: false,
+      bgMenuPlaying: true,
+
+      isWindowFocus: true,
+
       camera: undefined,
       scene: undefined,
       renderer: undefined,
@@ -727,6 +732,9 @@ export default {
       if (this.bgSound) {
         this.bgSound.playbackRate = 1;
       }
+
+      this.bgPlaying = true;
+      this.bgMenuPlaying = false;
 
       return true;
     },
@@ -1543,6 +1551,9 @@ export default {
       }
 
       this.isPetrify = false;
+
+      this.bgPlaying = false;
+      this.bgMenuPlaying = true;
 
       return true;
     },
@@ -2449,14 +2460,34 @@ export default {
     },
 
     playMusic() {
-      log("Play music");
+      log("Play music: ", this.bgPlaying, this.bgMenuPlaying);
+
+      this.isWindowFocus = true;
+
+      if (this.bgPlaying && this.bgSound) {
+        this.bgSound.play();
+      }
+
+      if (this.bgMenuPlaying && this.bgMenuSound) {
+        this.bgMenuSound.play();
+      }
     },
 
     pauseMusic() {
-      log("Pause music");
+      log("Pause music: ", this.bgPlaying, this.bgMenuPlaying);
+
+      this.isWindowFocus = false;
 
       this.isPause = true;
       this.isMenu = true;
+
+      if (this.bgSound) {
+        this.bgSound.pause();
+      }
+
+      if (this.bgMenuSound) {
+        this.bgMenuSound.pause();
+      }
     },
 
     /**
@@ -2471,6 +2502,9 @@ export default {
 
       log("Opened menu screen");
 
+      this.bgPlaying = false;
+      this.bgMenuPlaying = true;
+
       const fadeOutTween = new TWEEN.Tween({
         volume: this.bgMenuSound.getVolume(),
       });
@@ -2480,7 +2514,11 @@ export default {
           this.bgMenuSound.setVolume(volume);
         }
 
-        if (this.bgMenuSound && !this.bgMenuSound.isPlaying) {
+        if (
+          this.bgMenuSound &&
+          !this.bgMenuSound.isPlaying &&
+          this.isWindowFocus
+        ) {
           this.bgMenuSound.play();
         }
       });
@@ -2515,6 +2553,9 @@ export default {
 
       log("Closed menu screen");
 
+      this.bgPlaying = true;
+      this.bgMenuPlaying = false;
+
       const fadeOutTween = new TWEEN.Tween({
         volume: this.bgSound.getVolume(),
       });
@@ -2524,7 +2565,7 @@ export default {
           this.bgSound.setVolume(volume);
         }
 
-        if (this.bgSound && !this.bgSound.isPlaying) {
+        if (this.bgSound && !this.bgSound.isPlaying && this.isWindowFocus) {
           this.bgSound.play();
         }
       });
