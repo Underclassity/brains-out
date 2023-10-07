@@ -1,12 +1,15 @@
 /**
  * Round to fixed value helper
  *
- * @param   {Number}  value  Input number
+ * @param   {Number}  value        Input number
+ * @param   {Number}  [numbers=3]  Delimeter count
  *
- * @return  {Number}         Rounded to fixed number
+ * @return  {Number}               Rounded to fixed number
  */
-export function roundValue(value) {
-  return Math.round(value * 1000) / 1000;
+export function roundValue(value, numbers = 3) {
+  const divider = Math.pow(10, numbers);
+
+  return Math.round(value * divider) / divider;
 }
 
 export default roundValue;
