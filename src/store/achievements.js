@@ -11,24 +11,24 @@ export const achievements = {
     desc: "Make more than 300 points",
   },
   "still-playing": {
-    icon: "toys",
+    icon: "sports_handball",
     title: "Still playing",
     desc: "End 13 games",
   },
   "are-you-playing": {
-    icon: "playing_cards",
+    icon: "psychology_alt",
     title: "Are you playing?",
     desc: "End game without pressing any keys",
   },
   combo: {
-    icon: "sanitizer",
+    icon: "thumb_up",
     title: "C-c-combo!",
     desc: "Clear more than 3 levels at one time",
   },
   "speedy-and-glorious": {
-    icon: "trophy",
+    icon: "sprint",
     title: "Speedy and glorious",
-    desc: "Сomplete a level after completing the previous one",
+    desc: "Complete a level after completing the previous one",
   },
 
   // Not done yet
