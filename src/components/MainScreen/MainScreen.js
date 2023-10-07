@@ -394,9 +394,9 @@ export default {
       if (this.bgSound) {
         log("Change bg sound playbackrate to: ", newPlaybackRate);
 
-        this.bgSound.pause();
+        this.pauseBgSound();
         this.bgSound.playbackRate = newPlaybackRate;
-        this.bgSound.play();
+        this.playBgSound();
       }
 
       return true;
@@ -2447,27 +2447,56 @@ export default {
       return true;
     },
 
+    playBgSound() {
+      // log("Play bg sound: ", this.isWindowFocus);
+      if (this.bgSound && !this.bgSound.isPlaying && this.isWindowFocus) {
+        this.bgSound.play();
+      }
+    },
+
+    pauseBgSound() {
+      // log("Pause bg sound: ", this.isWindowFocus);
+      if (this.bgSound?.isPlaying) {
+        this.bgSound.pause();
+      }
+    },
+
+    playMenuBgSound() {
+      // log("Play bg menu sound: ", this.isWindowFocus);
+      if (
+        this.bgMenuSound &&
+        !this.bgMenuSound.isPlaying &&
+        this.isWindowFocus
+      ) {
+        this.bgMenuSound.play();
+      }
+    },
+
+    pauseMenuBgSound() {
+      // log("Pause bg menu sound: ", this.isWindowFocus);
+      if (this.bgMenuSound?.isPlaying) {
+        this.bgMenuSound.pause();
+      }
+    },
+
     playMusic() {
-      log("Play music: ");
+      log("Play music: ", this.isWindowFocus);
 
       this.isWindowFocus = true;
+
+      this.openMenuScreen();
     },
 
     pauseMusic() {
-      log("Pause music: ");
+      log("Pause music");
 
       this.isWindowFocus = false;
 
       this.isPause = true;
       this.isMenu = true;
 
-      if (this.bgSound) {
-        this.bgSound.pause();
-      }
-
-      if (this.bgMenuSound) {
-        this.bgMenuSound.pause();
-      }
+      this.pauseBgSound();
+      this.pauseMenuBgSound();
     },
 
     /**
@@ -2476,11 +2505,11 @@ export default {
      * @return  {Boolean}  Result
      */
     openMenuScreen() {
-      if (this.bgMenuSound?.isPlaying) {
+      log("Opened menu screen: ", this.isWindowFocus);
+
+      if (!this.isWindowFocus) {
         return false;
       }
-
-      log("Opened menu screen");
 
       const fadeOutTween = new TWEEN.Tween({
         volume: this.bgMenuSound.getVolume(),
@@ -2491,20 +2520,14 @@ export default {
           this.bgMenuSound.setVolume(volume);
         }
 
-        if (
-          this.bgMenuSound &&
-          !this.bgMenuSound.isPlaying &&
-          this.isWindowFocus
-        ) {
-          this.bgMenuSound.play();
-        }
+        this.playMenuBgSound();
       });
 
       const fadeInTween = new TWEEN.Tween({ volume: this.bgSound.getVolume() });
       fadeInTween.to({ volume: 0 }, 700);
       fadeInTween.onUpdate(({ volume }) => {
-        if (volume == 0 && this.bgSound) {
-          this.bgSound.pause();
+        if (volume == 0) {
+          this.pauseBgSound();
         }
 
         if (this.bgSound) {
@@ -2524,11 +2547,11 @@ export default {
      * @return  {Boolean}  Result
      */
     closeMenuScreen() {
-      if (this.bgSound?.isPlaying) {
+      if (!this.isWindowFocus) {
         return false;
       }
 
-      log("Closed menu screen");
+      log("Closed menu screen: ", this.isWindowFocus);
 
       const fadeOutTween = new TWEEN.Tween({
         volume: this.bgSound.getVolume(),
@@ -2539,9 +2562,7 @@ export default {
           this.bgSound.setVolume(volume);
         }
 
-        if (this.bgSound && !this.bgSound.isPlaying && this.isWindowFocus) {
-          this.bgSound.play();
-        }
+        this.playBgSound();
       });
 
       const fadeInTween = new TWEEN.Tween({
@@ -2549,8 +2570,8 @@ export default {
       });
       fadeInTween.to({ volume: 0 }, 700);
       fadeInTween.onUpdate(({ volume }) => {
-        if (volume == 0 && this.bgMenuSound) {
-          this.bgMenuSound.pause();
+        if (volume == 0) {
+          this.pauseMenuBgSound();
         }
 
         if (this.bgMenuSound) {
@@ -2596,7 +2617,7 @@ export default {
       this.rotateCount = 0;
     },
 
-    isLogo(newValue, oldValue) {
+    isLogo(newValue) {
       if (newValue) {
         this.openMenuScreen();
       }
@@ -2654,7 +2675,7 @@ export default {
       this.updateControls();
     },
 
-    isLevelHelpers(value) {
+    isLevelHelpers() {
       this.updateLayersView();
     },
   },
