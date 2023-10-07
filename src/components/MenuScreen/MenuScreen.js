@@ -332,7 +332,7 @@ export default {
         await navigator.share({
           url: window.location.href,
           title: "Brains Out - The Game",
-          text: `I've reached ${score} score! can you beat my score?`,
+          text: `My score - ${score}! Can you play better?`,
         });
       } catch (error) {
         log(error);
