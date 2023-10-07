@@ -146,9 +146,6 @@ export default {
       rotateSounds: {},
       dropSounds: {},
 
-      bgPlaying: false,
-      bgMenuPlaying: true,
-
       isWindowFocus: true,
 
       camera: undefined,
@@ -386,11 +383,9 @@ export default {
     /**
      * Update bg sound playbackrate based on current speed
      *
-     * @param   {Boolean}  [force=false]  Force update flag
-     *
      * @return  {Boolean}                 Result
      */
-    updatePlaybackRate(force = false) {
+    updatePlaybackRate() {
       const newPlaybackRate =
         (this.speed - this.minSpeed) / this.speedStep / 10 / 7 + 1;
 
@@ -399,17 +394,9 @@ export default {
       if (this.bgSound) {
         log("Change bg sound playbackrate to: ", newPlaybackRate);
 
-        const isPlaying = this.bgSound.isPlaying;
-
-        if (isPlaying || force) {
-          this.bgSound.pause();
-        }
-
+        this.bgSound.pause();
         this.bgSound.playbackRate = newPlaybackRate;
-
-        if (isPlaying || force) {
-          this.bgSound.play();
-        }
+        this.bgSound.play();
       }
 
       return true;
@@ -676,7 +663,7 @@ export default {
       this.$store.commit("resetScore");
       this.$store.commit("setSpeed", this.settingsSpeed);
 
-      this.updatePlaybackRate(true);
+      this.updatePlaybackRate();
 
       this.isEnd = false;
       this.isPetrify = false;
@@ -739,9 +726,6 @@ export default {
       if (this.bgSound) {
         this.bgSound.playbackRate = 1;
       }
-
-      this.bgPlaying = true;
-      this.bgMenuPlaying = false;
 
       return true;
     },
@@ -1558,9 +1542,6 @@ export default {
       }
 
       this.isPetrify = false;
-
-      this.bgPlaying = false;
-      this.bgMenuPlaying = true;
 
       return true;
     },
@@ -2467,21 +2448,13 @@ export default {
     },
 
     playMusic() {
-      log("Play music: ", this.bgPlaying, this.bgMenuPlaying);
+      log("Play music: ");
 
       this.isWindowFocus = true;
-
-      if (this.bgPlaying && this.bgSound) {
-        this.bgSound.play();
-      }
-
-      if (this.bgMenuPlaying && this.bgMenuSound) {
-        this.bgMenuSound.play();
-      }
     },
 
     pauseMusic() {
-      log("Pause music: ", this.bgPlaying, this.bgMenuPlaying);
+      log("Pause music: ");
 
       this.isWindowFocus = false;
 
@@ -2508,9 +2481,6 @@ export default {
       }
 
       log("Opened menu screen");
-
-      this.bgPlaying = false;
-      this.bgMenuPlaying = true;
 
       const fadeOutTween = new TWEEN.Tween({
         volume: this.bgMenuSound.getVolume(),
@@ -2559,9 +2529,6 @@ export default {
       }
 
       log("Closed menu screen");
-
-      this.bgPlaying = true;
-      this.bgMenuPlaying = false;
 
       const fadeOutTween = new TWEEN.Tween({
         volume: this.bgSound.getVolume(),
