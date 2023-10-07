@@ -296,9 +296,9 @@ export default {
     },
 
     levelsOffsetStyle() {
-      const { viewWidth, pitWidth, size, isMobile } = this;
+      const { viewWidth, pitWidth, size, isMobile, isControls } = this;
 
-      if (!viewWidth || isMobile) {
+      if (!viewWidth || isMobile || isControls) {
         return "";
       }
 
