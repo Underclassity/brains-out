@@ -383,7 +383,14 @@ export default {
       return true;
     },
 
-    updatePlaybackRate() {
+    /**
+     * Update bg sound playbackrate based on current speed
+     *
+     * @param   {Boolean}  [force=false]  Force update flag
+     *
+     * @return  {Boolean}                 Result
+     */
+    updatePlaybackRate(force = false) {
       const newPlaybackRate =
         (this.speed - this.minSpeed) / this.speedStep / 10 / 7 + 1;
 
@@ -394,13 +401,13 @@ export default {
 
         const isPlaying = this.bgSound.isPlaying;
 
-        if (isPlaying) {
+        if (isPlaying || force) {
           this.bgSound.pause();
         }
 
         this.bgSound.playbackRate = newPlaybackRate;
 
-        if (isPlaying) {
+        if (isPlaying || force) {
           this.bgSound.play();
         }
       }
@@ -669,7 +676,7 @@ export default {
       this.$store.commit("resetScore");
       this.$store.commit("setSpeed", this.settingsSpeed);
 
-      this.updatePlaybackRate();
+      this.updatePlaybackRate(true);
 
       this.isEnd = false;
       this.isPetrify = false;
