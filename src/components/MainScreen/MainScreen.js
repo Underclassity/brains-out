@@ -656,6 +656,8 @@ export default {
       this.$store.commit("resetScore");
       this.$store.commit("setSpeed", this.settingsSpeed);
 
+      this.updatePlaybackRate();
+
       this.isEnd = false;
       this.isPetrify = false;
 
