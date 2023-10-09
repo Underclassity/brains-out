@@ -2459,22 +2459,39 @@ export default {
 
       const throttledMovement = throttle(
         (stickMoved, directionOfMovement, axisMovementValue) => {
-          switch (directionOfMovement) {
-            case "top":
-              this.rotateXMinus();
-              break;
-            case "bottom":
-              this.rotateXPlus();
-              break;
-            case "left":
-              this.rotateYMinus();
-              break;
-            case "right":
-              this.rotateYPlus();
-              break;
+          if (stickMoved == "right_stick") {
+            switch (directionOfMovement) {
+              case "top":
+                this.rotateXMinus();
+                break;
+              case "bottom":
+                this.rotateXPlus();
+                break;
+              case "left":
+                this.rotateYMinus();
+                break;
+              case "right":
+                this.rotateYPlus();
+                break;
+            }
+          } else {
+            switch (directionOfMovement) {
+              case "top":
+                this.moveUp();
+                break;
+              case "bottom":
+                this.moveDown();
+                break;
+              case "left":
+                this.moveLeft();
+                break;
+              case "right":
+                this.moveRight();
+                break;
+            }
           }
         },
-        200
+        150
       );
 
       joypad.on("axis_move", (e) => {
