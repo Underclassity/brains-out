@@ -4,8 +4,8 @@
 
     .navigation
         .navigation--item Best Score: {{ score > maxScore ? score : maxScore }}
-        .navigation--item Score: {{ score }}
-        .navigation--item Speed: {{ speed }}
+        .navigation--item Score: {{ showScore }}
+        .navigation--item Speed: {{ showSpeed }}
 
     .navigation--item.navigation--menu(v-on:click="openMenu")
         span.material-symbols-outlined menu

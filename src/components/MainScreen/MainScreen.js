@@ -136,6 +136,10 @@ export default {
 
       isKeyPressed: false,
 
+      showScore: 0,
+      showSpeed: 0,
+      showBestScore: 0,
+
       bgSoundId: "ZombiesAreComing.aac",
       bgMenuSoundId: "Rising.aac",
       fallSoundId: ["burp_01.aac", "burp_02.aac"],
@@ -675,6 +679,8 @@ export default {
       // Reset score and speed
       this.$store.commit("resetScore");
       this.$store.commit("setSpeed", this.settingsSpeed);
+
+      this.showSpeed = this.speed;
 
       this.updatePlaybackRate();
 
@@ -1928,6 +1934,8 @@ export default {
       this.$store.commit("resetScore");
       this.$store.commit("setSpeed", this.settingsSpeed);
 
+      this.showSpeed = this.speed;
+
       // reset elements array
       if (this.elements.length) {
         this.elements.forEach((item) => {
@@ -2909,18 +2917,65 @@ export default {
       }
     },
 
-    speed(newValue) {
+    speed(newValue, oldValue) {
       if (newValue == this.maxSpeed) {
         this.emitter.emit("addAchievement", "fast-and-furious");
       }
+
+      if (this.showSpeedTween) {
+        this.showSpeedTween.stop();
+      }
+
+      this.showSpeedTween = new TWEEN.Tween({
+        value: oldValue,
+      });
+      this.showSpeedTween.easing(TWEEN.Easing.Quadratic.In);
+      this.showSpeedTween.to({ value: newValue }, 700 / this.speed);
+      this.showSpeedTween.onUpdate(({ value }) => {
+        this.showSpeed = roundValue(value, 2);
+      });
+
+      this.showSpeedTween.start();
     },
 
-    score(newValue) {
+    score(newValue, oldValue) {
       if (newValue >= 300) {
         this.emitter.emit("addAchievement", "proud-of-you");
       }
 
       this.updatePlaybackRate();
+
+      if (this.showScoreTween) {
+        this.showScoreTween.stop();
+      }
+
+      this.showScoreTween = new TWEEN.Tween({
+        value: oldValue,
+      });
+      this.showScoreTween.easing(TWEEN.Easing.Quadratic.In);
+      this.showScoreTween.to({ value: newValue }, 700 / this.speed);
+      this.showScoreTween.onUpdate(({ value }) => {
+        this.showScore = Math.round(value);
+      });
+
+      this.showScoreTween.start();
+
+      // if (newValue > this.maxScore) {
+      //   if (this.showBestScoreTween) {
+      //     this.showBestScoreTween.stop();
+      //   }
+
+      //   this.showBestScoreTween = new TWEEN.Tween({
+      //     value: this.showBestScore,
+      //   });
+      //   this.showBestScoreTween.easing(TWEEN.Easing.Quadratic.In);
+      //   this.showBestScoreTween.to({ value: newValue }, 700 / this.speed);
+      //   this.showBestScoreTween.onUpdate(({ value }) => {
+      //     this.showBestScore = Math.round(value);
+      //   });
+
+      //   this.showBestScoreTween.start();
+      // }
     },
 
     isRotateRestrain() {
@@ -2995,6 +3050,9 @@ export default {
   },
 
   async mounted() {
+    this.showSpeed = this.speed;
+    this.showBestScore = this.maxScore;
+
     await this.loadZombie();
     this.initAudio();
     this.init();
