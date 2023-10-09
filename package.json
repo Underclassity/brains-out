@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@tweenjs/tween.js": "^21.0.0",
+    "joypad.js": "^2.3.5",
     "mitt": "^3.0.1",
     "simple-eta": "^3.0.2",
     "three": "^0.155.0",

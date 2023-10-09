@@ -13,6 +13,8 @@ import {
 
 import * as TWEEN from "@tweenjs/tween.js";
 
+import "joypad.js";
+
 import { loadPitParts, loadZombie } from "../../helpers/load-zombie.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import generatePit from "../../helpers/generate-pit.js";
@@ -153,6 +155,7 @@ export default {
       renderer: undefined,
       controls: undefined,
       pit: undefined,
+      gamepad: undefined,
 
       isShaders: false,
       composer: undefined,
@@ -1198,9 +1201,7 @@ export default {
     dropElement(element) {
       log(`Drop element: ${element.name}`);
 
-      if (this.isVibration) {
-        navigator.vibrate(100);
-      }
+      this.vibrateCall(100);
 
       element.userData.drop = true;
 
@@ -1519,9 +1520,7 @@ export default {
 
       this.isEnd = true;
 
-      if (this.isVibration) {
-        navigator.vibrate(500);
-      }
+      this.vibrateCall();
 
       this.openMenu();
       this.emitter.emit("openEndMenu");
@@ -2212,6 +2211,8 @@ export default {
 
       this.createElement();
 
+      this.initJoyPad();
+
       // animation
 
       let timeDelta = 0;
@@ -2310,15 +2311,156 @@ export default {
       return true;
     },
 
+    initJoyPad() {
+      if (!window.joypad) {
+        return false;
+      }
+
+      const { joypad } = window;
+
+      joypad.on("connect", (e) => {
+        const { id } = e.gamepad;
+
+        log(`${id} connected!`);
+
+        this.gamepad = e.gamepad;
+      });
+
+      joypad.on("button_press", (e) => {
+        const inMenu = this.isMenu || !this.isAccepted;
+
+        log(`Press ${e.detail.buttonName}: menu ${inMenu}`);
+
+        switch (e.detail.buttonName) {
+          // Left
+          case "button_14":
+            if (inMenu) {
+              this.emitter.emit("pressLeft");
+            } else {
+              this.moveLeft();
+            }
+            break;
+          // Right
+          case "button_15":
+            if (inMenu) {
+              this.emitter.emit("pressRight");
+            } else {
+              this.moveRight();
+            }
+            break;
+          // Up
+          case "button_12":
+            if (inMenu) {
+              this.emitter.emit("pressUp");
+            } else {
+              this.moveUp();
+            }
+            break;
+          // Down
+          case "button_13":
+            if (inMenu) {
+              this.emitter.emit("pressDown");
+            } else {
+              this.moveDown();
+            }
+            break;
+          // A
+          case "button_0":
+            if (inMenu) {
+              this.emitter.emit("pressA");
+            } else {
+              this.rotateXMinus();
+            }
+            break;
+          // B
+          case "button_1":
+            if (inMenu) {
+              this.emitter.emit("pressB");
+            } else {
+              this.rotateYPlus();
+            }
+            break;
+          // Y
+          case "button_2":
+            if (inMenu) {
+              this.emitter.emit("pressY");
+            } else {
+              this.rotateYMinus();
+            }
+            break;
+          // X
+          case "button_3":
+            if (inMenu) {
+              this.emitter.emit("pressX");
+            } else {
+              this.rotateXPlus();
+            }
+            break;
+          //LB
+          case "button_4":
+            if (inMenu) {
+              this.emitter.emit("pressLB");
+            } else {
+              this.rotateZPlus();
+            }
+            break;
+          // RB
+          case "button_5":
+            if (inMenu) {
+              this.emitter.emit("pressRB");
+            } else {
+              this.rotateZMinus();
+            }
+            break;
+          // LT
+          case "button_6":
+            if (inMenu) {
+              this.emitter.emit("pressLT");
+            }
+            break;
+          // RT
+          case "button_7":
+            if (inMenu) {
+              this.emitter.emit("pressRT");
+            } else {
+              this.current.userData.drop = true;
+            }
+            break;
+          // Select
+          case "button_8":
+            break;
+          // Pause
+          case "button_9":
+            if (inMenu) {
+              this.closeMenu();
+            } else {
+              this.openMenu();
+            }
+            break;
+          // Left Trigger
+          case "button_10":
+            break;
+          // Right Trigger
+          case "button_11":
+            break;
+          // Xbox button
+          case "button_16":
+            break;
+        }
+      });
+
+      joypad.on("axis_move", (e) => {
+        console.log("axis", e.detail);
+      });
+
+      return false;
+    },
+
     keyUpHandler() {
       this.isKeyPressed = false;
     },
 
     keyHandler({ code }) {
-      if (this.isMenu) {
-        return false;
-      }
-
       if (this.isKeyPressed) {
         return false;
       }
@@ -2329,50 +2471,94 @@ export default {
 
       switch (code) {
         case "KeyQ":
-          // log("Press Q");
-          this.rotateZPlus();
+          if (this.isMenu) {
+            return false;
+          } else {
+            // log("Press Q");
+            this.rotateZPlus();
+          }
           break;
         case "KeyE":
-          // log("Press E");
-          this.rotateZMinus();
+          if (this.isMenu) {
+            return false;
+          } else {
+            // log("Press E");
+            this.rotateZMinus();
+          }
           break;
         case "KeyW":
-          // log("Press W");
-          this.rotateXMinus();
+          if (this.isMenu) {
+            return false;
+          } else {
+            // log("Press W");
+            this.rotateXMinus();
+          }
           break;
         case "KeyS":
-          // log("Press S");
-          this.rotateXPlus();
+          if (this.isMenu) {
+            return false;
+          } else {
+            // log("Press S");
+            this.rotateXPlus();
+          }
           break;
         case "KeyA":
-          // log("Press A");
-          this.rotateYMinus();
+          if (this.isMenu) {
+            return false;
+          } else {
+            // log("Press A");
+            this.rotateYMinus();
+          }
           break;
         case "KeyD":
-          // log("Press D");
-          this.rotateYPlus();
+          if (this.isMenu) {
+            return false;
+          } else {
+            // log("Press D");
+            this.rotateYPlus();
+          }
           break;
         case "ArrowUp":
-          // log("Press Up");
-          this.moveUp();
+          if (this.isMenu) {
+            return false;
+          } else {
+            // log("Press Up");
+            this.moveUp();
+          }
           break;
         case "ArrowDown":
-          // log("Press Down");
-          this.moveDown();
+          if (this.isMenu) {
+            return false;
+          } else {
+            // log("Press Down");
+            this.moveDown();
+          }
           break;
         case "ArrowLeft":
-          // log("Press Left");
-          this.moveLeft();
+          if (this.isMenu) {
+            return false;
+          } else {
+            // log("Press Left");
+            this.moveLeft();
+          }
           break;
         case "ArrowRight":
-          // log("Press Right");
-          this.moveRight();
+          if (this.isMenu) {
+            return false;
+          } else {
+            // log("Press Right");
+            this.moveRight();
+          }
           break;
         case "Space":
-          // log("Press Space");
-          // this.isPause = !this.isPause;
+          if (this.isMenu) {
+            return false;
+          } else {
+            // log("Press Space");
+            // this.isPause = !this.isPause;
+            this.current.userData.drop = true;
+          }
 
-          this.current.userData.drop = true;
           break;
         case "Escape":
           // log("Press Escape");
@@ -2507,7 +2693,7 @@ export default {
     openMenuScreen() {
       log("Opened menu screen: ", this.isWindowFocus);
 
-      if (!this.isWindowFocus) {
+      if (!this.isWindowFocus || !this.bgSound || !this.bgMenuSound) {
         return false;
       }
 
@@ -2547,7 +2733,7 @@ export default {
      * @return  {Boolean}  Result
      */
     closeMenuScreen() {
-      if (!this.isWindowFocus) {
+      if (!this.isWindowFocus || !this.bgSound || !this.bgMenuSound) {
         return false;
       }
 
@@ -2581,6 +2767,33 @@ export default {
 
       fadeInTween.start();
       fadeOutTween.start();
+
+      return true;
+    },
+
+    /**
+     * Vibrate call helper
+     *
+     * @param   {Number}  [time=500]  Vibrate time
+     *
+     * @return  {Boolean}             Result
+     */
+    vibrateCall(time = 500) {
+      if (!this.isVibration) {
+        return false;
+      }
+
+      log("Vibrate call");
+      navigator.vibrate(time);
+
+      if (this.gamepad && window.joypad) {
+        window.joypad.vibrate(this.gamepad, {
+          startDelay: 0,
+          duration: time,
+          weakMagnitude: 0.2,
+          strongMagnitude: 1,
+        });
+      }
 
       return true;
     },
@@ -2701,6 +2914,8 @@ export default {
     this.emitter.on("closeMenuScreen", this.closeMenuScreen);
 
     this.emitter.on("newGame", this.newGame);
+
+    this.emitter.on("vibrate", this.vibrateCall);
   },
 
   unmounted() {
@@ -2716,5 +2931,7 @@ export default {
     this.emitter.off("closeMenuScreen", this.closeMenuScreen);
 
     this.emitter.off("newGame", this.newGame);
+
+    this.emitter.off("vibrate", this.vibrateCall);
   },
 };

@@ -49,6 +49,28 @@ export default {
 
       assets,
 
+      refs: {
+        menu: ["newGame", "settings", "controls", "achievements", "credits"],
+        new: ["pit", "blocksType", "speed", "back", "play"],
+        credits: ["back"],
+        controls: ["back"],
+        settings: [
+          "volume",
+          "fxVolume",
+          "dev",
+          "vibration",
+          "controls",
+          "back",
+        ],
+        end: ["new", "back", "share"],
+        continue: ["new", "continue", "back"],
+        achievements: ["back"],
+      },
+
+      lastFocused: {},
+
+      focused: false,
+
       isDevApproved: !import.meta.env?.VITE_IS_DEV_MODE,
     };
   },
@@ -92,9 +114,42 @@ export default {
 
       return isShow;
     },
+
+    currentView() {
+      let currentView = undefined;
+
+      for (const id in this.refs) {
+        if (this.flags[id]) {
+          currentView = id;
+        }
+      }
+
+      return currentView;
+    },
   },
 
   methods: {
+    focusFirst(id) {
+      if (this.lastFocused[id] && id == "menu") {
+        this.focused = `${id}.${this.lastFocused[id]}`;
+        return true;
+      }
+
+      const idRefs = this.refs[id];
+
+      if (!idRefs) {
+        return false;
+      }
+
+      const firstRef = idRefs[0];
+
+      log(`Focus first ref: ${id}.${firstRef}`);
+
+      this.focused = `${id}.${firstRef}`;
+
+      return true;
+    },
+
     resetFlags() {
       for (const id in this.flags) {
         this.flags[id] = false;
@@ -104,6 +159,7 @@ export default {
     openStartMenu() {
       this.resetFlags();
       this.flags.menu = true;
+      this.focusFirst("menu");
 
       log("Open start menu call", this.isShow);
     },
@@ -111,6 +167,7 @@ export default {
     openMenu() {
       this.resetFlags();
       this.flags.new = true;
+      this.focusFirst("new");
 
       log("Open menu call", this.isShow);
     },
@@ -126,6 +183,7 @@ export default {
     newGameCall() {
       this.resetFlags();
       this.flags.new = true;
+      this.focusFirst("new");
 
       log("New game call", this.isShow);
     },
@@ -138,6 +196,7 @@ export default {
     settingsCall() {
       this.resetFlags();
       this.flags.settings = true;
+      this.focusFirst("settings");
 
       log("Settings call", this.isShow);
     },
@@ -145,6 +204,7 @@ export default {
     achievementsCall() {
       this.resetFlags();
       this.flags.achievements = true;
+      this.focusFirst("achievements");
 
       log("Achievements call", this.isShow);
     },
@@ -152,6 +212,7 @@ export default {
     controlsCall() {
       this.resetFlags();
       this.flags.controls = true;
+      this.focusFirst("controls");
 
       log("Controls call", this.isShow);
     },
@@ -159,6 +220,7 @@ export default {
     creditsCall() {
       this.resetFlags();
       this.flags.credits = true;
+      this.focusFirst("credits");
 
       log("Credits call", this.isShow);
     },
@@ -166,6 +228,7 @@ export default {
     endCall() {
       this.resetFlags();
       this.flags.end = true;
+      this.focusFirst("end");
 
       this.isStarted = false;
 
@@ -175,6 +238,7 @@ export default {
     continueCall() {
       this.resetFlags();
       this.flags.continue = true;
+      this.focusFirst("continue");
 
       log("Continue call", this.isShow);
     },
@@ -198,6 +262,7 @@ export default {
 
       this.resetFlags();
       this.flags.menu = this.isStarted ? false : true;
+      this.focusFirst("menu");
 
       if (this.isStarted) {
         this.$emit("back-to-game");
@@ -211,6 +276,7 @@ export default {
 
       this.isStarted = false;
       this.flags.end = false;
+      this.focusFirst("menu");
 
       log("Back to menu call", this.isShow);
     },
@@ -297,6 +363,8 @@ export default {
 
     enableVibration() {
       this.$store.commit("enableVibration");
+
+      this.emitter.emit("vibrate");
     },
 
     disableControls() {
@@ -338,15 +406,134 @@ export default {
         log(error);
       }
     },
+
+    downHandler() {
+      if (!this.focused) {
+        return false;
+      }
+
+      const [flag, id] = this.focused.split(".");
+
+      const refs = this.refs[flag];
+      const length = refs.length;
+
+      const index = refs.indexOf(id);
+
+      let newIndex = index + 1;
+
+      if (newIndex >= length) {
+        newIndex = length - 1;
+      }
+
+      this.focused = `${flag}.${refs[newIndex]}`;
+
+      return true;
+    },
+
+    upHandler() {
+      if (!this.focused) {
+        return false;
+      }
+
+      const [flag, id] = this.focused.split(".");
+
+      const refs = this.refs[flag];
+
+      const index = refs.indexOf(id);
+
+      let newIndex = index - 1;
+
+      if (newIndex <= 0) {
+        newIndex = 0;
+      }
+
+      this.focused = `${flag}.${refs[newIndex]}`;
+
+      return true;
+    },
+
+    leftHandler() {
+      if (!this.focused) {
+        return false;
+      }
+
+      const leftElement = this.$refs[`${this.focused}.prev`];
+
+      if (leftElement) {
+        leftElement.click();
+      }
+
+      return true;
+    },
+
+    rightHandler() {
+      if (!this.focused) {
+        return false;
+      }
+
+      const leftElement = this.$refs[`${this.focused}.next`];
+
+      if (leftElement) {
+        leftElement.click();
+      }
+
+      return true;
+    },
+
+    aHandler() {
+      if (!this.focused) {
+        return false;
+      }
+
+      log(`A press on: ${this.focused}`);
+
+      if (this.$refs[this.focused]) {
+        this.$refs[this.focused].click();
+      }
+
+      return true;
+    },
+
+    bHandler() {
+      if (!this.focused) {
+        return false;
+      }
+
+      log(`B press on: ${this.focused}`);
+
+      const [flag] = this.focused.split(".");
+
+      const refs = this.refs[flag];
+
+      console.log(refs.includes("back"));
+
+      if (refs.includes("back")) {
+        this.$refs[`${flag}.back`].click();
+      }
+
+      return true;
+    },
   },
 
   watch: {
-    isShow(newValue, oldValue) {
+    isShow(newValue) {
       if (newValue) {
         this.emitter.emit("openMenuScreen");
       } else {
         this.emitter.emit("closeMenuScreen");
       }
+    },
+
+    focused(newValue) {
+      if (!newValue) {
+        return false;
+      }
+
+      log(`New focused: ${newValue}`);
+
+      const [flag, id] = newValue.split(".");
+
+      this.lastFocused[flag] = id;
     },
   },
 
@@ -355,10 +542,28 @@ export default {
     this.emitter.on("openEndMenu", this.endCall);
     this.emitter.on("openStartMenu", this.openStartMenu);
 
+    this.emitter.on("pressDown", this.downHandler);
+    this.emitter.on("pressUp", this.upHandler);
+    this.emitter.on("pressLeft", this.leftHandler);
+    this.emitter.on("pressRight", this.rightHandler);
+    this.emitter.on("pressA", this.aHandler);
+    this.emitter.on("pressB", this.bHandler);
+
     window.addEventListener("blur", this.blurEvent);
   },
 
   beforeUnmount() {
+    this.emitter.off("openMenu", this.continueCall);
+    this.emitter.off("openEndMenu", this.endCall);
+    this.emitter.off("openStartMenu", this.openStartMenu);
+
     window.removeEventListener("blur", this.blurEvent);
+
+    this.emitter.off("pressDown", this.downHandler);
+    this.emitter.off("pressUp", this.upHandler);
+    this.emitter.off("pressLeft", this.leftHandler);
+    this.emitter.off("pressRight", this.rightHandler);
+    this.emitter.off("pressA", this.aHandler);
+    this.emitter.off("pressB", this.bHandler);
   },
 };
