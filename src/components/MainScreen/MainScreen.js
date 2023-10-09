@@ -2432,6 +2432,8 @@ export default {
           case "button_7":
             if (inMenu) {
               this.emitter.emit("pressRT");
+            } else {
+              this.current.userData.drop = true;
             }
             break;
           // Select
@@ -2457,49 +2459,44 @@ export default {
         }
       });
 
-      const throttledMovement = throttle(
-        (stickMoved, directionOfMovement, axisMovementValue) => {
-          if (stickMoved == "right_stick") {
-            switch (directionOfMovement) {
-              case "top":
-                this.rotateXMinus();
-                break;
-              case "bottom":
-                this.rotateXPlus();
-                break;
-              case "left":
-                this.rotateYMinus();
-                break;
-              case "right":
-                this.rotateYPlus();
-                break;
-            }
-          } else {
-            switch (directionOfMovement) {
-              case "top":
-                this.moveUp();
-                break;
-              case "bottom":
-                this.moveDown();
-                break;
-              case "left":
-                this.moveLeft();
-                break;
-              case "right":
-                this.moveRight();
-                break;
-            }
+      const throttledMovement = throttle((stickMoved, directionOfMovement) => {
+        if (stickMoved == "right_stick") {
+          switch (directionOfMovement) {
+            case "top":
+              this.rotateXMinus();
+              break;
+            case "bottom":
+              this.rotateXPlus();
+              break;
+            case "left":
+              this.rotateYMinus();
+              break;
+            case "right":
+              this.rotateYPlus();
+              break;
           }
-        },
-        150
-      );
+        } else {
+          switch (directionOfMovement) {
+            case "top":
+              this.moveUp();
+              break;
+            case "bottom":
+              this.moveDown();
+              break;
+            case "left":
+              this.moveLeft();
+              break;
+            case "right":
+              this.moveRight();
+              break;
+          }
+        }
+      }, 150);
 
       joypad.on("axis_move", (e) => {
-        const { stickMoved, directionOfMovement, axisMovementValue } = e.detail;
+        const { stickMoved, directionOfMovement } = e.detail;
 
-        const value = Math.abs(axisMovementValue);
-
-        throttledMovement(stickMoved, directionOfMovement, axisMovementValue);
+        throttledMovement(stickMoved, directionOfMovement);
       });
 
       return false;
