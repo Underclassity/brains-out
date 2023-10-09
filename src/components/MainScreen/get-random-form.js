@@ -111,7 +111,7 @@ export function getRandomForm() {
     );
   }
 
-  const isDevParts = Math.random() <= 0.05;
+  const isDevParts = Math.random() <= 0.01;
   const devId = Math.random() <= 0.5 ? "I" : "N";
 
   devParts = devParts.filter(
