@@ -22,6 +22,7 @@ import generatePit from "../../helpers/generate-pit.js";
 import log from "../../helpers/log.js";
 import randomBetween from "../../helpers/random-between.js";
 import roundValue from "../../helpers/round-value.js";
+import throttle from "../../helpers/throttle.js";
 
 import {
   moveDown,
@@ -2318,6 +2319,10 @@ export default {
 
       const { joypad } = window;
 
+      joypad.set({
+        axisMovementThreshold: 0.95,
+      });
+
       joypad.on("connect", (e) => {
         const { id } = e.gamepad;
 
@@ -2369,31 +2374,25 @@ export default {
             if (inMenu) {
               this.emitter.emit("pressA");
             } else {
-              this.rotateXMinus();
+              this.current.userData.drop = true;
             }
             break;
           // B
           case "button_1":
             if (inMenu) {
               this.emitter.emit("pressB");
-            } else {
-              this.rotateYPlus();
             }
             break;
           // Y
           case "button_2":
             if (inMenu) {
               this.emitter.emit("pressY");
-            } else {
-              this.rotateYMinus();
             }
             break;
           // X
           case "button_3":
             if (inMenu) {
               this.emitter.emit("pressX");
-            } else {
-              this.rotateXPlus();
             }
             break;
           //LB
@@ -2422,8 +2421,6 @@ export default {
           case "button_7":
             if (inMenu) {
               this.emitter.emit("pressRT");
-            } else {
-              this.current.userData.drop = true;
             }
             break;
           // Select
@@ -2449,8 +2446,34 @@ export default {
         }
       });
 
+      const throttledMovement = throttle(
+        (stickMoved, directionOfMovement, axisMovementValue) => {
+          if (stickMoved == "right_stick") {
+            switch (directionOfMovement) {
+              case "top":
+                this.rotateXMinus();
+                break;
+              case "bottom":
+                this.rotateXPlus();
+                break;
+              case "left":
+                this.rotateYMinus();
+                break;
+              case "right":
+                this.rotateYPlus();
+                break;
+            }
+          }
+        },
+        200
+      );
+
       joypad.on("axis_move", (e) => {
-        console.log("axis", e.detail);
+        const { stickMoved, directionOfMovement, axisMovementValue } = e.detail;
+
+        const value = Math.abs(axisMovementValue);
+
+        throttledMovement(stickMoved, directionOfMovement, axisMovementValue);
       });
 
       return false;

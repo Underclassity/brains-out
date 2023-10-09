@@ -114,10 +114,12 @@ export function rotateXPlus() {
 
   this.rotateCount += 1;
 
-  this.rotateHelper(this.current, "x", 90);
+  const result = this.rotateHelper(this.current, "x", 90);
   this.restrainElement(this.current);
 
-  this.playRandomRotateSound();
+  if (result) {
+    this.playRandomRotateSound();
+  }
 
   return this.current;
 }
@@ -134,10 +136,12 @@ export function rotateXMinus() {
 
   this.rotateCount += 1;
 
-  this.rotateHelper(this.current, "x", -90);
+  const result = this.rotateHelper(this.current, "x", -90);
   this.restrainElement(this.current);
 
-  this.playRandomRotateSound();
+  if (result) {
+    this.playRandomRotateSound();
+  }
 
   return this.current;
 }
@@ -154,10 +158,12 @@ export function rotateYPlus() {
 
   this.rotateCount += 1;
 
-  this.rotateHelper(this.current, "y", 90);
+  const result = this.rotateHelper(this.current, "y", 90);
   this.restrainElement(this.current);
 
-  this.playRandomRotateSound();
+  if (result) {
+    this.playRandomRotateSound();
+  }
 
   return this.current;
 }
@@ -174,10 +180,12 @@ export function rotateYMinus() {
 
   this.rotateCount += 1;
 
-  this.rotateHelper(this.current, "y", -90);
+  const result = this.rotateHelper(this.current, "y", -90);
   this.restrainElement(this.current);
 
-  this.playRandomRotateSound();
+  if (result) {
+    this.playRandomRotateSound();
+  }
 
   return this.current;
 }
@@ -194,10 +202,12 @@ export function rotateZPlus() {
 
   this.rotateCount += 1;
 
-  this.rotateHelper(this.current, "z", 90);
+  const result = this.rotateHelper(this.current, "z", 90);
   this.restrainElement(this.current);
 
-  this.playRandomRotateSound();
+  if (result) {
+    this.playRandomRotateSound();
+  }
 
   return this.current;
 }
@@ -214,10 +224,12 @@ export function rotateZMinus() {
 
   this.rotateCount += 1;
 
-  this.rotateHelper(this.current, "z", -90);
+  const result = this.rotateHelper(this.current, "z", -90);
   this.restrainElement(this.current);
 
-  this.playRandomRotateSound();
+  if (result) {
+    this.playRandomRotateSound();
+  }
 
   return this.current;
 }
