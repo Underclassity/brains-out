@@ -99,6 +99,8 @@ export default {
       "isControls",
       "isVibration",
 
+      "isGamepad",
+
       "achievements",
       "userAchievements",
     ]),
@@ -130,6 +132,14 @@ export default {
 
   methods: {
     focusFirst(id) {
+      if (this.isGamepad) {
+        id = this.currentView;
+      } else {
+        this.focused = false;
+        log("Focus first reset");
+        return false;
+      }
+
       if (this.lastFocused[id] && id == "menu") {
         this.focused = `${id}.${this.lastFocused[id]}`;
         return true;
@@ -547,6 +557,9 @@ export default {
     this.emitter.on("pressA", this.aHandler);
     this.emitter.on("pressB", this.bHandler);
 
+    this.emitter.on("enableGamepad", this.focusFirst);
+    this.emitter.on("disableGamepad", this.focusFirst);
+
     window.addEventListener("blur", this.blurEvent);
   },
 
@@ -563,5 +576,8 @@ export default {
     this.emitter.off("pressRight", this.rightHandler);
     this.emitter.off("pressA", this.aHandler);
     this.emitter.off("pressB", this.bHandler);
+
+    this.emitter.off("enableGamepad", this.focusFirst);
+    this.emitter.off("disableGamepad", this.focusFirst);
   },
 };

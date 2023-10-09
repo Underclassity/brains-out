@@ -45,6 +45,8 @@ export const store = createStore({
     isControls: false,
     isVibration: true,
 
+    isGamepad: false,
+
     isRandomColor: false,
     isColorizeLevel: true,
 
@@ -289,6 +291,18 @@ export const store = createStore({
 
     updateVibration(state, value) {
       state.isVibration = value ? true : false;
+    },
+
+    enableGamepad(state) {
+      state.isGamepad = true;
+    },
+
+    disableGamepad(state) {
+      state.isGamepad = false;
+    },
+
+    updateGamepad(state, value) {
+      state.isGamepad = value ? true : false;
     },
 
     incrementEndGameCounter(state) {

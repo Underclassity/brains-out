@@ -2329,6 +2329,15 @@ export default {
         log(`${id} connected!`);
 
         this.gamepad = e.gamepad;
+
+        this.$store.commit("enableGamepad");
+        this.emitter.emit("enableGamepad");
+      });
+
+      joypad.on("disconnect", (e) => {
+        this.gamepad = undefined;
+        this.$store.commit("disableGamepad");
+        this.emitter.emit("disableGamepad");
       });
 
       joypad.on("button_press", (e) => {
