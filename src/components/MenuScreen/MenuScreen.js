@@ -2,7 +2,7 @@ import { mapState } from "vuex";
 
 import assets from "../../store/assets.js";
 
-import { logMsg } from "../../helpers/log.js";
+import log from "../../helpers/log.js";
 
 import logoSrc from "../../assets/img/green-logo.png";
 
@@ -132,7 +132,7 @@ export default {
 
   methods: {
     log(msg) {
-      return logMsg(msg, this.$options.name);
+      return log(`[${this.$options.name}]:`, ...msg);
     },
 
     focusFirst(id) {

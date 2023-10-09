@@ -1,6 +1,6 @@
 import { mapState } from "vuex";
 
-import { logMsg } from "../../helpers/log.js";
+import log from "../../helpers/log.js";
 import sleep from "../../helpers/sleep.js";
 
 export default {
@@ -24,7 +24,7 @@ export default {
 
   methods: {
     log(msg) {
-      return logMsg(msg, this.$options.name);
+      return log(`[${this.$options.name}]:`, ...msg);
     },
 
     async openAchievement() {

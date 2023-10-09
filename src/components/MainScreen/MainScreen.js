@@ -16,10 +16,10 @@ import * as TWEEN from "@tweenjs/tween.js";
 import "joypad.js";
 
 import { loadPitParts, loadZombie } from "../../helpers/load-zombie.js";
-import { logMsg } from "../../helpers/log.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import generatePit from "../../helpers/generate-pit.js";
 // import getGroupSize from "../../helpers/get-group-size.js";
+import generatePit from "../../helpers/generate-pit.js";
+import log from "../../helpers/log.js";
 import randomBetween from "../../helpers/random-between.js";
 import roundValue from "../../helpers/round-value.js";
 import throttle from "../../helpers/throttle.js";
@@ -313,7 +313,7 @@ export default {
 
   methods: {
     log(msg) {
-      return logMsg(msg, this.$options.name);
+      return log(`[${this.$options.name}]:`, ...msg);
     },
 
     /**
