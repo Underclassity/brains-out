@@ -2463,31 +2463,63 @@ export default {
         if (stickMoved == "right_stick") {
           switch (directionOfMovement) {
             case "top":
-              this.rotateXMinus();
+              if (this.isMenu) {
+                return false;
+              } else {
+                this.rotateXMinus();
+              }
               break;
             case "bottom":
-              this.rotateXPlus();
+              if (this.isMenu) {
+                return false;
+              } else {
+                this.rotateXPlus();
+              }
               break;
             case "left":
-              this.rotateYMinus();
+              if (this.isMenu) {
+                return false;
+              } else {
+                this.rotateYMinus();
+              }
               break;
             case "right":
-              this.rotateYPlus();
+              if (this.isMenu) {
+                return false;
+              } else {
+                this.rotateYPlus();
+              }
               break;
           }
         } else {
           switch (directionOfMovement) {
             case "top":
-              this.moveUp();
+              if (this.isMenu) {
+                return false;
+              } else {
+                this.moveUp();
+              }
               break;
             case "bottom":
-              this.moveDown();
+              if (this.isMenu) {
+                return false;
+              } else {
+                this.moveDown();
+              }
               break;
             case "left":
-              this.moveLeft();
+              if (this.isMenu) {
+                return false;
+              } else {
+                this.moveLeft();
+              }
               break;
             case "right":
-              this.moveRight();
+              if (this.isMenu) {
+                return false;
+              } else {
+                this.moveRight();
+              }
               break;
           }
         }
