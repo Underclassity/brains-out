@@ -1,6 +1,6 @@
 import { mapState } from "vuex";
 
-import log from "../../helpers/log.js";
+import { logMsg } from "../../helpers/log.js";
 import sleep from "../../helpers/sleep.js";
 
 export default {
@@ -23,8 +23,12 @@ export default {
   },
 
   methods: {
+    log(msg) {
+      return logMsg(msg, this.$options.name);
+    },
+
     async openAchievement() {
-      log("Show achievement popup");
+      this.log("Show achievement popup");
       this.isShow = true;
       await sleep(2000);
       this.isShow = false;
@@ -32,12 +36,12 @@ export default {
     },
 
     closeAchievement() {
-      log("Close achievement popup");
+      this.log("Close achievement popup");
       this.isShow = false;
     },
 
     triggerAchievement() {
-      log("Trigger achievement popup");
+      this.log("Trigger achievement popup");
       if (this.isShow) {
         this.closeAchievement();
       } else {

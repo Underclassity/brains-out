@@ -16,10 +16,10 @@ import * as TWEEN from "@tweenjs/tween.js";
 import "joypad.js";
 
 import { loadPitParts, loadZombie } from "../../helpers/load-zombie.js";
+import { logMsg } from "../../helpers/log.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import generatePit from "../../helpers/generate-pit.js";
 // import getGroupSize from "../../helpers/get-group-size.js";
-import log from "../../helpers/log.js";
 import randomBetween from "../../helpers/random-between.js";
 import roundValue from "../../helpers/round-value.js";
 import throttle from "../../helpers/throttle.js";
@@ -111,6 +111,7 @@ export default {
       isPetrify: false,
       isFastDrop: true,
       isLevelHelpers: false,
+      isFirstTime: false,
 
       changeSpeedByLevels: true,
 
@@ -311,6 +312,10 @@ export default {
   },
 
   methods: {
+    log(msg) {
+      return logMsg(msg, this.$options.name);
+    },
+
     /**
      * Update render side
      *
@@ -323,7 +328,7 @@ export default {
       this.$nextTick(function () {
         clearTimeout(this.resizeTimeout);
         this.resizeTimeout = setTimeout(() => {
-          log("Resize call");
+          this.log("Resize call");
 
           const { container } = this.$refs;
 
@@ -356,7 +361,7 @@ export default {
     updateCameraProjection() {
       const { camera, controls, pitWidth, pitHeight, pitDepth } = this;
 
-      log(
+      this.log(
         `Update camera projection call: ${pitWidth}-${pitHeight}-${pitDepth}`
       );
 
@@ -393,10 +398,10 @@ export default {
       const newPlaybackRate =
         (this.speed - this.minSpeed) / this.speedStep / 10 / 7 + 1;
 
-      log("Update bg playbackrate to: ", newPlaybackRate);
+      this.log("Update bg playbackrate to: ", newPlaybackRate);
 
       if (this.bgSound) {
-        log("Change bg sound playbackrate to: ", newPlaybackRate);
+        this.log("Change bg sound playbackrate to: ", newPlaybackRate);
 
         this.pauseBgSound();
         this.bgSound.playbackRate = newPlaybackRate;
@@ -414,7 +419,7 @@ export default {
     speedUp() {
       this.$store.commit("updateSpeed", this.speedStep);
 
-      log("Update speed to: ", this.speed);
+      this.log("Update speed to: ", this.speed);
 
       this.updatePlaybackRate();
 
@@ -447,7 +452,7 @@ export default {
      * @return  {Boolean}  Result
      */
     acceptedCall() {
-      log("Accepted call");
+      this.log("Accepted call");
       this.isAccepted = true;
       this.isLogo = true;
 
@@ -470,7 +475,7 @@ export default {
      * @return  {Boolean}  Result
      */
     openMenu() {
-      log("Open menu");
+      this.log("Open menu");
 
       this.isPause = true;
       this.isMenu = true;
@@ -489,7 +494,7 @@ export default {
      * @return  {Boolean}               Result
      */
     closeMenu(emit = true) {
-      log("Close menu");
+      this.log("Close menu");
 
       this.isPause = false;
       this.isMenu = false;
@@ -531,7 +536,7 @@ export default {
      * @return  {Boolean}  Result
      */
     pauseCall() {
-      log("Pause call");
+      this.log("Pause call");
       this.isPause = true;
 
       return true;
@@ -543,7 +548,7 @@ export default {
      * @return  {Boolean}  Result
      */
     playCall() {
-      log("Play call");
+      this.log("Play call");
       this.isPause = false;
 
       return true;
@@ -558,7 +563,7 @@ export default {
      */
     updateSmooth(isSmooth) {
       this.isSmooth = isSmooth ? true : false;
-      log(`Smooth updated: ${this.isSmooth}`);
+      this.log(`Smooth updated: ${this.isSmooth}`);
 
       return true;
     },
@@ -572,7 +577,7 @@ export default {
      */
     updateInstanced(isInstanced) {
       this.isInstanced = isInstanced ? true : false;
-      log(`Instanced updated: ${this.isInstanced}`);
+      this.log(`Instanced updated: ${this.isInstanced}`);
 
       this.newGame();
 
@@ -581,18 +586,18 @@ export default {
 
     updateSimple(isSimple) {
       this.isSimple = isSimple ? true : false;
-      log(`Simple updated: ${this.isSimple}`);
+      this.log(`Simple updated: ${this.isSimple}`);
       this.newGame();
     },
 
     updateControls() {
       this.updateRendererSize();
-      log(`Controls updated: ${this.isControls}`);
+      this.log(`Controls updated: ${this.isControls}`);
     },
 
     updateSound(sound) {
       this.bgSoundId = sound;
-      log(`Update sound: ${sound}`);
+      this.log(`Update sound: ${sound}`);
 
       this.initAudio();
     },
@@ -605,7 +610,7 @@ export default {
      * @return  {Boolean}         Result
      */
     updateVolume(volume) {
-      log(`Update volume: ${volume}`);
+      this.log(`Update volume: ${volume}`);
 
       if (this.bgSound) {
         this.bgSound.setVolume(volume);
@@ -624,7 +629,7 @@ export default {
      * @return  {Boolean}           Result
      */
     updateFxVolume(fxVolume) {
-      log(`Update FX volume: ${fxVolume}`);
+      this.log(`Update FX volume: ${fxVolume}`);
 
       for (const id in this.dropSounds) {
         this.dropSounds[id].setVolume(fxVolume);
@@ -653,7 +658,7 @@ export default {
      * @return  {Boolean}             Result
      */
     updateBlocksType(blocksType) {
-      log(`Update blocks type: ${blocksType}`);
+      this.log(`Update blocks type: ${blocksType}`);
       return true;
     },
 
@@ -663,7 +668,7 @@ export default {
      * @return  {Boolean}  Result
      */
     newGame() {
-      log("New game call");
+      this.log("New game call");
 
       const { scene } = this;
 
@@ -997,7 +1002,7 @@ export default {
      * @return  {Array}            Collision points
      */
     findCollissionElements(element) {
-      // log(`Find collision elements: ${element.name}`);
+      //this.log(`Find collision elements: ${element.name}`);
 
       const childs = element.getObjectByName("childs").children;
 
@@ -1166,7 +1171,7 @@ export default {
 
         //     const nextLayerValue = layer[x][y];
 
-        //     // log(
+        //     //this.log(
         //     //   this.layers[zIndex + 1].map((xLayer) => xLayer.join("-")).join("\n")
         //     // );
 
@@ -1204,7 +1209,7 @@ export default {
      * @return  {Boolean}          Result
      */
     dropElement(element) {
-      log(`Drop element: ${element.name}`);
+      this.log(`Drop element: ${element.name}`);
 
       this.vibrateCall(100);
 
@@ -1274,7 +1279,7 @@ export default {
       // }
 
       // if (collisionPoints.length) {
-      //   // log(`Found ${collisionPoints.length} collision points`);
+      //   //this.log(`Found ${collisionPoints.length} collision points`);
 
       //   const uuids = collisionPoints.map((item) => item.uuid);
 
@@ -1322,7 +1327,7 @@ export default {
 
       const color = this.colorPalette[layer];
 
-      log(
+      this.log(
         `Colorize element ${
           element.name
         } on layer ${layer}: ${color.getHexString()}`,
@@ -1356,7 +1361,7 @@ export default {
 
       const { size } = this;
 
-      log(`Process layer delete: ${zIndex}`);
+      this.log(`Process layer delete: ${zIndex}`);
 
       // Update speed level
       if (this.changeSpeedByLevels) {
@@ -1416,7 +1421,7 @@ export default {
         })
         .filter((item) => item);
 
-      log(`Layers indexes after delete layer ${zIndex}`, layers);
+      this.log(`Layers indexes after delete layer ${zIndex}`, layers);
 
       this.layersElements.forEach((elements, index) => {
         elements.forEach((el) => {
@@ -1487,7 +1492,7 @@ export default {
         const scoreDiff =
           10 * (filledLevelsCounter - 1) * filledLevelsCounter + 10;
 
-        log(`Levels ${filledLevelsCounter} score: ${scoreDiff}`);
+        this.log(`Levels ${filledLevelsCounter} score: ${scoreDiff}`);
 
         this.changeScore(scoreDiff);
       } else {
@@ -1507,7 +1512,7 @@ export default {
     endGameCall(element) {
       const elementPoints = this.getElementLayerPoints(element);
 
-      log(`End game call on element: ${element.name}`);
+      this.log(`End game call on element: ${element.name}`);
 
       this.changeScore(elementPoints.length);
 
@@ -1616,7 +1621,7 @@ export default {
 
       // const position = element.position;
 
-      // log(
+      //this.log(
       //   `Petrify element: ${element.name}(${position.x.toFixed(
       //     1
       //   )}-${position.y.toFixed(1)}-${position.z.toFixed(1)})`
@@ -1670,7 +1675,7 @@ export default {
       //       this.changeScore(indexes.length);
       //       this.$store.commit("saveScore");
 
-      //       log(
+      //      this.log(
       //         `Element already petrified!(${x}-${y}-${z})(${pX}-${pY}-${pZ})`
       //       );
       //       this.isEnd = true;
@@ -1740,7 +1745,7 @@ export default {
 
       // this.updateLayersPreview();
 
-      // log(
+      //this.log(
       //   this.layers
       //     .map((layer) => {
       //       return layer.map((xLayer) => xLayer.join("-")).join("\n");
@@ -1798,16 +1803,16 @@ export default {
       const { x: sizeX, y: sizeY, z: sizeZ } = element.userData.size;
 
       // if (sizeBefore.x != sizeX) {
-      //   log("Move to X point");
+      //  this.log("Move to X point");
       //   element.translateX((sizeBefore.x - sizeX) / 2);
       // }
 
       // if (sizeBefore.y != sizeY) {
-      //   log("Move to Y point");
+      //  this.log("Move to Y point");
       //   element.translateY((sizeBefore.y - sizeY) / 2);
       // }
 
-      // log(
+      //this.log(
       //   element.userData.name,
       //   "position",
       //   {
@@ -1827,7 +1832,7 @@ export default {
       const yPosition = Math.round((position.y - sizeY / 2) * 100) / 100;
 
       if (!xPoints.includes(xPosition)) {
-        // log("x before", xPosition);
+        //this.log("x before", xPosition);
 
         xPoints.forEach((point, index, array) => {
           if (xPosition > point && xPosition < array[index + 1]) {
@@ -1835,11 +1840,11 @@ export default {
           }
         });
 
-        // log("x after", element.position.x);
+        //this.log("x after", element.position.x);
       }
 
       if (!yPoints.includes(yPosition)) {
-        // log("y before", yPosition);
+        //this.log("y before", yPosition);
 
         yPoints.forEach((point, index, array) => {
           if (yPosition > point && yPosition < array[index + 1]) {
@@ -1847,7 +1852,7 @@ export default {
           }
         });
 
-        // log("y after", element.position.y);
+        //this.log("y after", element.position.y);
       }
 
       // Restrain position
@@ -1879,15 +1884,15 @@ export default {
       // element.getWorldPosition(position);
 
       // if (newPosition.x != position.x) {
-      //   log(`X: ${position.x} -> ${newPosition.x}`);
+      //  this.log(`X: ${position.x} -> ${newPosition.x}`);
       // }
 
       // if (newPosition.y != position.y) {
-      //   log(`Y: ${position.y} -> ${newPosition.y}`);
+      //  this.log(`Y: ${position.y} -> ${newPosition.y}`);
       // }
 
       // if (newPosition.z != position.z) {
-      //   log(`Z: ${position.z} -> ${newPosition.z}`);
+      //  this.log(`Z: ${position.z} -> ${newPosition.z}`);
       // }
 
       return element;
@@ -1907,7 +1912,7 @@ export default {
 
       const [width, height, depth] = pitSize.split("x");
 
-      log(`Change pit size to ${pitSize}`);
+      this.log(`Change pit size to ${pitSize}`);
 
       // remove all child
       scene.children
@@ -2056,7 +2061,7 @@ export default {
      * @return  {Boolean}  Result
      */
     updatePreview() {
-      // log("Update preview call");
+      //this.log("Update preview call");
 
       const { next, pitLevels, pitWidth, pitHeight, camera, size } = this;
 
@@ -2330,7 +2335,7 @@ export default {
       joypad.on("connect", (e) => {
         const { id } = e.gamepad;
 
-        log(`${id} connected!`);
+        this.log(`${id} connected!`);
 
         this.gamepad = e.gamepad;
 
@@ -2347,7 +2352,7 @@ export default {
       joypad.on("button_press", (e) => {
         const inMenu = this.isMenu || !this.isAccepted;
 
-        log(`Press ${e.detail.buttonName}: menu ${inMenu}`);
+        this.log(`Press ${e.detail.buttonName}: menu ${inMenu}`);
 
         this.movesCounter += 1;
 
@@ -2445,6 +2450,10 @@ export default {
             break;
           // Pause
           case "button_9":
+            if (!this.isFirstTime) {
+              return false;
+            }
+
             if (inMenu) {
               this.closeMenu();
             } else {
@@ -2556,7 +2565,7 @@ export default {
           if (this.isMenu) {
             return false;
           } else {
-            // log("Press Q");
+            //this.log("Press Q");
             this.rotateZPlus();
           }
           break;
@@ -2564,7 +2573,7 @@ export default {
           if (this.isMenu) {
             return false;
           } else {
-            // log("Press E");
+            //this.log("Press E");
             this.rotateZMinus();
           }
           break;
@@ -2572,7 +2581,7 @@ export default {
           if (this.isMenu) {
             return false;
           } else {
-            // log("Press W");
+            //this.log("Press W");
             this.rotateXMinus();
           }
           break;
@@ -2580,7 +2589,7 @@ export default {
           if (this.isMenu) {
             return false;
           } else {
-            // log("Press S");
+            //this.log("Press S");
             this.rotateXPlus();
           }
           break;
@@ -2588,7 +2597,7 @@ export default {
           if (this.isMenu) {
             return false;
           } else {
-            // log("Press A");
+            //this.log("Press A");
             this.rotateYMinus();
           }
           break;
@@ -2596,7 +2605,7 @@ export default {
           if (this.isMenu) {
             return false;
           } else {
-            // log("Press D");
+            //this.log("Press D");
             this.rotateYPlus();
           }
           break;
@@ -2604,7 +2613,7 @@ export default {
           if (this.isMenu) {
             return false;
           } else {
-            // log("Press Up");
+            //this.log("Press Up");
             this.moveUp();
           }
           break;
@@ -2612,7 +2621,7 @@ export default {
           if (this.isMenu) {
             return false;
           } else {
-            // log("Press Down");
+            //this.log("Press Down");
             this.moveDown();
           }
           break;
@@ -2620,7 +2629,7 @@ export default {
           if (this.isMenu) {
             return false;
           } else {
-            // log("Press Left");
+            //this.log("Press Left");
             this.moveLeft();
           }
           break;
@@ -2628,7 +2637,7 @@ export default {
           if (this.isMenu) {
             return false;
           } else {
-            // log("Press Right");
+            //this.log("Press Right");
             this.moveRight();
           }
           break;
@@ -2636,14 +2645,18 @@ export default {
           if (this.isMenu) {
             return false;
           } else {
-            // log("Press Space");
+            //this.log("Press Space");
             // this.isPause = !this.isPause;
             this.current.userData.drop = true;
           }
 
           break;
         case "Escape":
-          // log("Press Escape");
+          //this.log("Press Escape");
+
+          if (!this.isFirstTime) {
+            return false;
+          }
 
           if (this.isMenu) {
             this.closeMenu();
@@ -2660,7 +2673,7 @@ export default {
      * @return  {Boolean}  Result
      */
     parseURLSearchParams() {
-      log("Parse URLSearchParams");
+      this.log("Parse URLSearchParams");
 
       const params = new URLSearchParams(window.location.search);
 
@@ -2674,7 +2687,7 @@ export default {
         }
 
         if (id in this.$data) {
-          log(`Update ${id}`, value);
+          this.log(`Update ${id}`, value);
 
           this.$data[id] = value;
         }
@@ -2704,7 +2717,7 @@ export default {
     progressCb({ name, total, loaded, percent }) {
       this.loadingProcessCache[name] = { total, loaded, percent };
 
-      log(`Loaded ${name}: ${this.loadPercent.toFixed(2)}`);
+      this.log(`Loaded ${name}: ${this.loadPercent.toFixed(2)}`);
 
       this.$store.commit("reportETA", this.loadPercent);
 
@@ -2716,21 +2729,21 @@ export default {
     },
 
     playBgSound() {
-      // log("Play bg sound: ", this.isWindowFocus);
+      //this.log("Play bg sound: ", this.isWindowFocus);
       if (this.bgSound && !this.bgSound.isPlaying && this.isWindowFocus) {
         this.bgSound.play();
       }
     },
 
     pauseBgSound() {
-      // log("Pause bg sound: ", this.isWindowFocus);
+      //this.log("Pause bg sound: ", this.isWindowFocus);
       if (this.bgSound?.isPlaying) {
         this.bgSound.pause();
       }
     },
 
     playMenuBgSound() {
-      // log("Play bg menu sound: ", this.isWindowFocus);
+      //this.log("Play bg menu sound: ", this.isWindowFocus);
       if (
         this.bgMenuSound &&
         !this.bgMenuSound.isPlaying &&
@@ -2741,14 +2754,14 @@ export default {
     },
 
     pauseMenuBgSound() {
-      // log("Pause bg menu sound: ", this.isWindowFocus);
+      //this.log("Pause bg menu sound: ", this.isWindowFocus);
       if (this.bgMenuSound?.isPlaying) {
         this.bgMenuSound.pause();
       }
     },
 
     playMusic() {
-      log("Play music: ", this.isWindowFocus);
+      this.log("Play music: ", this.isWindowFocus);
 
       this.isWindowFocus = true;
 
@@ -2756,7 +2769,7 @@ export default {
     },
 
     pauseMusic() {
-      log("Pause music");
+      this.log("Pause music");
 
       this.isWindowFocus = false;
 
@@ -2773,7 +2786,7 @@ export default {
      * @return  {Boolean}  Result
      */
     openMenuScreen() {
-      log("Opened menu screen: ", this.isWindowFocus);
+      this.log("Opened menu screen: ", this.isWindowFocus);
 
       if (!this.isWindowFocus || !this.bgSound || !this.bgMenuSound) {
         return false;
@@ -2819,7 +2832,9 @@ export default {
         return false;
       }
 
-      log("Closed menu screen: ", this.isWindowFocus);
+      this.log("Closed menu screen: ", this.isWindowFocus);
+
+      this.isFirstTime = true;
 
       const fadeOutTween = new TWEEN.Tween({
         volume: this.bgSound.getVolume(),
@@ -2865,7 +2880,7 @@ export default {
         return false;
       }
 
-      log("Vibrate call");
+      this.log("Vibrate call");
       navigator.vibrate(time);
 
       if (this.gamepad && window.joypad) {

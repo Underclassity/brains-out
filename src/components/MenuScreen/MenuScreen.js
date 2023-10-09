@@ -2,7 +2,7 @@ import { mapState } from "vuex";
 
 import assets from "../../store/assets.js";
 
-import log from "../../helpers/log.js";
+import { logMsg } from "../../helpers/log.js";
 
 import logoSrc from "../../assets/img/green-logo.png";
 
@@ -131,12 +131,16 @@ export default {
   },
 
   methods: {
+    log(msg) {
+      return logMsg(msg, this.$options.name);
+    },
+
     focusFirst(id) {
       if (this.isGamepad) {
         id = this.currentView;
       } else {
         this.focused = false;
-        log("Focus first reset");
+        this.log("Focus first reset");
         return false;
       }
 
@@ -153,7 +157,7 @@ export default {
 
       const firstRef = idRefs[0];
 
-      log(`Focus first ref: ${id}.${firstRef}`);
+      this.log(`Focus first ref: ${id}.${firstRef}`);
 
       this.focused = `${id}.${firstRef}`;
 
@@ -171,7 +175,7 @@ export default {
       this.flags.menu = true;
       this.focusFirst("menu");
 
-      log("Open start menu call", this.isShow);
+      this.log("Open start menu call", this.isShow);
     },
 
     openMenu() {
@@ -179,7 +183,7 @@ export default {
       this.flags.new = true;
       this.focusFirst("new");
 
-      log("Open menu call", this.isShow);
+      this.log("Open menu call", this.isShow);
     },
 
     closeMenu() {
@@ -187,7 +191,7 @@ export default {
 
       this.$emit("back-to-game");
 
-      log("Close menu call", this.isShow);
+      this.log("Close menu call", this.isShow);
     },
 
     newGameCall() {
@@ -195,7 +199,7 @@ export default {
       this.flags.new = true;
       this.focusFirst("new");
 
-      log("New game call", this.isShow);
+      this.log("New game call", this.isShow);
     },
 
     newGameCallForce() {
@@ -208,7 +212,7 @@ export default {
       this.flags.settings = true;
       this.focusFirst("settings");
 
-      log("Settings call", this.isShow);
+      this.log("Settings call", this.isShow);
     },
 
     achievementsCall() {
@@ -216,7 +220,7 @@ export default {
       this.flags.achievements = true;
       this.focusFirst("achievements");
 
-      log("Achievements call", this.isShow);
+      this.log("Achievements call", this.isShow);
     },
 
     controlsCall() {
@@ -224,7 +228,7 @@ export default {
       this.flags.controls = true;
       this.focusFirst("controls");
 
-      log("Controls call", this.isShow);
+      this.log("Controls call", this.isShow);
     },
 
     creditsCall() {
@@ -232,7 +236,7 @@ export default {
       this.flags.credits = true;
       this.focusFirst("credits");
 
-      log("Credits call", this.isShow);
+      this.log("Credits call", this.isShow);
     },
 
     endCall() {
@@ -242,7 +246,7 @@ export default {
 
       this.isStarted = false;
 
-      log("End call", this.isShow);
+      this.log("End call", this.isShow);
     },
 
     continueCall() {
@@ -250,7 +254,7 @@ export default {
       this.flags.continue = true;
       this.focusFirst("continue");
 
-      log("Continue call", this.isShow);
+      this.log("Continue call", this.isShow);
     },
 
     startAgainCall() {
@@ -262,7 +266,7 @@ export default {
 
       this.$emit("new-game");
 
-      log("Start again call", this.isShow);
+      this.log("Start again call", this.isShow);
     },
 
     back() {
@@ -278,7 +282,7 @@ export default {
         this.$emit("back-to-game");
       }
 
-      log("Back call", this.isShow);
+      this.log("Back call", this.isShow);
     },
 
     backToMenu() {
@@ -288,7 +292,7 @@ export default {
       this.flags.end = false;
       this.focusFirst("menu");
 
-      log("Back to menu call", this.isShow);
+      this.log("Back to menu call", this.isShow);
     },
 
     playClick() {
@@ -300,7 +304,7 @@ export default {
 
       this.$emit("new-game");
 
-      log("Play click call", this.isShow);
+      this.log("Play click call", this.isShow);
     },
 
     prevPitSize() {
@@ -402,7 +406,7 @@ export default {
     },
 
     async shareCall() {
-      log("Share call");
+      this.log("Share call");
 
       const { score } = this;
 
@@ -413,7 +417,7 @@ export default {
           text: `My score - ${score}! Can you play better?`,
         });
       } catch (error) {
-        log(error);
+        this.log(error);
       }
     },
 
@@ -495,7 +499,7 @@ export default {
         return false;
       }
 
-      log(`A press on: ${this.focused}`);
+      this.log(`A press on: ${this.focused}`);
 
       if (this.$refs[this.focused]) {
         this.$refs[this.focused].click();
@@ -509,7 +513,7 @@ export default {
         return false;
       }
 
-      log(`B press on: ${this.focused}`);
+      this.log(`B press on: ${this.focused}`);
 
       const [flag] = this.focused.split(".");
 
@@ -537,7 +541,7 @@ export default {
         return false;
       }
 
-      log(`New focused: ${newValue}`);
+      this.log(`New focused: ${newValue}`);
 
       const [flag, id] = newValue.split(".");
 

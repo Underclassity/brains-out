@@ -10,4 +10,20 @@ export function log(msg) {
   return true;
 }
 
+/**
+ * Log message with prefix helper
+ *
+ * @param   {String}  msg     Message
+ * @param   {String}  prefix  Prefix
+ *
+ * @return  {Boolean}         Result
+ */
+export function logMsg(msg, prefix) {
+  if (prefix?.length) {
+    return log(`[${prefix}]:`, msg);
+  }
+
+  return log(msg);
+}
+
 export default log;
