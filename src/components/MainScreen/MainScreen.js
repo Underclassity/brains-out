@@ -15,7 +15,11 @@ import * as TWEEN from "@tweenjs/tween.js";
 
 import "joypad.js";
 
-import { loadPitParts, loadZombie } from "../../helpers/load-zombie.js";
+import {
+  loadPitParts,
+  loadZombie,
+  loadDevParts,
+} from "../../helpers/load-zombie.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 // import getGroupSize from "../../helpers/get-group-size.js";
 import generatePit from "../../helpers/generate-pit.js";
@@ -206,6 +210,7 @@ export default {
 
       zombieParts: [],
       pitParts: [],
+      devParts: [],
 
       fps: 0,
       frames: 0,
@@ -288,6 +293,9 @@ export default {
       count += this.rotationSoundId.length;
 
       count += 3;
+
+      // Dev parts
+      count += 1;
 
       // // 10 objects to download
       // const count = 10;
@@ -2021,6 +2029,7 @@ export default {
     async loadZombie() {
       const zombie = await loadZombie(this.progressCb);
       const pitParts = await loadPitParts(this.progressCb);
+      const devParts = await loadDevParts(this.progressCb);
 
       if (!zombie || !pitParts) {
         this.isSimple = true;
@@ -2046,6 +2055,23 @@ export default {
       // Save all parts
       for (const child of zombie.children) {
         this.zombieParts.push(child);
+
+        if (Array.isArray(child.material)) {
+          child.material.forEach((item, index, array) => {
+            item.shininess = 0;
+            item.specular = new Color(0x00_00_00);
+            item.flatShading = true;
+          });
+        } else {
+          child.material.shininess = 0;
+          child.material.specular = new Color(0x00_00_00);
+          child.material.flatShading = true;
+        }
+      }
+
+      // Save all parts
+      for (const child of devParts.children) {
+        this.devParts.push(child);
 
         if (Array.isArray(child.material)) {
           child.material.forEach((item, index, array) => {

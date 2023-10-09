@@ -53,8 +53,9 @@ export function getRandomForm() {
   // log("Get random form call");
 
   const { size, isSimple, zombieParts, blocksType } = this;
+  let { devParts } = this;
 
-  const formFunctions = [
+  let formFunctions = [
     generateP0Form,
     generateP1Form,
     generateP2Form,
@@ -110,11 +111,26 @@ export function getRandomForm() {
     );
   }
 
+  const isDevParts = Math.random() <= 0.05;
+  const devId = Math.random() <= 0.5 ? "I" : "N";
+
+  devParts = devParts.filter(
+    (item) => item.name[item.name.length - 1] == devId
+  );
+
+  if (isDevParts) {
+    formFunctions = [generateP2Form];
+  }
+
   const formFunction =
     formFunctions[Math.floor(Math.random() * formFunctions.length)];
 
   // Create element
-  const element = formFunction(size, zombieParts, isSimple);
+  const element = formFunction(
+    size,
+    isDevParts ? devParts : zombieParts,
+    isSimple
+  );
 
   this.restrainElement(element);
 
