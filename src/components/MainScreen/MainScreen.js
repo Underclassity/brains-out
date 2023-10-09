@@ -2450,21 +2450,19 @@ export default {
 
       const throttledMovement = throttle(
         (stickMoved, directionOfMovement, axisMovementValue) => {
-          if (stickMoved == "right_stick") {
-            switch (directionOfMovement) {
-              case "top":
-                this.rotateXMinus();
-                break;
-              case "bottom":
-                this.rotateXPlus();
-                break;
-              case "left":
-                this.rotateYMinus();
-                break;
-              case "right":
-                this.rotateYPlus();
-                break;
-            }
+          switch (directionOfMovement) {
+            case "top":
+              this.rotateXMinus();
+              break;
+            case "bottom":
+              this.rotateXPlus();
+              break;
+            case "left":
+              this.rotateYMinus();
+              break;
+            case "right":
+              this.rotateYPlus();
+              break;
           }
         },
         200
