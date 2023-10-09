@@ -484,16 +484,20 @@ export default {
     /**
      * Close menu call
      *
-     * @return  {Boolean}  Result
+     * @param   {Boolean}  [emit=true]  Emitter call flag
+     *
+     * @return  {Boolean}               Result
      */
-    closeMenu() {
+    closeMenu(emit = true) {
       log("Close menu");
 
       this.isPause = false;
       this.isMenu = false;
       this.isLogo = false;
 
-      this.emitter.emit("closeMenu");
+      if (emit) {
+        this.emitter.emit("closeMenu");
+      }
 
       return true;
     },
@@ -516,7 +520,7 @@ export default {
      * @return  {Boolean}  Result
      */
     backToGameCall() {
-      this.closeMenu();
+      this.closeMenu(false);
 
       return true;
     },

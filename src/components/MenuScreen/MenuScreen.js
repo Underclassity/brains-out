@@ -547,6 +547,7 @@ export default {
 
   mounted() {
     this.emitter.on("openMenu", this.continueCall);
+    this.emitter.on("closeMenu", this.closeMenu);
     this.emitter.on("openEndMenu", this.endCall);
     this.emitter.on("openStartMenu", this.openStartMenu);
 
@@ -565,6 +566,7 @@ export default {
 
   beforeUnmount() {
     this.emitter.off("openMenu", this.continueCall);
+    this.emitter.off("closeMenu", this.closeMenu);
     this.emitter.off("openEndMenu", this.endCall);
     this.emitter.off("openStartMenu", this.openStartMenu);
 
