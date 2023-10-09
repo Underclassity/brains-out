@@ -2488,9 +2488,7 @@ export default {
               return false;
             }
 
-            if (inMenu) {
-              this.closeMenu();
-            } else {
+            if (!inMenu) {
               this.openMenu();
             }
             break;
@@ -2692,9 +2690,7 @@ export default {
             return false;
           }
 
-          if (this.isMenu) {
-            this.closeMenu();
-          } else {
+          if (!this.isMenu) {
             this.openMenu();
           }
           break;

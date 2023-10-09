@@ -56,8 +56,6 @@ export function rotateHelper(element, axisType = "x", angle = 90) {
 
   const { xy } = this.getCollisionPoints(dummy);
 
-  console.log(xy);
-
   if (xy?.length) {
     if (dummy.dispose) {
       dummy.dispose();
