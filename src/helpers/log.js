@@ -5,8 +5,13 @@
  *
  * @return  {Boolean}      Result
  */
-export function log(...msg) {
-  console.debug(...arguments);
+export function log(msg) {
+  if (arguments.length > 1) {
+    console.debug(...arguments);
+  } else {
+    console.debug(msg);
+  }
+
   return true;
 }
 

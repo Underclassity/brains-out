@@ -23,8 +23,8 @@ export default {
   },
 
   methods: {
-    log(msg) {
-      return log(`[${this.$options.name}]:`, ...msg);
+    log() {
+      return log(`[${this.$options.name}]:`, ...arguments);
     },
 
     async openAchievement() {
