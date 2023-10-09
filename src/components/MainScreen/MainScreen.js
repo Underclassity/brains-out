@@ -2952,7 +2952,7 @@ export default {
         value: oldValue,
       });
       this.showSpeedTween.easing(TWEEN.Easing.Quadratic.In);
-      this.showSpeedTween.to({ value: newValue }, 700 / this.speed);
+      this.showSpeedTween.to({ value: newValue }, 300 / this.speed);
       this.showSpeedTween.onUpdate(({ value }) => {
         this.showSpeed = roundValue(value, 2);
       });
@@ -2975,7 +2975,7 @@ export default {
         value: oldValue,
       });
       this.showScoreTween.easing(TWEEN.Easing.Quadratic.In);
-      this.showScoreTween.to({ value: newValue }, 700 / this.speed);
+      this.showScoreTween.to({ value: newValue }, 300 / this.speed);
       this.showScoreTween.onUpdate(({ value }) => {
         this.showScore = Math.round(value);
       });
