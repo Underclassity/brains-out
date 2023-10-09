@@ -258,6 +258,7 @@
         cursor: pointer
         position: relative
         box-shadow: inset 0px 20px 20px -10px rgba(white, 0.3), inset 0px -20px 20px -10px rgba(black, 0.3)
+        transition: background-color 2s
 
         @media(max-width 767px)
             border: 2px solid #222
@@ -284,6 +285,9 @@
 
             @media(max-width 768px)
                 margin-top: 4px
+
+        &--blinking
+            animation: blinker 2s linear infinite
 
     &--menu
         position: fixed
@@ -419,3 +423,7 @@
     &-text
         font-size: 50px
         line-height: 56px
+
+@keyframes blinker
+  50%
+    background-color: #FF4C4C
