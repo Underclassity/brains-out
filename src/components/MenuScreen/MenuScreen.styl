@@ -169,9 +169,6 @@
         position: relative
         box-shadow: inset 0px 20px 20px -10px rgba(white, 0.3), inset 0px -20px 20px -10px rgba(black, 0.3)
 
-        &.focused
-            border: 5px solid rgba(black, 0.6)
-
         @media(max-width 767px)
             border: 2px solid #222
             font-size: 26px
@@ -187,6 +184,7 @@
             background-color: rgba(white, 0.2)
             border-radius: 50%
 
+        &.focused,
         &:hover
             background-color: rgba(yellow, 0.6)
 
@@ -196,12 +194,14 @@
         &--new
             background-color: green
 
+            &.focused,
             &:hover
                 background-color: rgba(green, 0.6)
 
         &--red
             background-color: red
 
+            &.focused,
             &:hover
                 background-color: rgba(red, 0.6)
 

@@ -505,8 +505,6 @@ export default {
 
       const refs = this.refs[flag];
 
-      console.log(refs.includes("back"));
-
       if (refs.includes("back")) {
         this.$refs[`${flag}.back`].click();
       }

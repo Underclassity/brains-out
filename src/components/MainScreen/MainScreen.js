@@ -2336,6 +2336,8 @@ export default {
 
         log(`Press ${e.detail.buttonName}: menu ${inMenu}`);
 
+        this.movesCounter += 1;
+
         switch (e.detail.buttonName) {
           // Left
           case "button_14":
