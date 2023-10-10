@@ -49,14 +49,14 @@ export function rotateHelper(element, axisType = "x", angle = 90) {
 
   const childs = element.getObjectByName("childs");
 
-  let dummy = childs.clone();
-  dummy.rotateOnWorldAxis(axis, angleValue);
-  dummy.userData.size = getGroupSize(dummy);
+  let dummy = element.clone();
+  dummy.getObjectByName("childs").rotateOnWorldAxis(axis, angleValue);
+  dummy.userData.size = getGroupSize(dummy.getObjectByName("childs"));
   this.restrainElement(dummy);
 
-  const { xy } = this.getCollisionPoints(dummy);
+  const { cover } = this.getCollisionPoints(dummy);
 
-  if (xy?.length) {
+  if (cover?.length) {
     if (dummy.dispose) {
       dummy.dispose();
     }

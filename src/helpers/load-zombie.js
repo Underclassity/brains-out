@@ -1,5 +1,4 @@
 import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
-import { BufferGeometryLoader } from "three/src/loaders/BufferGeometryLoader.js";
 
 import log from "./log.js";
 
