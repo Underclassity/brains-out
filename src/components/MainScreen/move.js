@@ -234,30 +234,39 @@ export function rotateZMinus() {
   return this.current;
 }
 
-export function randomRotate() {
+/**
+ * Random rotate helper
+ *
+ * @param   {Number}  [count=1]  Rotate count
+ *
+ * @return  {Boolean}            Result
+ */
+export function randomRotate(count = 1) {
   // log("Random rotate call");
 
-  const rotateNumber = randomBetween(0, 5);
+  for (let i = 0; i < count; i++) {
+    const rotateNumber = randomBetween(0, 5);
 
-  switch (rotateNumber) {
-    case 0:
-      this.rotateXMinus();
-      break;
-    case 1:
-      this.rotateXPlus();
-      break;
-    case 2:
-      this.rotateYMinus();
-      break;
-    case 3:
-      this.rotateYPlus();
-      break;
-    case 4:
-      this.rotateZMinus();
-      break;
-    case 5:
-      this.rotateZPlus();
-      break;
+    switch (rotateNumber) {
+      case 0:
+        this.rotateXMinus();
+        break;
+      case 1:
+        this.rotateXPlus();
+        break;
+      case 2:
+        this.rotateYMinus();
+        break;
+      case 3:
+        this.rotateYPlus();
+        break;
+      case 4:
+        this.rotateZMinus();
+        break;
+      case 5:
+        this.rotateZPlus();
+        break;
+    }
   }
 
   return true;

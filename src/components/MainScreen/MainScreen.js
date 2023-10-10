@@ -33,13 +33,14 @@ import {
   moveLeft,
   moveRight,
   moveUp,
+  playRandomRotateSound,
+  randomRotate,
   rotateXMinus,
   rotateXPlus,
   rotateYMinus,
   rotateYPlus,
   rotateZMinus,
   rotateZPlus,
-  playRandomRotateSound,
 } from "./move.js";
 import {
   positionHelper,
@@ -1782,6 +1783,7 @@ export default {
     moveLeft,
     moveRight,
 
+    randomRotate,
     rotateXMinus,
     rotateXPlus,
     rotateYMinus,
@@ -2693,6 +2695,12 @@ export default {
 
           if (!this.isMenu) {
             this.openMenu();
+          }
+          break;
+        case "KeyR":
+          if (!this.isMenu) {
+            this.movesCounter += 2;
+            this.randomRotate(3);
           }
           break;
       }
