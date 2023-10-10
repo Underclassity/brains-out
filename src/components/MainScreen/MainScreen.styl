@@ -259,6 +259,7 @@
         position: relative
         box-shadow: inset 0px 20px 20px -10px rgba(white, 0.3), inset 0px -20px 20px -10px rgba(black, 0.3)
         transition: background-color 2s
+        position: relative
 
         @media(max-width 767px)
             border: 2px solid #222
@@ -288,6 +289,13 @@
 
         &--blinking
             animation: blinker 2s linear infinite
+
+        &--inc
+            position: absolute
+            top: calc(66px + 20px)
+            left: 50%
+            color: #FF4C4C
+            transform: translateX(-50%)
 
     &--menu
         position: fixed
@@ -427,3 +435,11 @@
 @keyframes blinker
   50%
     background-color: #FF4C4C
+
+.slide-up-enter-active
+    transition: all 0.3s ease-out
+
+.slide-up-enter-from,
+.slide-up-leave-to
+    transform: translateX(-50%) translateY(50%)
+    opacity: 0

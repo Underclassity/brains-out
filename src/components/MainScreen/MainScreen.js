@@ -143,6 +143,7 @@ export default {
       showScore: 0,
       showSpeed: 0,
       showBestScore: 0,
+      scoreIncrement: 0,
 
       bgSoundId: "ZombiesAreComing.aac",
       bgMenuSoundId: "Rising.aac",
@@ -2964,6 +2965,18 @@ export default {
       if (newValue >= 300) {
         this.emitter.emit("addAchievement", "proud-of-you");
       }
+
+      if (this.scoreTimeout) {
+        this.scoreIncrement = 0;
+        clearTimeout(this.scoreTimeout);
+      }
+
+      this.scoreTimeout = setTimeout(() => {
+        this.scoreIncrement = 0;
+        this.scoreTimeout = undefined;
+      }, 350);
+
+      this.scoreIncrement = newValue - oldValue;
 
       this.updatePlaybackRate();
 
