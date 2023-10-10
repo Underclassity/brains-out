@@ -2925,6 +2925,27 @@ export default {
 
       return true;
     },
+
+    /**
+     * Controls call helper
+     *
+     * @param   {String}  callId  Function ID
+     *
+     * @return  {Boolean}         Result
+     */
+    controlsCallHelper(callId) {
+      if (this.isMenu) {
+        return false;
+      }
+
+      this.movesCounter += 1;
+
+      if (this[callId]) {
+        this[callId]();
+      }
+
+      return true;
+    },
   },
 
   watch: {

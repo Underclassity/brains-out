@@ -136,38 +136,38 @@
                 .controls--columns
                     .controls--column
                         //- W
-                        .controls--button.controls--button--s(v-on:click="rotateXPlus")
+                        .controls--button.controls--button--s(v-on:click="controlsCallHelper('rotateXPlus')")
                             .material-symbols-outlined switch_access_shortcut
                         //- A
-                        .controls--button.controls--button--a(v-on:click="rotateYMinus")
+                        .controls--button.controls--button--a(v-on:click="controlsCallHelper('rotateYMinus')")
                             .material-symbols-outlined switch_access_shortcut
                         //- Q
-                        .controls--button.controls--button--q(v-on:click="rotateZPlus")
+                        .controls--button.controls--button--q(v-on:click="controlsCallHelper('rotateZPlus')")
                             .material-symbols-outlined forward_media
                     .controls--column
                         //- S
-                        .controls--button.controls--button--w(v-on:click="rotateXMinus")
+                        .controls--button.controls--button--w(v-on:click="controlsCallHelper('rotateXMinus')")
                             .material-symbols-outlined switch_access_shortcut
                         //- D
-                        .controls--button.controls--button--d(v-on:click="rotateYPlus")
+                        .controls--button.controls--button--d(v-on:click="controlsCallHelper('rotateYPlus')")
                             .material-symbols-outlined switch_access_shortcut
                         //- E
-                        .controls--button.controls--button--e(v-on:click="rotateZMinus")
+                        .controls--button.controls--button--e(v-on:click="controlsCallHelper('rotateZMinus')")
                             .material-symbols-outlined forward_media
 
             .controls--column.controls--column--buttons
-                .controls--button(v-on:click="moveUp")
+                .controls--button(v-on:click="controlsCallHelper('moveUp')")
                     .material-symbols-outlined arrow_upward
                 .controls--buttons
-                    .controls--button(v-on:click="moveLeft")
+                    .controls--button(v-on:click="controlsCallHelper('moveLeft')")
                         .material-symbols-outlined arrow_back
-                    .controls--button(v-on:click="moveRight")
+                    .controls--button(v-on:click="controlsCallHelper('moveRight')")
                         .material-symbols-outlined arrow_forward
-                .controls--button(v-on:click="moveDown")
+                .controls--button(v-on:click="controlsCallHelper('moveDown')")
                     .material-symbols-outlined arrow_downward
 
         .controls--spacebar
-            .controls--button.controls--button--spacebar(v-on:click="drop")
+            .controls--button.controls--button--spacebar(v-on:click="controlsCallHelper('drop')")
                 span Drop
 
         //- .control-item.control-item-left(v-on:click="moveLeft" v-if="isControls")
