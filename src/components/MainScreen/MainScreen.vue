@@ -4,12 +4,17 @@
 
     .navigation
         .navigation--item(v-bind:class="{ 'navigation--item--blinking': score > maxScore }") Best Score: {{ score > maxScore ? score : maxScore }}
+
         .navigation--item Score: {{ showScore }}
             Transition(
                 :duration="150"
                 name="slide-up"
             )
-                .navigation--item--inc(v-show="scoreIncrement > 0") {{ scoreIncrement > 0 ? `+${scoreIncrement}` : '' }}
+                .navigation--item--inc(
+                    v-show="scoreIncrement > 0"
+                    v-bind:class="{ 'navigation--item--inc--yellow':  scoreIncrement >= 10 && scoreIncrement < 20, 'navigation--item--inc--red':  scoreIncrement >= 20 }"
+                ) {{ scoreIncrement > 0 ? `+${scoreIncrement}` : '' }}
+
         .navigation--item Speed: {{ showSpeed }}
 
     .navigation--item.navigation--menu(v-on:click="openMenu")
