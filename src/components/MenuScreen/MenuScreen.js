@@ -45,7 +45,9 @@ export default {
 
       isStarted: false,
 
-      isShare: "share" in navigator,
+      isShare:
+        "share" in navigator &&
+        navigator.canShare({ url: "", text: "", title: "" }),
 
       assets,
 
@@ -526,6 +528,12 @@ export default {
 
       return true;
     },
+
+    checkSharePermissions() {
+      this.isShare = navigator.canShare({ url: "", text: "", title: "" });
+
+      return this.isShare;
+    },
   },
 
   watch: {
@@ -567,6 +575,8 @@ export default {
     this.emitter.on("disableGamepad", this.focusFirst);
 
     window.addEventListener("blur", this.blurEvent);
+
+    this.checkSharePermissions();
   },
 
   beforeUnmount() {

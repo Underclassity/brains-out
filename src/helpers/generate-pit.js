@@ -210,21 +210,26 @@ export function addPlaneHelpers(width, height, depth, size, pit) {
   const pitMaterial = new MeshBasicMaterial({
     color: new Color(0x381402),
   });
+
   const bottomGeometry = new PlaneGeometry(width, height);
   const pitBottomMesh = new Mesh(bottomGeometry, pitMaterial);
   const leftRightGeometry = new PlaneGeometry(depth, height);
   const topBottomGeometry = new PlaneGeometry(depth, width);
+
   const leftMesh = new Mesh(leftRightGeometry, pitMaterial);
   const rightMesh = new Mesh(leftRightGeometry, pitMaterial);
   const topMesh = new Mesh(topBottomGeometry, pitMaterial);
   const bottomMesh = new Mesh(topBottomGeometry, pitMaterial);
+
   pitBottomMesh.position.setZ(-depth * 1.5);
+
   leftMesh.rotateY(MathUtils.degToRad(90));
   rightMesh.rotateY(MathUtils.degToRad(-90));
   topMesh.rotateY(MathUtils.degToRad(90));
   topMesh.rotateX(MathUtils.degToRad(90));
   bottomMesh.rotateY(MathUtils.degToRad(90));
   bottomMesh.rotateX(MathUtils.degToRad(-90));
+
   leftMesh.position.setX(-width / 2 - size);
   rightMesh.position.setX(width / 2 + size);
   topMesh.position.setY(height / 2 + size);
@@ -233,20 +238,25 @@ export function addPlaneHelpers(width, height, depth, size, pit) {
   rightMesh.position.setZ(-depth / 2);
   topMesh.position.setZ(-depth / 2);
   bottomMesh.position.setZ(-depth / 2);
+
   pit.add(pitBottomMesh);
   pit.add(leftMesh);
   pit.add(rightMesh);
   pit.add(topMesh);
   pit.add(bottomMesh);
+
   const grassPlaneMaterial = new MeshBasicMaterial({
     color: new Color(0x18ba4b),
   });
+
   const topBottomGrassGeometry = new PlaneGeometry(10 * 2 + width, 9);
   const leftRightGrassGeometry = new PlaneGeometry(10 - 1, height + 2);
+
   const topGrassMesh = new Mesh(topBottomGrassGeometry, grassPlaneMaterial);
   const bottomGrassMesh = new Mesh(topBottomGrassGeometry, grassPlaneMaterial);
   const leftGrassMesh = new Mesh(leftRightGrassGeometry, grassPlaneMaterial);
   const rightGrassMesh = new Mesh(leftRightGrassGeometry, grassPlaneMaterial);
+
   topGrassMesh.position.setY(height / 2 + 10 / 2 + size / 2);
   bottomGrassMesh.position.setY(-height / 2 - 10 / 2 - size / 2);
   leftGrassMesh.position.setX(-width / 2 - 10 / 2 - size / 2);
@@ -255,6 +265,7 @@ export function addPlaneHelpers(width, height, depth, size, pit) {
   bottomGrassMesh.position.setZ(-size / 2);
   leftGrassMesh.position.setZ(-size / 2);
   rightGrassMesh.position.setZ(-size / 2);
+
   pit.add(topGrassMesh);
   pit.add(bottomGrassMesh);
   pit.add(leftGrassMesh);
