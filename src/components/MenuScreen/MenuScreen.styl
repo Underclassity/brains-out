@@ -39,6 +39,12 @@
             width: 100%
             max-width: 500px
 
+        @media(max-width 767px)
+            max-width: 300px
+
+        @media(max-height 900px)
+            max-width: 300px
+
     &--title
         font-size: 52px
         line-height: 56px
@@ -47,11 +53,19 @@
             font-size: 26px
             line-height: 30px
 
+        @media(max-height 900px)
+            font-size: 26px
+            line-height: 30px
+
     &--label
         font-size: 32px
         line-height: 36px
 
         @media(max-width 767px)
+            font-size 28px
+            line-height: 32px
+
+        @media(max-height 900px)
             font-size 28px
             line-height: 32px
 
@@ -81,6 +95,9 @@
             @media(max-width 767px)
                 transform: scale(0.7)
 
+            @media(max-height 900px)
+                transform: scale(0.7)
+
             &:before
                 content: ""
                 position: absolute
@@ -107,6 +124,9 @@
             box-shadow: inset 0px 20px 20px -10px rgba(white, 0.3), inset 0px -20px 20px -10px rgba(black, 0.3)
 
             @media(max-width 767px)
+                transform: scale(0.7)
+
+            @media(max-height 900px)
                 transform: scale(0.7)
 
             &:before
@@ -138,6 +158,15 @@
             box-shadow: inset 0px 20px 20px -10px rgba(white, 0.3), inset 0px -20px 20px -10px rgba(black, 0.3)
 
             @media(max-width 767px)
+                border-radius: 10px
+                padding: 8px
+                border: 2px solid #222
+                font-size: 28px
+                line-height: 32px
+
+            @media(max-height 900px)
+                border-radius: 10px
+                padding: 8px
                 border: 2px solid #222
                 font-size: 28px
                 line-height: 32px
@@ -170,6 +199,11 @@
         box-shadow: inset 0px 20px 20px -10px rgba(white, 0.3), inset 0px -20px 20px -10px rgba(black, 0.3)
 
         @media(max-width 767px)
+            border: 2px solid #222
+            font-size: 26px
+            line-height: 30px
+
+        @media(max-height 900px)
             border: 2px solid #222
             font-size: 26px
             line-height: 30px
