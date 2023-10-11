@@ -140,6 +140,10 @@ export function getRandomForm() {
   //   )}-${element.position.y.toFixed(1)}-${element.position.z.toFixed(1)})`
   // );
 
+  if (isDevParts) {
+    element.userData.devId = devId;
+  }
+
   return element;
 }
 

@@ -85,6 +85,14 @@ export function createElement() {
 
   this.updatePreview();
 
+  if (this.current.userData.devId) {
+    if (this.current.userData.devId == "I") {
+      this.emitter.emit("addAchievement", "skater-boy");
+    } else if (this.current.userData.devId == "N") {
+      this.emitter.emit("addAchievement", "hoodie-boy");
+    }
+  }
+
   return element;
 }
 

@@ -30,6 +30,16 @@ export const achievements = {
     title: "Speedy and glorious",
     desc: "Complete a level after completing the previous one",
   },
+  "skater-boy": {
+    icon: "skateboarding",
+    title: "Skater boy",
+    desc: "You have been visited by code dev",
+  },
+  "hoodie-boy": {
+    icon: "brush",
+    title: "Hoodie boy",
+    desc: "You have been visited by art dev",
+  },
 
   // Not done yet
   // "fast-and-furious": {
