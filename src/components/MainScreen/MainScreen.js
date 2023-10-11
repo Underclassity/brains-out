@@ -218,7 +218,7 @@ export default {
       fps: 0,
       frames: 0,
       pixelRatio: window.devicePixelRatio,
-      antialias: true,
+      antialias: false,
       prevTime: Date.now(),
 
       loopCb: [],
@@ -1217,7 +1217,9 @@ export default {
      * @return  {Boolean}  Result
      */
     drop() {
-      this.dropElement(this.current);
+      this.vibrateCall(100);
+
+      this.current.userData.drop = true;
       return true;
     },
 
