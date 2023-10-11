@@ -110,10 +110,10 @@
         .menu--assets--title(v-show="flags.credits") Assets
 
         .menu--assets(v-show="flags.credits" v-for="asset of assets" :key="asset.title")
-            a.menu--assets--link(:href="asset.link") {{ asset.title }}
+            a.menu--assets--link(:href="asset.link" target="_blank") {{ asset.title }}
             .menu--assets--author - {{ asset.author }}
             a.menu--assets--link(v-if="asset.authorLink" :href="asset.authorLink" target="_blank") ({{ asset.authorLink }})
-            a(:href="asset.licenseLink")
+            a(:href="asset.licenseLink" target="_blank")
                 img.menu--assets--license(:src="asset.licenseImage")
 
         .menu--buttons(v-show="flags.credits")
