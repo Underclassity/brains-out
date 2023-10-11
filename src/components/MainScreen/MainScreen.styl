@@ -392,9 +392,7 @@
             margin-right 2px
 
 .level-item
-    width: 100%
-    height: 100%
-    min-width: 60px
+    width: 60px
     // width: 60px
     // height: 60px
     box-sizing: border-box
@@ -410,16 +408,16 @@
     aspect-ratio: 1
 
     @media(max-height 920px)
-        min-width: 40px
+        width: 40px
         padding: 8px
 
     @media(max-height 600px)
-        min-width: 30px
+        width: 30px
         padding: 4px
 
     @media(max-width 768px)
+        width: 100%
         max-width: 40px
-        min-width: unset
         margin-bottom: 0px
         border: 2px solid #222
         // width: 30px

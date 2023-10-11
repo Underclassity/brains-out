@@ -217,8 +217,8 @@ export default {
 
       fps: 0,
       frames: 0,
-      pixelRatio: window.devicePixelRatio,
-      antialias: false,
+      pixelRatio: 1,
+      antialias: true,
       prevTime: Date.now(),
 
       loopCb: [],
