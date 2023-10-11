@@ -2704,12 +2704,12 @@ export default {
             this.openMenu();
           }
           break;
-        case "KeyR":
-          if (!this.isMenu) {
-            this.movesCounter += 2;
-            this.randomRotate(3);
-          }
-          break;
+        // case "KeyR":
+        //   if (!this.isMenu) {
+        //     this.movesCounter += 2;
+        //     this.randomRotate(3);
+        //   }
+        //   break;
       }
     },
 
