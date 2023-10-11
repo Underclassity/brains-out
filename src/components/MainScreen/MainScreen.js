@@ -145,6 +145,7 @@ export default {
       showSpeed: 0,
       showBestScore: 0,
       scoreIncrement: 0,
+      scoreIncrementType: "points",
 
       bgSoundId: "ZombiesAreComing.aac",
       bgMenuSoundId: "Rising.aac",
@@ -443,12 +444,15 @@ export default {
     /**
      * Change score value
      *
-     * @param   {Number}  changeValue  Value diff
+     * @param   {Number}  changeValue      Value diff
+     * @param   {String}  [type=points]    Type of score update
      *
-     * @return  {Boolean}              Result
+     * @return  {Boolean}                  Result
      */
-    changeScore(changeValue) {
+    changeScore(changeValue, type = "points") {
       this.$store.commit("updateScore", changeValue);
+
+      this.scoreIncrementType = type;
 
       if (this.changeSpeedByLevels) {
         this.prevScore = this.score;
@@ -1510,7 +1514,10 @@ export default {
 
         this.log(`Levels ${filledLevelsCounter} score: ${scoreDiff}`);
 
-        this.changeScore(scoreDiff);
+        this.changeScore(
+          scoreDiff,
+          filledLevelsCounter >= 3 ? "levels-max" : "levels"
+        );
       } else {
         this.isPrevCleared = false;
       }
@@ -1530,7 +1537,7 @@ export default {
 
       this.log(`End game call on element: ${element.name}`);
 
-      this.changeScore(elementPoints.length);
+      this.changeScore(elementPoints.length, "points");
 
       // if (this.score <= this.pitDepth) {
       //   this.emitter.emit("addAchievement", "are-you-playing");
@@ -1598,8 +1605,6 @@ export default {
         this.positionHelper(el, "y", itemPosition.y);
         this.positionHelper(el, "z", itemPosition.z);
 
-        this.changeScore(1);
-
         this.setLayerPoint(x, y, z);
 
         el.userData.static = true;
@@ -1628,6 +1633,8 @@ export default {
           this.dropSounds[this.fallSoundId[randomId]].play();
         }
       }
+
+      this.changeScore(elementPoints.length, "points");
 
       // const collisionPoints = this.findCollissionElements(element);
 

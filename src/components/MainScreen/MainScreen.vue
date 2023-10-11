@@ -12,7 +12,7 @@
             )
                 .navigation--item--inc(
                     v-show="scoreIncrement > 0"
-                    v-bind:class="{ 'navigation--item--inc--yellow':  scoreIncrement >= 10 && scoreIncrement < 20, 'navigation--item--inc--red':  scoreIncrement >= 20 }"
+                    v-bind:class="{ 'navigation--item--inc--yellow':  scoreIncrementType == 'levels', 'navigation--item--inc--red':  scoreIncrementType == 'levels-max' }"
                 ) {{ scoreIncrement > 0 ? `+${scoreIncrement}` : '' }}
 
         .navigation--item Speed: {{ showSpeed }}
