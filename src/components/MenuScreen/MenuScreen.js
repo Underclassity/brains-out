@@ -47,7 +47,7 @@ export default {
 
       isShare:
         "share" in navigator &&
-        navigator.canShare({ url: "", text: "", title: "" }),
+        navigator?.canShare({ url: "", text: "", title: "" }),
 
       assets,
 
@@ -530,7 +530,7 @@ export default {
     },
 
     checkSharePermissions() {
-      this.isShare = navigator.canShare({ url: "", text: "", title: "" });
+      this.isShare = navigator.canShare?.({ url: "", text: "", title: "" });
 
       return this.isShare;
     },

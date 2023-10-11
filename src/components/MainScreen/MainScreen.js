@@ -2924,12 +2924,15 @@ export default {
      * @return  {Boolean}             Result
      */
     vibrateCall(time = 500) {
-      if (!this.isVibration) {
+      if (!this.isVibration || !navigator.vibrate) {
         return false;
       }
 
       this.log("Vibrate call");
-      navigator.vibrate(time);
+
+      if (navigator.vibrate) {
+        navigator.vibrate(time);
+      }
 
       if (this.gamepad && window.joypad) {
         window.joypad.vibrate(this.gamepad, {
