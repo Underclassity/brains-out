@@ -112,7 +112,7 @@
         .menu--assets(v-show="flags.credits" v-for="asset of assets" :key="asset.title")
             a.menu--assets--link(:href="asset.link") {{ asset.title }}
             .menu--assets--author - {{ asset.author }}
-            a.menu--assets--link(v-if="asset.authorLink" :href="asset.authorLink" ) ({{ asset.authorLink }})
+            a.menu--assets--link(v-if="asset.authorLink" :href="asset.authorLink" target="_blank") ({{ asset.authorLink }})
             a(:href="asset.licenseLink")
                 img.menu--assets--license(:src="asset.licenseImage")
 
