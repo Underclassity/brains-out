@@ -104,8 +104,8 @@
 
         .menu--assets--title(v-show="flags.credits") Authors
 
-        a.menu--link(v-show="flags.credits" href="https://www.linkedin.com/in/ivan-gornovskiy-a1a290282/") Ivan Gornovskiy
-        a.menu--link(v-show="flags.credits" href="https://www.linkedin.com/in/nikolai-gavrev-6010ba215/") Nikolai Gavrev
+        a.menu--link(v-show="flags.credits" href="https://www.linkedin.com/in/ivan-gornovskiy-a1a290282/" target="_blank") Ivan Gornovskiy
+        a.menu--link(v-show="flags.credits" href="https://www.linkedin.com/in/nikolai-gavrev-6010ba215/" target="_blank") Nikolai Gavrev
 
         .menu--assets--title(v-show="flags.credits") Assets
 
