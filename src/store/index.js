@@ -54,6 +54,7 @@ export const store = createStore({
     fxVolume: 0.3,
 
     version: import.meta.env.VITE_APP_VERSION,
+    appVersion: import.meta.env.APP_VERSION,
 
     // isRotateRestrain: false,
     // maxRotate: 5,

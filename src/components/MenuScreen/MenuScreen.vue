@@ -100,7 +100,7 @@
             ) Back
 
         //- Credits items
-        .menu--version(v-show="flags.credits") Commit: {{ version }}
+        .menu--version(v-show="flags.credits") Commit: {{ isDevApproved ? appVersion : version }}
 
         .menu--assets--title(v-show="flags.credits") Authors
 

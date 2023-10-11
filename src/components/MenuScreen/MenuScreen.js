@@ -94,6 +94,7 @@ export default {
       "maxSpeed",
 
       "version",
+      "appVersion",
 
       "isDev",
       "isControls",
