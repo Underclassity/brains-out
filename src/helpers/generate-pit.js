@@ -294,7 +294,9 @@ export function generatePit(
   color = 0x808080,
   pitParts = [],
   simple = false,
-  isInstanced = false
+  isInstanced = false,
+  viewWidth,
+  viewHeight
 ) {
   width = parseInt(width, 10);
   height = parseInt(height, 10);
@@ -407,9 +409,19 @@ export function generatePit(
       2 * height * (depth - 1) +
       4 * depth +
       (width + height) * 2;
+    // const grassCount =
+    //   (width + 20) * (height + 20) -
+    //   width * height -
+    //   width * 2 -
+    //   height * 2 -
+    //   4;
+
+    const widthDiff = Math.round((viewWidth - width) / 2);
+    const heightDiff = Math.round((viewHeight - height) / 2);
+
     const grassCount =
-      (width + 20) * (height + 20) -
-      width * height -
+      2 * (width + widthDiff * 2) * heightDiff +
+      2 * widthDiff * height -
       width * 2 -
       height * 2 -
       4;
@@ -659,8 +671,12 @@ export function generatePit(
       );
     }
 
-    for (let x = -hWidth + hSize - 10; x < hWidth + 10; x++) {
-      for (let y = -hHeight + hSize - 10; y < hHeight + 10; y++) {
+    for (let x = -hWidth + hSize - widthDiff; x < hWidth + widthDiff; x++) {
+      for (
+        let y = -hHeight + hSize - heightDiff;
+        y < hHeight + heightDiff;
+        y++
+      ) {
         if (xArr.includes(x) && yArr.includes(y)) {
           continue;
         }

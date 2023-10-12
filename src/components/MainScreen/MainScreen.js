@@ -362,6 +362,7 @@ export default {
           // this.composer.setSize(containerRect.width, containerRect.height);
 
           this.updateCameraProjection();
+          this.reCreatePit(this.pitSize);
         }, 10);
       });
 
@@ -1924,6 +1925,64 @@ export default {
       return element;
     },
 
+    reCreatePit(pitSize) {
+      if (!pitSize) {
+        return true;
+      }
+
+      const {
+        scene,
+        size,
+        gridColor,
+        pitParts,
+        isSimple,
+        isInstanced,
+        viewWidth,
+        viewHeight,
+      } = this;
+
+      const [width, height, depth] = pitSize.split("x");
+
+      if (!viewWidth || !viewHeight) {
+        return false;
+      }
+
+      const vWidth = Math.round(viewWidth);
+      const vHeight = Math.round(viewHeight);
+
+      if (
+        this.pit &&
+        this.pit.userData.pitSize == pitSize &&
+        this.pit.userData.viewWidth == vWidth &&
+        this.pit.userData.viewHeight == vHeight
+      ) {
+        return false;
+      }
+
+      log(`Re-create pit call: ${pitSize}, ${vWidth} vw, ${vHeight} vh`);
+
+      scene.remove(this.pit);
+      this.pit = generatePit(
+        width,
+        height,
+        depth,
+        size,
+        gridColor,
+        pitParts,
+        isSimple,
+        isInstanced,
+        vWidth,
+        vHeight
+      );
+      scene.add(this.pit);
+
+      this.pit.userData.pitSize = pitSize;
+      this.pit.userData.viewWidth = vWidth;
+      this.pit.userData.viewHeight = vHeight;
+
+      return true;
+    },
+
     /**
      * Change pit size helper
      *
@@ -1932,7 +1991,7 @@ export default {
      * @return  {Boolean}          Result
      */
     changePitSize(pitSize) {
-      const { scene, renderer, size } = this;
+      const { scene, renderer } = this;
 
       this.pitSize = pitSize;
 
@@ -2004,21 +2063,9 @@ export default {
       this.pitHeight = height;
       this.pitDepth = depth;
 
-      scene.remove(this.pit);
-
       renderer.renderLists.dispose();
 
-      this.pit = generatePit(
-        width,
-        height,
-        depth,
-        size,
-        this.gridColor,
-        this.pitParts,
-        this.isSimple,
-        this.isInstanced
-      );
-      scene.add(this.pit);
+      this.reCreatePit(pitSize);
 
       this.updateCameraProjection();
 
@@ -2233,18 +2280,7 @@ export default {
       scene.background = new Color(this.sceneColor);
       this.scene = scene;
 
-      const pit = generatePit(
-        this.pitWidth,
-        this.pitHeight,
-        this.pitDepth,
-        this.size,
-        this.gridColor,
-        this.pitParts,
-        this.isSimple,
-        this.isInstanced
-      );
-      scene.add(pit);
-      this.pit = pit;
+      this.reCreatePit(this.pitSize);
 
       // Init layers
       this.initPoints();
