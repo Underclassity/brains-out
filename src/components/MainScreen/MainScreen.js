@@ -2310,6 +2310,8 @@ export default {
       let timeDelta = 0;
 
       const animation = () => {
+        requestAnimationFrame(animation);
+
         this.frames++;
         const time = Date.now();
 
@@ -2371,7 +2373,7 @@ export default {
       });
       renderer.setSize(width, height);
       renderer.setPixelRatio(this.pixelRatio);
-      renderer.setAnimationLoop(animation);
+      // renderer.setAnimationLoop(animation);
       renderer.gammaFactor = 2.2;
       container.appendChild(renderer.domElement);
       this.renderer = renderer;
@@ -2399,6 +2401,8 @@ export default {
       //     this.layersElements[i].push(onePoint);
       //   }
       // }
+
+      animation();
 
       return true;
     },
