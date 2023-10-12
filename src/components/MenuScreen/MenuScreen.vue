@@ -128,6 +128,16 @@
 
         .menu--selector(
             v-show="flags.settings"
+            ref="settings.pixelRatio"
+            v-bind:class="{ 'focused': focused == 'settings.pixelRatio' }"
+        )
+            .menu--label Scale
+            .menu--selector--prev(v-on:click="prevPixelRatio" v-if="pixelRatio != 1" ref="settings.pixelRatio.prev")
+            .menu--selector--value {{ scale }}%
+            .menu--selector--next(v-on:click="nextPixelRatio" v-if="pixelRatio != 4" ref="settings.pixelRatio.next")
+
+        .menu--selector(
+            v-show="flags.settings"
             ref="settings.volume"
             v-bind:class="{ 'focused': focused == 'settings.volume' }"
         )

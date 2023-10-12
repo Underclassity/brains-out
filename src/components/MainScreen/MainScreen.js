@@ -217,8 +217,6 @@ export default {
 
       fps: 0,
       frames: 0,
-      pixelRatio: 1,
-      antialias: true,
       prevTime: Date.now(),
 
       loopCb: [],
@@ -258,6 +256,8 @@ export default {
       "blocksType",
 
       "fov",
+      "pixelRatio",
+      "antialias",
       "lightPower",
 
       "minSpeed",
@@ -3005,6 +3005,18 @@ export default {
   },
 
   watch: {
+    pixelRatio(newValue) {
+      const { renderer, composer } = this;
+
+      if (renderer) {
+        renderer.setPixelRatio(newValue);
+      }
+
+      if (composer) {
+        composer.setPixelRatio(newValue);
+      }
+    },
+
     endGameCounter(newValue) {
       if (newValue >= 13) {
         this.emitter.emit("addAchievement", "still-playing");

@@ -33,6 +33,8 @@ export const store = createStore({
     blocksTypeOptions: ["flat", "basic", "extended"],
 
     fov: 70,
+    pixelRatio: 1,
+    antialias: true,
     lightPower: 5000,
 
     gridColor: 0x9b_43_0e,
@@ -306,8 +308,42 @@ export const store = createStore({
       state.isGamepad = value ? true : false;
     },
 
+    enableAntialias(state) {
+      state.antialias = true;
+    },
+
+    disableAntialias(state) {
+      state.antialias = false;
+    },
+
+    updateAntialias(state, value) {
+      state.antialias = value ? true : false;
+    },
+
     incrementEndGameCounter(state) {
       state.endGameCounter += 1;
+    },
+
+    updatePixelRatio(state, value) {
+      let newPixelRatio = roundValue(state.pixelRatio + value);
+
+      // Restrain volume
+      if (newPixelRatio <= 0) {
+        newPixelRatio = 0;
+      }
+
+      console.log(newPixelRatio);
+
+      state.pixelRatio = newPixelRatio;
+    },
+
+    setPixelRatio(state, newPixelRatio) {
+      // Restrain volume
+      if (newPixelRatio <= 0) {
+        newPixelRatio = 0;
+      }
+
+      state.pixelRatio = roundValue(newPixelRatio);
     },
   },
   actions: {

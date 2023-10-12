@@ -51,12 +51,15 @@ export default {
 
       assets,
 
+      devicePixelRatio: window.devicePixelRatio,
+
       refs: {
         menu: ["newGame", "settings", "controls", "achievements", "credits"],
         new: ["pit", "blocksType", "speed", "back", "play"],
         credits: ["back"],
         controls: ["back"],
         settings: [
+          "pixelRatio",
           "volume",
           "fxVolume",
           "dev",
@@ -95,6 +98,9 @@ export default {
       "minSpeed",
       "maxSpeed",
 
+      "pixelRatio",
+      "antialias",
+
       "version",
       "appVersion",
 
@@ -130,6 +136,12 @@ export default {
       }
 
       return currentView;
+    },
+
+    scale() {
+      const { devicePixelRatio, pixelRatio } = this;
+
+      return Math.round((pixelRatio / devicePixelRatio) * 100);
     },
   },
 
@@ -348,6 +360,14 @@ export default {
 
     nextSpeed() {
       this.$store.commit("updateSettingsSpeed", this.speedStep * 5);
+    },
+
+    prevPixelRatio() {
+      this.$store.commit("updatePixelRatio", -1);
+    },
+
+    nextPixelRatio() {
+      this.$store.commit("updatePixelRatio", +1);
     },
 
     prevVolume() {
