@@ -1,0 +1,167 @@
+.controls
+    width: 100%
+    height: 40%
+    position: relative
+    background-color: #e67626
+    box-shadow: inset 0px 20px 20px -10px rgba(white, 0.3), inset 0px -20px 20px -10px rgba(black, 0.3)
+    box-sizing: border-box
+    display: flex
+    flex-direction: column
+    justify-content: center
+    align-items: center
+    padding: 10px 10px 30px 10px
+    user-select: none
+
+    &:before
+        content: ''
+        position: absolute
+        top: 20px
+        left: 15px
+        width: 10px
+        height: 10px
+        background-color: rgba(white, 0.2)
+        border-radius: 50%
+
+    &--columns
+        width: 100%
+        display: flex
+        justify-content: space-between
+        align-items: center
+
+    &--column
+        width: calc(50% - 4px)
+
+        &--buttons
+            display: flex
+            justify-content: center
+            align-items: center
+            flex-direction: column
+
+        .controls--button
+            margin-bottom: 10px
+
+            &:last-child
+                margin-bottom: 0px
+
+    &--buttons
+        display: flex
+        justify-content: space-between
+        align-items: center
+        margin-top: 10px
+        margin-bottom: 10px
+
+        .controls--button
+            padding: 4px 8px
+            margin-bottom: 0px
+
+        .controls--button:first-child
+            margin-right: 10px
+
+    &--button
+        text-align: center
+        padding: 4px
+        box-sizing: border-box
+        background-color: #fd0012
+        box-shadow: inset 0px 20px 20px -10px rgba(white, 0.3), inset 0px -20px 20px -10px rgba(black, 0.3)
+        border: 2px solid black
+        border-radius: 10px
+
+        span
+            height: 40px
+            font-size: 40px
+            line-height: 40px
+
+        &--a
+            .material-symbols-outlined
+                transform: rotate(-90deg)
+
+        &--d
+            .material-symbols-outlined
+                transform: rotateZ(-90deg) rotateX(180deg)
+
+        &--q
+            .material-symbols-outlined
+                transform: rotateX(180deg) rotateZ(-90deg)
+
+        &--e
+            .material-symbols-outlined
+                transform: rotate(90deg)
+
+        &--s
+            .material-symbols-outlined
+                transform: rotateX(180deg)
+
+        &--w
+            .material-symbols-outlined
+                transform: rotate(15deg)
+
+    &--spacebar
+        margin-top: 10px
+        width: 100%
+
+.control-item
+    width: 60px
+    height: 60px
+    border-radius: 4px
+    position: absolute
+    background-color: rgba(#ccc, 0.3)
+    cursor: pointer
+    display: flex
+    justify-content: center
+    align-items: center
+    transition: background-color 300ms ease-in-out
+
+    &:hover
+        background-color: rgba(#ccc, 0.8)
+
+    &-left
+        top: calc(50% - 30px)
+        left: 0px
+
+        &--first
+            top: calc(50% - 120px)
+            left: 0px
+
+        &--last
+            top: calc(50% + 60px)
+            left: 0px
+
+    &-right
+        top: calc(50% - 30px)
+        right: 0px
+
+        &--first
+            top: calc(50% - 120px)
+            right: 0px
+
+        &--last
+            top: calc(50% + 60px)
+            right: 0px
+
+    &-top
+        &--first
+            top: 0px
+            left: calc(50% - 120px)
+
+        &--last
+            top: 0px
+            left: calc(50% + 60px)
+
+    &-bottom
+        &--first
+            bottom: 0px
+            left: calc(50% - 120px)
+
+        &--last
+            bottom: 0px
+            left: calc(50% + 60px)
+
+    &--drop
+        top: calc(50% - 30px)
+        right: 120px
+
+        @media(max-aspect-ratio 2/3)
+            top: unset
+            right: unset
+            bottom: 60px
+            left: calc(50% - 30px)

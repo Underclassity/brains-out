@@ -130,73 +130,20 @@
 
         span.dev-button.material-symbols-outlined(v-on:click="layersCheck(true)" v-if="isDev") layers_clear
 
-    .controls(v-show="isControls || isMobile")
-        .controls--columns
-            .controls--column
-                .controls--columns
-                    .controls--column
-                        //- W
-                        .controls--button.controls--button--s(v-on:click="controlsCallHelper('rotateXPlus')")
-                            .material-symbols-outlined switch_access_shortcut
-                        //- A
-                        .controls--button.controls--button--a(v-on:click="controlsCallHelper('rotateYMinus')")
-                            .material-symbols-outlined switch_access_shortcut
-                        //- Q
-                        .controls--button.controls--button--q(v-on:click="controlsCallHelper('rotateZPlus')")
-                            .material-symbols-outlined forward_media
-                    .controls--column
-                        //- S
-                        .controls--button.controls--button--w(v-on:click="controlsCallHelper('rotateXMinus')")
-                            .material-symbols-outlined switch_access_shortcut
-                        //- D
-                        .controls--button.controls--button--d(v-on:click="controlsCallHelper('rotateYPlus')")
-                            .material-symbols-outlined switch_access_shortcut
-                        //- E
-                        .controls--button.controls--button--e(v-on:click="controlsCallHelper('rotateZMinus')")
-                            .material-symbols-outlined forward_media
-
-            .controls--column.controls--column--buttons
-                .controls--button(v-on:click="controlsCallHelper('moveUp')")
-                    .material-symbols-outlined arrow_upward
-                .controls--buttons
-                    .controls--button(v-on:click="controlsCallHelper('moveLeft')")
-                        .material-symbols-outlined arrow_back
-                    .controls--button(v-on:click="controlsCallHelper('moveRight')")
-                        .material-symbols-outlined arrow_forward
-                .controls--button(v-on:click="controlsCallHelper('moveDown')")
-                    .material-symbols-outlined arrow_downward
-
-        .controls--spacebar
-            .controls--button.controls--button--spacebar(v-on:click="controlsCallHelper('drop')")
-                span Drop
-
-        //- .control-item.control-item-left(v-on:click="moveLeft" v-if="isControls")
-        //-     .material-symbols-outlined west
-        //- .control-item.control-item-right(v-on:click="moveRight" v-if="isControls")
-        //-     .material-symbols-outlined east
-
-        //- .control-item.control-item-top--first(v-on:click="moveUp" v-if="isControls")
-        //-     .material-symbols-outlined north
-        //- .control-item.control-item-bottom--first(v-on:click="moveDown" v-if="isControls")
-        //-     .material-symbols-outlined south
-
-        //- .control-item.control-item-left.control-item-left--first(v-on:click="rotateXMinus" v-if="isControls")
-        //-     .material-symbols-outlined north_west
-        //- .control-item.control-item-left.control-item-left--last(v-on:click="rotateYMinus" v-if="isControls")
-        //-     .material-symbols-outlined south_west
-
-        //- .control-item.control-item-right.control-item-right--first(v-on:click="rotateXPlus" v-if="isControls")
-        //-     .material-symbols-outlined north_east
-        //- .control-item.control-item-right.control-item-right--last(v-on:click="rotateYPlus" v-if="isControls")
-        //-     .material-symbols-outlined south_east
-
-        //- .control-item.control-item-top--last(v-on:click="rotateZPlus" v-if="isControls")
-        //-     .material-symbols-outlined north_east
-        //- .control-item.control-item-bottom--last(v-on:click="rotateZMinus" v-if="isControls")
-        //-     .material-symbols-outlined south_east
-
-        //- .control-item.control-item--drop(v-on:click="drop" v-if="isControls")
-        //-     .material-symbols-outlined water_drop
+    ControlsBlock(
+        :showFlag="isControls || isMobile"
+        @w-click="controlsCallHelper('rotateXPlus')"
+        @a-click="controlsCallHelper('rotateYMinus')"
+        @s-click="controlsCallHelper('rotateXMinus')"
+        @d-click="controlsCallHelper('rotateYPlus')"
+        @q-click="controlsCallHelper('rotateZPlus')"
+        @e-click="controlsCallHelper('rotateZMinus')"
+        @up-click="controlsCallHelper('moveUp')"
+        @down-click="controlsCallHelper('moveDown')"
+        @left-click="controlsCallHelper('moveLeft')"
+        @right-click="controlsCallHelper('moveRight')"
+        @spacebar-click="controlsCallHelper('drop')"
+    )
 
 AcceptBugsScreen(v-if="!isAccepted" v-on:accept="acceptedCall")
 LogoScreen(v-if="isLogo")

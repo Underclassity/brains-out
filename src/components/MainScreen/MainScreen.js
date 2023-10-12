@@ -83,6 +83,8 @@ import LogoScreen from "../LogoScreen/LogoScreen.vue";
 import MenuScreen from "../MenuScreen/MenuScreen.vue";
 // import generateP0Form from "../../helpers/blocks/p0.js";
 
+import ControlsBlock from "../ControlsBlock/ControlsBlock.vue";
+
 export default {
   name: "MainScreen",
 
@@ -233,6 +235,7 @@ export default {
   },
 
   components: {
+    ControlsBlock,
     // MenuComponent,
     AcceptBugsScreen,
     LoadingScreen,
