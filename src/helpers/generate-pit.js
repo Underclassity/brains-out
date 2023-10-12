@@ -183,13 +183,13 @@ function splitNParts(num, parts) {
   const result = [];
 
   for (let i = 0; i < parts; i++) {
-    result[i] = Math.round(num / parts);
+    result[i] = Math.floor(num / parts);
   }
 
   const sum = result.reduce((prev, curr) => prev + curr, 0);
 
   if (num - sum > 0) {
-    result[result.length - 1] = result[result.length - 1] + (num - sum);
+    result[result.length - 1] += num - sum;
   }
 
   return result;
@@ -208,7 +208,7 @@ function splitNParts(num, parts) {
  */
 export function addPlaneHelpers(width, height, depth, size, pit) {
   const pitMaterial = new MeshBasicMaterial({
-    color: new Color(0x381402),
+    color: new Color(0x38_14_02),
   });
 
   const bottomGeometry = new PlaneGeometry(width, height);
@@ -246,7 +246,7 @@ export function addPlaneHelpers(width, height, depth, size, pit) {
   pit.add(bottomMesh);
 
   const grassPlaneMaterial = new MeshBasicMaterial({
-    color: new Color(0x18ba4b),
+    color: new Color(0x18_ba_4b),
   });
 
   const topBottomGrassGeometry = new PlaneGeometry(10 * 2 + width, 9);
@@ -291,7 +291,7 @@ export function generatePit(
   height = 5,
   depth = 12,
   size = 1,
-  color = 0x808080,
+  color = 0x80_80_80,
   pitParts = [],
   simple = false,
   isInstanced = false,
