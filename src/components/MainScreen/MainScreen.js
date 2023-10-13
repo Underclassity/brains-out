@@ -2068,9 +2068,8 @@ export default {
 
       renderer.renderLists.dispose();
 
-      this.reCreatePit(pitSize);
-
       this.updateCameraProjection();
+      this.reCreatePit(pitSize);
 
       // Init layers after resize
       this.initPoints();
