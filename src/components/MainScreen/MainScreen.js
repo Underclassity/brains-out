@@ -2293,9 +2293,22 @@ export default {
           false
         );
 
-        while (this.layers[z][x][y]) {
+        let randomCounter = 0;
+        while (this.layers[z][x][y] && randomCounter <= 20) {
           x = randomBetween(0, pitWidth - 1);
           y = randomBetween(0, pitHeight - 1);
+          randomCounter++;
+        }
+
+        if (randomCounter >= 20) {
+          this.setLayerPoint(
+            elementLayer.x,
+            elementLayer.y,
+            elementLayer.z,
+            1,
+            false
+          );
+          return false;
         }
 
         // save layers params
