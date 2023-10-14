@@ -130,6 +130,8 @@
 
         span.dev-button.material-symbols-outlined(v-on:click="layersCheck(true)" v-if="isDev") layers_clear
 
+        span.dev-button.material-symbols-outlined(v-on:click="shuffle" v-if="isDev") shuffle
+
     ControlsBlock(
         :showFlag="isControls || isMobile"
         @w-click="controlsCallHelper('rotateXPlus')"

@@ -5,17 +5,21 @@ import log from "../../helpers/log.js";
 /**
  * Init layer helper
  *
- * @param   {Number}  z  Layer index
+ * @param   {Number}   z                    Layer index
+ * @param   {Boolean}  [withElements=true]  Reset with elements
  *
  * @return  {Boolean}    Result
  */
-export function initLayer(z) {
+export function initLayer(z, withElements = true) {
   // log(`Init layer ${z}`);
 
   const { pitWidth, pitHeight } = this;
 
   this.layers[z] = [];
-  this.layersElements[z] = [];
+
+  if (withElements) {
+    this.layersElements[z] = [];
+  }
 
   for (let x = 0; x < pitWidth; x++) {
     this.layers[z][x] = [];

@@ -26,6 +26,7 @@ import generatePit from "../../helpers/generate-pit.js";
 import log from "../../helpers/log.js";
 import randomBetween from "../../helpers/random-between.js";
 import roundValue from "../../helpers/round-value.js";
+import splitNParts from "../../helpers/split-n-parts.js";
 import throttle from "../../helpers/throttle.js";
 
 import {
@@ -2255,6 +2256,57 @@ export default {
       this.restrainElement(element);
 
       return element;
+    },
+
+    /**
+     * Random shuffle elements
+     *
+     * @return  {Boolean}  Result
+     */
+    shuffle() {
+      this.log("Shuffle call");
+
+      const { layersElements, pitWidth, pitHeight } = this;
+
+      const elements = layersElements.flat();
+
+      if (!layersElements.length) {
+        return false;
+      }
+
+      const zIndexes = elements
+        .map((item) => item.userData.layer.z)
+        .filter((item, index, array) => array.indexOf(item) === index);
+
+      elements.forEach((element, index) => {
+        let x = randomBetween(0, pitWidth - 1);
+        let y = randomBetween(0, pitHeight - 1);
+        const z = randomBetween(Math.min(...zIndexes), Math.max(...zIndexes));
+
+        const elementLayer = element.userData.layer;
+
+        this.setLayerPoint(elementLayer.x, elementLayer.y, elementLayer.z, 0);
+
+        while (this.layers[z][x][y]) {
+          x = randomBetween(0, pitWidth - 1);
+          y = randomBetween(0, pitHeight - 1);
+        }
+
+        // save layers params
+        element.userData.layer.x = x;
+        element.userData.layer.y = y;
+        element.userData.layer.z = z;
+
+        this.setLayerPoint(x, y, z, 1);
+
+        element.position.set(
+          this.xCPoints[x],
+          this.yCPoints[y],
+          this.zCPoints[z]
+        );
+      });
+
+      return true;
     },
 
     getRandomForm,
