@@ -2270,7 +2270,7 @@ export default {
 
       const elements = layersElements.flat();
 
-      if (!layersElements.length) {
+      if (!elements.length) {
         return false;
       }
 
@@ -2285,7 +2285,13 @@ export default {
 
         const elementLayer = element.userData.layer;
 
-        this.setLayerPoint(elementLayer.x, elementLayer.y, elementLayer.z, 0);
+        this.setLayerPoint(
+          elementLayer.x,
+          elementLayer.y,
+          elementLayer.z,
+          0,
+          false
+        );
 
         while (this.layers[z][x][y]) {
           x = randomBetween(0, pitWidth - 1);
@@ -2297,14 +2303,107 @@ export default {
         element.userData.layer.y = y;
         element.userData.layer.z = z;
 
-        this.setLayerPoint(x, y, z, 1);
+        this.setLayerPoint(x, y, z, 1, false);
 
         element.position.set(
           this.xCPoints[x],
           this.yCPoints[y],
           this.zCPoints[z]
         );
+
+        this.colorizeElement(element, z);
       });
+
+      this.updateLayersView();
+
+      return true;
+    },
+
+    /**
+     * Shuffle layers call
+     *
+     * @return  {Boolean}  Result
+     */
+    shuffleLayers() {
+      this.log("Shuffle layers call");
+
+      const { layersElements, pitWidth, pitHeight } = this;
+
+      const elements = layersElements.flat();
+
+      if (!elements.length) {
+        return false;
+      }
+
+      const zIndexes = elements
+        .map((item) => item.userData.layer.z)
+        .filter((item, index, array) => array.indexOf(item) === index);
+
+      if (zIndexes.length <= 1) {
+        return false;
+      }
+
+      let zIndexesAfter = zIndexes
+        .map((value) => ({ value, sort: Math.random() }))
+        .sort((a, b) => a.sort - b.sort)
+        .map(({ value }) => value);
+
+      while (JSON.stringify(zIndexes) == JSON.stringify(zIndexesAfter)) {
+        zIndexesAfter = zIndexes
+          .map((value) => ({ value, sort: Math.random() }))
+          .sort((a, b) => a.sort - b.sort)
+          .map(({ value }) => value);
+      }
+
+      // Clear all layers
+      elements.forEach((element) => {
+        const elementLayer = element.userData.layer;
+        this.setLayerPoint(
+          elementLayer.x,
+          elementLayer.y,
+          elementLayer.z,
+          0,
+          false
+        );
+      });
+
+      elements.forEach((element) => {
+        const elementLayer = element.userData.layer;
+
+        const indexBefore = zIndexes.indexOf(elementLayer.z);
+
+        const newZ = zIndexesAfter[indexBefore];
+
+        if (elementLayer.z == newZ) {
+          this.setLayerPoint(
+            elementLayer.x,
+            elementLayer.y,
+            elementLayer.z,
+            1,
+            false
+          );
+
+          return false;
+        }
+
+        this.setLayerPoint(
+          elementLayer.x,
+          elementLayer.y,
+          elementLayer.z,
+          0,
+          false
+        );
+
+        element.userData.layer.z = newZ;
+
+        this.setLayerPoint(elementLayer.x, elementLayer.y, newZ, 1, false);
+
+        element.position.setZ(this.zCPoints[newZ]);
+
+        this.colorizeElement(element, newZ);
+      });
+
+      this.updateLayersView();
 
       return true;
     },

@@ -131,6 +131,7 @@
         span.dev-button.material-symbols-outlined(v-on:click="layersCheck(true)" v-if="isDev") layers_clear
 
         span.dev-button.material-symbols-outlined(v-on:click="shuffle" v-if="isDev") shuffle
+        span.dev-button.material-symbols-outlined(v-on:click="shuffleLayers" v-if="isDev") shuffle_on
 
     ControlsBlock(
         :showFlag="isControls || isMobile"
