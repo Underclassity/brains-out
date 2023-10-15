@@ -1,9 +1,21 @@
 export default {
   name: "AcceptBugsScreen",
 
+  data() {
+    return {
+      save: false,
+    };
+  },
+
   methods: {
     yesClick() {
       this.$emit("accept");
+    },
+  },
+
+  watch: {
+    save(newValue) {
+      this.$store.commit("updateAccepted", newValue);
     },
   },
 

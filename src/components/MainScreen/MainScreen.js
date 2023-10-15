@@ -3340,6 +3340,10 @@ export default {
   },
 
   async mounted() {
+    if (this.$store.getters.isAccepted) {
+      this.acceptedCall();
+    }
+
     this.showSpeed = this.speed;
     this.showBestScore = this.maxScore;
 

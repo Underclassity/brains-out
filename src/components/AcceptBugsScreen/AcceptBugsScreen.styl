@@ -99,6 +99,38 @@
             &:hover
                 background-color: rgba(lime, 0.6)
 
+    &--checkbox
+        width: 100%
+        align-items: center
+        justify-content: center
+        display: flex
+        margin-bottom: 20px
+
+        @media(max-width 768px)
+            margin-bottom: 10px
+
+        @media(max-height 900px)
+            margin-bottom: 10px
+
+        &--title
+            font-size: 20px
+            line-height: 26px
+            margin-right: 10px
+
+            @media(max-width 768px)
+                font-size: 14px
+                line-height: 20px
+                margin-right: 6px
+
+            @media(max-height 900px)
+                font-size: 14px
+                line-height: 20px
+                margin-right: 6px
+
+        &--input
+            width: 20px
+            height: 20px
+
 .v-enter-active
 .v-leave-active
     transition: opacity 0.5s ease;

@@ -47,6 +47,8 @@ export const store = createStore({
     isControls: false,
     isVibration: true,
 
+    isAccepted: false,
+
     isGamepad: false,
 
     isRandomColor: false,
@@ -69,6 +71,10 @@ export const store = createStore({
     userAchievements: [],
   },
   getters: {
+    isAccepted(state) {
+      return state.isAccepted;
+    },
+
     maxScore(state) {
       return state.lsScore.length ? Math.max(...state.lsScore) : 0;
     },
@@ -332,8 +338,6 @@ export const store = createStore({
         newPixelRatio = 0;
       }
 
-      console.log(newPixelRatio);
-
       state.pixelRatio = newPixelRatio;
     },
 
@@ -344,6 +348,18 @@ export const store = createStore({
       }
 
       state.pixelRatio = roundValue(newPixelRatio);
+    },
+
+    enableAccepted(state) {
+      state.isAccepted = true;
+    },
+
+    disableAccepted(state) {
+      state.isAccepted = false;
+    },
+
+    updateAccepted(state, value) {
+      state.isAccepted = value ? true : false;
     },
   },
   actions: {
@@ -379,6 +395,7 @@ export const store = createStore({
         "userAchievements",
         "endGameCounter",
         "isVibration",
+        "isAccepted",
       ],
       namespace: "brains-out",
       driver: vuejsStorage.drivers.sessionStorage,
