@@ -119,6 +119,12 @@ export function getRandomForm() {
     zombieParts = zombieParts.filter(
       (item) => item.name[item.name.length - 1] == devId
     );
+  } else {
+    zombieParts = zombieParts.filter(
+      (item) =>
+        item.name[item.name.length - 1] != "I" &&
+        item.name[item.name.length - 1] != "N"
+    );
   }
 
   const formFunction =
