@@ -1,6 +1,6 @@
-import { AmbientLight, PointLightHelper } from "three";
+import { AmbientLight, PointLightHelper, PointLight, Color } from "three";
 
-import loadLights from "../../helpers/lights.js";
+// import loadLights from "../../helpers/lights.js";
 
 /**
  * Init scene lights
@@ -10,7 +10,7 @@ import loadLights from "../../helpers/lights.js";
 export async function initLights() {
   const { scene, camera, pitWidth } = this;
 
-  const gltf = await loadLights(this.progressCb);
+  // const gltf = await loadLights(this.progressCb);
 
   const light = new AmbientLight(0xff_ff_ff, 0.02);
   scene.add(light);
@@ -18,21 +18,28 @@ export async function initLights() {
   const cameraLight = new AmbientLight(0xff_ff_ff, 0.08);
   camera.add(cameraLight);
 
-  if (!gltf) {
-    const light = new AmbientLight(this.lightColor);
-    scene.add(light);
-    return false;
-  }
+  // if (!gltf) {
+  //   const light = new AmbientLight(this.lightColor);
+  //   scene.add(light);
+  //   return false;
+  // }
 
-  const lights = gltf.scene.children;
+  // const lights = gltf.scene.children;
 
-  const l1 = lights[0].clone();
-  const l2 = lights[1].clone();
-  const l3 = lights[2].clone();
+  const firstColor = new Color(0xffb07e);
+  const secondColor = new Color(0xff0000);
 
-  l1.position.set(-pitWidth / 2, 0, 5);
-  l2.position.set(pitWidth / 2, 0, 5);
-  l3.position.set(0, 0, 5);
+  const l1 = new PointLight(firstColor);
+  const l2 = new PointLight(firstColor);
+  const l3 = new PointLight(secondColor);
+
+  // const l1 = lights[0].clone();
+  // const l2 = lights[1].clone();
+  // const l3 = lights[2].clone();
+
+  l1.position.set(-pitWidth / 2, 0, 7);
+  l2.position.set(pitWidth / 2, 0, 7);
+  l3.position.set(0, 0, 7);
 
   l1.power = this.lightPower;
   l2.power = this.lightPower;

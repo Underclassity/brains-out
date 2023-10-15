@@ -294,7 +294,7 @@ export default {
       count += this.fallSoundId.length;
       count += this.rotationSoundId.length;
 
-      count += 1;
+      // count += 1;
 
       // // Dev parts
       count += 1;
