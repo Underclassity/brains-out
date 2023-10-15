@@ -2278,7 +2278,7 @@ export default {
         .map((item) => item.userData.layer.z)
         .filter((item, index, array) => array.indexOf(item) === index);
 
-      elements.forEach((element, index) => {
+      elements.forEach((element) => {
         let x = randomBetween(0, pitWidth - 1);
         let y = randomBetween(0, pitHeight - 1);
         const z = randomBetween(Math.min(...zIndexes), Math.max(...zIndexes));
@@ -2311,6 +2311,11 @@ export default {
           return false;
         }
 
+        // Remove from current layer
+        this.layersElements[elementLayer.z] = this.layersElements[
+          elementLayer.z
+        ].filter((item) => item.uuid != element.uuid);
+
         // save layers params
         element.userData.layer.x = x;
         element.userData.layer.y = y;
@@ -2325,6 +2330,9 @@ export default {
         );
 
         this.colorizeElement(element, z);
+
+        // Add to new layer
+        this.layersElements[z].push(element);
       });
 
       this.updateLayersView();
@@ -2340,7 +2348,7 @@ export default {
     shuffleLayers() {
       this.log("Shuffle layers call");
 
-      const { layersElements, pitWidth, pitHeight } = this;
+      const { layersElements } = this;
 
       const elements = layersElements.flat();
 
@@ -2407,11 +2415,18 @@ export default {
           false
         );
 
+        // Remove from current layer
+        this.layersElements[elementLayer.z] = this.layersElements[
+          elementLayer.z
+        ].filter((item) => item.uuid != element.uuid);
+
         element.userData.layer.z = newZ;
 
         this.setLayerPoint(elementLayer.x, elementLayer.y, newZ, 1, false);
 
         element.position.setZ(this.zCPoints[newZ]);
+
+        this.layersElements[newZ].push(element);
 
         this.colorizeElement(element, newZ);
       });
