@@ -15,11 +15,7 @@ import * as TWEEN from "@tweenjs/tween.js";
 
 import "joypad.js";
 
-import {
-  loadPitParts,
-  loadZombie,
-  loadDevParts,
-} from "../../helpers/load-zombie.js";
+import { loadParts } from "../../helpers/load-zombie.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 // import getGroupSize from "../../helpers/get-group-size.js";
 import generatePit from "../../helpers/generate-pit.js";
@@ -216,7 +212,6 @@ export default {
 
       zombieParts: [],
       pitParts: [],
-      devParts: [],
 
       fps: 0,
       frames: 0,
@@ -299,9 +294,9 @@ export default {
       count += this.fallSoundId.length;
       count += this.rotationSoundId.length;
 
-      count += 3;
+      count += 1;
 
-      // Dev parts
+      // // Dev parts
       count += 1;
 
       // // 10 objects to download
@@ -2089,16 +2084,19 @@ export default {
      * @return  {Boolean}  Result
      */
     async loadZombie() {
-      const zombie = await loadZombie(this.progressCb);
-      const pitParts = await loadPitParts(this.progressCb);
-      const devParts = await loadDevParts(this.progressCb);
+      const parts = await loadParts(this.progressCb);
+
+      const pitParts = parts.children.filter((item) =>
+        item.name.includes("G_")
+      );
+      const zombie = parts.children.filter((item) => item.name.includes("Z_"));
 
       if (!zombie || !pitParts) {
         this.isSimple = true;
         return false;
       }
 
-      for (const child of pitParts.children) {
+      for (const child of pitParts) {
         this.pitParts.push(child);
 
         if (Array.isArray(child.material)) {
@@ -2115,25 +2113,8 @@ export default {
       }
 
       // Save all parts
-      for (const child of zombie.children) {
+      for (const child of zombie) {
         this.zombieParts.push(child);
-
-        if (Array.isArray(child.material)) {
-          child.material.forEach((item, index, array) => {
-            item.shininess = 0;
-            item.specular = new Color(0x00_00_00);
-            item.flatShading = true;
-          });
-        } else {
-          child.material.shininess = 0;
-          child.material.specular = new Color(0x00_00_00);
-          child.material.flatShading = true;
-        }
-      }
-
-      // Save all parts
-      for (const child of devParts.children) {
-        this.devParts.push(child);
 
         if (Array.isArray(child.material)) {
           child.material.forEach((item, index, array) => {
