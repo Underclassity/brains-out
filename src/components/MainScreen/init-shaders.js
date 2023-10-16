@@ -55,14 +55,14 @@ export function initShaders(width, height, renderer, scene, camera) {
 
   const smaaEffect = new SMAAEffect({
     preset: SMAAPreset.ULTRA,
-    edgeDetectionMode: EdgeDetectionMode.COLOR,
+    edgeDetectionMode: EdgeDetectionMode.DEPTH,
     predicationMode: PredicationMode.DEPTH,
   });
 
-  smaaEffect.edgeDetectionMaterial.setEdgeDetectionThreshold(0.02);
+  // smaaEffect.edgeDetectionMaterial.setEdgeDetectionThreshold(0.02);
   // smaaEffect.edgeDetectionMaterial.setPredicationMode(PredicationMode.DEPTH);
-  smaaEffect.edgeDetectionMaterial.setPredicationThreshold(0.002);
-  smaaEffect.edgeDetectionMaterial.setPredicationScale(1.0);
+  // smaaEffect.edgeDetectionMaterial.setPredicationThreshold(0.002);
+  // smaaEffect.edgeDetectionMaterial.setPredicationScale(1.0);
 
   const edgesTextureEffect = new TextureEffect({
     blendFunction: BlendFunction.SKIP,
