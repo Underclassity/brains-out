@@ -148,7 +148,25 @@ export default {
   methods: {
     backClick() {
       log("Back click");
-      this.$emit("back")
+      this.$emit("back");
     },
+  },
+
+  watch: {
+    show(newValue) {
+      if (newValue) {
+        this.emitter.on("pressA", this.backClick);
+      } else {
+        this.emitter.off("pressA", this.backClick);
+      }
+    },
+  },
+
+  mounted() {
+    const { back } = this.$refs;
+
+    if (back) {
+      back.focus();
+    }
   },
 };

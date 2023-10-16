@@ -43,7 +43,7 @@ Transition(name="controls")
                     .controls-info--key--title {{ title }}
 
         .controls-info--buttons
-            .controls-info--button(v-on:click="backClick") Back
+            .controls-info--button(v-on:click="backClick" ref="back") Back
 </template>
 
 <script src="./ControlsInfoScreen.js"></script>
