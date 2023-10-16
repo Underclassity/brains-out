@@ -6,10 +6,17 @@ Transition(:duration="{ enter: 500, leave: 800 }")
 
             .popup--checkbox
                 .popup--checkbox--title Don't show again
-                input.popup--checkbox--input(type="checkbox" v-model="save")
+                input.popup--checkbox--input(
+                    type="checkbox"
+                    v-model="save"
+                    ref="checkbox"
+                )
 
             .popup--buttons
-                .popup--button.popup--button--green.popup--glare(v-on:click="yesClick" tabindex="0" ref="button") Play
+                .popup--button.popup--button--green.popup--glare(
+                    v-on:click="yesClick"
+                    ref="button"
+                ) Play
 </template>
 
 <script src="./AcceptBugsScreen.js"></script>

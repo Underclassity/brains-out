@@ -149,7 +149,7 @@
     )
 
 AcceptBugsScreen(v-if="!isAccepted" v-on:accept="acceptedCall")
-LogoScreen(v-if="isLogo")
+LogoScreen(:show="isLogo")
 MenuScreen(
     :isLogo="isLogo"
     :isAccepted="isAccepted"
