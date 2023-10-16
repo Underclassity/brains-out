@@ -5,4 +5,4 @@
 </template>
 
 <script src="./LogoScreen.js"></script>
-<style src="./LogoScreen.styl" lang="stylus"></style>
+<style src="./LogoScreen.styl" lang="stylus" scoped></style>

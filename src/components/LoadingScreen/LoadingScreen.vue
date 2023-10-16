@@ -1,6 +1,6 @@
 <template lang="pug">
-Transition(:duration="{ enter: 500, leave: 800 }")
-    .loading
+Transition(name="loading" :duration="300")
+    .loading(v-show="show")
         .loading--title Loading(ETA: {{ getEstimate() }} sec)
             .loading--dots {{ new Array(count).join('.') }}
 
@@ -9,4 +9,4 @@ Transition(:duration="{ enter: 500, leave: 800 }")
 </template>
 
 <script src="./LoadingScreen.js"></script>
-<style src="./LoadingScreen.styl" lang="stylus"></style>
+<style src="./LoadingScreen.styl" lang="stylus" scoped></style>

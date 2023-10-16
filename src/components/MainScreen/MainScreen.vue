@@ -156,7 +156,7 @@ MenuScreen(
     v-on:new-game="newGameCall"
     v-on:back-to-game="backToGameCall"
 )
-LoadingScreen(v-if="isLoading" :percent="loadPercent")
+LoadingScreen(:show="isLoading" :percent="loadPercent")
 
 .levels(v-show="!isMenu" :style="levelsOffsetStyle" v-bind:class="{ 'levels--flip': isControls }")
     .level-item(v-for="(value, index) of layers.slice().reverse()" :key="index" :style="getLayerColor(index)")

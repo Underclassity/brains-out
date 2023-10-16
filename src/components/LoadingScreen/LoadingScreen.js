@@ -8,6 +8,11 @@ export default {
       type: Number,
       default: 0,
     },
+
+    show: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   data() {
