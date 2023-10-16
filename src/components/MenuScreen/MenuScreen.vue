@@ -25,6 +25,12 @@
         ) Controls
         .menu--item(
             v-show="flags.menu"
+            v-on:click="howToPlay"
+            ref="menu.howTo"
+            v-bind:class="{ 'focused': focused == 'menu.howTo' }"
+        ) How to play
+        .menu--item(
+            v-show="flags.menu"
             v-on:click="achievementsCall"
             ref="menu.achievements"
             v-bind:class="{ 'focused': focused == 'menu.achievements' }"
@@ -240,6 +246,13 @@
                 ref="continue.continue"
                 v-bind:class="{ 'focused': focused == 'continue.continue' }"
             ) Continue
+
+        .menu--buttons(v-show="flags.continue")
+            .menu--button(
+                v-on:click="howToPlay"
+                ref="continue.howTo"
+                v-bind:class="{ 'focused': focused == 'continue.howTo' }"
+            ) How to play
 
         .menu--buttons(v-show="flags.continue")
             .menu--item--red.menu--button(

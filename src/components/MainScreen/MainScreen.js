@@ -127,6 +127,7 @@ export default {
       isAccepted: false,
       isLogo: false,
       isControlsInfo: false,
+      isControlsInfoShowed: false,
 
       isLoading: true,
       loadingProcessCache: {},
@@ -533,6 +534,11 @@ export default {
      * @return  {Boolean}  Result
      */
     newGameCall() {
+      if (!this.isControlsInfoShowed) {
+        this.isControlsInfo = true;
+        return true;
+      }
+
       this.closeMenu();
       this.newGame();
 
@@ -3123,6 +3129,32 @@ export default {
     },
 
     /**
+     * Open controls screen helper
+     *
+     * @param   {Boolean}  flag  Flag
+     *
+     * @return  {Boolean}        Result
+     */
+    openControlsInfo(flag = true) {
+      this.log("Open controls info screen");
+      this.isControlsInfo = flag;
+      return true;
+    },
+
+    closeControlsInfo() {
+      this.log("Close controls info");
+      this.isControlsInfo = false;
+
+      if (!this.isControlsInfoShowed && this.isMenu) {
+        this.isControlsInfoShowed = true;
+        this.newGameCall();
+      }
+
+      this.isControlsInfoShowed = true;
+      return true;
+    },
+
+    /**
      * Vibrate call helper
      *
      * @param   {Number}  [time=500]  Vibrate time
@@ -3366,6 +3398,7 @@ export default {
     this.emitter.on("openMenuScreen", this.openMenuScreen);
     this.emitter.on("closeMenuScreen", this.closeMenuScreen);
 
+    this.emitter.on("how-to-play", this.openControlsInfo);
     this.emitter.on("newGame", this.newGame);
 
     this.emitter.on("vibrate", this.vibrateCall);
@@ -3383,6 +3416,7 @@ export default {
     this.emitter.off("openMenuScreen", this.openMenuScreen);
     this.emitter.off("closeMenuScreen", this.closeMenuScreen);
 
+    this.emitter.off("how-to-play", this.openControlsInfo);
     this.emitter.off("newGame", this.newGame);
 
     this.emitter.off("vibrate", this.vibrateCall);

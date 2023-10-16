@@ -54,7 +54,14 @@ export default {
       devicePixelRatio: window.devicePixelRatio,
 
       refs: {
-        menu: ["newGame", "settings", "controls", "achievements", "credits"],
+        menu: [
+          "newGame",
+          "settings",
+          "controls",
+          "howTo",
+          "achievements",
+          "credits",
+        ],
         new: ["pit", "blocksType", "speed", "back", "play"],
         credits: ["back"],
         controls: ["back"],
@@ -68,7 +75,7 @@ export default {
           "back",
         ],
         end: ["new", "back", "share"],
-        continue: ["new", "continue", "back"],
+        continue: ["new", "continue", "howTo", "back"],
         achievements: ["back"],
       },
 
@@ -282,6 +289,12 @@ export default {
       this.$emit("new-game");
 
       this.log("Start again call", this.isShow);
+    },
+
+    howToPlay() {
+      this.log("How to play call");
+
+      this.emitter.emit("how-to-play", true);
     },
 
     back() {
