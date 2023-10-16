@@ -27,11 +27,12 @@ export async function initLights() {
   // const lights = gltf.scene.children;
 
   const firstColor = new Color(0xffb07e);
-  const secondColor = new Color(0xff0000);
+  const secondColor = new Color(0x858aff);
+  const thirdColor = new Color(0xff0003);
 
   const l1 = new PointLight(firstColor);
-  const l2 = new PointLight(firstColor);
-  const l3 = new PointLight(secondColor);
+  const l2 = new PointLight(secondColor);
+  const l3 = new PointLight(thirdColor);
 
   // const l1 = lights[0].clone();
   // const l2 = lights[1].clone();
