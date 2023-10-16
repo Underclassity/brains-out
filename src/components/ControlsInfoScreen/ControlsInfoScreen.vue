@@ -20,13 +20,20 @@ Transition(name="controls")
                 img.controls-info--controller(:src="controller")
 
         .controls-info--columns
-            .controls-info--column.controls-info--column--keys
-                .controls-info--key(v-for="{ img, title, id } of keyboardKeys" :key="id")
-                    .controls-info--key--img
-                        img(:src="img")
-                    .controls-info--key--title {{ title }}
+            .controls-info--column
+                .controls-info--columns
+                    .controls-info--column
+                        .controls-info--key(v-for="{ img, title, id } of keyboardKeys.slice(0, 6)" :key="id")
+                            .controls-info--key--img
+                                img(:src="img")
+                            .controls-info--key--title {{ title }}
+                    .controls-info--column
+                        .controls-info--key(v-for="{ img, title, id } of keyboardKeys.slice(6)" :key="id")
+                            .controls-info--key--img
+                                img(:src="img")
+                            .controls-info--key--title {{ title }}
 
-            .controls-info--column.controls-info--column--keys
+            .controls-info--column
                 .controls-info--key(v-for="{ img, title, id } of controllerKeys" :key="id")
                     .controls-info--key--img
                         img(:src="img" v-if="!Array.isArray(img)")

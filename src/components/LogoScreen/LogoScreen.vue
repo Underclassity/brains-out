@@ -1,6 +1,6 @@
 <template lang="pug">
 .logo(v-show="show")
-    Transition(name="logo" :duration="2000")
+    Transition(name="logo" :duration="1500" mode="out")
         img(:src="logoSrc" v-if="show")
 </template>
 
