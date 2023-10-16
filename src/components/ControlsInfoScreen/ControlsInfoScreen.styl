@@ -1,0 +1,138 @@
+.controls-info
+    width: 100%
+    height: 100%
+    position: fixed
+    top: 0
+    left: 0
+    overflow: auto
+    background-color: #E77812
+    z-index: 100500
+    padding: 20px
+    box-sizing: border-box
+
+    &--columns
+        width: 100%
+        display: flex
+        justify-content: space-between
+        align-items: stretch
+        margin-bottom: 40px
+
+        &:last-child
+            margin-bottom: 0px
+
+        @media(max-width 768px)
+            flex-direction: column
+
+    &--column
+        width: calc(50% - 10px)
+
+        @media(max-width 768px)
+            width: 100%
+
+        &--keys
+            display: flex
+            flex-wrap: wrap
+
+    &--images
+        display: flex
+        align-items: center
+        justify-content: center
+        flex-wrap: nowrap
+
+    &--levels
+        height: 100%
+        margin-right: 20px
+
+        @media(max-width 768px)
+            height: auto
+            width: 100%
+            margin-right 0px
+            margin-bottom: 10px
+
+    &--pit
+        width: 100%
+        aspect-ratio: 1
+
+    &--key
+        width: calc(50% - 10px)
+        display: flex
+        justify-content: flex-start
+        align-items: center
+        margin-right: 10px
+        margin-bottom: 10px
+
+        @media(max-width 768px)
+            width: 100%
+
+        &--img
+            display: flex
+            align-items: center
+            justify-content: center
+            margin-right: 10px
+
+            img
+                width: 40px
+
+            span
+                margin-left: 10px
+                margin-right: 10px
+
+        &--title
+            text-align: left
+
+    &--buttons
+        width: 100%
+        display: flex
+        align-items: center
+        justify-content: center
+        margin-top: 40px
+
+    &--button
+        width: 100%
+        max-width: 400px
+        padding: 8px 16px
+        font-size: 52px
+        line-height: 56px
+        margin-bottom: 20px
+        box-sizing: border-box
+        border-radius: 20px
+        border: 5px solid #222
+        background-color: yellow
+        -webkit-text-stroke: 1px black
+        cursor: pointer
+        transition: background-color 300ms ease-in-out
+        position: relative
+        box-shadow: inset 0px 20px 20px -10px rgba(white, 0.3), inset 0px -20px 20px -10px rgba(black, 0.3)
+        user-select: none
+
+        @media(max-width 767px)
+            border: 2px solid #222
+            font-size: 26px
+            line-height: 30px
+
+        @media(max-height 900px)
+            border: 2px solid #222
+            font-size: 26px
+            line-height: 30px
+
+        &:before
+            content: ''
+            position: absolute
+            top: 20px
+            left: 15px
+            width: 10px
+            height: 10px
+            background-color: rgba(white, 0.2)
+            border-radius: 50%
+
+        &.focused,
+        &:hover
+            background-color: rgba(yellow, 0.6)
+
+.logo-enter-active,
+.logo-leave-active
+    transition: all 2s ease-in-out
+
+.logo-enter-from,
+.logo-leave-to
+    opacity: 0

@@ -22,7 +22,6 @@ import generatePit from "../../helpers/generate-pit.js";
 import log from "../../helpers/log.js";
 import randomBetween from "../../helpers/random-between.js";
 import roundValue from "../../helpers/round-value.js";
-import splitNParts from "../../helpers/split-n-parts.js";
 import throttle from "../../helpers/throttle.js";
 
 import {
@@ -81,6 +80,7 @@ import MenuScreen from "../MenuScreen/MenuScreen.vue";
 // import generateP0Form from "../../helpers/blocks/p0.js";
 
 import ControlsBlock from "../ControlsBlock/ControlsBlock.vue";
+import ControlsInfoScreen from "../ControlsInfoScreen/ControlsInfoScreen.vue";
 
 export default {
   name: "MainScreen",
@@ -126,6 +126,7 @@ export default {
 
       isAccepted: false,
       isLogo: false,
+      isControlsInfo: false,
 
       isLoading: true,
       loadingProcessCache: {},
@@ -231,9 +232,10 @@ export default {
   },
 
   components: {
-    ControlsBlock,
     // MenuComponent,
     AcceptBugsScreen,
+    ControlsBlock,
+    ControlsInfoScreen,
     LoadingScreen,
     LogoScreen,
     MenuScreen,

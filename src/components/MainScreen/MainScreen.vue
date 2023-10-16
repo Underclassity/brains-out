@@ -80,6 +80,11 @@
             input#rotateAnimation(type="checkbox" v-model="isRotateAnimation")
 
         .dev-menu--item
+            span.material-symbols-outlined info
+            label(for="isControlsInfo") Controls Info
+            input#isControlsInfo(type="checkbox" v-model="isControlsInfo")
+
+        .dev-menu--item
             span.material-symbols-outlined stroke_full
             label(for="shaders") Shaders
             input#shaders(type="checkbox" v-model="isShaders")
@@ -157,6 +162,10 @@ MenuScreen(
     v-on:back-to-game="backToGameCall"
 )
 LoadingScreen(:show="isLoading" :percent="loadPercent")
+ControlsInfoScreen(
+    :show="isControlsInfo"
+    v-on:back="isControlsInfo = false"
+)
 
 .levels(v-show="!isMenu" :style="levelsOffsetStyle" v-bind:class="{ 'levels--flip': isControls }")
     .level-item(v-for="(value, index) of layers.slice().reverse()" :key="index" :style="getLayerColor(index)")
