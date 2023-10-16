@@ -38,9 +38,9 @@ export async function initLights() {
   // const l2 = lights[1].clone();
   // const l3 = lights[2].clone();
 
-  l1.position.set(-pitWidth / 2, 0, 7);
-  l2.position.set(pitWidth / 2, 0, 7);
-  l3.position.set(0, 0, 7);
+  l1.position.set(-pitWidth / 2, 0, 5);
+  l2.position.set(pitWidth / 2, 0, 5);
+  l3.position.set(0, 0, 5);
 
   l1.power = this.lightPower;
   l2.power = this.lightPower;
