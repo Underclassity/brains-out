@@ -169,26 +169,26 @@ export default {
       pit: undefined,
       gamepad: undefined,
 
-      isShaders: false,
+      isShaders: true,
       composer: undefined,
 
-      isDotScreenPass: false,
-      isFilmPass: false,
-      isGlitch: false,
-      isSAOPass: false,
-      isSSAOPass: false,
-      isSSRPass: false,
-      isTechnicolor: false,
-      isUnrealBloomPass: false,
+      // isDotScreenPass: false,
+      // isFilmPass: false,
+      // isGlitch: false,
+      // isSAOPass: false,
+      // isSSAOPass: false,
+      // isSSRPass: false,
+      // isTechnicolor: false,
+      // isUnrealBloomPass: false,
 
-      dotScreenPass: undefined,
-      filmPass: undefined,
-      glitchPass: undefined,
-      SAOComposerPass: undefined,
-      SSAOComposerPass: undefined,
-      SSRComposerPass: undefined,
-      technicolorShaderPass: undefined,
-      UnrealBloomComposerPass: undefined,
+      // dotScreenPass: undefined,
+      // filmPass: undefined,
+      // glitchPass: undefined,
+      // SAOComposerPass: undefined,
+      // SSAOComposerPass: undefined,
+      // SSRComposerPass: undefined,
+      // technicolorShaderPass: undefined,
+      // UnrealBloomComposerPass: undefined,
 
       lights: {
         l1: undefined,
@@ -2532,6 +2532,8 @@ export default {
       const renderer = new WebGLRenderer({
         antialias: this.antialias,
         powerPreference: "high-performance",
+        stencil: false,
+        // depth: false,
       });
       renderer.setSize(width, height);
       renderer.setPixelRatio(this.pixelRatio);
@@ -3178,9 +3180,9 @@ export default {
         renderer.setPixelRatio(newValue);
       }
 
-      if (composer) {
-        composer.setPixelRatio(newValue);
-      }
+      // if (composer) {
+      //   composer.setPixelRatio(newValue);
+      // }
     },
 
     endGameCounter(newValue) {
@@ -3294,37 +3296,37 @@ export default {
       this.updateBlocksType(newValue);
     },
 
-    isGlitch(newValue) {
-      this.glitchPass.enabled = newValue;
-    },
+    // isGlitch(newValue) {
+    //   this.glitchPass.enabled = newValue;
+    // },
 
-    isTechnicolor(newValue) {
-      this.technicolorShaderPass.enabled = newValue;
-    },
+    // isTechnicolor(newValue) {
+    //   this.technicolorShaderPass.enabled = newValue;
+    // },
 
-    isDotScreenPass(newValue) {
-      this.dotScreenPass.enabled = newValue;
-    },
+    // isDotScreenPass(newValue) {
+    //   this.dotScreenPass.enabled = newValue;
+    // },
 
-    isFilmPass(newValue) {
-      this.filmPass.enabled = newValue;
-    },
+    // isFilmPass(newValue) {
+    //   this.filmPass.enabled = newValue;
+    // },
 
-    isSAOPass(newValue) {
-      this.SAOComposerPass.enabled = newValue;
-    },
+    // isSAOPass(newValue) {
+    //   this.SAOComposerPass.enabled = newValue;
+    // },
 
-    isSSAOPass(newValue) {
-      this.SSAOComposerPass.enabled = newValue;
-    },
+    // isSSAOPass(newValue) {
+    //   this.SSAOComposerPass.enabled = newValue;
+    // },
 
-    isSSRPass(newValue) {
-      this.SSRComposerPass.enabled = newValue;
-    },
+    // isSSRPass(newValue) {
+    //   this.SSRComposerPass.enabled = newValue;
+    // },
 
-    isUnrealBloomPass(newValue) {
-      this.UnrealBloomComposerPass.enabled = newValue;
-    },
+    // isUnrealBloomPass(newValue) {
+    //   this.UnrealBloomComposerPass.enabled = newValue;
+    // },
 
     isControls() {
       this.updateControls();

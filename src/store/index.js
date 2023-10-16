@@ -34,7 +34,7 @@ export const store = createStore({
 
     fov: 70,
     pixelRatio: 1,
-    antialias: true,
+    antialias: false,
     lightPower: 5000,
 
     gridColor: 0x9b_43_0e,
