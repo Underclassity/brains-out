@@ -81,6 +81,7 @@ import MenuScreen from "../MenuScreen/MenuScreen.vue";
 
 import ControlsBlock from "../ControlsBlock/ControlsBlock.vue";
 import ControlsInfoScreen from "../ControlsInfoScreen/ControlsInfoScreen.vue";
+import getGroupSize from "../../helpers/get-group-size.js";
 
 export default {
   name: "MainScreen",
@@ -136,6 +137,8 @@ export default {
       isColorizeLevel: true,
       isRotateAnimation: false,
       isRotating: false,
+
+      randomFormsCount: 5,
 
       orbitControls: false,
       helpers: false,
@@ -1241,7 +1244,7 @@ export default {
     dropElement(element) {
       this.log(`Drop element: ${element.name}`);
 
-      this.vibrateCall(100);
+      // this.vibrateCall(100);
 
       element.userData.drop = true;
 
@@ -1268,7 +1271,7 @@ export default {
         }
 
         this.translateHelper(element, "z", minDiff);
-      } else {
+      } else if (points.length) {
         const lowerPoint = points.reduce((prev, curr) => {
           if (curr.z > prev.z) {
             return curr;
@@ -1290,6 +1293,12 @@ export default {
         const diff = layerPosition - itemPosition.z;
 
         this.translateHelper(element, "z", diff);
+      } else {
+        this.translateHelper(
+          element,
+          "z",
+          this.zCPoints[this.zCPoints.length - 1]
+        );
       }
 
       this.restrainElement(element);
@@ -3204,19 +3213,61 @@ export default {
 
       return true;
     },
+
+    addRandomFigures() {
+      const { randomFormsCount } = this;
+
+      this.log("Add random forms: ", randomFormsCount);
+
+      for (let i = 0; i < randomFormsCount; i++) {
+        const element = this.getRandomForm();
+
+        for (let i = 0; i < 5; i++) {
+          const rotateNumber = randomBetween(0, 5);
+
+          switch (rotateNumber) {
+            case 0:
+              this.rotateHelper(element, "x", -90);
+              break;
+            case 1:
+              this.rotateHelper(element, "x", 90);
+              break;
+            case 2:
+              this.rotateHelper(element, "y", -90);
+              break;
+            case 3:
+              this.rotateHelper(element, "y", 90);
+              break;
+            case 4:
+              this.rotateHelper(element, "z", -90);
+              break;
+            case 5:
+              this.rotateHelper(element, "z", 90);
+              break;
+          }
+        }
+
+        // Add to global cache
+        this.elements.push(element);
+
+        // Move to random corner
+        this.moveToRandomCorner(element);
+
+        this.dropElement(element);
+        this.petrify(element);
+      }
+
+      return true;
+    },
   },
 
   watch: {
     pixelRatio(newValue) {
-      const { renderer, composer } = this;
+      const { renderer } = this;
 
       if (renderer) {
         renderer.setPixelRatio(newValue);
       }
-
-      // if (composer) {
-      //   composer.setPixelRatio(newValue);
-      // }
     },
 
     endGameCounter(newValue) {

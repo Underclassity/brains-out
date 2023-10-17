@@ -32,7 +32,11 @@
             span.material-symbols-outlined format_bold
             span.label Blocks type
             select(v-model="blocksType" v-on:change="updateBlocksType")
-                option(v-for="type of blocksTypeOptions" :key="type" :value="type") {{ type }}
+                option(
+                    v-for="typeItem of blocksTypeOptions"
+                    :key="typeItem"
+                    :value="typeItem"
+                ) {{ typeItem }}
 
         .dev-menu--item
             span.material-symbols-outlined package_2
@@ -83,6 +87,10 @@
             span.material-symbols-outlined stroke_full
             label(for="shaders") Shaders
             input#shaders(type="checkbox" v-model="isShaders")
+
+        .dev-menu--item
+            input(type="number" min=1 max=10 v-model="randomFormsCount")
+            button(v-on:click="addRandomFigures") Add random forms
 
         // .dev-menu--item
         //     span.material-symbols-outlined stroke_full
