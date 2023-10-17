@@ -1,5 +1,7 @@
 import { AmbientLight, PointLightHelper, PointLight, Color } from "three";
 
+import log from "../../helpers/log.js";
+
 // import loadLights from "../../helpers/lights.js";
 
 /**
@@ -8,6 +10,12 @@ import { AmbientLight, PointLightHelper, PointLight, Color } from "three";
  * @return  {Boolean}  Result
  */
 export async function initLights() {
+  if (this.lights?.l1 && this.lights?.l2 && this.lights?.l3) {
+    return false;
+  }
+
+  log("Init lights");
+
   const { scene, camera, pitWidth } = this;
 
   // const gltf = await loadLights(this.progressCb);

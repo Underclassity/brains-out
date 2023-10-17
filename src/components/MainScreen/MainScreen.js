@@ -395,14 +395,46 @@ export default {
       const fitHeightDistance =
         maxSize / (2 * Math.atan((Math.PI * camera.fov) / 360));
       const fitWidthDistance = fitHeightDistance / camera.aspect;
-      const distance = 2 * Math.max(fitHeightDistance, fitWidthDistance);
-
-      camera.position.setZ(distance - maxSize);
+      let distance = 2 * Math.max(fitHeightDistance, fitWidthDistance);
 
       const vFOV = MathUtils.degToRad(camera.fov); // convert vertical fov to radians
 
       this.viewHeight = 2 * Math.tan(vFOV / 2) * (distance - maxSize); // visible height
       this.viewWidth = this.viewHeight * camera.aspect; // visible width
+
+      let viewWidthDiff = (this.viewWidth - pitWidth) / 2;
+      let viewHeightDiff = (this.viewHeight - pitHeight) / 2;
+
+      let counter = 0;
+
+      while (viewWidthDiff > 2 && viewHeightDiff > 2 && counter <= 10) {
+        distance -= 0.5;
+        this.viewHeight = 2 * Math.tan(vFOV / 2) * (distance - maxSize);
+        this.viewWidth = this.viewHeight * camera.aspect;
+
+        viewWidthDiff = (this.viewWidth - pitWidth) / 2;
+        viewHeightDiff = (this.viewHeight - pitHeight) / 2;
+
+        counter++;
+      }
+
+      if (this.cameraPositionTween) {
+        this.cameraPositionTween.stop();
+      }
+
+      this.cameraPositionTween = new TWEEN.Tween({
+        value: camera.position.z,
+      });
+      this.cameraPositionTween.easing(TWEEN.Easing.Quadratic.In);
+      this.cameraPositionTween.to({ value: distance - maxSize }, 300);
+      this.cameraPositionTween.onUpdate(({ value }) => {
+        camera.position.setZ(value);
+      });
+
+      // Start tween after re-create pit
+      setTimeout(() => {
+        this.cameraPositionTween.start();
+      }, 0);
 
       if (controls) {
         controls.update();
@@ -2016,10 +2048,6 @@ export default {
     changePitSize(pitSize) {
       const { scene, renderer } = this;
 
-      this.pitSize = pitSize;
-
-      const [width, height, depth] = pitSize.split("x");
-
       this.log(`Change pit size to ${pitSize}`);
 
       // remove all child
@@ -2081,10 +2109,6 @@ export default {
       }
 
       this.elements = [];
-
-      this.pitWidth = width;
-      this.pitHeight = height;
-      this.pitDepth = depth;
 
       renderer.renderLists.dispose();
 

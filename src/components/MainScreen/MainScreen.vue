@@ -93,7 +93,7 @@
             button(v-on:click="addRandomFigures") Add random forms
 
         .dev-menu--item
-            span.material-symbols-outlined time
+            span.material-symbols-outlined timer
             label(for="endless") Endless mode
             input#endless(type="checkbox" v-model="isEndless")
 
