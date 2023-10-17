@@ -92,6 +92,11 @@
             input(type="number" min=1 max=10 v-model="randomFormsCount")
             button(v-on:click="addRandomFigures") Add random forms
 
+        .dev-menu--item
+            span.material-symbols-outlined time
+            label(for="endless") Endless mode
+            input#endless(type="checkbox" v-model="isEndless")
+
         // .dev-menu--item
         //     span.material-symbols-outlined stroke_full
         //     label(for="glitch") Glitch

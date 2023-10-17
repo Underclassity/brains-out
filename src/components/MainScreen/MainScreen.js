@@ -140,6 +140,9 @@ export default {
 
       randomFormsCount: 5,
 
+      // Modes
+      isEndless: false,
+
       orbitControls: false,
       helpers: false,
 
@@ -438,6 +441,10 @@ export default {
      * @return  {Boolean}  Result
      */
     speedUp() {
+      if (this.isEndless) {
+        return false;
+      }
+
       this.$store.commit("updateSpeed", this.speedStep);
 
       this.log("Update speed to: ", this.speed);
