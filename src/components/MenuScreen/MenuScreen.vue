@@ -137,10 +137,11 @@
             ref="settings.pixelRatio"
             v-bind:class="{ 'focused': focused == 'settings.pixelRatio' }"
         )
-            .menu--label Scale
-            .menu--selector--prev(v-on:click="prevPixelRatio" v-if="pixelRatio != 1" ref="settings.pixelRatio.prev")
+            .menu--label Resolution
+            //- .menu--selector--prev(v-on:click="prevPixelRatio" v-if="pixelRatio != 1" ref="settings.pixelRatio.prev")
+            input(type="range" min="50" max="400" v-model="resolution" ref="settings.pixelRatio.slider")
             .menu--selector--value {{ scale }}%
-            .menu--selector--next(v-on:click="nextPixelRatio" v-if="pixelRatio != 4" ref="settings.pixelRatio.next")
+            //- .menu--selector--next(v-on:click="nextPixelRatio" v-if="pixelRatio != 4" ref="settings.pixelRatio.next")
 
         .menu--selector(
             v-show="flags.settings"

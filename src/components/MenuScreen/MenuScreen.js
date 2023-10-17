@@ -53,6 +53,8 @@ export default {
 
       devicePixelRatio: window.devicePixelRatio,
 
+      resolution: 100,
+
       refs: {
         menu: [
           "newGame",
@@ -513,6 +515,10 @@ export default {
         leftElement.click();
       }
 
+      if ((this.focused = "settings.pixelRatio")) {
+        this.resolution -= 10;
+      }
+
       return true;
     },
 
@@ -525,6 +531,10 @@ export default {
 
       if (leftElement) {
         leftElement.click();
+      }
+
+      if ((this.focused = "settings.pixelRatio")) {
+        this.resolution += 10;
       }
 
       return true;
@@ -589,6 +599,14 @@ export default {
 
       this.lastFocused[flag] = id;
     },
+
+    resolution(newValue) {
+      const resolution = parseInt(newValue, 10);
+
+      const newPixelRatio = (resolution / 100) * this.devicePixelRatio;
+
+      this.$store.commit("setPixelRatio", newPixelRatio);
+    },
   },
 
   mounted() {
@@ -610,6 +628,9 @@ export default {
     window.addEventListener("blur", this.blurEvent);
 
     this.checkSharePermissions();
+
+    // Update resolution for init
+    this.resolution = this.scale;
   },
 
   beforeUnmount() {
