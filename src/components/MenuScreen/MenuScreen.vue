@@ -139,7 +139,7 @@
         )
             .menu--label Resolution
             //- .menu--selector--prev(v-on:click="prevPixelRatio" v-if="pixelRatio != 1" ref="settings.pixelRatio.prev")
-            input(type="range" min="50" max="400" v-model="resolution" ref="settings.pixelRatio.slider")
+            input.menu--range(type="range" min="50" max="400" v-model="resolution" ref="settings.pixelRatio.slider")
             .menu--selector--value {{ scale }}%
             //- .menu--selector--next(v-on:click="nextPixelRatio" v-if="pixelRatio != 4" ref="settings.pixelRatio.next")
 

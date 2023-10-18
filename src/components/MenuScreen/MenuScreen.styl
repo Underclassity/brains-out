@@ -368,3 +368,51 @@
         color: white
         -webkit-text-stroke: 1px black
         margin-bottom: 10px
+
+    &--range
+        -webkit-appearance: none
+        appearance: none
+        background: transparent
+        cursor: pointer
+        width: 15rem
+
+        &:focus
+            outline: none
+
+        &::-webkit-slider-runnable-track
+            background-color: #ffa500
+            border-radius: 0.5rem
+            height: 1rem
+            border: 2px solid black
+
+        &::-webkit-slider-thumb
+            -webkit-appearance: none
+            appearance: none
+            margin-top: -12px
+
+            background-color: #ffa500
+            height: 2rem
+            width: 1rem
+
+        &:focus::-webkit-slider-thumb
+            border: 2px solid black
+            outline: 3px solid #ffa500
+            outline-offset: 0.125rem
+
+        &::-moz-range-track
+            background-color: #ffa500
+            border-radius: 0.5rem
+            height: 0.5rem
+
+        &::-moz-range-thumb
+            border: none
+            border-radius: 0
+
+            background-color: #e77812
+            height: 2rem
+            width: 1rem
+
+        &:focus::-moz-range-thumb
+            border: 2px solid black
+            outline: 3px solid #ffa500
+            outline-offset: 0.125rem
