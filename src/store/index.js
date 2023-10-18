@@ -361,6 +361,13 @@ export const store = createStore({
     updateAccepted(state, value) {
       state.isAccepted = value ? true : false;
     },
+
+    rotatePit(state) {
+      const { pitWidth, pitHeight } = state;
+
+      state.pitWidth = pitHeight;
+      state.pitHeight = pitWidth;
+    },
   },
   actions: {
     addAchievement({ state }, achievement) {

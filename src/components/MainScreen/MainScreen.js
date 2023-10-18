@@ -3,8 +3,8 @@ import { mapState, mapGetters } from "vuex";
 import {
   Clock,
   Color,
+  Group,
   MathUtils,
-  MeshPhongMaterial,
   PerspectiveCamera,
   Scene,
   Vector3,
@@ -81,7 +81,6 @@ import MenuScreen from "../MenuScreen/MenuScreen.vue";
 
 import ControlsBlock from "../ControlsBlock/ControlsBlock.vue";
 import ControlsInfoScreen from "../ControlsInfoScreen/ControlsInfoScreen.vue";
-import getGroupSize from "../../helpers/get-group-size.js";
 
 export default {
   name: "MainScreen",
@@ -2040,8 +2039,8 @@ export default {
         pitParts,
         isSimple,
         isInstanced,
-        vWidth,
-        vHeight
+        Math.max(vWidth, vHeight),
+        Math.max(vWidth, vHeight)
       );
       scene.add(this.pit);
 
@@ -3303,6 +3302,42 @@ export default {
         this.dropElement(element);
         this.petrify(element);
       }
+
+      return true;
+    },
+
+    /**
+     * Rotate pit
+     *
+     * @return  {Boolean}  Result
+     */
+    rotatePit() {
+      this.log("Rotate pit call");
+
+      this.$store.commit("rotatePit");
+
+      this.pit.rotation.set(0, 0, this.pit.rotation.z + MathUtils.degToRad(90));
+
+      this.updateCameraProjection();
+
+      const elements = this.layersElements.flat();
+
+      // Init layers after resize
+      this.initLayers();
+      this.initPoints();
+
+      elements.forEach((item) =>
+        item.rotation.set(0, 0, item.rotation.z + MathUtils.degToRad(90))
+      );
+
+      elements.forEach((el) => {
+        const { x, y, z } = this.getElementLayerPointsForItem(el);
+
+        el.userData.layer = { x, y, z };
+        this.layersElements[z].push(el);
+      });
+
+      this.restrainElement(this.current);
 
       return true;
     },
