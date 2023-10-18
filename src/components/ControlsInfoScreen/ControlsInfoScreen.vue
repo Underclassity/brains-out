@@ -16,31 +16,30 @@ Transition(name="controls")
             .controls-info--column
                 img.controls-info--keyboard(:src="keyboard")
 
+                .controls-info--keys
+                    .controls-info--columns
+                        .controls-info--column
+                            .controls-info--key(v-for="{ img, title, id } of keyboardKeys.slice(0, 6)" :key="id")
+                                .controls-info--key--img
+                                    img(:src="img")
+                                .controls-info--key--title {{ title }}
+                        .controls-info--column
+                            .controls-info--key(v-for="{ img, title, id } of keyboardKeys.slice(6)" :key="id")
+                                .controls-info--key--img
+                                    img(:src="img")
+                                .controls-info--key--title {{ title }}
+
             .controls-info--column
                 img.controls-info--controller(:src="controller")
 
-        .controls-info--columns
-            .controls-info--column
-                .controls-info--columns
-                    .controls-info--column
-                        .controls-info--key(v-for="{ img, title, id } of keyboardKeys.slice(0, 6)" :key="id")
-                            .controls-info--key--img
-                                img(:src="img")
-                            .controls-info--key--title {{ title }}
-                    .controls-info--column
-                        .controls-info--key(v-for="{ img, title, id } of keyboardKeys.slice(6)" :key="id")
-                            .controls-info--key--img
-                                img(:src="img")
-                            .controls-info--key--title {{ title }}
-
-            .controls-info--column
-                .controls-info--key(v-for="{ img, title, id } of controllerKeys" :key="id")
-                    .controls-info--key--img
-                        img(:src="img" v-if="!Array.isArray(img)")
-                        img(:src="img[0]" v-if="Array.isArray(img)")
-                        span(v-if="Array.isArray(img)") or
-                        img(:src="img[1]" v-if="Array.isArray(img)")
-                    .controls-info--key--title {{ title }}
+                .controls-info--keys
+                    .controls-info--key(v-for="{ img, title, id } of controllerKeys" :key="id")
+                        .controls-info--key--img
+                            img(:src="img" v-if="!Array.isArray(img)")
+                            img(:src="img[0]" v-if="Array.isArray(img)")
+                            span(v-if="Array.isArray(img)") or
+                            img(:src="img[1]" v-if="Array.isArray(img)")
+                        .controls-info--key--title {{ title }}
 
         .controls-info--buttons
             .controls-info--button(v-on:click="backClick" ref="back") Back
