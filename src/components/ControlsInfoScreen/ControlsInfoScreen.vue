@@ -6,7 +6,7 @@ Transition(name="controls")
                 img.controls-info--levels(:src="levels")
                 img.controls-info--pit(:src="pit")
 
-            .controls-info--column
+            .controls-info--column.controls-info--text
                 p Place falling zombies (light green cube in the scheme) as tight and accurate as possible in the pit (brown in the scheme).
                 p Zombies starts to fall in the foreground and flies away from you to the bottom of the pit. You can rotate falling zombies in all 3 axes and move them horizontally and vertically with keyboard or controller (see layouts below) or with on screen buttons on mobile. Zombies can be fast dropped down with special key or button.
                 p When falling zombie drops to the bottom of the pit (or on other zombie`s bodies in the pit), he is painted to color according to the level of pit. Each color represent different level of the pit (color gradient on the left of the scheme) - from bottom (purple) to top (red). Don`t let zombies fall higher than top of the pit (red) or the game will be over.
@@ -14,7 +14,7 @@ Transition(name="controls")
 
         .controls-info--columns
             .controls-info--column
-                img.controls-info--levels(:src="keyboard")
+                img.controls-info--keyboard(:src="keyboard")
 
             .controls-info--column
                 img.controls-info--controller(:src="controller")
