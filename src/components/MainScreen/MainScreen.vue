@@ -97,6 +97,11 @@
             label(for="endless") Endless mode
             input#endless(type="checkbox" v-model="isEndless")
 
+        .dev-menu--item
+            span.material-symbols-outlined tactic
+            label(for="practice") Practice mode
+            input#practice(type="checkbox" v-model="isPractice")
+
         // .dev-menu--item
         //     span.material-symbols-outlined stroke_full
         //     label(for="glitch") Glitch

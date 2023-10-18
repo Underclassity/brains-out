@@ -112,7 +112,6 @@ export default {
       isSimple: false,
       isEnd: false,
       isInstanced: true,
-      isStop: false,
       isPetrify: false,
       isFastDrop: true,
       isLevelHelpers: false,
@@ -142,6 +141,7 @@ export default {
 
       // Modes
       isEndless: false,
+      isPractice: false,
 
       orbitControls: false,
       helpers: false,
@@ -292,6 +292,10 @@ export default {
     },
 
     time() {
+      if (this.isPractice) {
+        return 0;
+      }
+
       return this.isSmooth ? this.timeDelta : this.second;
     },
 
@@ -2529,10 +2533,6 @@ export default {
           this.fps = Math.round((this.frames * 1000) / (time - this.prevTime));
           this.frames = 0;
           this.prevTime = time;
-        }
-
-        if (this.isStop) {
-          return false;
         }
 
         const delta = clock.getDelta();
