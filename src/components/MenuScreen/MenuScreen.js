@@ -59,14 +59,14 @@ export default {
         menu: [
           "newGame",
           "settings",
-          "controls",
+          // "controls",
           "howTo",
           "achievements",
           "credits",
         ],
         new: ["pit", "blocksType", "speed", "back", "play"],
         credits: ["back"],
-        controls: ["back"],
+        // controls: ["back"],
         settings: [
           "pixelRatio",
           "volume",

@@ -581,7 +581,7 @@ export default {
      */
     newGameCall() {
       if (!this.isControlsInfoShowed) {
-        this.isControlsInfo = true;
+        this.openControlsInfo(true, true);
         return true;
       }
 
@@ -3181,13 +3181,19 @@ export default {
     /**
      * Open controls screen helper
      *
-     * @param   {Boolean}  flag  Flag
+     * @param   {Boolean}  [flag=true]        Open flag
+     * @param   {Boolean}  [closeMenu=false]  Close menu flag
      *
-     * @return  {Boolean}        Result
+     * @return  {Boolean}                     Result
      */
-    openControlsInfo(flag = true) {
+    openControlsInfo(flag = true, closeMenu = false) {
       this.log("Open controls info screen");
       this.isControlsInfo = flag;
+
+      if (closeMenu) {
+        this.closeMenu();
+      }
+
       return true;
     },
 
@@ -3195,7 +3201,7 @@ export default {
       this.log("Close controls info");
       this.isControlsInfo = false;
 
-      if (!this.isControlsInfoShowed && this.isMenu) {
+      if (!this.isControlsInfoShowed && !this.isMenu) {
         this.isControlsInfoShowed = true;
         this.newGameCall();
       }

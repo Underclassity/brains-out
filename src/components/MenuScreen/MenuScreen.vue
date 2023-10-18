@@ -17,12 +17,12 @@
             ref="menu.settings"
             v-bind:class="{ 'focused': focused == 'menu.settings' }"
         ) Settings
-        .menu--item(
-            v-show="flags.menu"
-            v-on:click="controlsCall"
-            ref="menu.controls"
-            v-bind:class="{ 'focused': focused == 'menu.controls' }"
-        ) Controls
+        //- .menu--item(
+        //-     v-show="flags.menu"
+        //-     v-on:click="controlsCall"
+        //-     ref="menu.controls"
+        //-     v-bind:class="{ 'focused': focused == 'menu.controls' }"
+        //- ) Controls
         .menu--item(
             v-show="flags.menu"
             v-on:click="howToPlay"
@@ -90,20 +90,20 @@
             ) Play
 
         //- Controls items
-        .menu--title(v-show="flags.controls") Controls
+        //- .menu--title(v-show="flags.controls") Controls
 
-        .menu--label(v-show="flags.controls") Arrows - Move
-        .menu--label(v-show="flags.controls") W S - Z axis
-        .menu--label(v-show="flags.controls") A D - X axis
-        .menu--label(v-show="flags.controls") Q E - Y axis
-        .menu--label(v-show="flags.controls") Space - Drop
+        //- .menu--label(v-show="flags.controls") Arrows - Move
+        //- .menu--label(v-show="flags.controls") W S - Z axis
+        //- .menu--label(v-show="flags.controls") A D - X axis
+        //- .menu--label(v-show="flags.controls") Q E - Y axis
+        //- .menu--label(v-show="flags.controls") Space - Drop
 
-        .menu--buttons(v-show="flags.controls")
-            .menu--item--red.menu--button(
-                v-on:click="back"
-                ref="controls.back"
-                v-bind:class="{ 'focused': focused == 'controls.back' }"
-            ) Back
+        //- .menu--buttons(v-show="flags.controls")
+        //-     .menu--item--red.menu--button(
+        //-         v-on:click="back"
+        //-         ref="controls.back"
+        //-         v-bind:class="{ 'focused': focused == 'controls.back' }"
+        //-     ) Back
 
         //- Credits items
         .menu--version(v-show="flags.credits") Version: {{ appVersion }}-{{ version }}
