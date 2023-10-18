@@ -75,6 +75,7 @@
 
         .dev-menu--item
             span.material-symbols-outlined settings_backup_restore
+            input(type="number" min="1" max="10" v-model="maxRotate")
             label(for="rotateRestrain") Restrain rotates by {{ maxRotate }}
             input#rotateRestrain(type="checkbox" v-model="isRotateRestrain")
 
