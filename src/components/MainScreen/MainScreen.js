@@ -3300,6 +3300,7 @@ export default {
         this.moveToRandomCorner(element);
 
         this.dropElement(element);
+        element.userData.drop = false;
         this.petrify(element);
       }
 
