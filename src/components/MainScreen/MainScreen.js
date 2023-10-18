@@ -4,7 +4,7 @@ import {
   Clock,
   Color,
   MathUtils,
-  MeshBasicMaterial,
+  MeshPhongMaterial,
   PerspectiveCamera,
   Scene,
   Vector3,
@@ -310,7 +310,7 @@ export default {
       // count += 1;
 
       // // Dev parts
-      count += 1;
+      count++;
 
       // // 10 objects to download
       // const count = 10;
@@ -634,7 +634,7 @@ export default {
      * @return  {Boolean}            Result
      */
     updateSmooth(isSmooth) {
-      this.isSmooth = isSmooth ? true : false;
+      this.isSmooth = isSmooth;
       this.log(`Smooth updated: ${this.isSmooth}`);
 
       return true;
@@ -648,7 +648,7 @@ export default {
      * @return  {Boolean}               Result
      */
     updateInstanced(isInstanced) {
-      this.isInstanced = isInstanced ? true : false;
+      this.isInstanced = isInstanced;
       this.log(`Instanced updated: ${this.isInstanced}`);
 
       this.newGame();
@@ -1418,10 +1418,20 @@ export default {
 
       element.traverse((obj) => {
         if (!obj.isMesh) {
-          return;
+          return false;
         }
 
-        obj.material = new MeshBasicMaterial({ color });
+        if (Array.isArray(obj.material)) {
+          obj.material.forEach((material, index, array) => {
+            array[index].color.set(color);
+            array[index].needsUpdate = true;
+          });
+
+          return false;
+        }
+
+        obj.material.color.set(color);
+        obj.material.needsUpdate = true;
       });
 
       return true;
