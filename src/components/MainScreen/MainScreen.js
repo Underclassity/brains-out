@@ -143,6 +143,10 @@ export default {
       isEndless: false,
       isPractice: false,
 
+      isSlow: false,
+      slowValue: 100,
+
+      // Helpers
       orbitControls: false,
       helpers: false,
 
@@ -754,6 +758,10 @@ export default {
 
       this.isEnd = false;
       this.isPetrify = false;
+
+      // Reset slow params
+      this.isSlow = false;
+      this.slowValue = 100;
 
       this.movesCounter = 0;
 
@@ -1632,6 +1640,10 @@ export default {
       this.$store.commit("incrementEndGameCounter");
 
       this.isEnd = true;
+
+      // Reset slow params
+      this.isSlow = false;
+      this.slowValue = 100;
 
       this.vibrateCall();
 
@@ -2556,7 +2568,7 @@ export default {
         const delta = clock.getDelta();
 
         if (!this.isPause) {
-          timeDelta += delta;
+          timeDelta += delta / (this.isSlow ? 4 : 1);
         }
 
         const second = Math.round(timeDelta) * this.speed;
@@ -2573,6 +2585,21 @@ export default {
           this.next.rotation.x = timeDelta / 1;
           this.next.rotation.y = timeDelta / 2;
           this.next.rotation.z = timeDelta / 3;
+        }
+
+        if (this.isSlow) {
+          this.slowValue--;
+
+          if (this.slowValue <= 0) {
+            this.slowValue = 0;
+            this.isSlow = false;
+          }
+        } else {
+          this.slowValue++;
+
+          if (this.slowValue >= 100) {
+            this.slowValue = 100;
+          }
         }
 
         // controls.update();
@@ -2954,6 +2981,9 @@ export default {
             //this.log("Press Right");
             this.moveRight();
           }
+          break;
+        case "ShiftLeft":
+          this.isSlow = !this.isSlow;
           break;
         case "Space":
           if (this.isMenu) {

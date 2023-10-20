@@ -108,6 +108,11 @@
             label(for="practice") Practice mode
             input#practice(type="checkbox" v-model="isPractice")
 
+        .dev-menu--item
+            span.material-symbols-outlined slow_motion_video
+            label(for="slowMeter") Slow {{ slowValue }}
+            input#slowMeter(type="range" v-model="slowValue" min="0" max="100" disabled)
+
         // .dev-menu--item
         //     span.material-symbols-outlined stroke_full
         //     label(for="glitch") Glitch
