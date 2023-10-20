@@ -10,13 +10,15 @@
             v-on:click="newGameCall"
             ref="menu.newGame"
             v-bind:class="{ 'focused': focused === 'menu.newGame' }"
-        ) New Game
+        )
+            span New Game
         .menu--item(
             v-show="flags.menu"
             v-on:click="settingsCall"
             ref="menu.settings"
             v-bind:class="{ 'focused': focused == 'menu.settings' }"
-        ) Settings
+        )
+            span Settings
         //- .menu--item(
         //-     v-show="flags.menu"
         //-     v-on:click="controlsCall"
@@ -28,22 +30,26 @@
             v-on:click="howToPlay"
             ref="menu.howTo"
             v-bind:class="{ 'focused': focused == 'menu.howTo' }"
-        ) How to play
+        )
+            span How to play
         .menu--item(
             v-show="flags.menu"
             v-on:click="achievementsCall"
             ref="menu.achievements"
             v-bind:class="{ 'focused': focused == 'menu.achievements' }"
-        ) Achievements
+        )
+            span Achievements
         .menu--item(
             v-show="flags.menu"
             v-on:click="creditsCall"
             ref="menu.credits"
             v-bind:class="{ 'focused': focused == 'menu.credits' }"
-        ) Credits
+        )
+            span Credits
 
         //- New game items
-        .menu--title(v-show="flags.new") Game Preferences
+        .menu--title(v-show="flags.new")
+            span Game Preferences
 
         .menu--selector(
             v-show="flags.new"
@@ -81,13 +87,15 @@
                 v-on:click="back"
                 ref="new.back"
                 v-bind:class="{ 'focused': focused == 'new.back' }"
-            ) Back
+            )
+                span Back
             .menu--item--new.menu--button(
                 v-show="flags.new"
                 v-on:click="playClick"
                 ref="new.play"
                 v-bind:class="{ 'focused': focused == 'new.play' }"
-            ) Play
+            )
+                span Play
 
         //- Controls items
         //- .menu--title(v-show="flags.controls") Controls

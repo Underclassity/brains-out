@@ -23,8 +23,8 @@
         border-radius: 20px
         border: 5px solid #222
         padding: 40px 40px 20px 40px
-        background-color: #E77812
-        -webkit-text-stroke: 1px black
+        background-color: var(--orange, #E77812)
+        -webkit-text-stroke: 1px var(--black, #000)
         max-width: 700px
 
         @media(max-width 767px)
@@ -33,40 +33,45 @@
             padding: 20px
 
     &--logo
+        display: flex
+        align-items: center
+        justify-content: center
         width: 100%
+        margin-bottom: 10px
 
         img
             width: 100%
             max-width: 500px
 
-        @media(max-width 767px)
-            max-width: 300px
+            @media(max-width 767px)
+                max-width: 300px
 
-        @media(max-height 900px)
-            max-width: 300px
+            @media(max-height 900px)
+                max-width: 300px
 
     &--title
-        font-size: 52px
+        font-size: 56px
         line-height: 56px
 
         @media(max-width 767px)
-            font-size: 26px
+            font-size: 30px
             line-height: 30px
 
         @media(max-height 900px)
-            font-size: 26px
+            font-size: 30px
             line-height: 30px
 
     &--label
-        font-size: 32px
+        font-size: 36px
         line-height: 36px
+        margin-right: 10px
 
         @media(max-width 767px)
-            font-size 28px
+            font-size 32px
             line-height: 32px
 
         @media(max-height 900px)
-            font-size 28px
+            font-size 32px
             line-height: 32px
 
     &--selector
@@ -104,14 +109,14 @@
                 top: -50%
                 left: -50%
                 border-left: solid 0px transparent
-                border-right: solid 44px orange
+                border-right: solid 44px var(--orange, #E77812)
                 border-top: solid 20px transparent
                 border-bottom: solid 20px transparent
                 transform: translate(5px, -50%)
 
             &:hover
                 &:before
-                    border-right: solid 44px rgba(orange, 0.6)
+                    border-right: solid 44px rgba(#E77812, 0.6)
 
         &--next
             border-left: solid 52px #222
@@ -134,7 +139,7 @@
                 position: absolute
                 top: 0px
                 left: 0px
-                border-left: solid 44px orange
+                border-left: solid 44px var(--orange, #E77812)
                 border-right: solid 0px transparent
                 border-top: solid 20px transparent
                 border-bottom: solid 20px transparent
@@ -142,18 +147,17 @@
 
             &:hover
                 &:before
-                    border-left: solid 44px rgba(orange, 0.6)
+                    border-left: solid 44px rgba(#E77812, 0.6)
 
         &--value
             box-sizing: border-box
             border-radius: 20px
             border: 5px solid #222
             padding: 8px 16px
-            background-color: #E77812
-            font-size: 32px
+            background-color: var(--orange, #E77812)
+            font-size: 36px
             line-height: 36px
-            background-color: orange
-            -webkit-text-stroke: 1px black
+            -webkit-text-stroke: 1px var(--black, #000)
             position: relative
             box-shadow: inset 0px 20px 20px -10px rgba(white, 0.3), inset 0px -20px 20px -10px rgba(black, 0.3)
 
@@ -161,14 +165,14 @@
                 border-radius: 10px
                 padding: 8px
                 border: 2px solid #222
-                font-size: 28px
+                font-size: 32px
                 line-height: 32px
 
             @media(max-height 900px)
                 border-radius: 10px
                 padding: 8px
                 border: 2px solid #222
-                font-size: 28px
+                font-size: 32px
                 line-height: 32px
 
             &:before
@@ -192,21 +196,32 @@
         border-radius: 20px
         border: 5px solid #222
         background-color: yellow
-        -webkit-text-stroke: 1px black
+        -webkit-text-stroke: 1px var(--black, #000)
         cursor: pointer
         transition: background-color 300ms ease-in-out
         position: relative
         box-shadow: inset 0px 20px 20px -10px rgba(white, 0.3), inset 0px -20px 20px -10px rgba(black, 0.3)
 
+        span
+            transform: translateY(6px)
+
+            @media(max-width 768px)
+                transform: translateY(4px)
+
+            @media(max-height 900px)
+                transform: translateY(4px)
+
         @media(max-width 767px)
             border: 2px solid #222
-            font-size: 26px
+            font-size: 30px
             line-height: 30px
+            margin-bottom: 10px
 
         @media(max-height 900px)
             border: 2px solid #222
-            font-size: 26px
+            font-size: 30px
             line-height: 30px
+            margin-bottom: 10px
 
         &:before
             content: ''
@@ -291,7 +306,7 @@
         margin-bottom: 10px
         margin-right: 10px
         padding: 10px
-        border: 2px solid black
+        border: 2px solid var(--black, #000)
         border-radius: 20px
         box-sizing: border-box
         background-color: #E7C512
@@ -307,7 +322,7 @@
             top: -50%
             left: -50%
             border-left: solid 0px transparent
-            border-right: solid 44px orange
+            border-right: solid 44px var(--orange, #E77812)
             border-top: solid 20px transparent
             border-bottom: solid 20px transparent
             transform: translate(5px, -50%)
@@ -327,7 +342,7 @@
         &--title
             font-size: 24px
             line-height: 28px
-            margin-bottom: 8px
+            // margin-bottom: 8px
 
         &:nth-child(3n)
             margin-right: 0px
@@ -345,28 +360,31 @@
 
         &--link
             color: white
-            -webkit-text-stroke: 1px black
+            -webkit-text-stroke: 1px var(--black, #000)
             margin-right: 8px
 
             &:last-child
                 margin-right: 0px
 
         &--author
-            margin-right: 8px
+            margin-right: 10px
 
         &--title
-            font-size: 28px
+            font-size: 32px
             line-height: 32px
             margin-top: 16px
             margin-bottom: 16px
 
+        &--desc
+            margin-top: 10px
+
     &--link
         display: block
         text-align: left
-        font-size: 24px
+        font-size: 32px
         line-height: 32px
         color: white
-        -webkit-text-stroke: 1px black
+        -webkit-text-stroke: 1px var(--black, #000)
         margin-bottom: 10px
 
     &--range
@@ -380,27 +398,27 @@
             outline: none
 
         &::-webkit-slider-runnable-track
-            background-color: #ffa500
+            background-color: var(--light-orange, #ffa500)
             border-radius: 0.5rem
             height: 1rem
-            border: 2px solid black
+            border: 2px solid var(--black, #000)
 
         &::-webkit-slider-thumb
             -webkit-appearance: none
             appearance: none
             margin-top: -12px
 
-            background-color: #ffa500
+            background-color: var(--light-orange, #ffa500)
             height: 2rem
             width: 1rem
 
         &:focus::-webkit-slider-thumb
-            border: 2px solid black
-            outline: 3px solid #ffa500
+            border: 2px solid var(--black, #000)
+            outline: 3px solid var(--light-orange, #ffa500)
             outline-offset: 0.125rem
 
         &::-moz-range-track
-            background-color: #ffa500
+            background-color: var(--light-orange, #ffa500)
             border-radius: 0.5rem
             height: 0.5rem
 
@@ -408,11 +426,11 @@
             border: none
             border-radius: 0
 
-            background-color: #e77812
+            background-color: var(--orange, #E77812)
             height: 2rem
             width: 1rem
 
         &:focus::-moz-range-thumb
-            border: 2px solid black
-            outline: 3px solid #ffa500
+            border: 2px solid var(--black, #000)
+            outline: 3px solid var(--light-orange, #ffa500)
             outline-offset: 0.125rem
