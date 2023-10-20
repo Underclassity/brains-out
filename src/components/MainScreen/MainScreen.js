@@ -3,7 +3,7 @@ import { mapState, mapGetters } from "vuex";
 import {
   Clock,
   Color,
-  Group,
+  MeshBasicMaterial,
   MathUtils,
   PerspectiveCamera,
   Scene,
@@ -133,6 +133,7 @@ export default {
 
       isRandomColor: false,
       isColorizeLevel: true,
+      isOldColorize: false,
       isRotateAnimation: false,
       isRotating: false,
 
@@ -1422,15 +1423,23 @@ export default {
 
         if (Array.isArray(obj.material)) {
           obj.material.forEach((material, index, array) => {
-            array[index].color.set(color);
-            array[index].needsUpdate = true;
+            if (this.isOldColorize) {
+              array[index] = new MeshBasicMaterial({ color });
+            } else {
+              array[index].color.set(color);
+              array[index].needsUpdate = true;
+            }
           });
 
           return false;
         }
 
-        obj.material.color.set(color);
-        obj.material.needsUpdate = true;
+        if (this.isOldColorize) {
+          obj.material = new MeshBasicMaterial({ color });
+        } else {
+          obj.material.color.set(color);
+          obj.material.needsUpdate = true;
+        }
       });
 
       return true;

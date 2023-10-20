@@ -59,6 +59,11 @@
             input#colorize(type="checkbox" v-model="isColorizeLevel")
 
         .dev-menu--item
+            span.material-symbols-outlined format_color_fill
+            label(for="oldColorize") Old colorize
+            input#oldColorize(type="checkbox" v-model="isOldColorize")
+
+        .dev-menu--item
             span.material-symbols-outlined floor
             label(for="levelHelpers") Is level helpers
             input#levelHelpers(type="checkbox" v-model="isLevelHelpers")
