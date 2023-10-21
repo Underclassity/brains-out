@@ -467,8 +467,8 @@ export function generatePit(
 
     groundMesh.material.color = new Color(0xffffff);
 
-    const firstColor = new Color(0x886a5c);
-    const secondColor = new Color(0xaa8573);
+    const firstColor = new Color(0xab460f);
+    const secondColor = new Color(0xffffff);
 
     let counter = 1;
 
