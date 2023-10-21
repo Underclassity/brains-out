@@ -1680,11 +1680,12 @@ export default {
     /**
      * Petrify element helper
      *
-     * @param   {Object}  element  Element
+     * @param   {Object}   element            Element
+     * @param   {Boolean}  [updateView=true]  Update preview flag
      *
-     * @return  {Boolean}          Result
+     * @return  {Boolean}                     Result
      */
-    petrify(element) {
+    petrify(element, updateView = true) {
       this.isPetrify = true;
 
       const elementPoints = this.getElementLayerPoints(element);
@@ -1704,7 +1705,7 @@ export default {
         this.positionHelper(el, "y", itemPosition.y);
         this.positionHelper(el, "z", itemPosition.z);
 
-        this.setLayerPoint(x, y, z);
+        this.setLayerPoint(x, y, z, 1, updateView);
 
         el.userData.static = true;
         el.userData.layer = {
@@ -3328,6 +3329,11 @@ export default {
       return true;
     },
 
+    /**
+     * Add random forms helper
+     *
+     * @return  {Boolean}  Result
+     */
     addRandomFigures() {
       const { randomFormsCount } = this;
 
@@ -3369,8 +3375,10 @@ export default {
 
         this.dropElement(element);
         element.userData.drop = false;
-        this.petrify(element);
+        this.petrify(element, false);
       }
+
+      this.updateLayersView();
 
       return true;
     },
