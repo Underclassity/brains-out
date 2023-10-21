@@ -110,8 +110,8 @@
 
         .dev-menu--item
             span.material-symbols-outlined slow_motion_video
-            label(for="slowMeter") Slow {{ slowValue }}
-            input#slowMeter(type="range" v-model="slowValue" min="0" max="100" disabled)
+            label(for="slowMeter") Slow {{ slowValue.toFixed(2) }}
+            input#slowMeter(type="range" v-model="slowValue" min="0" max="3" step="0.01" disabled)
 
         .dev-menu--item
             span.material-symbols-outlined grid_view

@@ -147,6 +147,7 @@ export default {
 
       isSlow: false,
       slowValue: 100,
+      slowDivider: 0,
 
       // Helpers
       orbitControls: false,
@@ -2047,6 +2048,10 @@ export default {
 
       const [width, height, depth] = pitSize.split("x");
 
+      if (!scene) {
+        return false;
+      }
+
       if ((!viewWidth || !viewHeight) && !force) {
         return false;
       }
@@ -2587,7 +2592,12 @@ export default {
         const delta = clock.getDelta();
 
         if (!this.isPause) {
-          timeDelta += delta / (this.isSlow ? 4 : 1);
+          const divider =
+            this.isSlow && this.slowDivider
+              ? 5 + (5 * this.slowDivider) / 100
+              : 1;
+
+          timeDelta += delta / divider;
         }
 
         const second = Math.round(timeDelta) * this.speed;
@@ -2607,17 +2617,17 @@ export default {
         }
 
         if (this.isSlow) {
-          this.slowValue--;
+          this.slowValue -= delta;
 
           if (this.slowValue <= 0) {
             this.slowValue = 0;
             this.isSlow = false;
           }
         } else {
-          this.slowValue++;
+          this.slowValue += delta;
 
-          if (this.slowValue >= 100) {
-            this.slowValue = 100;
+          if (this.slowValue >= 3) {
+            this.slowValue = 3;
           }
         }
 
@@ -3564,6 +3574,23 @@ export default {
 
     isPitGrid() {
       this.reCreatePit(this.pitSize, true);
+    },
+
+    isSlow(newValue) {
+      if (this.slowValueTween) {
+        this.slowValueTween.stop();
+      }
+
+      this.slowValueTween = new TWEEN.Tween({
+        value: newValue ? 0 : 100,
+      });
+      this.slowValueTween.easing(TWEEN.Easing.Quadratic.In);
+      this.slowValueTween.to({ value: newValue ? 100 : 0 }, 300);
+      this.slowValueTween.onUpdate(({ value }) => {
+        this.slowDivider = value;
+      });
+
+      this.slowValueTween.start();
     },
 
     isTest() {
