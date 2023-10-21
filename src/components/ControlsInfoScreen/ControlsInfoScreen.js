@@ -1,7 +1,8 @@
+// import levels from "../../assets/img/levels.svg";
+// import pit from "../../assets/img/pit.svg";
 import controller from "../../assets/img/controller.svg";
 import keyboard from "../../assets/img/keyboard.svg";
-import levels from "../../assets/img/levels.svg";
-import pit from "../../assets/img/pit.svg";
+import levelsPit from "../../assets/img/levels-pit.svg";
 
 import wImage from "../../assets/img/w.svg";
 import sImage from "../../assets/img/s.svg";
@@ -40,10 +41,11 @@ export default {
 
   data() {
     return {
+      // levels,
+      // pit,
       controller,
       keyboard,
-      levels,
-      pit,
+      levelsPit,
 
       keyboardKeys: [
         {
