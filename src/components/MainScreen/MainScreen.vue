@@ -113,6 +113,11 @@
             label(for="slowMeter") Slow {{ slowValue }}
             input#slowMeter(type="range" v-model="slowValue" min="0" max="100" disabled)
 
+        .dev-menu--item
+            span.material-symbols-outlined grid_view
+            label(for="pitGrid") Pit grid
+            input#pitGrid(type="checkbox" v-model="isPitGrid")
+
         // .dev-menu--item
         //     span.material-symbols-outlined stroke_full
         //     label(for="glitch") Glitch

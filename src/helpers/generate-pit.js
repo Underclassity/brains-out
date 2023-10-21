@@ -91,13 +91,18 @@ function updateInstancedMesh(
   x = 0,
   y = 0,
   z = 0,
-  randomRotation = true
+  randomRotation = true,
+  gridColor = false
 ) {
   dummy.position.set(x, y, z);
 
   if (randomRotation) {
     randomRotate(dummy);
     randomRotate(dummy);
+  }
+
+  if (gridColor) {
+    mesh.setColorAt(counter, gridColor);
   }
 
   dummy.updateMatrix();
@@ -136,7 +141,8 @@ function putMeshHelper(
   x = 0,
   y = 0,
   z = 0,
-  randomRotation = true
+  randomRotation = true,
+  gridColor = false
 ) {
   // Reset dummy
   dummy.position.set(0, 0, 0);
@@ -150,7 +156,8 @@ function putMeshHelper(
       x,
       y,
       z,
-      randomRotation
+      randomRotation,
+      gridColor
     );
   }
 
@@ -166,8 +173,6 @@ function putMeshHelper(
 
   group.add(mesh);
   group.add(new BoxHelper(mesh, color));
-
-  counter++;
 
   return counter;
 }
@@ -254,12 +259,15 @@ export function addPlaneHelpers(width, height, depth, size, pit) {
 /**
  * Generate pit
  *
- * @param   {Number}    width      Pit width
- * @param   {height}    height     Pit height
- * @param   {Number}    depth      Pit depth
- * @param   {Number}    color      Grid color
- * @param   {Array}     pitParts   Pit parts
- * @param   {Boolean}   simple     Simple view
+ * @param   {Number}    [width=5]               Pit width
+ * @param   {height}    [height=5]              Pit height
+ * @param   {Number}    [depth=12]              Pit depth
+ * @param   {Number}    [color=0x808080]        Grid color
+ * @param   {Array}     [pitParts=[]]           Pit parts
+ * @param   {Boolean}   [simple=false]          Simple view
+ * @param   {Boolean}   viewWidth               View width
+ * @param   {Number}    viewHeight              View height
+ * @param   {Boolean}   [pitGrid=false]         Add pit grid colors
  *
  * @return  {Object}               Group object
  */
@@ -273,7 +281,8 @@ export function generatePit(
   simple = false,
   isInstanced = false,
   viewWidth,
-  viewHeight
+  viewHeight,
+  pitGrid = false
 ) {
   width = parseInt(width, 10);
   height = parseInt(height, 10);
@@ -456,6 +465,13 @@ export function generatePit(
       pitGroup.add(groundAndGrassMesh);
     }
 
+    groundMesh.material.color = new Color(0xffffff);
+
+    const firstColor = new Color(0x886a5c);
+    const secondColor = new Color(0xaa8573);
+
+    let counter = 1;
+
     // Generate bottom
     for (let x = -hWidth + hSize; x < hWidth; x++) {
       for (let y = -hHeight + hSize; y < hHeight; y++) {
@@ -472,26 +488,63 @@ export function generatePit(
           groundCounter,
           x,
           y,
-          -depth
+          -depth,
+          true,
+          counter % 2 == 0 && pitGrid ? firstColor : secondColor
         );
+        counter++;
       }
     }
+
+    counter = 1;
+
+    for (let z = -depth + 1; z < 0; z++) {
+      // Generate left and right walls
+      for (let y = -hHeight + hSize; y < hHeight; y++) {
+        let x = -hWidth - hSize;
+
+        groundCounter = putMeshHelper(
+          isInstanced,
+          groundMesh,
+          groundPart,
+          dummy,
+          pitGroup,
+          color,
+          groundCounter,
+          x,
+          y,
+          z,
+          true,
+          counter % 2 == 0 && pitGrid ? firstColor : secondColor
+        );
+
+        x = hWidth + hSize;
+
+        groundCounter = putMeshHelper(
+          isInstanced,
+          groundMesh,
+          groundPart,
+          dummy,
+          pitGroup,
+          color,
+          groundCounter,
+          x,
+          y,
+          z,
+          true,
+          counter % 2 == 0 && pitGrid ? firstColor : secondColor
+        );
+
+        counter++;
+      }
+    }
+
+    counter = 0;
 
     for (let z = -depth + 1; z < 0; z++) {
       // Generate top and bottom walls
       for (let x = -hWidth + hSize; x < hWidth; x++) {
-        groundCounter = putMeshHelper(
-          isInstanced,
-          groundMesh,
-          groundPart,
-          dummy,
-          pitGroup,
-          color,
-          groundCounter,
-          x,
-          -hHeight - hSize,
-          z
-        );
+        let y = -hHeight - hSize;
 
         groundCounter = putMeshHelper(
           isInstanced,
@@ -502,25 +555,13 @@ export function generatePit(
           color,
           groundCounter,
           x,
-          hHeight + hSize,
-          z
-        );
-      }
-
-      // Generate left and right walls
-      for (let y = -hHeight + hSize; y < hHeight; y++) {
-        groundCounter = putMeshHelper(
-          isInstanced,
-          groundMesh,
-          groundPart,
-          dummy,
-          pitGroup,
-          color,
-          groundCounter,
-          -hWidth - hSize,
           y,
-          z
+          z,
+          true,
+          counter % 2 == 0 && pitGrid ? firstColor : secondColor
         );
+
+        y = hHeight + hSize;
 
         groundCounter = putMeshHelper(
           isInstanced,
@@ -530,27 +571,21 @@ export function generatePit(
           pitGroup,
           color,
           groundCounter,
-          hWidth + hSize,
+          x,
           y,
-          z
+          z,
+          true,
+          counter % 2 == 0 && pitGrid ? firstColor : secondColor
         );
+
+        counter++;
       }
     }
 
     // Hide blocks
     for (let z = -depth + 1; z < 0; z++) {
-      groundCounter = putMeshHelper(
-        isInstanced,
-        groundMesh,
-        groundPart,
-        dummy,
-        pitGroup,
-        color,
-        groundCounter,
-        -hWidth - hSize,
-        -hHeight - hSize,
-        z
-      );
+      let x = -hWidth - hSize;
+      let y = -hHeight - hSize;
 
       groundCounter = putMeshHelper(
         isInstanced,
@@ -560,10 +595,17 @@ export function generatePit(
         pitGroup,
         color,
         groundCounter,
-        hWidth + hSize,
-        hHeight + hSize,
-        z
+        x,
+        y,
+        z,
+        true,
+        x % 2 == 0 && y % 2 == 0 ? firstColor : secondColor
       );
+
+      counter++;
+
+      x = hWidth + hSize;
+      y = hHeight + hSize;
 
       groundCounter = putMeshHelper(
         isInstanced,
@@ -573,10 +615,15 @@ export function generatePit(
         pitGroup,
         color,
         groundCounter,
-        -hWidth - hSize,
-        hHeight + hSize,
-        z
+        x,
+        y,
+        z,
+        true,
+        x % 2 == 0 && y % 2 == 0 ? firstColor : secondColor
       );
+
+      x = -hWidth - hSize;
+      y = hHeight + hSize;
 
       groundCounter = putMeshHelper(
         isInstanced,
@@ -586,25 +633,34 @@ export function generatePit(
         pitGroup,
         color,
         groundCounter,
-        hWidth + hSize,
-        -hHeight - hSize,
-        z
+        x,
+        y,
+        z,
+        true,
+        x % 2 == 0 && y % 2 == 0 ? firstColor : secondColor
+      );
+
+      x = hWidth + hSize;
+      y = -hHeight - hSize;
+
+      groundCounter = putMeshHelper(
+        isInstanced,
+        groundMesh,
+        groundPart,
+        dummy,
+        pitGroup,
+        color,
+        groundCounter,
+        x,
+        y,
+        z,
+        true,
+        x % 2 == 0 && y % 2 == 0 ? firstColor : secondColor
       );
     }
 
     for (let x = -hWidth + hSize - 1; x < hWidth + 1; x++) {
-      groundCounter = putMeshHelper(
-        isInstanced,
-        groundMesh,
-        groundPart,
-        dummy,
-        pitGroup,
-        color,
-        groundCounter,
-        x,
-        -hHeight - hSize,
-        -depth
-      );
+      let y = -hHeight - hSize;
 
       groundCounter = putMeshHelper(
         isInstanced,
@@ -615,24 +671,32 @@ export function generatePit(
         color,
         groundCounter,
         x,
-        hHeight + hSize,
-        -depth
+        y,
+        -depth,
+        true,
+        x % 2 == 0 && y % 2 == 0 ? firstColor : secondColor
+      );
+
+      y = hHeight + hSize;
+
+      groundCounter = putMeshHelper(
+        isInstanced,
+        groundMesh,
+        groundPart,
+        dummy,
+        pitGroup,
+        color,
+        groundCounter,
+        x,
+        y,
+        -depth,
+        true,
+        x % 2 == 0 && y % 2 == 0 ? firstColor : secondColor
       );
     }
 
     for (let y = -hHeight + hSize; y < hHeight; y++) {
-      groundCounter = putMeshHelper(
-        isInstanced,
-        groundMesh,
-        groundPart,
-        dummy,
-        pitGroup,
-        color,
-        groundCounter,
-        -hWidth - hSize,
-        y,
-        -depth
-      );
+      let x = -hWidth - hSize;
 
       groundCounter = putMeshHelper(
         isInstanced,
@@ -642,9 +706,28 @@ export function generatePit(
         pitGroup,
         color,
         groundCounter,
-        hWidth + hSize,
+        x,
         y,
-        -depth
+        -depth,
+        true,
+        x % 2 == 0 && y % 2 == 0 ? firstColor : secondColor
+      );
+
+      x = hWidth + hSize;
+
+      groundCounter = putMeshHelper(
+        isInstanced,
+        groundMesh,
+        groundPart,
+        dummy,
+        pitGroup,
+        color,
+        groundCounter,
+        x,
+        y,
+        -depth,
+        true,
+        x % 2 == 0 && y % 2 == 0 ? firstColor : secondColor
       );
     }
 

@@ -115,6 +115,8 @@ export default {
       isFastDrop: true,
       isLevelHelpers: false,
       isFirstTime: false,
+      isPitGrid: false,
+      isTest: false,
 
       changeSpeedByLevels: true,
 
@@ -523,6 +525,10 @@ export default {
      * @return  {Boolean}  Result
      */
     acceptedCall() {
+      if (this.isTest) {
+        return false;
+      }
+
       this.log("Accepted call");
       this.isAccepted = true;
       this.isLogo = true;
@@ -2014,7 +2020,15 @@ export default {
       return element;
     },
 
-    reCreatePit(pitSize) {
+    /**
+     * Re-create pit helper
+     *
+     * @param   {String}   pitSize          Pit size string
+     * @param   {Boolean}  [force=false]    Force re-create flag
+     *
+     * @return  {Boolean}                   Result
+     */
+    reCreatePit(pitSize, force = false) {
       if (!pitSize) {
         return true;
       }
@@ -2028,11 +2042,12 @@ export default {
         isInstanced,
         viewWidth,
         viewHeight,
+        isPitGrid,
       } = this;
 
       const [width, height, depth] = pitSize.split("x");
 
-      if (!viewWidth || !viewHeight) {
+      if ((!viewWidth || !viewHeight) && !force) {
         return false;
       }
 
@@ -2043,12 +2058,15 @@ export default {
         this.pit &&
         this.pit.userData.pitSize == pitSize &&
         this.pit.userData.viewWidth == vWidth &&
-        this.pit.userData.viewHeight == vHeight
+        this.pit.userData.viewHeight == vHeight &&
+        !force
       ) {
         return false;
       }
 
-      log(`Re-create pit call: ${pitSize}, ${vWidth} vw, ${vHeight} vh`);
+      log(
+        `Re-create pit call ${force}: ${pitSize}, ${vWidth} vw, ${vHeight} vh`
+      );
 
       scene.remove(this.pit);
       this.pit = generatePit(
@@ -2061,7 +2079,8 @@ export default {
         isSimple,
         isInstanced,
         Math.max(vWidth, vHeight),
-        Math.max(vWidth, vHeight)
+        Math.max(vWidth, vHeight),
+        isPitGrid
       );
       scene.add(this.pit);
 
@@ -3541,6 +3560,25 @@ export default {
 
     isLevelHelpers() {
       this.updateLayersView();
+    },
+
+    isPitGrid() {
+      this.reCreatePit(this.pitSize, true);
+    },
+
+    isTest() {
+      this.log("Load test mode");
+
+      this.isPause = false;
+      this.isMenu = false;
+
+      this.isAccepted = true;
+      this.isLogo = false;
+      this.isControlsInfo = false;
+      this.isControlsInfoShowed = true;
+      this.isLoading = false;
+
+      this.closeMenu();
     },
   },
 
