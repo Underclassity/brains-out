@@ -2213,9 +2213,10 @@ export default {
           value: 0,
         });
         emissiveTween.easing(TWEEN.Easing.Quadratic.In);
+        emissiveTween.repeatDelay(300);
         emissiveTween.repeat(Infinity);
         emissiveTween.yoyo(true);
-        emissiveTween.to({ value: 1 }, 700);
+        emissiveTween.to({ value: 1 }, 1500);
         emissiveTween.onUpdate(({ value }) => {
           material.emissiveIntensity = value;
         });
