@@ -132,6 +132,22 @@ export function initWaterfall() {
       const elSize = element.userData.size;
       const elSpeed = element.userData.drop ? this.maxSpeed : this.speed;
 
+      // element.traverse((obj) => {
+      //   if (!obj.isMesh) {
+      //     return false;
+      //   }
+
+      //   if (Array.isArray(obj.material)) {
+      //     const material = obj.material.find((item) =>
+      //       item.name.includes("Emissive")
+      //     );
+
+      //     if (material) {
+      //       console.log(material.emissiveIntensity);
+      //     }
+      //   }
+      // });
+
       if (element.userData.drop && this.isFastDrop) {
         this.dropElement(element);
       } else {

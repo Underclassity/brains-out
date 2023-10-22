@@ -2200,6 +2200,29 @@ export default {
       );
       const zombie = parts.children.filter((item) => item.name.includes("Z_"));
 
+      if (halloweenParts?.children?.length) {
+        const head = halloweenParts.children.find((item) =>
+          item.name.includes("Head")
+        );
+
+        const material = head.material.find((item) =>
+          item.name.includes("Emissive")
+        );
+
+        const emissiveTween = new TWEEN.Tween({
+          value: 10,
+        });
+        emissiveTween.easing(TWEEN.Easing.Quadratic.In);
+        emissiveTween.repeat(Infinity);
+        emissiveTween.yoyo(true);
+        emissiveTween.to({ value: 500 }, 700);
+        emissiveTween.onUpdate(({ value }) => {
+          material.emissiveIntensity = value;
+        });
+
+        emissiveTween.start();
+      }
+
       zombie.push(...halloweenParts.children);
 
       if (!zombie || !pitParts) {
