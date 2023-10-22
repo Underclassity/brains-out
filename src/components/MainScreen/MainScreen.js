@@ -18,6 +18,7 @@ import "joypad.js";
 import { loadParts, loadHalloweenParts } from "../../helpers/load-zombie.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 // import getGroupSize from "../../helpers/get-group-size.js";
+import getWorldPosisition from "../../helpers/get-world-position.js";
 import generatePit from "../../helpers/generate-pit.js";
 import log from "../../helpers/log.js";
 import randomBetween from "../../helpers/random-between.js";
@@ -869,8 +870,7 @@ export default {
             };
           }
 
-          const itemPosition = new Vector3();
-          item.getWorldPosition(itemPosition);
+          const itemPosition = getWorldPosisition(item);
 
           return {
             x: roundValue(itemPosition.x),
@@ -937,8 +937,7 @@ export default {
      * @return  {Object}        Points object
      */
     getElementLayerPointsForItem(item) {
-      const itemPosition = new Vector3();
-      item.getWorldPosition(itemPosition);
+      const itemPosition = getWorldPosisition(item);
 
       const positionObject = {
         x: roundValue(itemPosition.x, 1),
@@ -1015,8 +1014,7 @@ export default {
 
       const half = size / 2;
 
-      const position = new Vector3(0, 0, 0);
-      child.getWorldPosition(position);
+      const position = getWorldPosisition(child);
 
       let { x, y, z } = position;
 
@@ -1314,8 +1312,7 @@ export default {
         for (const { item, point } of z) {
           const pointElement = element.getObjectByProperty("uuid", point.uuid);
 
-          const itemPosition = new Vector3();
-          pointElement.getWorldPosition(itemPosition);
+          const itemPosition = getWorldPosisition(pointElement);
 
           const layerPosition = this.zCPoints[item.z - 1];
 
@@ -1343,8 +1340,7 @@ export default {
           lowerPoint.uuid
         );
 
-        const itemPosition = new Vector3();
-        lowerElement.getWorldPosition(itemPosition);
+        const itemPosition = getWorldPosisition(lowerElement);
 
         const layerPosition = this.zCPoints[this.zCPoints.length - 1];
 
@@ -1698,8 +1694,7 @@ export default {
 
         const el = element.getObjectByProperty("uuid", uuid);
 
-        const itemPosition = new Vector3();
-        el.getWorldPosition(itemPosition);
+        const itemPosition = getWorldPosisition(el);
 
         this.positionHelper(el, "x", itemPosition.x);
         this.positionHelper(el, "y", itemPosition.y);
@@ -1919,8 +1914,7 @@ export default {
 
       // element.updateMatrixWorld();
 
-      const position = new Vector3();
-      element.getWorldPosition(position);
+      const position = getWorldPosisition(element);
 
       // const sizeBefore = element.userData.size;
 

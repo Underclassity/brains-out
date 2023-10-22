@@ -5,6 +5,7 @@ import { MeshBasicMaterial, Vector3 } from "three";
 
 import getGroupSize from "../../helpers/get-group-size.js";
 import getRandom from "../../helpers/random.js";
+import getWorldPosisition from "../../helpers/get-world-position.js";
 import log from "../../helpers/log.js";
 // import roundValue from "../../helpers/round-value.js";
 
@@ -174,8 +175,7 @@ export function initWaterfall() {
 
           const pointElement = element.getObjectByProperty("uuid", point.uuid);
 
-          const itemPosition = new Vector3();
-          pointElement.getWorldPosition(itemPosition);
+          const itemPosition = getWorldPosisition(pointElement, true);
 
           const layerPosition = this.zCPoints[item.z];
 
@@ -200,8 +200,7 @@ export function initWaterfall() {
         for (const { item, point } of z) {
           const pointElement = element.getObjectByProperty("uuid", point.uuid);
 
-          const itemPosition = new Vector3();
-          pointElement.getWorldPosition(itemPosition);
+          const itemPosition = getWorldPosisition(pointElement, true);
 
           const layerPosition = this.zCPoints[item.z];
 

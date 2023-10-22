@@ -37,9 +37,10 @@ export function generateMeshPoint(
     const part = parts[randomBetween(0, parts.length - 1)];
     mesh = part.clone();
     mesh.material = Array.isArray(part.material)
-      ? part.material.map((item) => {
-          return item.name.includes("Emissive") ? item : item.clone();
-        })
+      ? // ? part.material.map((item) => {
+        //     return item.name.includes("Emissive") ? item : item.clone();
+        //   })
+        part.material.map((item) => item.clone())
       : part.material.clone();
     mesh.scale.set(1, 1, 1);
     mesh.position.set(0, 0, 0);
