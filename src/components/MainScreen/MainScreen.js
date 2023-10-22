@@ -941,9 +941,9 @@ export default {
       item.getWorldPosition(itemPosition);
 
       const positionObject = {
-        x: roundValue(itemPosition.x),
-        y: roundValue(itemPosition.y),
-        z: roundValue(itemPosition.z),
+        x: roundValue(itemPosition.x, 1),
+        y: roundValue(itemPosition.y, 1),
+        z: roundValue(itemPosition.z, 1),
       };
 
       const x = this.xCPoints.includes(positionObject.x)
