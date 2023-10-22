@@ -2200,29 +2200,29 @@ export default {
       );
       const zombie = parts.children.filter((item) => item.name.includes("Z_"));
 
-      if (halloweenParts?.children?.length) {
-        const head = halloweenParts.children.find((item) =>
-          item.name.includes("Head")
-        );
+      // if (halloweenParts?.children?.length) {
+      //   const head = halloweenParts.children.find((item) =>
+      //     item.name.includes("Head")
+      //   );
 
-        const material = head.material.find((item) =>
-          item.name.includes("Emissive")
-        );
+      //   const material = head.material.find((item) =>
+      //     item.name.includes("Emissive")
+      //   );
 
-        const emissiveTween = new TWEEN.Tween({
-          value: 0,
-        });
-        emissiveTween.easing(TWEEN.Easing.Quadratic.In);
-        emissiveTween.repeatDelay(300);
-        emissiveTween.repeat(Infinity);
-        emissiveTween.yoyo(true);
-        emissiveTween.to({ value: 1 }, 1500);
-        emissiveTween.onUpdate(({ value }) => {
-          material.emissiveIntensity = value;
-        });
+      //   const emissiveTween = new TWEEN.Tween({
+      //     value: 0,
+      //   });
+      //   emissiveTween.easing(TWEEN.Easing.Quadratic.In);
+      //   emissiveTween.repeatDelay(300);
+      //   emissiveTween.repeat(Infinity);
+      //   emissiveTween.yoyo(true);
+      //   emissiveTween.to({ value: 1 }, 1500);
+      //   emissiveTween.onUpdate(({ value }) => {
+      //     material.emissiveIntensity = value;
+      //   });
 
-        emissiveTween.start();
-      }
+      //   emissiveTween.start();
+      // }
 
       zombie.push(...halloweenParts.children);
 
