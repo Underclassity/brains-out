@@ -7,23 +7,46 @@ import log from "../../helpers/log.js";
 /**
  * Init scene lights
  *
- * @return  {Boolean}  Result
+ * @param   {Boolean}  [force=false]  Force update
+ *
+ * @return  {Boolean}                 Result
  */
-export async function initLights() {
-  if (this.lights?.l1 && this.lights?.l2 && this.lights?.l3) {
+export async function initLights(force = false) {
+  const {
+    scene,
+    camera,
+    pitWidth,
+    firstLightColor,
+    secondLightColor,
+    thirdLightColor,
+    lightColor,
+    lights,
+  } = this;
+
+  if (lights?.l1 && lights?.l2 && lights?.l3 && !force) {
     return false;
   }
 
-  log("Init lights");
+  if (lights?.l1) {
+    scene.remove(lights.l1);
+  }
 
-  const { scene, camera, pitWidth } = this;
+  if (lights?.l2) {
+    scene.remove(lights.l2);
+  }
+
+  if (lights?.l3) {
+    scene.remove(lights.l3);
+  }
+
+  log("Init lights: ", force);
 
   // const gltf = await loadLights(this.progressCb);
 
-  const light = new AmbientLight(0xff_ff_ff, 0.02);
+  const light = new AmbientLight(lightColor, 0.02);
   scene.add(light);
 
-  const cameraLight = new AmbientLight(0xff_ff_ff, 0.08);
+  const cameraLight = new AmbientLight(lightColor, 0.08);
   camera.add(cameraLight);
 
   // if (!gltf) {
@@ -34,9 +57,9 @@ export async function initLights() {
 
   // const lights = gltf.scene.children;
 
-  const firstColor = new Color(0x858aff);
-  const secondColor = new Color(0xffb07e);
-  const thirdColor = new Color(0xff0003);
+  const firstColor = new Color(firstLightColor);
+  const secondColor = new Color(secondLightColor);
+  const thirdColor = new Color(thirdLightColor);
 
   const l1 = new PointLight(firstColor);
   const l2 = new PointLight(secondColor);

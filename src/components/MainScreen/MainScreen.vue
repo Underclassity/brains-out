@@ -25,7 +25,7 @@
     v-tweakpane.dev-menu(
         v-if="isDev"
         :pane="{ title: 'Controls' }"
-        @on-pane-created="onPaneCreated"
+        @on-pane-created="initTweakPane"
     )
 
     //- div.dev-menu(v-if="false")

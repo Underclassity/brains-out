@@ -7,7 +7,6 @@ import {
   MathUtils,
   PerspectiveCamera,
   Scene,
-  Vector3,
   WebGLRenderer,
 } from "three";
 
@@ -67,6 +66,7 @@ import {
   updateLayersView,
 } from "./init-layers.js";
 import { initWaterfall, createElement } from "./waterfall.js";
+import { initTweakPane } from "./init-tweakpane.js";
 import initShaders from "./init-shaders.js";
 import colorPalette from "./color-palette.js";
 import getRandomForm from "./get-random-form.js";
@@ -103,8 +103,11 @@ export default {
       second: 0,
 
       gridColor: 0x9b_43_0e,
-      lightColor: 0xfa_fa_fa,
+      lightColor: 0xff_ff_ff,
       sceneColor: 0x00_0b_12,
+      firstLightColor: 0x85_8a_ff,
+      secondLightColor: 0xff_b0_7e,
+      thirdLightColor: 0xff_00_03,
 
       isPause: true,
       isMenu: true,
@@ -1898,6 +1901,8 @@ export default {
     createElement,
     initWaterfall,
 
+    initTweakPane,
+
     /**
      * Restrain element position
      *
@@ -3439,292 +3444,6 @@ export default {
       this.restrainElement(this.current);
 
       return true;
-    },
-
-    onPaneCreated(pane) {
-      const params = {
-        fps: this.fps,
-        score: this.score,
-        avgScore: this.avgScore,
-        minScore: this.minScore,
-        maxScore: this.maxScore,
-      };
-
-      const infoFolder = pane.addFolder({
-        title: "Info",
-        expanded: true,
-      });
-
-      infoFolder
-        .addMonitor(params, "fps", {
-          view: "graph",
-          readonly: true,
-        })
-        .on("update", () => {
-          params.fps = this.fps;
-        });
-
-      infoFolder
-        .addMonitor(params, "score", {
-          readonly: true,
-        })
-        .on("update", () => {
-          params.score = this.score;
-        });
-
-      infoFolder
-        .addMonitor(params, "avgScore", {
-          readonly: true,
-        })
-        .on("update", () => {
-          params.avgScore = this.avgScore;
-        });
-
-      infoFolder
-        .addMonitor(params, "minScore", {
-          readonly: true,
-        })
-        .on("update", () => {
-          params.minScore = this.minScore;
-        });
-
-      infoFolder
-        .addMonitor(params, "maxScore", {
-          readonly: true,
-        })
-        .on("update", () => {
-          params.maxScore = this.maxScore;
-        });
-
-      const settingsFolder = pane.addFolder({
-        title: "Settings",
-        expanded: false,
-      });
-
-      settingsFolder
-        .addInput(
-          {
-            isPitGrid: this.isPitGrid,
-          },
-          "isPitGrid"
-        )
-        .on("change", (ev) => {
-          this.isPitGrid = ev.value;
-        });
-
-      settingsFolder
-        .addInput(
-          {
-            isShaders: this.isShaders,
-          },
-          "isShaders"
-        )
-        .on("change", (ev) => {
-          this.isShaders = ev.value;
-        });
-
-      settingsFolder
-        .addInput(
-          {
-            isSmooth: this.isSmooth,
-          },
-          "isSmooth"
-        )
-        .on("change", (ev) => {
-          this.isSmooth = ev.value;
-          this.updateSmooth(this.isSmooth);
-        });
-
-      settingsFolder
-        .addInput(
-          {
-            isFastDrop: this.isFastDrop,
-          },
-          "isFastDrop"
-        )
-        .on("change", (ev) => {
-          this.isFastDrop = ev.value;
-        });
-
-      settingsFolder
-        .addInput(
-          {
-            isSimple: this.isSimple,
-          },
-          "isSimple"
-        )
-        .on("change", (ev) => {
-          this.isSimple = ev.value;
-          this.updateSimple(this.isSimple);
-        });
-
-      settingsFolder
-        .addInput(
-          {
-            isInstanced: this.isInstanced,
-          },
-          "isInstanced"
-        )
-        .on("change", (ev) => {
-          this.isInstanced = ev.value;
-          this.updateInstanced(this.isInstanced);
-        });
-
-      settingsFolder
-        .addInput(
-          {
-            isColorizeLevel: this.isColorizeLevel,
-          },
-          "isColorizeLevel"
-        )
-        .on("change", (ev) => {
-          this.isColorizeLevel = ev.value;
-        });
-
-      settingsFolder
-        .addInput(
-          {
-            isOldColorize: this.isOldColorize,
-          },
-          "isOldColorize"
-        )
-        .on("change", (ev) => {
-          this.isOldColorize = ev.value;
-        });
-
-      settingsFolder
-        .addInput(
-          {
-            changeSpeedByLevels: this.changeSpeedByLevels,
-          },
-          "changeSpeedByLevels"
-        )
-        .on("change", (ev) => {
-          this.changeSpeedByLevels = ev.value;
-        });
-
-      settingsFolder
-        .addInput(
-          {
-            isRotateAnimation: this.isRotateAnimation,
-          },
-          "isRotateAnimation"
-        )
-        .on("change", (ev) => {
-          this.isRotateAnimation = ev.value;
-        });
-
-      settingsFolder
-        .addBlade({
-          view: "list",
-          label: "Blocks type",
-          options: this.blocksTypeOptions.map((item) => {
-            return { text: item, value: item };
-          }),
-          value: this.blocksType,
-        })
-        .on("change", (ev) => {
-          this.updateBlocksType(ev.value);
-        });
-
-      const helpersFolder = pane.addFolder({
-        title: "Helpers",
-        expanded: false,
-      });
-
-      helpersFolder
-        .addInput(
-          {
-            isLevelHelpers: this.isLevelHelpers,
-          },
-          "isLevelHelpers"
-        )
-        .on("change", (ev) => {
-          this.isLevelHelpers = ev.value;
-        });
-
-      const modesFolder = pane.addFolder({
-        title: "Modes",
-        expanded: false,
-      });
-
-      modesFolder
-        .addInput(
-          {
-            isEndless: this.isEndless,
-          },
-          "isEndless"
-        )
-        .on("change", (ev) => {
-          this.isEndless = ev.value;
-        });
-
-      modesFolder
-        .addInput(
-          {
-            isPractice: this.isPractice,
-          },
-          "isPractice"
-        )
-        .on("change", (ev) => {
-          this.isPractice = ev.value;
-        });
-
-      const rotateRestrainFolder = modesFolder.addFolder({
-        title: "Rotate restrain",
-        expanded: false,
-      });
-
-      rotateRestrainFolder
-        .addInput(
-          {
-            isRotateRestrain: this.isRotateRestrain,
-          },
-          "isRotateRestrain"
-        )
-        .on("change", (ev) => {
-          this.isRotateRestrain = ev.value;
-        });
-
-      rotateRestrainFolder
-        .addBlade({
-          view: "slider",
-          label: "Max rotate",
-          min: 1,
-          max: 10,
-          format: (v) => Math.round(v),
-          value: this.maxRotate,
-        })
-        .on("change", (ev) => {
-          this.maxRotate = ev.value;
-        });
-
-      const randomFormsFolder = pane.addFolder({
-        title: "Random forms",
-        expanded: false,
-      });
-
-      randomFormsFolder
-        .addBlade({
-          view: "slider",
-          label: "Random forms",
-          min: 1,
-          max: 10,
-          format: (v) => Math.round(v),
-          value: this.randomFormsCount,
-        })
-        .on("change", (ev) => {
-          this.randomFormsCount = ev.value;
-        });
-
-      randomFormsFolder
-        .addButton({
-          title: "Add",
-          label: "Add forms",
-        })
-        .on("click", () => {
-          this.addRandomFigures();
-        });
     },
   },
 
