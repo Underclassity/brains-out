@@ -204,6 +204,77 @@ export async function loadPitParts(cb) {
 }
 
 /**
+ * Load pit parts helper
+ *
+ * @param   {Function}  cb  Load callback
+ *
+ * @return  {Object}        Promise
+ */
+export async function loadHalloweenParts(cb) {
+  log("Load halloween parts model");
+
+  return new Promise((resolve) => {
+    const fbxLoader = new FBXLoader();
+    fbxLoader.load(
+      "models/HalloweenModels_01.fbx",
+      (object) => {
+        // object.traverse(function (child) {
+        //     if ((child as THREE.Mesh).isMesh) {
+        //         // (child as THREE.Mesh).material = material
+        //         if ((child as THREE.Mesh).material) {
+        //             ((child as THREE.Mesh).material as THREE.MeshBasicMaterial).transparent = false
+        //         }
+        //     }
+        // })
+        // object.scale.set(.01, .01, .01)
+
+        object.traverse((child) => {
+          if (!child.isMesh) {
+            return;
+          }
+
+          // const loader = new THREE.TextureLoader();
+
+          // loader.load("/models/T_ColorAtlas16x16.png", (texture) => {
+          //   child.material.map = texture;
+          //   child.material.needsupdate = true;
+          //   log(texture);
+          //   // render(); // only if there is no render loop
+          // });
+          // log(child.geometry.attributes.uv);
+
+          child.castShadow = castShadow;
+          child.receiveShadow = receiveShadow;
+
+          child.scale.set(1, 1, 1);
+        });
+        object.scale.set(1, 1, 1);
+
+        log(
+          "Loaded halloween parts: ",
+          object.children.map((item) => item.name)
+        );
+
+        resolve(object);
+      },
+      (xhr) => {
+        log(`${(xhr.loaded / xhr.total) * 100}% loaded`);
+        cb({
+          name: "halloween",
+          loaded: xhr.loaded,
+          total: xhr.total,
+          percent: xhr.loaded / xhr.total,
+        });
+      },
+      (error) => {
+        log(error);
+        resolve();
+      }
+    );
+  });
+}
+
+/**
  * Load dev parts helper
  *
  * @param   {Function}  cb  Load callback

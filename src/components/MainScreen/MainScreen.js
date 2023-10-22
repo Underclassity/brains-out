@@ -15,7 +15,7 @@ import * as TWEEN from "@tweenjs/tween.js";
 
 import "joypad.js";
 
-import { loadParts } from "../../helpers/load-zombie.js";
+import { loadParts, loadHalloweenParts } from "../../helpers/load-zombie.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 // import getGroupSize from "../../helpers/get-group-size.js";
 import generatePit from "../../helpers/generate-pit.js";
@@ -314,7 +314,7 @@ export default {
       count += this.fallSoundId.length;
       count += this.rotationSoundId.length;
 
-      // count += 1;
+      count++;
 
       // // Dev parts
       count++;
@@ -2193,10 +2193,14 @@ export default {
     async loadZombie() {
       const parts = await loadParts(this.progressCb);
 
+      const halloweenParts = await loadHalloweenParts(this.progressCb);
+
       const pitParts = parts.children.filter((item) =>
         item.name.includes("G_")
       );
       const zombie = parts.children.filter((item) => item.name.includes("Z_"));
+
+      zombie.push(...halloweenParts.children);
 
       if (!zombie || !pitParts) {
         this.isSimple = true;
