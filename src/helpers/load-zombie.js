@@ -246,9 +246,12 @@ export async function loadHalloweenParts(cb) {
           child.castShadow = castShadow;
           child.receiveShadow = receiveShadow;
 
-          child.scale.set(1, 1, 1);
+          // child.scale.set(1, 1, 1);
         });
-        object.scale.set(1, 1, 1);
+        // object.scale.set(1, 1, 1);
+
+        object.scale.multiplyScalar(0.1);
+        object.needsUpdate = true;
 
         log(
           "Loaded halloween parts: ",

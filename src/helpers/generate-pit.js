@@ -754,20 +754,30 @@ export function generatePit(
       );
     }
 
-    let candleMeshes;
-    let candlesCounter;
+    const candleMeshes = [];
+    const candlePartsCounter = {};
+    let candlesTypeCounter = [];
+    let candlesCount;
+    let candlesCouter = 0;
+    let localCandlesCouter = 0;
 
     if (candleParts?.length) {
-      const candlesCount = Math.round((grassCount + groundGrassCount) / 10);
+      candlesCount = Math.round(grassCount / 2 + groundGrassCount);
 
       log("Candles", candlesCount);
 
-      candlesCounter = splitNParts(candlesCount, candleParts.length);
-      candlesCounter = candlesCounter.filter((item) => item > 0);
+      candlesTypeCounter = splitNParts(candlesCount, candleParts.length);
+      candlesTypeCounter = candlesTypeCounter.filter((item) => item > 0);
+      candlesTypeCounter.forEach((count, index) => {
+        // Clone part
+        const part = candleParts[index].clone();
 
-      candleMeshes = candlesCounter.map((item, index) =>
-        getMesh(candleParts[index], item)
-      );
+        candleMeshes[index] = getMesh(part, count);
+        candleMeshes[index].name = `candle-${index}`;
+        candlePartsCounter[index] = 0;
+
+        pitGroup.add(candleMeshes[index]);
+      });
     }
 
     for (let x = -hWidth + hSize - widthDiff; x < hWidth + widthDiff; x++) {
@@ -778,6 +788,36 @@ export function generatePit(
       ) {
         if (xArr.includes(x) && yArr.includes(y)) {
           continue;
+        }
+
+        if (candleParts?.length) {
+          const candleIndex = randomBetween(0, candleParts.length - 1);
+
+          if (
+            candlePartsCounter[candleIndex] < candlesTypeCounter[candleIndex] &&
+            candlesCouter < candlesCount &&
+            localCandlesCouter < 3
+          ) {
+            candlePartsCounter[candleIndex] = putMeshHelper(
+              isInstanced,
+              candleMeshes[candleIndex],
+              candleParts[candleIndex],
+              dummy,
+              pitGroup,
+              color,
+              candlePartsCounter[candleIndex],
+              x,
+              y,
+              hSize,
+              false
+            );
+
+            localCandlesCouter++;
+
+            candlesCouter++;
+          } else {
+            localCandlesCouter = 0;
+          }
         }
 
         if (
@@ -812,27 +852,6 @@ export function generatePit(
             while (grassPartsCounter[index] >= grassColorCounter[index]) {
               index = randomBetween(0, grassParts.length - 1);
             }
-          }
-
-          if (
-            candleParts?.length &&
-            candleMeshes?.length &&
-            candlesCounter?.length
-          ) {
-            const candleIndex = randomBetween(0, candleParts.length - 1);
-
-            candlesCounter[candleIndex] = putMeshHelper(
-              isInstanced,
-              candleMeshes[candleIndex],
-              candleParts[candleIndex],
-              dummy,
-              pitGroup,
-              color,
-              candlesCounter[candleIndex],
-              x,
-              y,
-              0
-            );
           }
 
           grassPartsCounter[index] = putMeshHelper(

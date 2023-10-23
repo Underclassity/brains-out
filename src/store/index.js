@@ -39,7 +39,7 @@ export const store = createStore({
 
     gridColor: 0x9b_43_0e,
     lightColor: 0xff_ff_ff,
-    sceneColor: 0x00_0b_12,
+    sceneColor: 0xfa_fa_fa,
     firstLightColor: 0x85_8a_ff,
     secondLightColor: 0xff_b0_7e,
     thirdLightColor: 0xff_00_03,

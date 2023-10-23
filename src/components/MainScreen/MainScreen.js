@@ -1,6 +1,7 @@
 import { mapState, mapGetters } from "vuex";
 
 import {
+  AnimationMixer,
   Clock,
   Color,
   MeshBasicMaterial,
@@ -8,6 +9,8 @@ import {
   PerspectiveCamera,
   Scene,
   WebGLRenderer,
+  AnimationAction,
+  LoopRepeat,
 } from "three";
 
 import * as TWEEN from "@tweenjs/tween.js";
@@ -113,6 +116,7 @@ export default {
       isLevelHelpers: false,
       isFirstTime: false,
       isPitGrid: false,
+      isCandles: false,
       isTest: false,
 
       changeSpeedByLevels: true,
@@ -183,6 +187,8 @@ export default {
 
       isShaders: true,
       composer: undefined,
+
+      mixer: undefined,
 
       // isDotScreenPass: false,
       // isFilmPass: false,
@@ -2045,6 +2051,7 @@ export default {
         gridColor,
         pitParts,
         candleParts,
+        isCandles,
         isSimple,
         isInstanced,
         viewWidth,
@@ -2096,7 +2103,7 @@ export default {
         isPitGrid,
         gridFirstColor,
         gridSecondColor,
-        candleParts
+        isCandles ? candleParts : false
       );
       scene.add(this.pit);
 
@@ -2205,11 +2212,40 @@ export default {
 
       const halloweenParts = await loadHalloweenParts(this.progressCb);
 
-      // const candleParts = halloweenParts.children.filter(
-      //   (item) => item.name.includes("SM") && item.name.includes("Candle")
-      // );
+      // // Create and save animation mixer
+      // this.mixer = new AnimationMixer(halloweenParts);
 
-      // this.candleParts = candleParts;
+      const candleParts = halloweenParts.children
+        .filter(
+          (item) => item.name.includes("Candle") && item.name.includes("H")
+        )
+        .map((item) => {
+          const id = item.name.replace("H_01_Candle", "");
+
+          const skinedMesh = halloweenParts.children.find(
+            (item) => item.name == `SM_Candle${id}`
+          );
+
+          item.scale.multiplyScalar(0.01);
+          item.rotation.set(MathUtils.degToRad(-90), 0, 0);
+          item.needsUpdate = true;
+
+          item.add(skinedMesh);
+
+          // const clip = halloweenParts.animations.find((item) =>
+          //   item.name.includes(id)
+          // );
+
+          // const action = new AnimationAction(this.mixer, clip, skinedMesh);
+          // action.setLoop(LoopRepeat);
+
+          // action.play();
+
+          return item;
+        })
+        .filter((item) => item);
+
+      this.candleParts = candleParts;
 
       const pitParts = parts.children.filter((item) =>
         item.name.includes("G_")
@@ -2637,6 +2673,10 @@ export default {
         }
 
         const delta = clock.getDelta();
+
+        if (this.mixer) {
+          this.mixer.update(delta);
+        }
 
         if (!this.isPause) {
           const divider =

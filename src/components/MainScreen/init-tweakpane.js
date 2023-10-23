@@ -196,6 +196,18 @@ export function initTweakPane(pane) {
   settingsFolder
     .addInput(
       {
+        isCandles: this.isCandles,
+      },
+      "isCandles"
+    )
+    .on("change", (ev) => {
+      this.isCandles = ev.value;
+      this.reCreatePit(this.pitSize, true);
+    });
+
+  settingsFolder
+    .addInput(
+      {
         isPitGrid: this.isPitGrid,
       },
       "isPitGrid"
