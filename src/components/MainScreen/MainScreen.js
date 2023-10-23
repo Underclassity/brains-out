@@ -190,24 +190,6 @@ export default {
 
       mixer: undefined,
 
-      // isDotScreenPass: false,
-      // isFilmPass: false,
-      // isGlitch: false,
-      // isSAOPass: false,
-      // isSSAOPass: false,
-      // isSSRPass: false,
-      // isTechnicolor: false,
-      // isUnrealBloomPass: false,
-
-      // dotScreenPass: undefined,
-      // filmPass: undefined,
-      // glitchPass: undefined,
-      // SAOComposerPass: undefined,
-      // SSAOComposerPass: undefined,
-      // SSRComposerPass: undefined,
-      // technicolorShaderPass: undefined,
-      // UnrealBloomComposerPass: undefined,
-
       lights: {
         l1: undefined,
         l2: undefined,
@@ -3625,38 +3607,6 @@ export default {
     blocksType(newValue) {
       this.updateBlocksType(newValue);
     },
-
-    // isGlitch(newValue) {
-    //   this.glitchPass.enabled = newValue;
-    // },
-
-    // isTechnicolor(newValue) {
-    //   this.technicolorShaderPass.enabled = newValue;
-    // },
-
-    // isDotScreenPass(newValue) {
-    //   this.dotScreenPass.enabled = newValue;
-    // },
-
-    // isFilmPass(newValue) {
-    //   this.filmPass.enabled = newValue;
-    // },
-
-    // isSAOPass(newValue) {
-    //   this.SAOComposerPass.enabled = newValue;
-    // },
-
-    // isSSAOPass(newValue) {
-    //   this.SSAOComposerPass.enabled = newValue;
-    // },
-
-    // isSSRPass(newValue) {
-    //   this.SSRComposerPass.enabled = newValue;
-    // },
-
-    // isUnrealBloomPass(newValue) {
-    //   this.UnrealBloomComposerPass.enabled = newValue;
-    // },
 
     isControls() {
       this.updateControls();

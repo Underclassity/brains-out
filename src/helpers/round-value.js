@@ -7,7 +7,7 @@
  * @return  {Number}               Rounded to fixed number
  */
 export function roundValue(value, numbers = 3) {
-  const divider = Math.pow(10, numbers);
+  const divider = 10 ** numbers;
 
   return Math.round(value * divider) / divider;
 }

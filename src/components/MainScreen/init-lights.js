@@ -2,8 +2,6 @@ import { AmbientLight, PointLightHelper, PointLight, Color } from "three";
 
 import log from "../../helpers/log.js";
 
-// import loadLights from "../../helpers/lights.js";
-
 /**
  * Init scene lights
  *
@@ -41,21 +39,11 @@ export async function initLights(force = false) {
 
   log("Init lights: ", force);
 
-  // const gltf = await loadLights(this.progressCb);
-
   const light = new AmbientLight(lightColor, 0.02);
   scene.add(light);
 
   const cameraLight = new AmbientLight(lightColor, 0.08);
   camera.add(cameraLight);
-
-  // if (!gltf) {
-  //   const light = new AmbientLight(this.lightColor);
-  //   scene.add(light);
-  //   return false;
-  // }
-
-  // const lights = gltf.scene.children;
 
   const firstColor = new Color(firstLightColor);
   const secondColor = new Color(secondLightColor);
@@ -64,10 +52,6 @@ export async function initLights(force = false) {
   const l1 = new PointLight(firstColor);
   const l2 = new PointLight(secondColor);
   const l3 = new PointLight(thirdColor);
-
-  // const l1 = lights[0].clone();
-  // const l2 = lights[1].clone();
-  // const l3 = lights[2].clone();
 
   l1.position.set(-pitWidth / 2, 0, 5);
   l2.position.set(pitWidth / 2, 0, 5);

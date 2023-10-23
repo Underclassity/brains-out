@@ -6,48 +6,33 @@ const castShadow = true;
 const receiveShadow = true;
 
 /**
- * Load zombie parts
+ * [loadHelper description]
  *
- * @return  {Object}  Promise
+ * @param   {String}    filename        Filename
+ * @param   {String}    id              File ID
+ * @param   {Function}  cb              Progress callback function
+ * @param   {Number}    [scale=0.01]    Scale value
+ *
+ * @return  {Object}                    Load Promise
  */
-export async function loadZombie(cb) {
-  log("Load Zombie model");
+function loadHelper(filename, id, cb, scale = 0.01) {
+  log(`Load ${id} model`);
 
   return new Promise((resolve) => {
     const fbxLoader = new FBXLoader();
     fbxLoader.load(
-      "models/S_ZombiesV1.0.fbx",
+      `models/${filename}`,
       (object) => {
-        // object.traverse(function (child) {
-        //     if ((child as THREE.Mesh).isMesh) {
-        //         // (child as THREE.Mesh).material = material
-        //         if ((child as THREE.Mesh).material) {
-        //             ((child as THREE.Mesh).material as THREE.MeshBasicMaterial).transparent = false
-        //         }
-        //     }
-        // })
-        // object.scale.set(.01, .01, .01)
-
         object.traverse((child) => {
           if (child.isMesh) {
-            // const loader = new THREE.TextureLoader();
-
-            // loader.load("/models/T_ColorAtlas16x16.png", (texture) => {
-            //   child.material.map = texture;
-            //   child.material.needsupdate = true;
-            //   log(texture);
-            //   // render(); // only if there is no render loop
-            // });
-            // log(child.geometry.attributes.uv);
-
             child.castShadow = castShadow;
             child.receiveShadow = receiveShadow;
           }
         });
-        object.scale.set(0.01, 0.01, 0.01);
+        object.scale.set(scale, scale, scale);
 
         log(
-          "Loaded zombie parts: ",
+          `Loaded ${id} parts: `,
           object.children.map((item) => item.name)
         );
 
@@ -56,7 +41,7 @@ export async function loadZombie(cb) {
       (xhr) => {
         log(`${(xhr.loaded / xhr.total) * 100}% loaded`);
         cb({
-          name: "zombie",
+          name: id,
           loaded: xhr.loaded,
           total: xhr.total,
           percent: xhr.loaded / xhr.total,
@@ -71,65 +56,21 @@ export async function loadZombie(cb) {
 }
 
 /**
+ * Load zombie parts
+ *
+ * @return  {Object}  Promise
+ */
+export async function loadZombie(cb) {
+  return loadHelper("S_ZombiesV1.0.fbx", "zombie", cb);
+}
+
+/**
  * Load test cube
  *
  * @return  {Object}  Promise
  */
 export async function loadTestCube(cb) {
-  log("Load test cube model");
-
-  return new Promise((resolve) => {
-    const fbxLoader = new FBXLoader();
-    fbxLoader.load(
-      "models/TestMaterialCube.fbx",
-      (object) => {
-        // object.traverse(function (child) {
-        //     if ((child as THREE.Mesh).isMesh) {
-        //         // (child as THREE.Mesh).material = material
-        //         if ((child as THREE.Mesh).material) {
-        //             ((child as THREE.Mesh).material as THREE.MeshBasicMaterial).transparent = false
-        //         }
-        //     }
-        // })
-        // object.scale.set(.01, .01, .01)
-
-        object.traverse((child) => {
-          if (child.isMesh) {
-            // const loader = new THREE.TextureLoader();
-
-            // loader.load("/models/T_ColorAtlas16x16.png", (texture) => {
-            //   child.material.map = texture;
-            //   child.material.needsupdate = true;
-            //   log(texture);
-            //   // render(); // only if there is no render loop
-            // });
-            // log(child.geometry.attributes.uv);
-
-            child.castShadow = castShadow;
-            child.receiveShadow = receiveShadow;
-          }
-        });
-        object.scale.set(0.01, 0.01, 0.01);
-
-        log("Loaded test cube: ", object);
-
-        resolve(object);
-      },
-      (xhr) => {
-        log(`${(xhr.loaded / xhr.total) * 100}% loaded`);
-        cb({
-          name: "test cube",
-          loaded: xhr.loaded,
-          total: xhr.total,
-          percent: xhr.loaded / xhr.total,
-        });
-      },
-      (error) => {
-        log(error);
-        resolve();
-      }
-    );
-  });
+  return loadHelper("TestMaterialCube.fbx", "cube", cb);
 }
 
 /**
@@ -140,67 +81,7 @@ export async function loadTestCube(cb) {
  * @return  {Object}        Promise
  */
 export async function loadPitParts(cb) {
-  log("Load pit parts model");
-
-  return new Promise((resolve) => {
-    const fbxLoader = new FBXLoader();
-    fbxLoader.load(
-      "models/GroundGrass.fbx",
-      (object) => {
-        // object.traverse(function (child) {
-        //     if ((child as THREE.Mesh).isMesh) {
-        //         // (child as THREE.Mesh).material = material
-        //         if ((child as THREE.Mesh).material) {
-        //             ((child as THREE.Mesh).material as THREE.MeshBasicMaterial).transparent = false
-        //         }
-        //     }
-        // })
-        // object.scale.set(.01, .01, .01)
-
-        object.traverse((child) => {
-          if (!child.isMesh) {
-            return;
-          }
-
-          // const loader = new THREE.TextureLoader();
-
-          // loader.load("/models/T_ColorAtlas16x16.png", (texture) => {
-          //   child.material.map = texture;
-          //   child.material.needsupdate = true;
-          //   log(texture);
-          //   // render(); // only if there is no render loop
-          // });
-          // log(child.geometry.attributes.uv);
-
-          child.castShadow = castShadow;
-          child.receiveShadow = receiveShadow;
-
-          child.scale.set(1, 1, 1);
-        });
-        object.scale.set(1, 1, 1);
-
-        log(
-          "Loaded pit parts: ",
-          object.children.map((item) => item.name)
-        );
-
-        resolve(object);
-      },
-      (xhr) => {
-        log(`${(xhr.loaded / xhr.total) * 100}% loaded`);
-        cb({
-          name: "pit",
-          loaded: xhr.loaded,
-          total: xhr.total,
-          percent: xhr.loaded / xhr.total,
-        });
-      },
-      (error) => {
-        log(error);
-        resolve();
-      }
-    );
-  });
+  return loadHelper("GroundGrass.fbx", "pit", cb, 1);
 }
 
 /**
@@ -211,70 +92,7 @@ export async function loadPitParts(cb) {
  * @return  {Object}        Promise
  */
 export async function loadHalloweenParts(cb) {
-  log("Load halloween parts model");
-
-  return new Promise((resolve) => {
-    const fbxLoader = new FBXLoader();
-    fbxLoader.load(
-      "models/HalloweenModels_01.fbx",
-      (object) => {
-        // object.traverse(function (child) {
-        //     if ((child as THREE.Mesh).isMesh) {
-        //         // (child as THREE.Mesh).material = material
-        //         if ((child as THREE.Mesh).material) {
-        //             ((child as THREE.Mesh).material as THREE.MeshBasicMaterial).transparent = false
-        //         }
-        //     }
-        // })
-        // object.scale.set(.01, .01, .01)
-
-        object.traverse((child) => {
-          if (!child.isMesh) {
-            return;
-          }
-
-          // const loader = new THREE.TextureLoader();
-
-          // loader.load("/models/T_ColorAtlas16x16.png", (texture) => {
-          //   child.material.map = texture;
-          //   child.material.needsupdate = true;
-          //   log(texture);
-          //   // render(); // only if there is no render loop
-          // });
-          // log(child.geometry.attributes.uv);
-
-          child.castShadow = castShadow;
-          child.receiveShadow = receiveShadow;
-
-          // child.scale.set(1, 1, 1);
-        });
-        // object.scale.set(1, 1, 1);
-
-        object.scale.multiplyScalar(0.1);
-        object.needsUpdate = true;
-
-        log(
-          "Loaded halloween parts: ",
-          object.children.map((item) => item.name)
-        );
-
-        resolve(object);
-      },
-      (xhr) => {
-        log(`${(xhr.loaded / xhr.total) * 100}% loaded`);
-        cb({
-          name: "halloween",
-          loaded: xhr.loaded,
-          total: xhr.total,
-          percent: xhr.loaded / xhr.total,
-        });
-      },
-      (error) => {
-        log(error);
-        resolve();
-      }
-    );
-  });
+  return loadHelper("HalloweenModels_01.fbx", "halloween", cb, 1);
 }
 
 /**
@@ -285,67 +103,7 @@ export async function loadHalloweenParts(cb) {
  * @return  {Object}        Promise
  */
 export async function loadDevParts(cb) {
-  log("Load pit parts model");
-
-  return new Promise((resolve) => {
-    const fbxLoader = new FBXLoader();
-    fbxLoader.load(
-      "models/DEV_ZombiesV1.0.fbx",
-      (object) => {
-        // object.traverse(function (child) {
-        //     if ((child as THREE.Mesh).isMesh) {
-        //         // (child as THREE.Mesh).material = material
-        //         if ((child as THREE.Mesh).material) {
-        //             ((child as THREE.Mesh).material as THREE.MeshBasicMaterial).transparent = false
-        //         }
-        //     }
-        // })
-        // object.scale.set(.01, .01, .01)
-
-        object.traverse((child) => {
-          if (!child.isMesh) {
-            return;
-          }
-
-          // const loader = new THREE.TextureLoader();
-
-          // loader.load("/models/T_ColorAtlas16x16.png", (texture) => {
-          //   child.material.map = texture;
-          //   child.material.needsupdate = true;
-          //   log(texture);
-          //   // render(); // only if there is no render loop
-          // });
-          // log(child.geometry.attributes.uv);
-
-          child.castShadow = castShadow;
-          child.receiveShadow = receiveShadow;
-
-          child.scale.set(1, 1, 1);
-        });
-        object.scale.set(1, 1, 1);
-
-        log(
-          "Loaded dev parts: ",
-          object.children.map((item) => item.name)
-        );
-
-        resolve(object);
-      },
-      (xhr) => {
-        log(`${(xhr.loaded / xhr.total) * 100}% loaded`);
-        cb({
-          name: "dev",
-          loaded: xhr.loaded,
-          total: xhr.total,
-          percent: xhr.loaded / xhr.total,
-        });
-      },
-      (error) => {
-        log(error);
-        resolve();
-      }
-    );
-  });
+  return loadHelper("DEV_ZombiesV1.0.fbx", "dev", cb, 1);
 }
 
 /**
@@ -356,67 +114,7 @@ export async function loadDevParts(cb) {
  * @return  {Object}        Promise
  */
 export async function loadParts(cb) {
-  log("Load parts");
-
-  return new Promise((resolve) => {
-    const fbxLoader = new FBXLoader();
-    fbxLoader.load(
-      "models/BrainsOutModels_01.fbx",
-      (object) => {
-        // object.traverse(function (child) {
-        //     if ((child as THREE.Mesh).isMesh) {
-        //         // (child as THREE.Mesh).material = material
-        //         if ((child as THREE.Mesh).material) {
-        //             ((child as THREE.Mesh).material as THREE.MeshBasicMaterial).transparent = false
-        //         }
-        //     }
-        // })
-        // object.scale.set(.01, .01, .01)
-
-        object.traverse((child) => {
-          if (!child.isMesh) {
-            return;
-          }
-
-          // const loader = new THREE.TextureLoader();
-
-          // loader.load("/models/T_ColorAtlas16x16.png", (texture) => {
-          //   child.material.map = texture;
-          //   child.material.needsupdate = true;
-          //   log(texture);
-          //   // render(); // only if there is no render loop
-          // });
-          // log(child.geometry.attributes.uv);
-
-          child.castShadow = castShadow;
-          child.receiveShadow = receiveShadow;
-
-          child.scale.set(1, 1, 1);
-        });
-        object.scale.set(1, 1, 1);
-
-        log(
-          "Loaded parts: ",
-          object.children.map((item) => item.name)
-        );
-
-        resolve(object);
-      },
-      (xhr) => {
-        log(`${(xhr.loaded / xhr.total) * 100}% loaded`);
-        cb({
-          name: "parts",
-          loaded: xhr.loaded,
-          total: xhr.total,
-          percent: xhr.loaded / xhr.total,
-        });
-      },
-      (error) => {
-        log(error);
-        resolve();
-      }
-    );
-  });
+  return loadHelper("BrainsOutModels_01.fbx", "parts", cb, 1);
 }
 
 export default loadZombie;
