@@ -44,7 +44,7 @@ export const store = createStore({
     secondLightColor: 0xff_b0_7e,
     thirdLightColor: 0xff_00_03,
     specularColor: 0x00_00_00,
-    gridFirstColor: 0xa9_a9_a9,
+    gridFirstColor: 0xcf_cf_cf,
     gridSecondColor: 0xff_ff_ff,
 
     changeSpeedByLevels: true,
