@@ -92,83 +92,58 @@ export function initTweakPane(pane) {
   colorsFolder
     .addInput(
       {
-        gridFirstColor: {
-          r: gridFirstColor.r * 255,
-          g: gridFirstColor.g * 255,
-          b: gridFirstColor.b * 255,
-        },
+        gridFirstColor: `#${gridFirstColor.getHexString()}`,
       },
-      "gridFirstColor"
+      "gridFirstColor",
+      { view: "color" }
     )
     .on("change", (ev) => {
       if (!ev.last) {
         return false;
       }
 
-      this.$store.state.gridFirstColor = new Color(
-        ev.value.r / 255,
-        ev.value.g / 255,
-        ev.value.b / 255
-      );
+      this.$store.state.gridFirstColor = new Color(ev.value);
       this.reCreatePit(this.pitSize, true);
     });
 
   colorsFolder
     .addInput(
       {
-        gridSecondColor: {
-          r: gridSecondColor.r * 255,
-          g: gridSecondColor.g * 255,
-          b: gridSecondColor.b * 255,
-        },
+        gridSecondColor: `#${gridSecondColor.getHexString()}`,
       },
-      "gridSecondColor"
+      "gridSecondColor",
+      { view: "color" }
     )
     .on("change", (ev) => {
       if (!ev.last) {
         return false;
       }
 
-      this.$store.state.gridSecondColor = new Color(
-        ev.value.r / 255,
-        ev.value.g / 255,
-        ev.value.b / 255
-      );
+      this.$store.state.gridSecondColor = new Color(ev.value);
       this.reCreatePit(this.pitSize, true);
     });
 
   colorsFolder
     .addInput(
       {
-        gridColor: {
-          r: gridColor.r * 255,
-          g: gridColor.g * 255,
-          b: gridColor.b * 255,
-        },
+        gridColor: `#${gridColor.getHexString()}`,
       },
-      "gridColor"
+      "gridColor",
+      { view: "color" }
     )
     .on("change", (ev) => {
       if (!ev.last) {
         return false;
       }
 
-      this.$store.state.gridColor = new Color(
-        ev.value.r / 255,
-        ev.value.g / 255,
-        ev.value.b / 255
-      );
+      this.$store.state.gridColor = new Color(ev.value);
       this.reCreatePit(this.pitSize, true);
     });
 
   colorsFolder
     .addInput(
       {
-        firstLightColor: {
-          r: firstLightColor.r * 255,
-          g: firstLightColor.g * 255,
-          b: firstLightColor.b * 255,
-        },
+        firstLightColor: `#${firstLightColor.getHexString()}`,
       },
       "firstLightColor"
     )
@@ -177,22 +152,14 @@ export function initTweakPane(pane) {
         return false;
       }
 
-      this.$store.state.firstLightColor = new Color(
-        ev.value.r / 255,
-        ev.value.g / 255,
-        ev.value.b / 255
-      );
+      this.$store.state.firstLightColor = new Color(ev.value);
       this.initLights(true);
     });
 
   colorsFolder
     .addInput(
       {
-        secondLightColor: {
-          r: secondLightColor.r * 255,
-          g: secondLightColor.g * 255,
-          b: secondLightColor.b * 255,
-        },
+        secondLightColor: `#${secondLightColor.getHexString()}`,
       },
       "secondLightColor"
     )
@@ -201,22 +168,14 @@ export function initTweakPane(pane) {
         return false;
       }
 
-      this.$store.state.secondLightColor = new Color(
-        ev.value.r / 255,
-        ev.value.g / 255,
-        ev.value.b / 255
-      );
+      this.$store.state.secondLightColor = new Color(ev.value);
       this.initLights(true);
     });
 
   colorsFolder
     .addInput(
       {
-        thirdLightColor: {
-          r: thirdLightColor.r * 255,
-          g: thirdLightColor.g * 255,
-          b: thirdLightColor.b * 255,
-        },
+        thirdLightColor: `#${thirdLightColor.getHexString()}`,
       },
       "thirdLightColor"
     )
@@ -225,11 +184,7 @@ export function initTweakPane(pane) {
         return false;
       }
 
-      this.$store.state.thirdLightColor = new Color(
-        ev.value.r / 255,
-        ev.value.g / 255,
-        ev.value.b / 255
-      );
+      this.$store.state.thirdLightColor = new Color(ev.value);
       this.initLights(true);
     });
 
