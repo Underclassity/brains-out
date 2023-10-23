@@ -270,6 +270,7 @@ export function addPlaneHelpers(width, height, depth, size, pit) {
  * @param   {Boolean}   [pitGrid=false]                Add pit grid colors
  * @param   {Number}    [gridFirstColor=0xa9a9a9]      Pit grid first color
  * @param   {Number}    [gridSecondColor=0xffffff]     Pit grid second color
+ * @param   {Array}     [candleParts=[]]               Candle parts
  *
  * @return  {Object}               Group object
  */
@@ -286,7 +287,8 @@ export function generatePit(
   viewHeight,
   pitGrid = false,
   gridFirstColor = 0xa9_a9_a9,
-  gridSecondColor = 0xff_ff_ff
+  gridSecondColor = 0xff_ff_ff,
+  candleParts = []
 ) {
   width = parseInt(width, 10);
   height = parseInt(height, 10);
@@ -725,6 +727,22 @@ export function generatePit(
       );
     }
 
+    let candleMeshes;
+    let candlesCounter;
+
+    if (candleParts?.length) {
+      const candlesCount = Math.round((grassCount + groundGrassCount) / 10);
+
+      log("Candles", candlesCount);
+
+      candlesCounter = splitNParts(candlesCount, candleParts.length);
+      candlesCounter = candlesCounter.filter((item) => item > 0);
+
+      candleMeshes = candlesCounter.map((item, index) =>
+        getMesh(candleParts[index], item)
+      );
+    }
+
     for (let x = -hWidth + hSize - widthDiff; x < hWidth + widthDiff; x++) {
       for (
         let y = -hHeight + hSize - heightDiff;
@@ -767,6 +785,27 @@ export function generatePit(
             while (grassPartsCounter[index] >= grassColorCounter[index]) {
               index = randomBetween(0, grassParts.length - 1);
             }
+          }
+
+          if (
+            candleParts?.length &&
+            candleMeshes?.length &&
+            candlesCounter?.length
+          ) {
+            const candleIndex = randomBetween(0, candleParts.length - 1);
+
+            candlesCounter[candleIndex] = putMeshHelper(
+              isInstanced,
+              candleMeshes[candleIndex],
+              candleParts[candleIndex],
+              dummy,
+              pitGroup,
+              color,
+              candlesCounter[candleIndex],
+              x,
+              y,
+              0
+            );
           }
 
           grassPartsCounter[index] = putMeshHelper(

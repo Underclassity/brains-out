@@ -224,6 +224,7 @@ export default {
 
       zombieParts: [],
       pitParts: [],
+      candleParts: [],
 
       fps: 0,
       frames: 0,
@@ -2043,6 +2044,7 @@ export default {
         size,
         gridColor,
         pitParts,
+        candleParts,
         isSimple,
         isInstanced,
         viewWidth,
@@ -2093,7 +2095,8 @@ export default {
         Math.max(vWidth, vHeight),
         isPitGrid,
         gridFirstColor,
-        gridSecondColor
+        gridSecondColor,
+        candleParts
       );
       scene.add(this.pit);
 
@@ -2202,6 +2205,12 @@ export default {
 
       const halloweenParts = await loadHalloweenParts(this.progressCb);
 
+      // const candleParts = halloweenParts.children.filter(
+      //   (item) => item.name.includes("SM") && item.name.includes("Candle")
+      // );
+
+      // this.candleParts = candleParts;
+
       const pitParts = parts.children.filter((item) =>
         item.name.includes("G_")
       );
@@ -2231,7 +2240,9 @@ export default {
       //   emissiveTween.start();
       // }
 
-      zombie.push(...halloweenParts.children);
+      zombie.push(
+        ...halloweenParts.children.filter((item) => item.name.includes("Head"))
+      );
 
       if (!zombie || !pitParts) {
         this.isSimple = true;
