@@ -14,6 +14,8 @@ import {
   Vector3,
 } from "three";
 
+import { colorPalette } from "../components/MainScreen/color-palette.js";
+
 import generateGrid from "./generate-grid.js";
 import getRandom from "./random.js";
 import log from "./log.js";
@@ -297,32 +299,45 @@ export function generatePit(
   const pit = new Group();
   pit.userData.name = "Pit";
 
-  const downPlane = generateGrid(width, depth, color);
-  downPlane.rotateX(Math.PI / 2);
-  downPlane.position.z = -depth / 2 + size / 2;
-  downPlane.position.y = -height / 2;
+  const bottomPlane = generateGrid(width, height, color);
+  bottomPlane.position.z = -depth + size / 2;
+  pit.add(bottomPlane);
 
-  const upPlane = generateGrid(width, depth, color);
-  upPlane.rotateX(Math.PI / 2);
-  upPlane.position.z = -depth / 2 + size / 2;
-  upPlane.position.y = height / 2;
+  for (let z = -depth + 1; z < 1; z++) {
+    const levelColor = colorPalette[Math.abs(z)];
 
-  const leftPlane = generateGrid(height, depth, color);
-  leftPlane.rotateY(Math.PI / 2);
-  leftPlane.rotateZ(Math.PI / 2);
-  leftPlane.position.z = -depth / 2 + size / 2;
-  leftPlane.position.x = -width / 2;
+    // console.log(
+    //   `%cColor: ${levelColor.getHexString()}`,
+    //   `background-color: #${levelColor.getHexString()}`
+    // );
 
-  const rightPlane = generateGrid(height, depth, color);
-  rightPlane.rotateY(Math.PI / 2);
-  rightPlane.rotateZ(Math.PI / 2);
-  rightPlane.position.z = -depth / 2 + size / 2;
-  rightPlane.position.x = width / 2;
+    const downPlane = generateGrid(width, 1, levelColor);
+    downPlane.rotateX(Math.PI / 2);
+    downPlane.position.z = z;
+    downPlane.position.y = -height / 2;
 
-  pit.add(downPlane);
-  pit.add(upPlane);
-  pit.add(leftPlane);
-  pit.add(rightPlane);
+    const upPlane = generateGrid(width, 1, levelColor);
+    upPlane.rotateX(Math.PI / 2);
+    upPlane.position.z = z;
+    upPlane.position.y = height / 2;
+
+    const leftPlane = generateGrid(height, 1, levelColor);
+    leftPlane.rotateY(Math.PI / 2);
+    leftPlane.rotateZ(Math.PI / 2);
+    leftPlane.position.z = z;
+    leftPlane.position.x = -width / 2;
+
+    const rightPlane = generateGrid(height, 1, levelColor);
+    rightPlane.rotateY(Math.PI / 2);
+    rightPlane.rotateZ(Math.PI / 2);
+    rightPlane.position.z = z;
+    rightPlane.position.x = width / 2;
+
+    pit.add(downPlane);
+    pit.add(upPlane);
+    pit.add(leftPlane);
+    pit.add(rightPlane);
+  }
 
   if (simple) {
     const bottomPlane = generateGrid(width, height, color);
