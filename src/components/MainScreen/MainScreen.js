@@ -102,13 +102,6 @@ export default {
       timeDelta: 0,
       second: 0,
 
-      gridColor: 0x9b_43_0e,
-      lightColor: 0xff_ff_ff,
-      sceneColor: 0x00_0b_12,
-      firstLightColor: 0x85_8a_ff,
-      secondLightColor: 0xff_b0_7e,
-      thirdLightColor: 0xff_00_03,
-
       isPause: true,
       isMenu: true,
       isSmooth: true,
@@ -292,6 +285,17 @@ export default {
       "isDev",
       "isControls",
       "isVibration",
+
+      // Colors
+      "gridColor",
+      "lightColor",
+      "sceneColor",
+      "firstLightColor",
+      "secondLightColor",
+      "thirdLightColor",
+      "specularColor",
+      "gridFirstColor",
+      "gridSecondColor",
     ]),
 
     ...mapGetters(["maxScore", "minScore", "avgScore"]),
@@ -2044,6 +2048,8 @@ export default {
         viewWidth,
         viewHeight,
         isPitGrid,
+        gridFirstColor,
+        gridSecondColor,
       } = this;
 
       const [width, height, depth] = pitSize.split("x");
@@ -2085,7 +2091,9 @@ export default {
         isInstanced,
         Math.max(vWidth, vHeight),
         Math.max(vWidth, vHeight),
-        isPitGrid
+        isPitGrid,
+        gridFirstColor,
+        gridSecondColor
       );
       scene.add(this.pit);
 
@@ -2236,12 +2244,12 @@ export default {
         if (Array.isArray(child.material)) {
           child.material.forEach((item, index, array) => {
             item.shininess = 0;
-            item.specular = new Color(0x00_00_00);
+            item.specular = new Color(this.specularColor);
             item.flatShading = true;
           });
         } else {
           child.material.shininess = 0;
-          child.material.specular = new Color(0x00_00_00);
+          child.material.specular = new Color(this.specularColor);
           child.material.flatShading = true;
         }
       }
@@ -2253,12 +2261,12 @@ export default {
         if (Array.isArray(child.material)) {
           child.material.forEach((item, index, array) => {
             item.shininess = 0;
-            item.specular = new Color(0x00_00_00);
+            item.specular = new Color(this.specularColor);
             item.flatShading = true;
           });
         } else {
           child.material.shininess = 0;
-          child.material.specular = new Color(0x00_00_00);
+          child.material.specular = new Color(this.specularColor);
           child.material.flatShading = true;
         }
       }

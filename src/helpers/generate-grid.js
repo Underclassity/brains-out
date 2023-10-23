@@ -1,7 +1,7 @@
 import { Group, PlaneGeometry, LineBasicMaterial, LineSegments } from "three";
 
 import ToQuads from "./to-quads.js";
-import log from "./log.js";
+// import log from "./log.js";
 
 /**
  * Generate grid plane

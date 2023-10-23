@@ -259,15 +259,17 @@ export function addPlaneHelpers(width, height, depth, size, pit) {
 /**
  * Generate pit
  *
- * @param   {Number}    [width=5]               Pit width
- * @param   {height}    [height=5]              Pit height
- * @param   {Number}    [depth=12]              Pit depth
- * @param   {Number}    [color=0x808080]        Grid color
- * @param   {Array}     [pitParts=[]]           Pit parts
- * @param   {Boolean}   [simple=false]          Simple view
- * @param   {Boolean}   viewWidth               View width
- * @param   {Number}    viewHeight              View height
- * @param   {Boolean}   [pitGrid=false]         Add pit grid colors
+ * @param   {Number}    [width=5]                      Pit width
+ * @param   {height}    [height=5]                     Pit height
+ * @param   {Number}    [depth=12]                     Pit depth
+ * @param   {Number}    [color=0x808080]               Grid color
+ * @param   {Array}     [pitParts=[]]                  Pit parts
+ * @param   {Boolean}   [simple=false]                 Simple view
+ * @param   {Boolean}   viewWidth                      View width
+ * @param   {Number}    viewHeight                     View height
+ * @param   {Boolean}   [pitGrid=false]                Add pit grid colors
+ * @param   {Number}    [gridFirstColor=0xa9a9a9]      Pit grid first color
+ * @param   {Number}    [gridSecondColor=0xffffff]     Pit grid second color
  *
  * @return  {Object}               Group object
  */
@@ -282,7 +284,9 @@ export function generatePit(
   isInstanced = false,
   viewWidth,
   viewHeight,
-  pitGrid = false
+  pitGrid = false,
+  gridFirstColor = 0xa9_a9_a9,
+  gridSecondColor = 0xff_ff_ff
 ) {
   width = parseInt(width, 10);
   height = parseInt(height, 10);
@@ -371,16 +375,6 @@ export function generatePit(
     const hSize = size / 2;
     const hWidth = width / 2;
 
-    // const box = new BoxGeometry(1, 1);
-
-    // const groundMaterial = new MeshBasicMaterial({ color: 0x3a_2e_27 });
-    // const grassMaterial = new MeshBasicMaterial({ color: 0x3a_7c_25 });
-    // const groundAndGrassMaterial = new MeshBasicMaterial({ color: 0x43_5c_61 });
-
-    // const groundPart = new Mesh(box, groundMaterial);
-    // const grassPart = new Mesh(box, grassMaterial);
-    // const groundAndGrassPart = new Mesh(box, groundAndGrassMaterial);
-
     const pitGroup = new Group();
 
     const dummy = new Object3D();
@@ -467,8 +461,8 @@ export function generatePit(
 
     groundMesh.material.color = new Color(0xffffff);
 
-    const firstColor = new Color(0xa9a9a9);
-    const secondColor = new Color(0xffffff);
+    const firstColor = new Color(gridFirstColor);
+    const secondColor = new Color(gridSecondColor);
 
     let counter = 1;
 

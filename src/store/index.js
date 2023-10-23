@@ -38,8 +38,14 @@ export const store = createStore({
     lightPower: 5000,
 
     gridColor: 0x9b_43_0e,
-    lightColor: 0xfa_fa_fa,
+    lightColor: 0xff_ff_ff,
     sceneColor: 0x00_0b_12,
+    firstLightColor: 0x85_8a_ff,
+    secondLightColor: 0xff_b0_7e,
+    thirdLightColor: 0xff_00_03,
+    specularColor: 0x00_00_00,
+    gridFirstColor: 0xa9_a9_a9,
+    gridSecondColor: 0xff_ff_ff,
 
     changeSpeedByLevels: true,
 

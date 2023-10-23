@@ -86,6 +86,56 @@ export function initTweakPane(pane) {
   const firstLightColor = new Color(this.firstLightColor);
   const secondLightColor = new Color(this.secondLightColor);
   const thirdLightColor = new Color(this.thirdLightColor);
+  const gridFirstColor = new Color(this.gridFirstColor);
+  const gridSecondColor = new Color(this.gridSecondColor);
+
+  colorsFolder
+    .addInput(
+      {
+        gridFirstColor: {
+          r: gridFirstColor.r * 255,
+          g: gridFirstColor.g * 255,
+          b: gridFirstColor.b * 255,
+        },
+      },
+      "gridFirstColor"
+    )
+    .on("change", (ev) => {
+      if (!ev.last) {
+        return false;
+      }
+
+      this.$store.state.gridFirstColor = new Color(
+        ev.value.r / 255,
+        ev.value.g / 255,
+        ev.value.b / 255
+      );
+      this.reCreatePit(this.pitSize, true);
+    });
+
+  colorsFolder
+    .addInput(
+      {
+        gridSecondColor: {
+          r: gridSecondColor.r * 255,
+          g: gridSecondColor.g * 255,
+          b: gridSecondColor.b * 255,
+        },
+      },
+      "gridSecondColor"
+    )
+    .on("change", (ev) => {
+      if (!ev.last) {
+        return false;
+      }
+
+      this.$store.state.gridSecondColor = new Color(
+        ev.value.r / 255,
+        ev.value.g / 255,
+        ev.value.b / 255
+      );
+      this.reCreatePit(this.pitSize, true);
+    });
 
   colorsFolder
     .addInput(
@@ -103,7 +153,7 @@ export function initTweakPane(pane) {
         return false;
       }
 
-      this.gridColor = new Color(
+      this.$store.state.gridColor = new Color(
         ev.value.r / 255,
         ev.value.g / 255,
         ev.value.b / 255
@@ -127,7 +177,7 @@ export function initTweakPane(pane) {
         return false;
       }
 
-      this.firstLightColor = new Color(
+      this.$store.state.firstLightColor = new Color(
         ev.value.r / 255,
         ev.value.g / 255,
         ev.value.b / 255
@@ -151,7 +201,7 @@ export function initTweakPane(pane) {
         return false;
       }
 
-      this.secondLightColor = new Color(
+      this.$store.state.secondLightColor = new Color(
         ev.value.r / 255,
         ev.value.g / 255,
         ev.value.b / 255
@@ -175,7 +225,7 @@ export function initTweakPane(pane) {
         return false;
       }
 
-      this.thirdLightColor = new Color(
+      this.$store.state.thirdLightColor = new Color(
         ev.value.r / 255,
         ev.value.g / 255,
         ev.value.b / 255
