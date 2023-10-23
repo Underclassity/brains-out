@@ -418,6 +418,47 @@ export function initTweakPane(pane) {
       this.addRandomFigures();
     });
 
+  const actionsFolder = pane.addFolder({
+    title: "Actions",
+    expanded: true,
+  });
+
+  actionsFolder
+    .addButton({
+      title: "Shuffle",
+      label: "Shuffle elements",
+    })
+    .on("click", () => {
+      this.shuffle();
+    });
+
+  actionsFolder
+    .addButton({
+      title: "Shuffle",
+      label: "Shuffle layers",
+    })
+    .on("click", () => {
+      this.shuffleLayers();
+    });
+
+  actionsFolder
+    .addButton({
+      title: "Clear",
+      label: "Clear layers",
+    })
+    .on("click", () => {
+      this.layersCheck(true);
+    });
+
+  actionsFolder
+    .addButton({
+      title: "Rotate",
+      label: "Rotate pit",
+    })
+    .on("click", () => {
+      this.rotatePit();
+    });
+
   return true;
 }
 

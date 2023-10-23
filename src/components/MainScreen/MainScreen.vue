@@ -168,12 +168,12 @@
         span.dev-button.material-symbols-outlined(v-on:click="pauseCall" v-if="!isPause && isDev") pause
         span.dev-button.material-symbols-outlined(v-on:click="playCall" v-if="isPause && isDev") play_arrow
 
-        span.dev-button.material-symbols-outlined(v-on:click="layersCheck(true)" v-if="isDev") layers_clear
+        //- span.dev-button.material-symbols-outlined(v-on:click="layersCheck(true)" v-if="isDev") layers_clear
 
-        span.dev-button.material-symbols-outlined(v-on:click="shuffle" v-if="isDev") shuffle
-        span.dev-button.material-symbols-outlined(v-on:click="shuffleLayers" v-if="isDev") shuffle_on
+        //- span.dev-button.material-symbols-outlined(v-on:click="shuffle" v-if="isDev") shuffle
+        //- span.dev-button.material-symbols-outlined(v-on:click="shuffleLayers" v-if="isDev") shuffle_on
 
-        span.dev-button.material-symbols-outlined(v-on:click="rotatePit" v-if="isDev") 360
+        //- span.dev-button.material-symbols-outlined(v-on:click="rotatePit" v-if="isDev") 360
 
     ControlsBlock(
         :showFlag="isControls || isMobile"
