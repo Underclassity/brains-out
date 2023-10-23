@@ -297,6 +297,33 @@ export function generatePit(
   const pit = new Group();
   pit.userData.name = "Pit";
 
+  const downPlane = generateGrid(width, depth, color);
+  downPlane.rotateX(Math.PI / 2);
+  downPlane.position.z = -depth / 2 + size / 2;
+  downPlane.position.y = -height / 2;
+
+  const upPlane = generateGrid(width, depth, color);
+  upPlane.rotateX(Math.PI / 2);
+  upPlane.position.z = -depth / 2 + size / 2;
+  upPlane.position.y = height / 2;
+
+  const leftPlane = generateGrid(height, depth, color);
+  leftPlane.rotateY(Math.PI / 2);
+  leftPlane.rotateZ(Math.PI / 2);
+  leftPlane.position.z = -depth / 2 + size / 2;
+  leftPlane.position.x = -width / 2;
+
+  const rightPlane = generateGrid(height, depth, color);
+  rightPlane.rotateY(Math.PI / 2);
+  rightPlane.rotateZ(Math.PI / 2);
+  rightPlane.position.z = -depth / 2 + size / 2;
+  rightPlane.position.x = width / 2;
+
+  pit.add(downPlane);
+  pit.add(upPlane);
+  pit.add(leftPlane);
+  pit.add(rightPlane);
+
   if (simple) {
     const bottomPlane = generateGrid(width, height, color);
     bottomPlane.position.z = -depth;
