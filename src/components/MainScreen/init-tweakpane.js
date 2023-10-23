@@ -37,6 +37,14 @@ export function initTweakPane(pane) {
     });
 
   infoFolder
+    .addMonitor(params, "fps", {
+      readonly: true,
+    })
+    .on("update", () => {
+      params.fps = this.fps;
+    });
+
+  infoFolder
     .addMonitor(params, "score", {
       readonly: true,
     })
