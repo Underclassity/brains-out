@@ -360,7 +360,7 @@ export function initTweakPane(pane) {
       "isEndless"
     )
     .on("change", (ev) => {
-      this.isEndless = ev.value;
+      this.$store.commit("updateEndless", ev.value);
     });
 
   modesFolder

@@ -143,7 +143,6 @@ export default {
       randomFormsCount: 5,
 
       // Modes
-      isEndless: false,
       isPractice: false,
 
       isSlow: false,
@@ -266,6 +265,8 @@ export default {
       "settingsSpeed",
       "maxSpeed",
       "speedStep",
+
+      "isEndless",
 
       "score",
       "lsScore",
@@ -585,9 +586,13 @@ export default {
     /**
      * New game call helper
      *
-     * @return  {Boolean}  Result
+     * @param   {Boolean}  [isPractice=false]  Practice flag
+     *
+     * @return  {Boolean}                      Result
      */
-    newGameCall() {
+    newGameCall(isPractice = false) {
+      this.isPractice = isPractice;
+
       if (!this.isControlsInfoShowed) {
         this.openControlsInfo(true, true);
         return true;
@@ -3650,6 +3655,14 @@ export default {
       this.isLoading = false;
 
       this.closeMenu();
+    },
+
+    isEndless(newValue) {
+      this.log("Update endless mode: ", newValue);
+    },
+
+    isPractice(newValue) {
+      this.log("Update practice mode: ", newValue);
     },
   },
 

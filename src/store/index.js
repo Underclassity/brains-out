@@ -49,6 +49,8 @@ export const store = createStore({
 
     changeSpeedByLevels: true,
 
+    isEndless: false,
+
     isDev: false,
     isControls: false,
     isVibration: true,
@@ -294,6 +296,18 @@ export const store = createStore({
 
     updateDev(state, value) {
       state.isDev = value ? true : false;
+    },
+
+    enableEndless(state) {
+      state.isEndless = true;
+    },
+
+    disableEndless(state) {
+      state.isEndless = false;
+    },
+
+    updateEndless(state, value) {
+      state.isEndless = value ? true : false;
     },
 
     enableVibration(state) {

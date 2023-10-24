@@ -64,7 +64,15 @@ export default {
           "achievements",
           "credits",
         ],
-        new: ["pit", "blocksType", "speed", "back", "play"],
+        new: [
+          "pit",
+          "blocksType",
+          "speed",
+          "endless",
+          "back",
+          "play",
+          "practice",
+        ],
         credits: ["back"],
         // controls: ["back"],
         settings: [
@@ -106,6 +114,8 @@ export default {
       "speedStep",
       "minSpeed",
       "maxSpeed",
+
+      "isEndless",
 
       "pixelRatio",
       "antialias",
@@ -335,6 +345,26 @@ export default {
       this.$emit("new-game");
 
       this.log("Play click call", this.isShow);
+    },
+
+    practiceClick() {
+      this.resetFlags();
+
+      if (!this.isStarted) {
+        this.isStarted = true;
+      }
+
+      this.$emit("new-game", true);
+
+      this.log("Play click call", this.isShow);
+    },
+
+    enableEndless() {
+      this.$store.commit("enableEndless");
+    },
+
+    disableEndless() {
+      this.$store.commit("disableEndless");
     },
 
     prevPitSize() {

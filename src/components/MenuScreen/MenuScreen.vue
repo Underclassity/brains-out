@@ -81,6 +81,17 @@
             .menu--selector--value {{ settingsSpeed }}
             .menu--selector--next(v-on:click="nextSpeed" v-if="settingsSpeed != maxSpeed" ref="new.speed.next")
 
+        .menu--selector(
+            v-show="flags.new"
+            ref="new.endless"
+            v-bind:class="{ 'focused': focused == 'new.endless' }"
+        )
+            .menu--label Endless mode
+            .menu--selector--prev(v-on:click="enableEndless" v-if="!isEndless" ref="new.endless.prev")
+            .menu--selector--value(v-if="isEndless") Yes
+            .menu--selector--value(v-if="!isEndless") No
+            .menu--selector--next(v-on:click="disableEndless" v-if="isEndless" ref="new.endless.next")
+
         .menu--buttons(v-show="flags.new")
             .menu--item--red.menu--button(
                 v-show="flags.new"
@@ -96,6 +107,14 @@
                 v-bind:class="{ 'focused': focused == 'new.play' }"
             )
                 span Play
+
+            .menu--item--new.menu--button(
+                v-show="flags.new"
+                v-on:click="practiceClick"
+                ref="new.practice"
+                v-bind:class="{ 'focused': focused == 'new.practice' }"
+            )
+                span Practice
 
         //- Controls items
         //- .menu--title(v-show="flags.controls") Controls
