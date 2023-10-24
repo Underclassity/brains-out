@@ -214,6 +214,7 @@ export default {
       candleParts: [],
 
       fps: 0,
+      frameTime: 0,
       frames: 0,
       prevTime: Date.now(),
 
@@ -2601,6 +2602,8 @@ export default {
       const animation = () => {
         requestAnimationFrame(animation);
 
+        performance.mark("animation-start");
+
         this.frames++;
         const time = Date.now();
 
@@ -2674,6 +2677,18 @@ export default {
         }
 
         TWEEN.update();
+
+        performance.mark("animation-end");
+        const measure = performance.measure(
+          "animation",
+          "animation-start",
+          "animation-end"
+        );
+
+        this.frameTime = measure.duration;
+
+        performance.clearMarks();
+        performance.clearMeasures();
       };
 
       const renderer = new WebGLRenderer({

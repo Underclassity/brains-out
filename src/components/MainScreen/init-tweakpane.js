@@ -16,6 +16,7 @@ export function initTweakPane(pane) {
 
   const params = {
     fps: this.fps,
+    frameTime: this.frameTime,
     score: this.score,
     avgScore: this.avgScore,
     minScore: this.minScore,
@@ -30,10 +31,20 @@ export function initTweakPane(pane) {
   infoFolder
     .addMonitor(params, "fps", {
       view: "graph",
+      min: 0,
       readonly: true,
     })
     .on("update", () => {
       params.fps = this.fps;
+    });
+
+  infoFolder
+    .addMonitor(params, "frameTime", {
+      view: "graph",
+      readonly: true,
+    })
+    .on("update", () => {
+      params.frameTime = this.frameTime;
     });
 
   infoFolder
@@ -42,6 +53,14 @@ export function initTweakPane(pane) {
     })
     .on("update", () => {
       params.fps = this.fps;
+    });
+
+  infoFolder
+    .addMonitor(params, "frameTime", {
+      readonly: true,
+    })
+    .on("update", () => {
+      params.frameTime = this.frameTime;
     });
 
   infoFolder
