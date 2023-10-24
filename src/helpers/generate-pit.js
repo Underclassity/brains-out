@@ -14,7 +14,7 @@ import {
   Vector3,
 } from "three";
 
-import { colorPalette } from "../components/MainScreen/color-palette.js";
+// import { colorPalette } from "../components/MainScreen/color-palette.js";
 
 import generateGrid from "./generate-grid.js";
 import getRandom from "./random.js";
@@ -299,45 +299,45 @@ export function generatePit(
   const pit = new Group();
   pit.userData.name = "Pit";
 
-  const bottomPlane = generateGrid(width, height, color);
-  bottomPlane.position.z = -depth + size / 2;
-  pit.add(bottomPlane);
+  // const bottomPlane = generateGrid(width, height, color);
+  // bottomPlane.position.z = -depth + size / 2;
+  // pit.add(bottomPlane);
 
-  for (let z = -depth + 1; z < 1; z++) {
-    const levelColor = colorPalette[Math.abs(z)];
+  // for (let z = -depth + 1; z < 1; z++) {
+  //   const levelColor = colorPalette[Math.abs(z)];
 
-    // console.log(
-    //   `%cColor: ${levelColor.getHexString()}`,
-    //   `background-color: #${levelColor.getHexString()}`
-    // );
+  //   // console.log(
+  //   //   `%cColor: ${levelColor.getHexString()}`,
+  //   //   `background-color: #${levelColor.getHexString()}`
+  //   // );
 
-    const downPlane = generateGrid(width, 1, levelColor);
-    downPlane.rotateX(Math.PI / 2);
-    downPlane.position.z = z;
-    downPlane.position.y = -height / 2;
+  //   const downPlane = generateGrid(width, 1, levelColor);
+  //   downPlane.rotateX(Math.PI / 2);
+  //   downPlane.position.z = z;
+  //   downPlane.position.y = -height / 2;
 
-    const upPlane = generateGrid(width, 1, levelColor);
-    upPlane.rotateX(Math.PI / 2);
-    upPlane.position.z = z;
-    upPlane.position.y = height / 2;
+  //   const upPlane = generateGrid(width, 1, levelColor);
+  //   upPlane.rotateX(Math.PI / 2);
+  //   upPlane.position.z = z;
+  //   upPlane.position.y = height / 2;
 
-    const leftPlane = generateGrid(height, 1, levelColor);
-    leftPlane.rotateY(Math.PI / 2);
-    leftPlane.rotateZ(Math.PI / 2);
-    leftPlane.position.z = z;
-    leftPlane.position.x = -width / 2;
+  //   const leftPlane = generateGrid(height, 1, levelColor);
+  //   leftPlane.rotateY(Math.PI / 2);
+  //   leftPlane.rotateZ(Math.PI / 2);
+  //   leftPlane.position.z = z;
+  //   leftPlane.position.x = -width / 2;
 
-    const rightPlane = generateGrid(height, 1, levelColor);
-    rightPlane.rotateY(Math.PI / 2);
-    rightPlane.rotateZ(Math.PI / 2);
-    rightPlane.position.z = z;
-    rightPlane.position.x = width / 2;
+  //   const rightPlane = generateGrid(height, 1, levelColor);
+  //   rightPlane.rotateY(Math.PI / 2);
+  //   rightPlane.rotateZ(Math.PI / 2);
+  //   rightPlane.position.z = z;
+  //   rightPlane.position.x = width / 2;
 
-    pit.add(downPlane);
-    pit.add(upPlane);
-    pit.add(leftPlane);
-    pit.add(rightPlane);
-  }
+  //   pit.add(downPlane);
+  //   pit.add(upPlane);
+  //   pit.add(leftPlane);
+  //   pit.add(rightPlane);
+  // }
 
   if (simple) {
     const bottomPlane = generateGrid(width, height, color);
@@ -534,9 +534,9 @@ export function generatePit(
       }
     }
 
-    counter = 1;
-
     for (let z = -depth + 1; z < 0; z++) {
+      counter = Math.abs(z % 2) == 0 ? 1 : 0;
+
       // Generate left and right walls
       for (let y = -hHeight + hSize; y < hHeight; y++) {
         let x = -hWidth - hSize;
@@ -572,14 +572,12 @@ export function generatePit(
           true,
           counter % 2 == 0 && pitGrid ? firstColor : secondColor
         );
-
-        counter++;
       }
     }
 
-    counter = 0;
-
     for (let z = -depth + 1; z < 0; z++) {
+      counter = Math.abs(z % 2) == 0 ? 1 : 0;
+
       // Generate top and bottom walls
       for (let x = -hWidth + hSize; x < hWidth; x++) {
         let y = -hHeight - hSize;
@@ -615,8 +613,6 @@ export function generatePit(
           true,
           counter % 2 == 0 && pitGrid ? firstColor : secondColor
         );
-
-        counter++;
       }
     }
 
