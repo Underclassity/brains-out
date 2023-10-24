@@ -4,7 +4,7 @@
     position: fixed
     top: 0
     left: 0
-    overflow: auto
+    overflow: scroll
     background-color: var(--orange, #E77812)
     z-index: 100500
 
@@ -15,6 +15,9 @@
         margin: 0 auto
         padding: 20px
         box-sizing: border-box
+
+        @media(max-width 768px)
+            height: auto
 
     &--columns
         width: 100%
