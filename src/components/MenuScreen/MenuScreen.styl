@@ -67,12 +67,12 @@
         margin-right: 10px
 
         @media(max-width 767px)
-            font-size 32px
-            line-height: 32px
+            font-size 20px
+            line-height: 24px
 
         @media(max-height 900px)
-            font-size 32px
-            line-height: 32px
+            font-size 20px
+            line-height: 24px
 
     &--selector
         display: flex
@@ -165,15 +165,15 @@
                 border-radius: 10px
                 padding: 8px
                 border: 2px solid #222
-                font-size: 32px
-                line-height: 32px
+                font-size: 20px
+                line-height: 24px
 
             @media(max-height 900px)
                 border-radius: 10px
                 padding: 8px
                 border: 2px solid #222
-                font-size: 32px
-                line-height: 32px
+                font-size: 20px
+                line-height: 24px
 
             &:before
                 content: ''
@@ -184,6 +184,12 @@
                 height: 10px
                 background-color: rgba(white, 0.2)
                 border-radius: 50%
+
+                @media(max-width 768px)
+                    display: none
+
+                @media(max-height 900px)
+                    display: none
 
     &--item
     &--button
@@ -351,6 +357,7 @@
         display: flex
         align-items: center
         justify-content: flex-start
+        flex-wrap: wrap
         font-size: 16px
         line-height: 18px
         margin-bottom: 8px
@@ -375,6 +382,14 @@
             margin-top: 16px
             margin-bottom: 16px
 
+            @media(max-width 768px)
+                font-size: 20px
+                line-height: 24px
+
+            @media(max-height 900px)
+                font-size: 20px
+                line-height: 24px
+
         &--desc
             margin-top: 10px
 
@@ -386,6 +401,14 @@
         color: white
         -webkit-text-stroke: 1px var(--black, #000)
         margin-bottom: 10px
+
+        @media(max-width 768px)
+            font-size: 20px
+            line-height: 24px
+
+        @media(max-height 900px)
+            font-size: 20px
+            line-height: 24px
 
     &--range
         -webkit-appearance: none
@@ -453,6 +476,18 @@
         left: 15px
         z-index: 0
 
+        @media(max-width 768px)
+            height: 4px
+            width: calc(100% - 20px)
+            left: 10px
+            top: calc(10px - 4px)
+
+        @media(max-height 900px)
+            height: 4px
+            width: calc(100% - 20px)
+            left: 10px
+            top: calc(10px - 4px)
+
     &--dot
         width: 20px
         height: 20px
@@ -462,6 +497,22 @@
         cursor: pointer
         z-index: 10
 
+        @media(max-width 768px)
+            width: 16px
+            height: 16px
+            border: 2px solid #E7C512
+
+        @media(max-height 900px)
+            width: 16px
+            height: 16px
+            border: 2px solid #E7C512
+
         &--active
             background-color: #E77812
             border: 5px solid #000000
+
+            @media(max-width 768px)
+                border: 2px solid #000000
+
+            @media(max-height 900px)
+                border: 2px solid #000000
