@@ -146,8 +146,14 @@
             v-bind:class="{ 'focused': focused == 'settings.pixelRatio' }"
         )
             .menu--label Resolution
+            .menu--dots
+                .menu--dotline
+                .menu--dot(v-bind:class="{ 'menu--dot--active': pixelRatio == 1 }" v-on:click="setPixelRatio(1)")
+                .menu--dot(v-bind:class="{ 'menu--dot--active': pixelRatio == 2 }" v-on:click="setPixelRatio(2)")
+                .menu--dot(v-bind:class="{ 'menu--dot--active': pixelRatio == 3 }" v-on:click="setPixelRatio(3)")
+                .menu--dot(v-bind:class="{ 'menu--dot--active': pixelRatio == 4 }" v-on:click="setPixelRatio(4)")
             //- .menu--selector--prev(v-on:click="prevPixelRatio" v-if="pixelRatio != 1" ref="settings.pixelRatio.prev")
-            input.menu--range(type="range" min="50" max="400" v-model="resolution" ref="settings.pixelRatio.slider")
+            //- input.menu--range(type="range" min="50" max="400" v-model="resolution" ref="settings.pixelRatio.slider")
             .menu--selector--value {{ scale }}%
             //- .menu--selector--next(v-on:click="nextPixelRatio" v-if="pixelRatio != 4" ref="settings.pixelRatio.next")
 

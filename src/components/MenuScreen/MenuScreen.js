@@ -385,6 +385,10 @@ export default {
       this.$store.commit("updatePixelRatio", +1);
     },
 
+    setPixelRatio(value = 1) {
+      this.$store.commit("setPixelRatio", value);
+    },
+
     prevVolume() {
       this.$store.commit("updateVolume", -0.1);
     },

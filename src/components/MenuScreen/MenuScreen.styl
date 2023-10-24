@@ -434,3 +434,34 @@
             border: 2px solid var(--black, #000)
             outline: 3px solid var(--light-orange, #ffa500)
             outline-offset: 0.125rem
+
+    &--dots
+        width: 100%
+        display: flex
+        justify-content: space-between
+        position: relative
+        margin-right: 10px
+
+    &--dotline
+        width: calc(100% - 30px)
+        height: 6px
+        background-color: #F6DD58
+        border: 2px solid #E7C512
+        border-radius: 4px
+        position: absolute
+        top: calc(15px - 4px)
+        left: 15px
+        z-index: 0
+
+    &--dot
+        width: 20px
+        height: 20px
+        background-color: #F6DD58
+        border: 5px solid #E7C512
+        border-radius: 50%
+        cursor: pointer
+        z-index: 10
+
+        &--active
+            background-color: #E77812
+            border: 5px solid #000000
