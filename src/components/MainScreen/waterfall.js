@@ -258,7 +258,7 @@ export function initWaterfall() {
 
     prevCount = count;
 
-    if (!this.current) {
+    if (!this.current && this.isFirstTime && this.isControlsInfoShowed) {
       this.createElement();
     }
   });
