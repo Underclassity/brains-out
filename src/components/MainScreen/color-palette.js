@@ -70,8 +70,8 @@ export const colorPalette = [
   new Color("#15E0D4"),
   new Color("#1AAFDE"),
   new Color("#3C81C0"),
-  new Color("#0812F4"),
-  new Color("#4B26DC"),
+  new Color("#131DF3"),
+  new Color("#7554EE"),
   new Color("#6D37A4"),
 ];
 

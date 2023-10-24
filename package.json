@@ -29,6 +29,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.2.3",
+    "rollup-plugin-visualizer": "^5.9.2",
     "stylus": "^0.55.0",
     "stylus-loader": "^6.1.0",
     "typescript": "^5.0.2",
