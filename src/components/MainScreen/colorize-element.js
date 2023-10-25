@@ -34,8 +34,17 @@ export function colorizeElement(element, layer) {
           return;
         }
 
+        const atlas =
+          material.name == "M_Brains" && this.greyBrains
+            ? this.greyBrains
+            : material.name == "M_Guts" && this.greyGuts
+            ? this.greyGuts
+            : this.greyAtlas;
+
         material.color.set(color);
-        material.map = this.greyAtlas;
+        if (atlas) {
+          material.map = atlas;
+        }
         material.needsUpdate = true;
       });
 
@@ -47,8 +56,17 @@ export function colorizeElement(element, layer) {
       return;
     }
 
+    const atlas =
+      obj.material.name == "M_Brains" && this.greyBrains
+        ? this.greyBrains
+        : obj.material.name == "M_Guts" && this.greyGuts
+        ? this.greyGuts
+        : this.greyAtlas;
+
     obj.material.color.set(color);
-    obj.material.map = this.greyAtlas;
+    if (atlas) {
+      obj.material.map = atlas;
+    }
     obj.material.needsUpdate = true;
   });
 

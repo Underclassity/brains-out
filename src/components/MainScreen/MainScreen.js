@@ -210,7 +210,11 @@ export default {
       zombieParts: [],
       pitParts: [],
       candleParts: [],
+
+      // Atlases
       greyAtlas: undefined,
+      greyBrains: undefined,
+      greyGuts: undefined,
 
       fps: 0,
       frameTime: 0,
@@ -315,8 +319,8 @@ export default {
 
       count++;
 
-      // Grey atlas
-      count++;
+      // Atlases
+      count += 3;
 
       // // Dev parts
       count++;
@@ -2207,9 +2211,29 @@ export default {
         this.progressCb
       );
 
-      // Save atlas
+      const greyBrains = await textureLoaderHelper(
+        "T_GrayScaleBrains.png",
+        "greyBrains",
+        this.progressCb
+      );
+
+      const greyGuts = await textureLoaderHelper(
+        "T_GrayScaleGuts.png",
+        "greyGuts",
+        this.progressCb
+      );
+
+      // Save atlases
       if (greyAtlas) {
         this.greyAtlas = greyAtlas;
+      }
+
+      if (greyBrains) {
+        this.greyBrains = greyBrains;
+      }
+
+      if (greyGuts) {
+        this.greyGuts = greyGuts;
       }
 
       // if (halloweenParts?.children?.length) {
