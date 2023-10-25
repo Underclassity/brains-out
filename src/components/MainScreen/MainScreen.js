@@ -1,15 +1,12 @@
 import { mapState, mapGetters } from "vuex";
 
 import {
-  AnimationMixer,
   Clock,
   Color,
   MathUtils,
   PerspectiveCamera,
   Scene,
   WebGLRenderer,
-  AnimationAction,
-  LoopRepeat,
 } from "three";
 
 import * as TWEEN from "@tweenjs/tween.js";
@@ -131,6 +128,7 @@ export default {
       isLogo: false,
       isControlsInfo: false,
       isControlsInfoShowed: false,
+      isControlsInfoPlay: false,
 
       isLoading: true,
       loadingProcessCache: {},
@@ -604,9 +602,12 @@ export default {
       this.isPractice = isPractice;
 
       if (!this.isControlsInfoShowed) {
+        this.isControlsInfoPlay = true;
         this.openControlsInfo(true, true);
         return true;
       }
+
+      this.isControlsInfoPlay = false;
 
       this.closeMenu();
       this.newGame();

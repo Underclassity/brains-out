@@ -37,6 +37,11 @@ export default {
       type: Boolean,
       default: false,
     },
+
+    playButton: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   data() {

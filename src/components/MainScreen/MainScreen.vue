@@ -55,6 +55,7 @@ MenuScreen(
 )
 LoadingScreen(:show="isLoading" :percent="loadPercent")
 ControlsInfoScreen(
+    :playButton="isControlsInfoPlay"
     :show="isControlsInfo"
     v-on:back="closeControlsInfo"
 )
