@@ -107,6 +107,7 @@ export function initTweakPane(pane) {
   const thirdLightColor = new Color(this.thirdLightColor);
   const gridFirstColor = new Color(this.gridFirstColor);
   const gridSecondColor = new Color(this.gridSecondColor);
+  const fogColor = new Color(this.fogColor);
 
   colorsFolder
     .addInput(
@@ -420,6 +421,50 @@ export function initTweakPane(pane) {
     })
     .on("change", (ev) => {
       this.maxRotate = ev.value;
+    });
+
+  const fogFolder = pane.addFolder({
+    title: "Fog",
+    expanded: false,
+  });
+
+  fogFolder
+    .addInput(
+      {
+        isFog: this.isFog,
+      },
+      "isFog"
+    )
+    .on("change", (ev) => {
+      this.isFog = ev.value;
+    });
+
+  fogFolder
+    .addInput(
+      {
+        fogColor: `#${fogColor.getHexString()}`,
+      },
+      "fogColor",
+      { view: "color" }
+    )
+    .on("change", (ev) => {
+      if (!ev.last) {
+        return false;
+      }
+
+      this.fogColor = new Color(ev.value);
+    });
+
+  fogFolder
+    .addBlade({
+      view: "slider",
+      label: "Density",
+      min: 0.0001,
+      max: 0.3,
+      value: this.fogDensity,
+    })
+    .on("change", (ev) => {
+      this.fogDensity = ev.value;
     });
 
   const randomFormsFolder = pane.addFolder({

@@ -7,6 +7,7 @@ import {
   PerspectiveCamera,
   Scene,
   WebGLRenderer,
+  FogExp2,
 } from "three";
 
 import * as TWEEN from "@tweenjs/tween.js";
@@ -143,6 +144,10 @@ export default {
 
       // Modes
       isPractice: false,
+      fog: undefined,
+      fogColor: 0xcccccc,
+      fogDensity: 0.1,
+      isFog: false,
 
       isSlow: false,
       slowValue: 100,
@@ -2617,6 +2622,12 @@ export default {
 
       this.reCreatePit(this.pitSize);
 
+      const fog = new FogExp2(this.fogColor, this.fogDensity);
+      if (this.isFog) {
+        scene.fog = fog;
+      }
+      this.fog = fog;
+
       // Init layers
       this.initPoints();
       this.initLayers();
@@ -3675,6 +3686,18 @@ export default {
 
     isPractice(newValue) {
       this.log("Update practice mode: ", newValue);
+    },
+
+    isFog(newValue) {
+      this.scene.fog = newValue ? this.fog : undefined;
+    },
+
+    fogColor(newValue) {
+      this.fog.color = newValue;
+    },
+
+    fogDensity(newValue) {
+      this.fog.density = newValue;
     },
   },
 
