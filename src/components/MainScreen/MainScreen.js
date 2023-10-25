@@ -512,7 +512,7 @@ export default {
      * @return  {Boolean}                  Result
      */
     changeScore(changeValue, type = "points") {
-      if (!this.isPractice) {
+      if (this.isPractice) {
         return false;
       }
 
