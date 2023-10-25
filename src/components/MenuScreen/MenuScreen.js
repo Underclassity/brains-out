@@ -51,8 +51,6 @@ export default {
 
       assets,
 
-      devicePixelRatio: window.devicePixelRatio,
-
       resolution: 100,
 
       refs: {
@@ -132,6 +130,10 @@ export default {
       "achievements",
       "userAchievements",
     ]),
+
+    devicePixelRatio() {
+      return Math.round(window.devicePixelRatio);
+    },
 
     isShow() {
       let isShow = false;
