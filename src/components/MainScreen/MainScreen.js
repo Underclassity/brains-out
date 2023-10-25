@@ -4,11 +4,12 @@ import { mapState, mapGetters } from "vuex";
 import {
   Clock,
   Color,
+  FogExp2,
+  Group,
   MathUtils,
   PerspectiveCamera,
   Scene,
   WebGLRenderer,
-  FogExp2,
 } from "three";
 
 import * as TWEEN from "@tweenjs/tween.js";
@@ -3488,6 +3489,12 @@ export default {
      * @return  {Boolean}  Result
      */
     rotatePit() {
+      let elements = this.layersElements.flat();
+
+      if (!elements.length) {
+        return false;
+      }
+
       this.log("Rotate pit call");
 
       this.$store.commit("rotatePit");
@@ -3496,15 +3503,29 @@ export default {
 
       this.updateCameraProjection();
 
-      const elements = this.layersElements.flat();
-
       // Init layers after resize
       this.initLayers();
       this.initPoints();
 
-      elements.forEach((item) =>
-        item.rotation.set(0, 0, item.rotation.z + MathUtils.degToRad(90))
+      const pivotGroup = new Group();
+      pivotGroup.add(...elements);
+
+      pivotGroup.rotation.set(
+        0,
+        0,
+        pivotGroup.rotation.z + MathUtils.degToRad(-90)
       );
+
+      elements = pivotGroup.children.map((item) => {
+        const newPosition = getWorldPosisition(item, true);
+
+        const newItem = item.clone();
+        newItem.position.copy(newPosition);
+
+        this.scene.add(newItem);
+
+        return newItem;
+      });
 
       elements.forEach((el) => {
         const { x, y, z } = this.getElementLayerPointsForItem(el);
