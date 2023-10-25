@@ -12,6 +12,15 @@
             v-bind:class="{ 'focused': focused === 'menu.newGame' }"
         )
             span New Game
+
+        .menu--item(
+            v-show="flags.menu"
+            v-on:click="practiceClick"
+            ref="menu.practice"
+            v-bind:class="{ 'focused': focused == 'menu.practice' }"
+        )
+            span Practice
+
         .menu--item(
             v-show="flags.menu"
             v-on:click="settingsCall"
@@ -87,10 +96,10 @@
             v-bind:class="{ 'focused': focused == 'new.endless' }"
         )
             .menu--label Endless mode
-            .menu--selector--prev(v-on:click="enableEndless" v-if="!isEndless" ref="new.endless.prev")
+            .menu--selector--prev(v-on:click="disableEndless" v-if="isEndless" ref="new.endless.prev")
             .menu--selector--value(v-if="isEndless") Yes
             .menu--selector--value(v-if="!isEndless") No
-            .menu--selector--next(v-on:click="disableEndless" v-if="isEndless" ref="new.endless.next")
+            .menu--selector--next(v-on:click="enableEndless" v-if="!isEndless" ref="new.endless.next")
 
         .menu--buttons(v-show="flags.new")
             .menu--item--red.menu--button(
@@ -107,14 +116,6 @@
                 v-bind:class="{ 'focused': focused == 'new.play' }"
             )
                 span Play
-
-            .menu--item--new.menu--button(
-                v-show="flags.new"
-                v-on:click="practiceClick"
-                ref="new.practice"
-                v-bind:class="{ 'focused': focused == 'new.practice' }"
-            )
-                span Practice
 
         //- Controls items
         //- .menu--title(v-show="flags.controls") Controls

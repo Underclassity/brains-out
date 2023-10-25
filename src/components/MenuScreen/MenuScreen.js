@@ -56,21 +56,14 @@ export default {
       refs: {
         menu: [
           "newGame",
+          "practice",
           "settings",
           // "controls",
           "howTo",
           "achievements",
           "credits",
         ],
-        new: [
-          "pit",
-          "blocksType",
-          "speed",
-          "endless",
-          "back",
-          "play",
-          "practice",
-        ],
+        new: ["pit", "blocksType", "speed", "endless", "back", "play"],
         credits: ["back"],
         // controls: ["back"],
         settings: [

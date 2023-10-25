@@ -505,6 +505,10 @@ export default {
      * @return  {Boolean}                  Result
      */
     changeScore(changeValue, type = "points") {
+      if (!this.isPractice) {
+        return false;
+      }
+
       this.$store.commit("updateScore", changeValue);
 
       this.scoreIncrementType = type;
@@ -3310,7 +3314,7 @@ export default {
 
       if (!this.isControlsInfoShowed && !this.isMenu) {
         this.isControlsInfoShowed = true;
-        this.newGameCall();
+        this.newGameCall(this.isPractice);
       }
 
       this.isControlsInfoShowed = true;
