@@ -48,7 +48,7 @@ Transition(name="controls")
 
             .controls-info--buttons
                 .controls-info--button(v-on:click="backClick" ref="back" v-if="!playButton") Back
-                .controls-info--button(v-on:click="backClick" ref="back" v-if="playButton") Play
+                .controls-info--button.controls-info--button--green(v-on:click="backClick" ref="back" v-if="playButton") Play
 </template>
 
 <script src="./ControlsInfoScreen.js"></script>
