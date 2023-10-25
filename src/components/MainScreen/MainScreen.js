@@ -17,6 +17,7 @@ import * as TWEEN from "@tweenjs/tween.js";
 import "joypad.js";
 
 import { loadParts, loadHalloweenParts } from "../../helpers/load-zombie.js";
+import { textureLoaderHelper } from "../../helpers/load-texture.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 // import getGroupSize from "../../helpers/get-group-size.js";
 import getWorldPosisition from "../../helpers/get-world-position.js";
@@ -212,6 +213,7 @@ export default {
       zombieParts: [],
       pitParts: [],
       candleParts: [],
+      greyAtlas: undefined,
 
       fps: 0,
       frameTime: 0,
@@ -313,6 +315,9 @@ export default {
       count += this.fallSoundId.length;
       count += this.rotationSoundId.length;
 
+      count++;
+
+      // Grey atlas
       count++;
 
       // // Dev parts
@@ -2194,6 +2199,17 @@ export default {
         item.name.includes("G_")
       );
       const zombie = parts.children.filter((item) => item.name.includes("Z_"));
+
+      const greyAtlas = await textureLoaderHelper(
+        "T_GrayScaleAtlas16x16.png",
+        "greyAtlas",
+        this.progressCb
+      );
+
+      // Save atlas
+      if (greyAtlas) {
+        this.greyAtlas = greyAtlas;
+      }
 
       // if (halloweenParts?.children?.length) {
       //   const head = halloweenParts.children.find((item) =>

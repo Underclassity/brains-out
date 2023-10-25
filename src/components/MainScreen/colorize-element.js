@@ -28,13 +28,14 @@ export function colorizeElement(element, layer) {
     }
 
     if (Array.isArray(obj.material)) {
-      obj.material.forEach((material, index, array) => {
+      obj.material.forEach((material) => {
         if (this.isOldColorize) {
-          array[index] = new MeshBasicMaterial({ color });
+          material = new MeshBasicMaterial({ color });
           return;
         }
 
         material.color.set(color);
+        material.map = this.greyAtlas;
         material.needsUpdate = true;
       });
 
@@ -47,6 +48,7 @@ export function colorizeElement(element, layer) {
     }
 
     obj.material.color.set(color);
+    obj.material.map = this.greyAtlas;
     obj.material.needsUpdate = true;
   });
 
