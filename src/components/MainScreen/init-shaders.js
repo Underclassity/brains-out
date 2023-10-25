@@ -2,12 +2,12 @@ import {
   EffectComposer,
   EffectPass,
   RenderPass,
-  BlendFunction,
+  // BlendFunction,
   EdgeDetectionMode,
   PredicationMode,
   SMAAEffect,
   SMAAPreset,
-  TextureEffect,
+  // TextureEffect,
 } from "postprocessing";
 
 import log from "../../helpers/log.js";
@@ -46,21 +46,21 @@ export function initShaders(width, height, renderer, scene, camera) {
   // smaaEffect.edgeDetectionMaterial.setPredicationThreshold(0.002);
   // smaaEffect.edgeDetectionMaterial.setPredicationScale(1.0);
 
-  const edgesTextureEffect = new TextureEffect({
-    blendFunction: BlendFunction.SKIP,
-    texture: smaaEffect.renderTargetEdges.texture,
-  });
+  // const edgesTextureEffect = new TextureEffect({
+  //   blendFunction: BlendFunction.SKIP,
+  //   texture: smaaEffect.renderTargetEdges.texture,
+  // });
 
-  const weightsTextureEffect = new TextureEffect({
-    blendFunction: BlendFunction.SKIP,
-    texture: smaaEffect.renderTargetWeights.texture,
-  });
+  // const weightsTextureEffect = new TextureEffect({
+  //   blendFunction: BlendFunction.SKIP,
+  //   texture: smaaEffect.renderTargetWeights.texture,
+  // });
 
   const effectPass = new EffectPass(
     camera,
     smaaEffect,
-    edgesTextureEffect,
-    weightsTextureEffect
+    // edgesTextureEffect,
+    // weightsTextureEffect
   );
   effectPass.renderToScreen = true;
 

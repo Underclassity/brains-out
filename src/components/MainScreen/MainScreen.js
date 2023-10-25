@@ -185,7 +185,6 @@ export default {
       pit: undefined,
       gamepad: undefined,
 
-      isShaders: true,
       composer: undefined,
 
       mixer: undefined,
@@ -261,6 +260,7 @@ export default {
       "fov",
       "pixelRatio",
       "antialias",
+      "isShaders",
       "lightPower",
 
       "minSpeed",

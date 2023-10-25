@@ -35,6 +35,7 @@ export const store = createStore({
     fov: 70,
     pixelRatio: 1,
     antialias: false,
+    isShaders: true,
     lightPower: 5000,
 
     gridColor: 0x9b_43_0e,
@@ -344,6 +345,18 @@ export const store = createStore({
 
     updateAntialias(state, value) {
       state.antialias = value ? true : false;
+    },
+
+    enableShaders(state) {
+      state.isShaders = true;
+    },
+
+    disableShaders(state) {
+      state.isShaders = false;
+    },
+
+    updateShaders(state, value) {
+      state.isShaders = value ? true : false;
     },
 
     incrementEndGameCounter(state) {
