@@ -16,7 +16,6 @@ import "joypad.js";
 
 import { loadParts, loadHalloweenParts } from "../../helpers/load-zombie.js";
 import { textureLoaderHelper } from "../../helpers/load-texture.js";
-import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 // import getGroupSize from "../../helpers/get-group-size.js";
 import getWorldPosisition from "../../helpers/get-world-position.js";
 import generatePit from "../../helpers/generate-pit.js";
@@ -2605,7 +2604,7 @@ export default {
      *
      * @return  {Boolean}  Result
      */
-    init() {
+    async init() {
       const { container } = this.$refs;
 
       const width = 800;
@@ -2764,6 +2763,10 @@ export default {
       this.composer = composer;
 
       if (this.orbitControls) {
+        const { OrbitControls } = await import(
+          "three/addons/controls/OrbitControls.js"
+        );
+
         const controls = new OrbitControls(camera, renderer.domElement);
         controls.maxZoom = 10;
         controls.maxDistance = 50;
