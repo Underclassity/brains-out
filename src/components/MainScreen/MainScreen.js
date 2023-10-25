@@ -1,3 +1,4 @@
+import { defineAsyncComponent } from "vue";
 import { mapState, mapGetters } from "vuex";
 
 import {
@@ -72,17 +73,6 @@ import initShaders from "./init-shaders.js";
 import colorPalette from "./color-palette.js";
 import getRandomForm from "./get-random-form.js";
 import initPoints from "./init-points.js";
-// import initTest from "./init-test.js";
-
-// import MenuComponent from "../MenuComponent/MenuComponent.vue";
-import AcceptBugsScreen from "../AcceptBugsScreen/AcceptBugsScreen.vue";
-import LoadingScreen from "../LoadingScreen/LoadingScreen.vue";
-import LogoScreen from "../LogoScreen/LogoScreen.vue";
-import MenuScreen from "../MenuScreen/MenuScreen.vue";
-// import generateP0Form from "../../helpers/blocks/p0.js";
-
-import ControlsBlock from "../ControlsBlock/ControlsBlock.vue";
-import ControlsInfoScreen from "../ControlsInfoScreen/ControlsInfoScreen.vue";
 
 export default {
   name: "MainScreen",
@@ -239,13 +229,24 @@ export default {
   },
 
   components: {
-    // MenuComponent,
-    AcceptBugsScreen,
-    ControlsBlock,
-    ControlsInfoScreen,
-    LoadingScreen,
-    LogoScreen,
-    MenuScreen,
+    MenuScreen: defineAsyncComponent(() =>
+      import("../MenuScreen/MenuScreen.vue")
+    ),
+    AcceptBugsScreen: defineAsyncComponent(() =>
+      import("../AcceptBugsScreen/AcceptBugsScreen.vue")
+    ),
+    ControlsBlock: defineAsyncComponent(() =>
+      import("../ControlsBlock/ControlsBlock.vue")
+    ),
+    ControlsInfoScreen: defineAsyncComponent(() =>
+      import("../ControlsInfoScreen/ControlsInfoScreen.vue")
+    ),
+    LoadingScreen: defineAsyncComponent(() =>
+      import("../LoadingScreen/LoadingScreen.vue")
+    ),
+    LogoScreen: defineAsyncComponent(() =>
+      import("../LogoScreen/LogoScreen.vue")
+    ),
   },
 
   computed: {
