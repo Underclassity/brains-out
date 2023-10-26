@@ -68,6 +68,7 @@ export default {
         // controls: ["back"],
         settings: [
           "pixelRatio",
+          "grid",
           "volume",
           "fxVolume",
           "dev",
@@ -117,6 +118,7 @@ export default {
       "isDev",
       "isControls",
       "isVibration",
+      "isPitGrid",
 
       "isGamepad",
 
@@ -454,6 +456,14 @@ export default {
 
     enableControls() {
       this.$store.commit("enableControls");
+    },
+
+    disablePitGrid() {
+      this.$store.commit("disablePitGrid");
+    },
+
+    enablePitGrid() {
+      this.$store.commit("enablePitGrid");
     },
 
     blurEvent() {

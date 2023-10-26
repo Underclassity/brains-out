@@ -55,6 +55,7 @@ export const store = createStore({
     isDev: false,
     isControls: false,
     isVibration: true,
+    isPitGrid: false,
 
     isAccepted: false,
 
@@ -393,6 +394,18 @@ export const store = createStore({
 
     updateAccepted(state, value) {
       state.isAccepted = value ? true : false;
+    },
+
+    enablePitGrid(state) {
+      state.isPitGrid = true;
+    },
+
+    disablePitGrid(state) {
+      state.isPitGrid = false;
+    },
+
+    updatePitGrid(state, value) {
+      state.isPitGrid = value ? true : false;
     },
 
     rotatePit(state) {

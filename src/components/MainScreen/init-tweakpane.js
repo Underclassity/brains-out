@@ -233,7 +233,7 @@ export function initTweakPane(pane) {
       "isPitGrid"
     )
     .on("change", (ev) => {
-      this.isPitGrid = ev.value;
+      this.$store.commit("updatePitGrid", ev.value);
     });
 
   settingsFolder

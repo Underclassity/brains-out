@@ -104,7 +104,6 @@ export default {
       isFastDrop: true,
       isLevelHelpers: false,
       isFirstTime: false,
-      isPitGrid: false,
       isCandles: false,
       isTest: false,
 
@@ -286,6 +285,7 @@ export default {
       "isDev",
       "isControls",
       "isVibration",
+      "isPitGrid",
 
       // Colors
       "gridColor",

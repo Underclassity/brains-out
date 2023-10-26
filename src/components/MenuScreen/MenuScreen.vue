@@ -160,75 +160,97 @@
         //- Settings items
         .menu--title(v-show="flags.settings") Settings
 
-        .menu--selector(
-            v-show="flags.settings"
-            ref="settings.pixelRatio"
-            v-bind:class="{ 'focused': focused == 'settings.pixelRatio' }"
-        )
-            .menu--label Resolution
-            .menu--dots
-                .menu--dotline
-                .menu--dot(v-bind:class="{ 'menu--dot--active': pixelRatio == 1 }" v-on:click="setPixelRatio(1)")
-                .menu--dot(v-bind:class="{ 'menu--dot--active': pixelRatio == 2 }" v-on:click="setPixelRatio(2)")
-                .menu--dot(v-bind:class="{ 'menu--dot--active': pixelRatio == 3 }" v-on:click="setPixelRatio(3)")
-                .menu--dot(v-bind:class="{ 'menu--dot--active': pixelRatio == 4 }" v-on:click="setPixelRatio(4)")
-            //- .menu--selector--prev(v-on:click="prevPixelRatio" v-if="pixelRatio != 1" ref="settings.pixelRatio.prev")
-            //- input.menu--range(type="range" min="50" max="400" v-model="resolution" ref="settings.pixelRatio.slider")
-            .menu--selector--value {{ scale }}%
-            //- .menu--selector--next(v-on:click="nextPixelRatio" v-if="pixelRatio != 4" ref="settings.pixelRatio.next")
+        hr.menu--divider(v-show="flags.settings")
 
-        .menu--selector(
-            v-show="flags.settings"
-            ref="settings.volume"
-            v-bind:class="{ 'focused': focused == 'settings.volume' }"
-        )
-            .menu--label Volume
-            .menu--selector--prev(v-on:click="prevVolume" v-if="volume != 0" ref="settings.volume.prev")
-            .menu--selector--value {{ volume }}
-            .menu--selector--next(v-on:click="nextVolume" v-if="volume != 1" ref="settings.volume.next")
+        .menu--scroll(v-show="flags.settings")
+            .menu--subtitle Graphics
 
-        .menu--selector(
-            v-show="flags.settings"
-            ref="settings.fxVolume"
-            v-bind:class="{ 'focused': focused == 'settings.fxVolume' }"
-        )
-            .menu--label FX Volume
-            .menu--selector--prev(v-on:click="prevFxVolume" v-if="fxVolume != 0" ref="settings.fxVolume.prev")
-            .menu--selector--value {{ fxVolume }}
-            .menu--selector--next(v-on:click="nextFxVolume" v-if="fxVolume != 1" ref="settings.fxVolume.next")
+            .menu--selector(
+                v-show="flags.settings"
+                ref="settings.pixelRatio"
+                v-bind:class="{ 'focused': focused == 'settings.pixelRatio' }"
+            )
+                .menu--label Resolution
+                .menu--dots
+                    .menu--dotline
+                    .menu--dot(v-bind:class="{ 'menu--dot--active': pixelRatio == 1 }" v-on:click="setPixelRatio(1)")
+                    .menu--dot(v-bind:class="{ 'menu--dot--active': pixelRatio == 2 }" v-on:click="setPixelRatio(2)")
+                    .menu--dot(v-bind:class="{ 'menu--dot--active': pixelRatio == 3 }" v-on:click="setPixelRatio(3)")
+                    .menu--dot(v-bind:class="{ 'menu--dot--active': pixelRatio == 4 }" v-on:click="setPixelRatio(4)")
+                //- .menu--selector--prev(v-on:click="prevPixelRatio" v-if="pixelRatio != 1" ref="settings.pixelRatio.prev")
+                //- input.menu--range(type="range" min="50" max="400" v-model="resolution" ref="settings.pixelRatio.slider")
+                .menu--selector--value {{ scale }}%
+                //- .menu--selector--next(v-on:click="nextPixelRatio" v-if="pixelRatio != 4" ref="settings.pixelRatio.next")
 
-        .menu--selector(
-            v-show="flags.settings && isDevApproved"
-            ref="settings.dev"
-            v-bind:class="{ 'focused': focused == 'settings.dev' }"
-        )
-            .menu--label Dev mode
-            .menu--selector--prev(v-on:click="disableDevMode" v-if="isDev" ref="settings.dev.prev")
-            .menu--selector--value(v-if="isDev") Yes
-            .menu--selector--value(v-if="!isDev") No
-            .menu--selector--next(v-on:click="enableDevMode" v-if="!isDev" ref="settings.dev.next")
+            .menu--selector(
+                v-show="flags.settings"
+                ref="settings.grid"
+                v-bind:class="{ 'focused': focused == 'settings.grid' }"
+            )
+                .menu--label Grid
+                .menu--selector--prev(v-on:click="disablePitGrid" v-if="isPitGrid" ref="settings.grid.prev")
+                .menu--selector--value(v-if="isPitGrid") Yes
+                .menu--selector--value(v-if="!isPitGrid") No
+                .menu--selector--next(v-on:click="enablePitGrid" v-if="!isPitGrid" ref="settings.grid.next")
 
-        .menu--selector(
-            v-show="flags.settings"
-            ref="settings.vibration"
-            v-bind:class="{ 'focused': focused == 'settings.vibration' }"
-        )
-            .menu--label Vibration
-            .menu--selector--prev(v-on:click="disableVibration" v-if="isVibration" ref="settings.vibration.prev")
-            .menu--selector--value(v-if="isVibration") Yes
-            .menu--selector--value(v-if="!isVibration") No
-            .menu--selector--next(v-on:click="enableVibration" v-if="!isVibration" ref="settings.vibration.next")
+            .menu--subtitle Sound
 
-        .menu--selector(
-            v-show="flags.settings"
-            ref="settings.controls"
-            v-bind:class="{ 'focused': focused == 'settings.controls' }"
-        )
-            .menu--label Controls
-            .menu--selector--prev(v-on:click="disableControls" v-if="isControls" ref="settings.controls.prev")
-            .menu--selector--value(v-if="isControls") Yes
-            .menu--selector--value(v-if="!isControls") No
-            .menu--selector--next(v-on:click="enableControls" v-if="!isControls" ref="settings.controls.next")
+            .menu--selector(
+                v-show="flags.settings"
+                ref="settings.volume"
+                v-bind:class="{ 'focused': focused == 'settings.volume' }"
+            )
+                .menu--label Volume
+                .menu--selector--prev(v-on:click="prevVolume" v-if="volume != 0" ref="settings.volume.prev")
+                .menu--selector--value {{ volume }}
+                .menu--selector--next(v-on:click="nextVolume" v-if="volume != 1" ref="settings.volume.next")
+
+            .menu--selector(
+                v-show="flags.settings"
+                ref="settings.fxVolume"
+                v-bind:class="{ 'focused': focused == 'settings.fxVolume' }"
+            )
+                .menu--label FX Volume
+                .menu--selector--prev(v-on:click="prevFxVolume" v-if="fxVolume != 0" ref="settings.fxVolume.prev")
+                .menu--selector--value {{ fxVolume }}
+                .menu--selector--next(v-on:click="nextFxVolume" v-if="fxVolume != 1" ref="settings.fxVolume.next")
+
+            .menu--subtitle Other
+
+            .menu--selector(
+                v-show="flags.settings && isDevApproved"
+                ref="settings.dev"
+                v-bind:class="{ 'focused': focused == 'settings.dev' }"
+            )
+                .menu--label Dev mode
+                .menu--selector--prev(v-on:click="disableDevMode" v-if="isDev" ref="settings.dev.prev")
+                .menu--selector--value(v-if="isDev") Yes
+                .menu--selector--value(v-if="!isDev") No
+                .menu--selector--next(v-on:click="enableDevMode" v-if="!isDev" ref="settings.dev.next")
+
+            .menu--selector(
+                v-show="flags.settings"
+                ref="settings.vibration"
+                v-bind:class="{ 'focused': focused == 'settings.vibration' }"
+            )
+                .menu--label Vibration
+                .menu--selector--prev(v-on:click="disableVibration" v-if="isVibration" ref="settings.vibration.prev")
+                .menu--selector--value(v-if="isVibration") Yes
+                .menu--selector--value(v-if="!isVibration") No
+                .menu--selector--next(v-on:click="enableVibration" v-if="!isVibration" ref="settings.vibration.next")
+
+            .menu--selector(
+                v-show="flags.settings"
+                ref="settings.controls"
+                v-bind:class="{ 'focused': focused == 'settings.controls' }"
+            )
+                .menu--label Controls
+                .menu--selector--prev(v-on:click="disableControls" v-if="isControls" ref="settings.controls.prev")
+                .menu--selector--value(v-if="isControls") Yes
+                .menu--selector--value(v-if="!isControls") No
+                .menu--selector--next(v-on:click="enableControls" v-if="!isControls" ref="settings.controls.next")
+
+        hr.menu--divider(v-show="flags.settings")
 
         .menu--buttons(v-show="flags.settings")
             .menu--item--red.menu--button(
