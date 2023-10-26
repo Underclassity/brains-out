@@ -1973,19 +1973,18 @@ export default {
         this.positionHelper(element, "z", 0);
       }
 
-      // const newPosition = new Vector3();
-      // element.getWorldPosition(position);
+      // const newPosition = getWorldPosisition(element);
 
       // if (newPosition.x != position.x) {
-      //  this.log(`X: ${position.x} -> ${newPosition.x}`);
+      //   this.log(`X: ${position.x} -> ${newPosition.x}`);
       // }
 
       // if (newPosition.y != position.y) {
-      //  this.log(`Y: ${position.y} -> ${newPosition.y}`);
+      //   this.log(`Y: ${position.y} -> ${newPosition.y}`);
       // }
 
       // if (newPosition.z != position.z) {
-      //  this.log(`Z: ${position.z} -> ${newPosition.z}`);
+      //   this.log(`Z: ${position.z} -> ${newPosition.z}`);
       // }
 
       return element;

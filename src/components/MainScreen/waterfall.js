@@ -28,7 +28,7 @@ export function createElement() {
 
   this.scene.remove(this.next);
 
-  element.position.set(0, 0, 0);
+  element.position.set(0, 0, 1);
   element.rotation.set(0, 0, 0);
   element.scale.set(1, 1, 1);
 
@@ -65,7 +65,7 @@ export function createElement() {
   }
 
   // set start position on Z axis
-  this.positionHelper(element, "z", -element.userData.size.z / 2);
+  this.positionHelper(element, "z", 1);
 
   this.current = element;
   this.moveToRandomCorner(this.current);
@@ -152,7 +152,10 @@ export function initWaterfall() {
       if (element.userData.drop && this.isFastDrop) {
         this.dropElement(element);
       } else {
-        const newZPosition = -(this.time - elTime) * elSpeed - elSize.z / 2;
+        const newZPosition =
+          -(this.time - elTime) * elSpeed - elSize.z / 2 + this.size / 2;
+
+        // console.log(element.position.z, newZPosition);
 
         this.positionHelper(element, "z", newZPosition);
         this.restrainElement(element);
