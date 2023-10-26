@@ -28,7 +28,7 @@ export function createElement() {
 
   this.scene.remove(this.next);
 
-  element.position.set(0, 0, 1);
+  element.position.set(0, 0, 0);
   element.rotation.set(0, 0, 0);
   element.scale.set(1, 1, 1);
 
@@ -68,7 +68,7 @@ export function createElement() {
   this.positionHelper(element, "z", 1);
 
   this.current = element;
-  this.moveToRandomCorner(this.current);
+  // this.moveToRandomCorner(this.current);
   this.next = this.getRandomForm(this.size, this.zombieParts);
   this.next.position.set(0, 0, 0);
   this.next.scale.set(0.5, 0.5, 0.5);
@@ -153,7 +153,7 @@ export function initWaterfall() {
         this.dropElement(element);
       } else {
         const newZPosition =
-          -(this.time - elTime) * elSpeed - elSize.z / 2 + this.size / 2;
+          -(this.time - elTime) * elSpeed - elSize.z / 2 + this.size / 2 + 1;
 
         // console.log(element.position.z, newZPosition);
 
