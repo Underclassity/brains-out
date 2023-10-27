@@ -148,6 +148,7 @@ function addRendererInfoFolder(pane) {
     renderLines: this?.renderInfo?.render.lines || 0,
     renderPoints: this?.renderInfo?.render.points || 0,
     renderTriangles: this?.renderInfo?.render.triangles || 0,
+    stats: JSON.stringify(this?.stats || {}, null, 4),
   };
 
   rendererInfoFolder
@@ -220,6 +221,16 @@ function addRendererInfoFolder(pane) {
     })
     .on("update", () => {
       params.renderTriangles = this?.renderInfo?.render.triangles || 0;
+    });
+
+  rendererInfoFolder
+    .addMonitor(params, "stats", {
+      readonly: true,
+      rows: 10,
+      multiline: true,
+    })
+    .on("update", () => {
+      params.stats = JSON.stringify(this?.stats || {}, null, 4);
     });
 
   return true;

@@ -178,6 +178,7 @@ export default {
       scene: undefined,
       renderer: undefined,
       renderInfo: undefined,
+      stats: undefined,
       controls: undefined,
       pit: undefined,
       gamepad: undefined,
@@ -1045,7 +1046,6 @@ export default {
           pY: y,
           pZ: z,
           uuid: child.uuid,
-          el: child.clone(),
         };
       }
 
@@ -1095,7 +1095,6 @@ export default {
         pY: y,
         pZ: z,
         uuid: child.uuid,
-        el: child.clone(),
       };
     },
 
@@ -1115,10 +1114,10 @@ export default {
 
       const collisionPoints = [];
 
-      for (const { x, y, z, pX, pY, pZ, uuid, el } of indexes) {
+      for (const { x, y, z, pX, pY, pZ, uuid } of indexes) {
         for (let zIndex = 0; zIndex < this.zPoints.length; zIndex++) {
           if (this.layers[zIndex + 1] && this.layers[zIndex + 1][x][y]) {
-            collisionPoints.push({ x, y, z, pX, pY, pZ, zIndex, uuid, el });
+            collisionPoints.push({ x, y, z, pX, pY, pZ, zIndex, uuid });
           }
         }
       }
@@ -2612,11 +2611,76 @@ export default {
       const animation = () => {
         requestAnimationFrame(animation);
 
-        if (!this.renderInfo) {
-          console.log(renderer.info);
+        // Save render info
+        this.renderInfo = renderer.info;
+
+        this.stats = {
+          meshes: 0,
+          instancedMeshes: 0,
+          materials: 0,
+          audio: 0,
+          lights: 0,
+          materials: {},
+        };
+
+        function traverse(obj, stats) {
+          if (obj.type == "Scene") {
+            return false;
+          }
+
+          if (obj.isInstancedMesh) {
+            stats.instancedMeshes++;
+            return true;
+          }
+
+          if (obj.isMesh) {
+            stats.meshes++;
+
+            if (Array.isArray(obj.material)) {
+              obj.material.forEach((material) => {
+                let name = material.name;
+                const materialType = material.type;
+
+                if (name == "") {
+                  name = material.uuid;
+                }
+
+                if (!stats.materials[`${name}-${materialType}`]) {
+                  stats.materials[`${name}-${materialType}`] = 0;
+                }
+
+                stats.materials[`${name}-${materialType}`]++;
+              });
+            } else {
+              let name = obj.material.name;
+              const materialType = obj.material.type;
+
+              if (name == "") {
+                name = obj.material.uuid;
+              }
+
+              if (!stats.materials[`${name}-${materialType}`]) {
+                stats.materials[`${name}-${materialType}`] = 0;
+              }
+
+              stats.materials[`${name}-${materialType}`]++;
+            }
+
+            return true;
+          }
+
+          if (obj.type == "Audio") {
+            stats.audio++;
+            return true;
+          }
+
+          if (obj.isLight) {
+            stats.lights++;
+            return true;
+          }
         }
 
-        this.renderInfo = renderer.info;
+        this.scene.traverse((item) => traverse(item, this.stats));
 
         performance.mark("animation-start");
 
