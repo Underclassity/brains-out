@@ -216,18 +216,6 @@ export function initTweakPane(pane) {
   settingsFolder
     .addInput(
       {
-        isCandles: this.isCandles,
-      },
-      "isCandles"
-    )
-    .on("change", (ev) => {
-      this.isCandles = ev.value;
-      this.reCreatePit(this.pitSize, true);
-    });
-
-  settingsFolder
-    .addInput(
-      {
         isPitGrid: this.isPitGrid,
       },
       "isPitGrid"
@@ -465,6 +453,37 @@ export function initTweakPane(pane) {
     })
     .on("change", (ev) => {
       this.fogDensity = ev.value;
+    });
+
+  const halloweenFolder = pane.addFolder({
+    title: "Halloween",
+    expanded: false,
+  });
+
+  halloweenFolder
+    .addInput(
+      {
+        isHalloween: this.isHalloween,
+      },
+      "isHalloween"
+    )
+    .on("change", (ev) => {
+      this.isHalloween = ev.value;
+      this.reCreatePit(this.pitSize, true);
+    });
+
+  halloweenFolder
+    .addBlade({
+      view: "slider",
+      label: "Count",
+      min: 1,
+      max: 9,
+      format: (v) => Math.round(v),
+      value: this.halloweenBlocksCount,
+    })
+    .on("change", (ev) => {
+      this.halloweenBlocksCount = ev.value;
+      this.reCreatePit(this.pitSize, true);
     });
 
   const randomFormsFolder = pane.addFolder({

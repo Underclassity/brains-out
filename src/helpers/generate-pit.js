@@ -22,6 +22,7 @@ import log from "./log.js";
 import shuffle from "./shuffle.js";
 
 import { grassColorPalette } from "../components/MainScreen/color-palette.js";
+import interpolateArray from "./interpolate-array.js";
 import randomBetween from "./random-between.js";
 import splitNParts from "./split-n-parts.js";
 
@@ -258,6 +259,75 @@ export function addPlaneHelpers(width, height, depth, size, pit) {
   return true;
 }
 
+function addElementsToGroundAndGrass(
+  x = 0,
+  y = 0,
+  size,
+  pitGroup,
+  dummy,
+  partsCountByIndex,
+  partsCounter,
+  meshes,
+  blocksCount
+) {
+  const sqrt = Math.sqrt(blocksCount);
+
+  const xPositions = interpolateArray(
+    [-size / 2, size / 2],
+    Math.random() <= 0.5 || blocksCount % sqrt == 0
+      ? Math.round(sqrt)
+      : Math.floor(sqrt)
+  );
+
+  const yPositions = interpolateArray(
+    [-size / 2, size / 2],
+    Math.random() <= 0.5 || blocksCount % sqrt == 0
+      ? Math.round(sqrt)
+      : Math.floor(sqrt)
+  );
+
+  for (const xPos of xPositions) {
+    for (const yPos of yPositions) {
+      let index = randomBetween(0, partsCounter.length - 1);
+
+      let counter = 0;
+
+      while (
+        partsCounter[index] >= partsCountByIndex[index] &&
+        counter <= 100
+      ) {
+        index = randomBetween(0, partsCounter.length - 1);
+        counter++;
+      }
+
+      const name = meshes[index].name;
+
+      partsCounter[index] = putMeshHelper(
+        true,
+        meshes[index],
+        false,
+        dummy,
+        pitGroup,
+        false,
+        partsCounter[index],
+        x + xPos,
+        y + yPos,
+        name.includes("Head") ? 0.75 : 0.5,
+        false
+      );
+
+      const degree = randomBetween(0, 360);
+
+      dummy.rotateOnWorldAxis(zAxis, MathUtils.degToRad(degree));
+      dummy.updateMatrix();
+
+      meshes[index].setMatrixAt(partsCounter[index] - 1, dummy.matrix);
+    }
+  }
+
+  return true;
+}
+
 /**
  * Generate pit
  *
@@ -272,7 +342,7 @@ export function addPlaneHelpers(width, height, depth, size, pit) {
  * @param   {Boolean}   [pitGrid=false]                Add pit grid colors
  * @param   {Number}    [gridFirstColor=0xa9a9a9]      Pit grid first color
  * @param   {Number}    [gridSecondColor=0xffffff]     Pit grid second color
- * @param   {Array}     [candleParts=[]]               Candle parts
+ * @param   {Array}     [halloweenParts=[]]            Candle parts
  *
  * @return  {Object}               Group object
  */
@@ -290,7 +360,8 @@ export function generatePit(
   pitGrid = false,
   gridFirstColor = 0xa9_a9_a9,
   gridSecondColor = 0xff_ff_ff,
-  candleParts = []
+  halloweenParts = [],
+  halloweenBlocksCount = 9
 ) {
   width = parseInt(width, 10);
   height = parseInt(height, 10);
@@ -503,7 +574,7 @@ export function generatePit(
       pitGroup.add(groundAndGrassMesh);
     }
 
-    groundMesh.material.color = new Color(0xffffff);
+    groundMesh.material.color = new Color(0xff_ff_ff);
 
     const firstColor = new Color(gridFirstColor);
     const secondColor = new Color(gridSecondColor);
@@ -765,29 +836,66 @@ export function generatePit(
       );
     }
 
-    const candleMeshes = [];
-    const candlePartsCounter = {};
-    let candlesTypeCounter = [];
-    let candlesCount;
-    let candlesCouter = 0;
-    let localCandlesCouter = 0;
+    let halloweenPartsCountByIndex = [];
+    let halloweenPartsCounter = [];
+    let halloweenMeshes = [];
+    const halloweenDummy = new Object3D();
+    halloweenDummy.scale.multiplyScalar(0.5);
 
-    if (candleParts?.length) {
-      candlesCount = Math.round(grassCount / 2 + groundGrassCount);
+    if (halloweenParts?.length && halloweenBlocksCount) {
+      const skullParts = halloweenParts
+        .filter((item) => item.name.includes("Skull"))
+        .map((item) => item.clone());
 
-      log("Candles", candlesCount);
+      const pumpkinParts = halloweenParts
+        .filter((item) => item.name.includes("Head"))
+        .map((item) => item.clone());
 
-      candlesTypeCounter = splitNParts(candlesCount, candleParts.length);
-      candlesTypeCounter = candlesTypeCounter.filter((item) => item > 0);
-      candlesTypeCounter.forEach((count, index) => {
-        // Clone part
-        const part = candleParts[index].clone();
+      const candleParts = halloweenParts
+        .filter(
+          (item) => item.name.includes("Candle") && item.name.includes("H")
+        )
+        .map((item) => {
+          const id = item.name.replace("H_01_Candle", "");
 
-        candleMeshes[index] = getMesh(part, count);
-        candleMeshes[index].name = `candle-${index}`;
-        candlePartsCounter[index] = 0;
+          const skinedMesh = halloweenParts.find(
+            (item) => item.name == `SM_Candle${id}`
+          );
 
-        pitGroup.add(candleMeshes[index]);
+          if (!skinedMesh) {
+            return item;
+          }
+
+          item.add(skinedMesh);
+
+          return item.clone();
+        })
+        .filter((item) => item);
+
+      const halloweenPartsCount = groundGrassCount * halloweenBlocksCount;
+
+      const allHalloweenParts = [
+        ...pumpkinParts,
+        ...skullParts,
+        ...candleParts,
+      ];
+
+      const partsLength = allHalloweenParts.length;
+
+      halloweenPartsCountByIndex = splitNParts(
+        halloweenPartsCount,
+        partsLength
+      );
+
+      halloweenPartsCounter = new Array(partsLength).fill(0);
+
+      halloweenMeshes = allHalloweenParts.map((part, index) => {
+        const mesh = getMesh(part, halloweenPartsCountByIndex[index]);
+        mesh.name = `halloween-${index}-${part.name}`;
+
+        pitGroup.add(mesh);
+
+        return mesh;
       });
     }
 
@@ -799,36 +907,6 @@ export function generatePit(
       ) {
         if (xArr.includes(x) && yArr.includes(y)) {
           continue;
-        }
-
-        if (candleParts?.length) {
-          const candleIndex = randomBetween(0, candleParts.length - 1);
-
-          if (
-            candlePartsCounter[candleIndex] < candlesTypeCounter[candleIndex] &&
-            candlesCouter < candlesCount &&
-            localCandlesCouter < 3
-          ) {
-            candlePartsCounter[candleIndex] = putMeshHelper(
-              isInstanced,
-              candleMeshes[candleIndex],
-              candleParts[candleIndex],
-              dummy,
-              pitGroup,
-              color,
-              candlePartsCounter[candleIndex],
-              x,
-              y,
-              hSize,
-              false
-            );
-
-            localCandlesCouter++;
-
-            candlesCouter++;
-          } else {
-            localCandlesCouter = 0;
-          }
         }
 
         if (
@@ -856,6 +934,20 @@ export function generatePit(
             0,
             false
           );
+
+          if (halloweenParts?.length && halloweenBlocksCount) {
+            addElementsToGroundAndGrass(
+              x,
+              y,
+              size,
+              pitGroup,
+              halloweenDummy,
+              halloweenPartsCountByIndex,
+              halloweenPartsCounter,
+              halloweenMeshes,
+              halloweenBlocksCount
+            );
+          }
         } else {
           let index = randomBetween(0, grassParts.length - 1);
 

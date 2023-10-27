@@ -104,8 +104,10 @@ export default {
       isFastDrop: true,
       isLevelHelpers: false,
       isFirstTime: false,
-      isCandles: false,
       isTest: false,
+
+      isHalloween: false,
+      halloweenBlocksCount: 9,
 
       changeSpeedByLevels: true,
 
@@ -178,8 +180,6 @@ export default {
       gamepad: undefined,
 
       composer: undefined,
-
-      mixer: undefined,
 
       lights: {
         l1: undefined,
@@ -2008,8 +2008,9 @@ export default {
         size,
         gridColor,
         pitParts,
-        candleParts,
-        isCandles,
+        halloweenParts,
+        isHalloween,
+        halloweenBlocksCount,
         isSimple,
         isInstanced,
         viewWidth,
@@ -2061,7 +2062,8 @@ export default {
         isPitGrid,
         gridFirstColor,
         gridSecondColor,
-        isCandles ? candleParts : false
+        isHalloween ? halloweenParts : false,
+        halloweenBlocksCount
       );
       scene.add(this.pit);
 
@@ -2170,40 +2172,7 @@ export default {
 
       const halloweenParts = await loadHalloweenParts(this.progressCb);
 
-      // // Create and save animation mixer
-      // this.mixer = new AnimationMixer(halloweenParts);
-
-      const candleParts = halloweenParts.children
-        .filter(
-          (item) => item.name.includes("Candle") && item.name.includes("H")
-        )
-        .map((item) => {
-          const id = item.name.replace("H_01_Candle", "");
-
-          const skinedMesh = halloweenParts.children.find(
-            (item) => item.name == `SM_Candle${id}`
-          );
-
-          item.scale.multiplyScalar(0.01);
-          item.rotation.set(MathUtils.degToRad(-90), 0, 0);
-          item.needsUpdate = true;
-
-          item.add(skinedMesh);
-
-          // const clip = halloweenParts.animations.find((item) =>
-          //   item.name.includes(id)
-          // );
-
-          // const action = new AnimationAction(this.mixer, clip, skinedMesh);
-          // action.setLoop(LoopRepeat);
-
-          // action.play();
-
-          return item;
-        })
-        .filter((item) => item);
-
-      this.candleParts = candleParts;
+      this.halloweenParts = halloweenParts.children;
 
       const pitParts = parts.children.filter((item) =>
         item.name.includes("G_")
@@ -2670,10 +2639,6 @@ export default {
         }
 
         const delta = clock.getDelta();
-
-        if (this.mixer) {
-          this.mixer.update(delta);
-        }
 
         if (!this.isPause) {
           const divider =
