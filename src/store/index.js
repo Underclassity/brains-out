@@ -55,7 +55,7 @@ export const store = createStore({
     isDev: false,
     isControls: false,
     isVibration: true,
-    isPitGrid: false,
+    isPitGrid: true,
 
     isAccepted: false,
 

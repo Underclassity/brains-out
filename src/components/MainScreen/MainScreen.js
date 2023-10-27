@@ -1,4 +1,4 @@
-import { defineAsyncComponent } from "vue";
+import { defineAsyncComponent, nextTick } from "vue";
 import { mapState, mapGetters } from "vuex";
 
 import {
@@ -367,35 +367,35 @@ export default {
      *
      * @return  {Boolean}  Result
      */
-    updateRendererSize() {
+    async updateRendererSize() {
       this.isMobile =
         window.innerWidth / window.innerHeight < 1 && window.innerWidth < 1024;
 
-      this.$nextTick(function () {
-        clearTimeout(this.resizeTimeout);
-        this.resizeTimeout = setTimeout(() => {
-          this.log("Resize call");
+      await nextTick();
 
-          const { container } = this.$refs;
+      clearTimeout(this.resizeTimeout);
+      this.resizeTimeout = setTimeout(() => {
+        this.log("Resize call");
 
-          const containerRect = container.getBoundingClientRect();
+        const { container } = this.$refs;
 
-          // Set mobile flag
+        const containerRect = container.getBoundingClientRect();
 
-          this.camera.aspect = containerRect.width / containerRect.height;
-          this.camera.updateProjectionMatrix();
+        // Set mobile flag
 
-          if (this.controls) {
-            this.controls.update();
-          }
+        this.camera.aspect = containerRect.width / containerRect.height;
+        this.camera.updateProjectionMatrix();
 
-          this.renderer.setSize(containerRect.width, containerRect.height);
-          // this.composer.setSize(containerRect.width, containerRect.height);
+        if (this.controls) {
+          this.controls.update();
+        }
 
-          this.updateCameraProjection();
-          this.reCreatePit(this.pitSize);
-        }, 10);
-      });
+        this.renderer.setSize(containerRect.width, containerRect.height);
+        // this.composer.setSize(containerRect.width, containerRect.height);
+
+        this.updateCameraProjection();
+        this.reCreatePit(this.pitSize);
+      }, 10);
 
       return true;
     },

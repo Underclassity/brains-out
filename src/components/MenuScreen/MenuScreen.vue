@@ -162,7 +162,7 @@
 
         hr.menu--divider(v-show="flags.settings")
 
-        .menu--scroll(v-show="flags.settings")
+        .menu--scroll(v-show="flags.settings" v-bind:class="{ 'menu--scroll--overflow': isOverflow('settings.scroll') }" ref="settings.scroll")
             .menu--subtitle Graphics
 
             .menu--selector(
@@ -187,7 +187,7 @@
                 ref="settings.grid"
                 v-bind:class="{ 'focused': focused == 'settings.grid' }"
             )
-                .menu--label Grid
+                .menu--label Pit Grid
                 .menu--selector--prev(v-on:click="disablePitGrid" v-if="isPitGrid" ref="settings.grid.prev")
                 .menu--selector--value(v-if="isPitGrid") Yes
                 .menu--selector--value(v-if="!isPitGrid") No

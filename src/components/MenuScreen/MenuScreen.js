@@ -1,3 +1,4 @@
+import { nextTick } from "vue";
 import { mapState } from "vuex";
 
 import assets from "../../store/assets.js";
@@ -616,6 +617,26 @@ export default {
 
       return this.isShare;
     },
+
+    async isOverflow(refId) {
+      if (!refId) {
+        return false;
+      }
+
+      const element = this.$refs[refId];
+
+      if (!element) {
+        return false;
+      }
+
+      // Wait for ref load
+      await nextTick();
+
+      return (
+        element.scrollHeight > element.clientHeight ||
+        element.scrollWidth > element.clientWidth
+      );
+    },
   },
 
   watch: {
@@ -637,6 +658,12 @@ export default {
       const [flag, id] = newValue.split(".");
 
       this.lastFocused[flag] = id;
+
+      this.$refs[newValue].scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+        inline: "center",
+      });
     },
 
     resolution(newValue) {
