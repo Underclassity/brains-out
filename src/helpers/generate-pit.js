@@ -839,6 +839,10 @@ export function generatePit(
     let halloweenPartsCountByIndex = [];
     let halloweenPartsCounter = [];
     let halloweenMeshes = [];
+
+    let grassPumpkinCouter = 0;
+    let grassPumpkinMesh = undefined;
+
     const halloweenDummy = new Object3D();
     halloweenDummy.scale.multiplyScalar(0.5);
 
@@ -897,6 +901,9 @@ export function generatePit(
 
         return mesh;
       });
+
+      grassPumpkinMesh = getMesh(pumpkinParts[0], grassCount);
+      pitGroup.add(grassPumpkinMesh);
     }
 
     for (let x = -hWidth + hSize - widthDiff; x < hWidth + widthDiff; x++) {
@@ -969,6 +976,32 @@ export function generatePit(
             y,
             0
           );
+
+          if (halloweenParts?.length && grassPumpkinMesh) {
+            grassPumpkinCouter = putMeshHelper(
+              true,
+              grassPumpkinMesh,
+              false,
+              halloweenDummy,
+              pitGroup,
+              false,
+              grassPumpkinCouter,
+              x,
+              y,
+              0.75,
+              false
+            );
+
+            const degree = randomBetween(0, 360);
+
+            halloweenDummy.rotateOnWorldAxis(zAxis, MathUtils.degToRad(degree));
+            halloweenDummy.updateMatrix();
+
+            grassPumpkinMesh.setMatrixAt(
+              grassPumpkinCouter - 1,
+              halloweenDummy.matrix
+            );
+          }
         }
       }
     }
