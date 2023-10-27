@@ -1,6 +1,231 @@
 import { Color } from "three";
 
 /**
+ * Add modes folder to pane
+ *
+ * @param   {Object}  pane  Pane
+ *
+ * @return  {Boolean}       Result
+ */
+function addModesFolders(pane) {
+  if (!pane) {
+    return false;
+  }
+
+  const modesFolder = pane.addFolder({
+    title: "Modes",
+    expanded: false,
+  });
+
+  modesFolder
+    .addInput(
+      {
+        isEndless: this.isEndless,
+      },
+      "isEndless"
+    )
+    .on("change", (ev) => {
+      this.$store.commit("updateEndless", ev.value);
+    });
+
+  modesFolder
+    .addInput(
+      {
+        isPractice: this.isPractice,
+      },
+      "isPractice"
+    )
+    .on("change", (ev) => {
+      this.isPractice = ev.value;
+    });
+
+  const rotateRestrainFolder = modesFolder.addFolder({
+    title: "Rotate restrain",
+    expanded: false,
+  });
+
+  rotateRestrainFolder
+    .addInput(
+      {
+        isRotateRestrain: this.isRotateRestrain,
+      },
+      "isRotateRestrain"
+    )
+    .on("change", (ev) => {
+      this.isRotateRestrain = ev.value;
+    });
+
+  rotateRestrainFolder
+    .addBlade({
+      view: "slider",
+      label: "Max rotate",
+      min: 1,
+      max: 10,
+      format: (v) => Math.round(v),
+      value: this.maxRotate,
+    })
+    .on("change", (ev) => {
+      this.maxRotate = ev.value;
+    });
+
+  return true;
+}
+
+/**
+ * Add actions folder to pane
+ *
+ * @param   {Object}  pane  Pane
+ *
+ * @return  {Boolean}       Result
+ */
+function addActionsFolder(pane) {
+  if (!pane) {
+    return false;
+  }
+
+  const actionsFolder = pane.addFolder({
+    title: "Actions",
+    expanded: false,
+  });
+
+  actionsFolder
+    .addButton({
+      title: "Shuffle",
+      label: "Shuffle elements",
+    })
+    .on("click", () => {
+      this.shuffle();
+    });
+
+  actionsFolder
+    .addButton({
+      title: "Shuffle",
+      label: "Shuffle layers",
+    })
+    .on("click", () => {
+      this.shuffleLayers();
+    });
+
+  actionsFolder
+    .addButton({
+      title: "Clear",
+      label: "Clear layers",
+    })
+    .on("click", () => {
+      this.layersCheck(true);
+    });
+
+  actionsFolder
+    .addButton({
+      title: "Rotate",
+      label: "Rotate pit",
+    })
+    .on("click", () => {
+      this.rotatePit();
+    });
+
+  return true;
+}
+
+function addRendererInfoFolder(pane) {
+  if (!pane) {
+    return false;
+  }
+
+  const rendererInfoFolder = pane.addFolder({
+    title: "Render info",
+    expanded: true,
+  });
+
+  const params = {
+    memoryGeometries: this?.renderInfo?.memory.geometries || 0,
+    memoryTextures: this?.renderInfo?.memory.textures || 0,
+
+    programs: this?.renderInfo?.programs.length || 0,
+
+    renderCalls: this?.renderInfo?.render.calls || 0,
+    renderFrames: this?.renderInfo?.render.frames || 0,
+    renderLines: this?.renderInfo?.render.lines || 0,
+    renderPoints: this?.renderInfo?.render.points || 0,
+    renderTriangles: this?.renderInfo?.render.triangles || 0,
+  };
+
+  rendererInfoFolder
+    .addMonitor(params, "memoryGeometries", {
+      readonly: true,
+      format: (v) => parseInt(v, 10),
+    })
+    .on("update", () => {
+      params.memoryGeometries = this?.renderInfo?.memory.geometries || 0;
+    });
+
+  rendererInfoFolder
+    .addMonitor(params, "memoryTextures", {
+      readonly: true,
+      format: (v) => parseInt(v, 10),
+    })
+    .on("update", () => {
+      params.memoryTextures = this?.renderInfo?.memory.textures || 0;
+    });
+
+  rendererInfoFolder
+    .addMonitor(params, "programs", {
+      readonly: true,
+      format: (v) => parseInt(v, 10),
+    })
+    .on("update", () => {
+      params.programs = this?.renderInfo?.programs.length || 0;
+    });
+
+  rendererInfoFolder
+    .addMonitor(params, "renderCalls", {
+      readonly: true,
+      format: (v) => parseInt(v, 10),
+    })
+    .on("update", () => {
+      params.renderCalls = this?.renderInfo?.render.calls || 0;
+    });
+
+  rendererInfoFolder
+    .addMonitor(params, "renderFrames", {
+      readonly: true,
+      format: (v) => parseInt(v, 10),
+    })
+    .on("update", () => {
+      params.renderFrames = this?.renderInfo?.render.frames || 0;
+    });
+
+  rendererInfoFolder
+    .addMonitor(params, "renderLines", {
+      readonly: true,
+      format: (v) => parseInt(v, 10),
+    })
+    .on("update", () => {
+      params.renderLines = this?.renderInfo?.render.lines || 0;
+    });
+
+  rendererInfoFolder
+    .addMonitor(params, "renderPoints", {
+      readonly: true,
+      format: (v) => parseInt(v, 10),
+    })
+    .on("update", () => {
+      params.renderPoints = this?.renderInfo?.render.points || 0;
+    });
+
+  rendererInfoFolder
+    .addMonitor(params, "renderTriangles", {
+      readonly: true,
+      format: (v) => parseInt(v, 10),
+    })
+    .on("update", () => {
+      params.renderTriangles = this?.renderInfo?.render.triangles || 0;
+    });
+
+  return true;
+}
+
+/**
  * Init Tweakpane
  *
  * @param   {Object}  pane  Input tweakpane object
@@ -39,6 +264,18 @@ export function initTweakPane(pane) {
     });
 
   infoFolder
+    .addMonitor(params, "fps", {
+      readonly: true,
+    })
+    .on("update", () => {
+      params.fps = this.fps;
+    });
+
+  infoFolder.addBlade({
+    view: "separator",
+  });
+
+  infoFolder
     .addMonitor(params, "frameTime", {
       view: "graph",
       readonly: true,
@@ -48,14 +285,6 @@ export function initTweakPane(pane) {
     });
 
   infoFolder
-    .addMonitor(params, "fps", {
-      readonly: true,
-    })
-    .on("update", () => {
-      params.fps = this.fps;
-    });
-
-  infoFolder
     .addMonitor(params, "frameTime", {
       readonly: true,
     })
@@ -63,7 +292,14 @@ export function initTweakPane(pane) {
       params.frameTime = this.frameTime;
     });
 
-  infoFolder
+  addRendererInfoFolder.call(this, pane);
+
+  const gameInfoFolder = pane.addFolder({
+    title: "Game info",
+    expanded: false,
+  });
+
+  gameInfoFolder
     .addMonitor(params, "score", {
       readonly: true,
     })
@@ -71,7 +307,7 @@ export function initTweakPane(pane) {
       params.score = this.score;
     });
 
-  infoFolder
+  gameInfoFolder
     .addMonitor(params, "avgScore", {
       readonly: true,
     })
@@ -79,7 +315,7 @@ export function initTweakPane(pane) {
       params.avgScore = this.avgScore;
     });
 
-  infoFolder
+  gameInfoFolder
     .addMonitor(params, "minScore", {
       readonly: true,
     })
@@ -87,7 +323,7 @@ export function initTweakPane(pane) {
       params.minScore = this.minScore;
     });
 
-  infoFolder
+  gameInfoFolder
     .addMonitor(params, "maxScore", {
       readonly: true,
     })
@@ -232,7 +468,7 @@ export function initTweakPane(pane) {
       "isShaders"
     )
     .on("change", (ev) => {
-      this.isShaders = ev.value;
+      this.$store.commit("updateShaders", ev.value);
     });
 
   settingsFolder
@@ -355,61 +591,7 @@ export function initTweakPane(pane) {
       this.isLevelHelpers = ev.value;
     });
 
-  const modesFolder = pane.addFolder({
-    title: "Modes",
-    expanded: false,
-  });
-
-  modesFolder
-    .addInput(
-      {
-        isEndless: this.isEndless,
-      },
-      "isEndless"
-    )
-    .on("change", (ev) => {
-      this.$store.commit("updateEndless", ev.value);
-    });
-
-  modesFolder
-    .addInput(
-      {
-        isPractice: this.isPractice,
-      },
-      "isPractice"
-    )
-    .on("change", (ev) => {
-      this.isPractice = ev.value;
-    });
-
-  const rotateRestrainFolder = modesFolder.addFolder({
-    title: "Rotate restrain",
-    expanded: false,
-  });
-
-  rotateRestrainFolder
-    .addInput(
-      {
-        isRotateRestrain: this.isRotateRestrain,
-      },
-      "isRotateRestrain"
-    )
-    .on("change", (ev) => {
-      this.isRotateRestrain = ev.value;
-    });
-
-  rotateRestrainFolder
-    .addBlade({
-      view: "slider",
-      label: "Max rotate",
-      min: 1,
-      max: 10,
-      format: (v) => Math.round(v),
-      value: this.maxRotate,
-    })
-    .on("change", (ev) => {
-      this.maxRotate = ev.value;
-    });
+  addModesFolders.call(this, pane);
 
   const fogFolder = pane.addFolder({
     title: "Fog",
@@ -513,46 +695,7 @@ export function initTweakPane(pane) {
       this.addRandomFigures();
     });
 
-  const actionsFolder = pane.addFolder({
-    title: "Actions",
-    expanded: true,
-  });
-
-  actionsFolder
-    .addButton({
-      title: "Shuffle",
-      label: "Shuffle elements",
-    })
-    .on("click", () => {
-      this.shuffle();
-    });
-
-  actionsFolder
-    .addButton({
-      title: "Shuffle",
-      label: "Shuffle layers",
-    })
-    .on("click", () => {
-      this.shuffleLayers();
-    });
-
-  actionsFolder
-    .addButton({
-      title: "Clear",
-      label: "Clear layers",
-    })
-    .on("click", () => {
-      this.layersCheck(true);
-    });
-
-  actionsFolder
-    .addButton({
-      title: "Rotate",
-      label: "Rotate pit",
-    })
-    .on("click", () => {
-      this.rotatePit();
-    });
+  addActionsFolder.call(this, pane);
 
   return true;
 }

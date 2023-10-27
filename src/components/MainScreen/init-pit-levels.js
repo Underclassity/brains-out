@@ -20,7 +20,7 @@ export function initLevelPreview() {
   const { pitDepth, pitWidth, size } = this;
 
   if (this.pitLevels) {
-    this.scene.remove(this.pitLevels);
+    this.removeObjWithChildren(this.pitLevels);
     if (this.pitLevels.dispose) {
       this.pitLevels.dispose();
     }

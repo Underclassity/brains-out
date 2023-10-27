@@ -26,15 +26,15 @@ export async function initLights(force = false) {
   }
 
   if (lights?.l1) {
-    scene.remove(lights.l1);
+    this.removeObjWithChildren(lights.l1);
   }
 
   if (lights?.l2) {
-    scene.remove(lights.l2);
+    this.removeObjWithChildren(lights.l2);
   }
 
   if (lights?.l3) {
-    scene.remove(lights.l3);
+    this.removeObjWithChildren(lights.l3);
   }
 
   log("Init lights: ", force);

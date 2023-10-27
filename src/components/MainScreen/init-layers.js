@@ -34,13 +34,11 @@ export function initLayer(z, withElements = true) {
 }
 
 /**
- * Init layers objects and arrays
+ * Init layer helpers
  *
  * @return  {Boolean}  Result
  */
-export function initLayers() {
-  log("Init layers");
-
+export function initLayerHelpers() {
   const {
     pitWidth,
     pitHeight,
@@ -54,15 +52,11 @@ export function initLayers() {
     zCPoints,
   } = this;
 
-  log(`Init layers: ${pitDepth}-${pitWidth}-${pitHeight}`);
-
   // Delete helpers for layer
   for (const id in this.layersHelpers) {
-    scene.remove(this.layersHelpers[id]);
+    this.removeObjWithChildren(this.layersHelpers[id]);
   }
 
-  this.layers = [];
-  this.layersElements = [];
   this.layersHelpers = {};
 
   new Array(pitDepth).fill(0).forEach((zValue, zIndex) => {
@@ -96,6 +90,28 @@ export function initLayers() {
       });
     });
   });
+
+  return true;
+}
+
+/**
+ * Init layers objects and arrays
+ *
+ * @return  {Boolean}  Result
+ */
+export function initLayers() {
+  log("Init layers");
+
+  const { pitWidth, pitHeight, pitDepth } = this;
+
+  log(`Init layers: ${pitDepth}-${pitWidth}-${pitHeight}`);
+
+  if (this.isLevelHelpers) {
+    this.initLayerHelpers();
+  }
+
+  this.layers = [];
+  this.layersElements = [];
 
   for (let z = 0; z < pitDepth; z++) {
     this.initLayer(z);
@@ -169,6 +185,10 @@ export function updateLayersView() {
   log("Update layers view");
 
   const { isLevelHelpers } = this;
+
+  if (!isLevelHelpers) {
+    return false;
+  }
 
   for (const id in this.layersHelpers) {
     const helper = this.layersHelpers[id];

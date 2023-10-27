@@ -26,7 +26,7 @@ export function createElement() {
 
   const element = this.next ? this.next.clone() : this.getRandomForm();
 
-  this.scene.remove(this.next);
+  this.removeObjWithChildren(this.next);
 
   element.position.set(0, 0, 0);
   element.rotation.set(0, 0, 0);
@@ -68,7 +68,9 @@ export function createElement() {
   this.positionHelper(element, "z", 1);
 
   this.current = element;
-  // this.moveToRandomCorner(this.current);
+  if (this.isRandomCorner) {
+    this.moveToRandomCorner(this.current);
+  }
   this.next = this.getRandomForm(this.size, this.zombieParts);
   this.next.position.set(0, 0, 0);
   this.next.scale.set(0.5, 0.5, 0.5);

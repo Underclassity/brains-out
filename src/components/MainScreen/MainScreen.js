@@ -64,6 +64,7 @@ import { initLights } from "./init-lights.js";
 import {
   initLayer,
   initLayers,
+  initLayerHelpers,
   setLayerPoint,
   updateLayersView,
 } from "./init-layers.js";
@@ -126,6 +127,7 @@ export default {
       loadingProcessCache: {},
 
       isRandomColor: false,
+      isRandomCorner: false,
       isColorizeLevel: true,
       isOldColorize: false,
       isRotateAnimation: false,
@@ -175,6 +177,7 @@ export default {
       camera: undefined,
       scene: undefined,
       renderer: undefined,
+      renderInfo: undefined,
       controls: undefined,
       pit: undefined,
       gamepad: undefined,
@@ -776,8 +779,6 @@ export default {
     newGame() {
       this.log("New game call");
 
-      const { scene } = this;
-
       // Reset score and speed
       this.$store.commit("resetScore");
       this.$store.commit("setSpeed", this.settingsSpeed);
@@ -807,10 +808,7 @@ export default {
       // reset elements array
       if (this.elements.length) {
         this.elements.forEach((item) => {
-          if (item.dispose) {
-            item.dispose();
-          }
-          scene.remove(item);
+          this.removeObjWithChildren(item);
         });
       }
 
@@ -820,20 +818,17 @@ export default {
             continue;
           }
 
-          if (mesh.dispose) {
-            mesh.dispose();
-          }
-          scene.remove(mesh);
+          this.removeObjWithChildren(mesh);
         }
       }
 
       if (this.current) {
-        scene.remove(this.current);
+        this.removeObjWithChildren(this.current);
         this.current = undefined;
       }
 
       if (this.next) {
-        scene.remove(this.next);
+        this.removeObjWithChildren(this.next);
         this.next = undefined;
       }
 
@@ -857,6 +852,7 @@ export default {
 
     initLayer,
     initLayers,
+    initLayerHelpers,
     setLayerPoint,
     updateLayersView,
 
@@ -1462,7 +1458,7 @@ export default {
 
       // Delete all layer elements
       for (const element of layerElements) {
-        this.scene.remove(element);
+        this.removeObjWithChildren(element);
       }
 
       // Move all elements upper to 1 block down
@@ -1635,7 +1631,7 @@ export default {
         this.lights.l3.visible = true;
       }
 
-      this.scene.remove(element);
+      this.removeObjWithChildren(element);
 
       if (this.endSound) {
         this.endSound.play();
@@ -1783,7 +1779,7 @@ export default {
       //         this.lights.l3.visible = true;
       //       }
 
-      //       this.scene.remove(element);
+      //       this.removeObjWithChildren(element);
 
       //       if (this.endSound) {
       //         this.endSound.play();
@@ -1829,7 +1825,7 @@ export default {
       // }
 
       // Remove element after process layers
-      this.scene.remove(element);
+      this.removeObjWithChildren(element);
 
       // Check layers
       this.layersCheck();
@@ -2047,7 +2043,7 @@ export default {
         `Re-create pit call ${force}: ${pitSize}, ${vWidth} vw, ${vHeight} vh`
       );
 
-      scene.remove(this.pit);
+      this.removeObjWithChildren(this.pit);
       this.pit = generatePit(
         width,
         height,
@@ -2090,11 +2086,7 @@ export default {
       scene.children
         .filter((item) => item.name.length)
         .forEach((child) => {
-          if (child.dispose) {
-            child.dispose();
-          }
-
-          scene.remove(child);
+          this.removeObjWithChildren(child);
         });
 
       this.$store.commit("resetScore");
@@ -2105,11 +2097,7 @@ export default {
       // reset elements array
       if (this.elements.length) {
         this.elements.forEach((item) => {
-          if (item.dispose) {
-            item.dispose();
-          }
-
-          scene.remove(item);
+          this.removeObjWithChildren(item);
         });
       }
 
@@ -2119,20 +2107,17 @@ export default {
             continue;
           }
 
-          if (mesh.dispose) {
-            mesh.dispose();
-          }
-          scene.remove(mesh);
+          this.removeObjWithChildren(mesh);
         }
       }
 
       if (this.current) {
-        scene.remove(this.current);
+        this.removeObjWithChildren(this.current);
         this.current = undefined;
       }
 
       if (this.next) {
-        scene.remove(this.next);
+        this.removeObjWithChildren(this.next);
         this.next = undefined;
       }
 
@@ -2582,7 +2567,7 @@ export default {
 
       const clock = new Clock();
 
-      const camera = new PerspectiveCamera(this.fov, width / height, 0.01, 100);
+      const camera = new PerspectiveCamera(this.fov, width / height, 0.01, 20);
       this.camera = camera;
 
       const scene = new Scene();
@@ -2626,6 +2611,12 @@ export default {
 
       const animation = () => {
         requestAnimationFrame(animation);
+
+        if (!this.renderInfo) {
+          console.log(renderer.info);
+        }
+
+        this.renderInfo = renderer.info;
 
         performance.mark("animation-start");
 
@@ -2716,10 +2707,12 @@ export default {
         antialias: this.antialias,
         powerPreference: "high-performance",
         stencil: false,
+        alpha: false,
         // depth: false,
       });
       renderer.setSize(width, height);
       renderer.setPixelRatio(this.pixelRatio);
+      renderer.sortObjects = false;
       // renderer.setAnimationLoop(animation);
       renderer.gammaFactor = 2.2;
       container.appendChild(renderer.domElement);
@@ -3502,6 +3495,48 @@ export default {
 
       return true;
     },
+
+    /**
+     * Dispose object helper
+     *
+     * @param   {Object}  obj  Input mesh or smth
+     *
+     * @return  {Boolean}      Result
+     */
+    removeObjWithChildren(obj) {
+      if (!obj) {
+        return false;
+      }
+
+      // Process childs
+      if (obj?.children.length > 0) {
+        for (let x = obj.children.length - 1; x >= 0; x--) {
+          this.removeObjWithChildren(obj.children[x]);
+        }
+      }
+
+      // Dispose materials and geometry
+      if (obj.isMesh) {
+        obj.geometry.dispose();
+
+        if (Array.isArray(obj.material)) {
+          obj.material.forEach((material) => material.dispose());
+        } else {
+          obj.material.dispose();
+        }
+      }
+
+      // Remove from parent
+      if (obj.parent) {
+        obj.parent.remove(obj);
+      }
+
+      if (this.renderer) {
+        this.renderer.renderLists.dispose();
+      }
+
+      return true;
+    },
   },
 
   watch: {
@@ -3628,7 +3663,16 @@ export default {
       this.updateControls();
     },
 
-    isLevelHelpers() {
+    isLevelHelpers(newValue) {
+      if (newValue) {
+        this.initLayerHelpers();
+      } else {
+        // Delete helpers for layer
+        for (const id in this.layersHelpers) {
+          this.removeObjWithChildren(this.layersHelpers[id]);
+        }
+      }
+
       this.updateLayersView();
     },
 
