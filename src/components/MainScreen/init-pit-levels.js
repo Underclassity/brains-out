@@ -38,9 +38,11 @@ export function initLevelPreview() {
     const color = new Color(this.colorPalette[i]);
 
     const boxMaterial = new MeshBasicMaterial({ color, transparent: true });
+    boxMaterial.name = `pit-level-material-${color.getHexString()}`;
     const boxGeometry = new BoxGeometry(1, 1);
 
     const boxMesh = new Mesh(boxGeometry, boxMaterial);
+    boxMesh.name = `pit-level-helper-${i}`;
 
     boxMesh.position.set(0, -i - size / 2 + pitDepth / 2, 0);
 

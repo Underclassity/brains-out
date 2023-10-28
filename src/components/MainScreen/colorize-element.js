@@ -13,6 +13,10 @@ export function colorizeElement(element, layer) {
     return false;
   }
 
+  if (this.isSimple) {
+    return false;
+  }
+
   const color = this.colorPalette[layer];
 
   this.log(
@@ -28,9 +32,12 @@ export function colorizeElement(element, layer) {
     }
 
     if (Array.isArray(obj.material)) {
-      obj.material.forEach((material) => {
+      obj.material.forEach((material, index) => {
+        material.dispose();
+
         if (this.isOldColorize) {
           material = new MeshBasicMaterial({ color });
+          material.name = `color-${index}`;
           return;
         }
 
@@ -45,14 +52,18 @@ export function colorizeElement(element, layer) {
         if (atlas) {
           material.map = atlas;
         }
+        material.name = `color-${color.getHexString()}-${index}`;
         material.needsUpdate = true;
       });
 
       return false;
     }
 
+    obj.material.dispose();
+
     if (this.isOldColorize) {
       obj.material = new MeshBasicMaterial({ color });
+      obj.material.name = `color-${color.getHexString()}`;
       return;
     }
 
@@ -67,6 +78,7 @@ export function colorizeElement(element, layer) {
     if (atlas) {
       obj.material.map = atlas;
     }
+    obj.material.name = `color-${color.getHexString()}`;
     obj.material.needsUpdate = true;
   });
 

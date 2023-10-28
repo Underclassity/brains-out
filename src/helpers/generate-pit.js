@@ -233,6 +233,7 @@ export function addPlaneHelpers(width, height, depth, size, pit) {
   const grassPlaneMaterial = new MeshBasicMaterial({
     color: new Color(0x18_ba_4b),
   });
+  grassPlaneMaterial.name = "grass-plane-material";
 
   const topBottomGrassGeometry = new PlaneGeometry(10 * 2 + width, 9);
   const leftRightGrassGeometry = new PlaneGeometry(10 - 1, height + 2);
@@ -468,6 +469,7 @@ export function generatePit(
       transparent: true,
       opacity: 0.1,
     });
+    material.name = "cube-material";
     const cube = new Mesh(geometry, material);
     cube.name = "pit";
 
@@ -545,6 +547,7 @@ export function generatePit(
       part.material = new MeshPhongMaterial({
         color: grassColors[index],
       });
+      part.material.name = `grass-material-${index}`;
       part.material.flatShading = true;
 
       // Save grass part

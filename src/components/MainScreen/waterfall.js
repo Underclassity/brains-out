@@ -60,7 +60,9 @@ export function createElement() {
         return;
       }
 
+      obj.material.dispose();
       obj.material = new MeshBasicMaterial({ color });
+      obj.material.name = "random-mesh-color";
     });
   }
 

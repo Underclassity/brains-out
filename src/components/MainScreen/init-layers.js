@@ -64,7 +64,9 @@ export function initLayerHelpers() {
       new Array(pitHeight).fill(0).forEach((yValue, yIndex) => {
         const geometry = new BoxGeometry(size, size);
         const material = new MeshBasicMaterial();
+        material.name = `layer-helper-material-${xIndex}-${yIndex}-${zIndex}`;
         const boxMesh = new Mesh(geometry, material);
+        boxMesh.name = `layer-helper-${xIndex}-${yIndex}-${zIndex}`;
 
         boxMesh.position.set(
           xCPoints[xIndex],

@@ -2680,9 +2680,10 @@ export default {
           }
         }
 
-        this.scene.traverse((item) => traverse(item, this.stats));
-
-        performance.mark("animation-start");
+        if (this.isDev) {
+          this.scene.traverse((item) => traverse(item, this.stats));
+          performance.mark("animation-start");
+        }
 
         this.frames++;
         const time = Date.now();
@@ -2754,6 +2755,10 @@ export default {
 
         TWEEN.update();
 
+        if (!this.isDev) {
+          return true;
+        }
+
         performance.mark("animation-end");
         const measure = performance.measure(
           "animation",
@@ -2765,6 +2770,8 @@ export default {
 
         performance.clearMarks();
         performance.clearMeasures();
+
+        return true;
       };
 
       const renderer = new WebGLRenderer({

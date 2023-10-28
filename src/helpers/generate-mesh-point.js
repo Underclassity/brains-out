@@ -8,6 +8,7 @@ import {
   Vector3,
 } from "three";
 
+import log from "./log.js";
 import randomBetween from "./random-between.js";
 
 /**
@@ -27,7 +28,7 @@ export function generateMeshPoint(
   line = false
 ) {
   if (!size) {
-    console.log("Size not defined!");
+    log("Size not defined!");
     return false;
   }
 
@@ -41,7 +42,9 @@ export function generateMeshPoint(
         //     return item.name.includes("Emissive") ? item : item.clone();
         //   })
         part.material.map((item) => item.clone())
-      : part.material.clone();
+      : // part.material.map((item) => new MeshBasicMaterial().copy(item))
+        // : new MeshBasicMaterial().copy(part.material);
+        part.material.clone();
     mesh.scale.set(1, 1, 1);
     mesh.position.set(0, 0, 0);
   } else {
