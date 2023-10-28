@@ -2566,7 +2566,7 @@ export default {
 
       const clock = new Clock();
 
-      const camera = new PerspectiveCamera(this.fov, width / height, 0.01, 20);
+      const camera = new PerspectiveCamera(this.fov, width / height, 0.01, 50);
       this.camera = camera;
 
       const scene = new Scene();

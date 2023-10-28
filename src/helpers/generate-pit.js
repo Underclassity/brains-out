@@ -274,14 +274,14 @@ function addElementsToGroundAndGrass(
   const sqrt = Math.sqrt(blocksCount);
 
   const xPositions = interpolateArray(
-    [-size / 2, size / 2],
+    [-size / 2 + size / 6, size / 2 - size / 6],
     Math.random() <= 0.5 || blocksCount % sqrt == 0
       ? Math.round(sqrt)
       : Math.floor(sqrt)
   );
 
   const yPositions = interpolateArray(
-    [-size / 2, size / 2],
+    [-size / 2 + size / 6, size / 2 - size / 6],
     Math.random() <= 0.5 || blocksCount % sqrt == 0
       ? Math.round(sqrt)
       : Math.floor(sqrt)
