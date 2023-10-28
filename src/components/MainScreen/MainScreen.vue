@@ -2,7 +2,7 @@
 .main
     .container(ref="container" :class="{ 'container--controls': (isControls || isMobile) }")
 
-    .navigation
+    .navigation(v-show="!isPractice")
         .navigation--item(v-bind:class="{ 'navigation--item--blinking': score > maxScore }") Best Score: {{ score > maxScore ? score : maxScore }}
 
         .navigation--item Score: {{ showScore }}

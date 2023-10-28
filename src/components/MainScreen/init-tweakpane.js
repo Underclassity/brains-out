@@ -36,7 +36,7 @@ function addModesFolders(pane) {
       "isPractice"
     )
     .on("change", (ev) => {
-      this.isPractice = ev.value;
+      this.$store.commit("updatePractice", ev.value);
     });
 
   const rotateRestrainFolder = modesFolder.addFolder({

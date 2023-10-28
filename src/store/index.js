@@ -51,6 +51,7 @@ export const store = createStore({
     changeSpeedByLevels: true,
 
     isEndless: false,
+    isPractice: false,
 
     isDev: false,
     isControls: false,
@@ -310,6 +311,18 @@ export const store = createStore({
 
     updateEndless(state, value) {
       state.isEndless = value ? true : false;
+    },
+
+    enablePractice(state) {
+      state.isPractice = true;
+    },
+
+    disablePractice(state) {
+      state.isPractice = false;
+    },
+
+    updatePractice(state, value) {
+      state.isPractice = value ? true : false;
     },
 
     enableVibration(state) {

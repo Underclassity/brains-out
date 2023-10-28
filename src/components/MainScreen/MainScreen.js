@@ -136,7 +136,6 @@ export default {
       randomFormsCount: 5,
 
       // Modes
-      isPractice: false,
       fog: undefined,
       fogColor: 0xcccccc,
       fogDensity: 0.1,
@@ -281,6 +280,7 @@ export default {
       "speedStep",
 
       "isEndless",
+      "isPractice",
 
       "score",
       "lsScore",
@@ -613,7 +613,7 @@ export default {
      * @return  {Boolean}                      Result
      */
     newGameCall(isPractice = false) {
-      this.isPractice = isPractice;
+      this.$store.commit("updatePractice", isPractice);
 
       if (!this.isControlsInfoShowed) {
         this.isControlsInfoPlay = true;

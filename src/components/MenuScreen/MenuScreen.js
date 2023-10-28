@@ -1,5 +1,5 @@
 import { nextTick } from "vue";
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 
 import assets from "../../store/assets.js";
 
@@ -109,6 +109,7 @@ export default {
       "maxSpeed",
 
       "isEndless",
+      "isPractice",
 
       "pixelRatio",
       "antialias",
@@ -126,6 +127,8 @@ export default {
       "achievements",
       "userAchievements",
     ]),
+
+    ...mapGetters(["maxScore"]),
 
     devicePixelRatio() {
       return Math.round(window.devicePixelRatio);
