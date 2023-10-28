@@ -8,6 +8,7 @@ import {
   MathUtils,
   Mesh,
   MeshBasicMaterial,
+  MeshPhongMaterial,
   Object3D,
   PlaneGeometry,
   Vector3,
@@ -541,7 +542,7 @@ export function generatePit(
 
       // Change material color from palette
       // part.material.color = grassColorPalette[index];
-      part.material = new MeshBasicMaterial({
+      part.material = new MeshPhongMaterial({
         color: grassColors[index],
       });
       part.material.flatShading = true;
