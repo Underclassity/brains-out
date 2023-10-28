@@ -558,8 +558,12 @@ export default {
         leftElement.click();
       }
 
-      if ((this.focused = "settings.pixelRatio")) {
+      if (this.focused == "settings.pixelRatio") {
         this.resolution -= 10;
+
+        if (this.resolution <= 0) {
+          this.resolution = 0;
+        }
       }
 
       return true;
@@ -576,8 +580,12 @@ export default {
         leftElement.click();
       }
 
-      if ((this.focused = "settings.pixelRatio")) {
+      if (this.focused == "settings.pixelRatio") {
         this.resolution += 10;
+
+        if (this.resolution >= 400) {
+          this.resolution = 400;
+        }
       }
 
       return true;
