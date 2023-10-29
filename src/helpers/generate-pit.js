@@ -22,8 +22,8 @@ import log from "./log.js";
 import shuffle from "./shuffle.js";
 
 import { grassColorPalette } from "../components/MainScreen/color-palette.js";
+import { randomBetween, randomBetweenFloats } from "./random-between.js";
 import interpolateArray from "./interpolate-array.js";
-import randomBetween from "./random-between.js";
 import splitNParts from "./split-n-parts.js";
 
 const axisTypes = ["x", "y", "z"];
@@ -303,6 +303,14 @@ function addElementsToGroundAndGrass(
 
       const name = meshes[index].name;
 
+      const offset = randomBetweenFloats(
+        -size / blocksCount,
+        size / blocksCount
+      );
+
+      const xPosition = x + xPos + offset;
+      const yPosition = y + yPos + offset;
+
       partsCounter[index] = putMeshHelper(
         true,
         meshes[index],
@@ -311,8 +319,8 @@ function addElementsToGroundAndGrass(
         pitGroup,
         false,
         partsCounter[index],
-        x + xPos,
-        y + yPos,
+        xPosition,
+        yPosition,
         name.includes("Head") ? 0.75 : 0.5,
         false
       );
@@ -882,7 +890,7 @@ export function generatePit(
       const halloweenPartsCount = groundGrassCount * halloweenBlocksCount;
 
       const allHalloweenParts = [
-        ...pumpkinParts,
+        // ...pumpkinParts,
         ...skullParts,
         ...candleParts,
       ];
@@ -905,7 +913,7 @@ export function generatePit(
         return mesh;
       });
 
-      grassPumpkinMesh = getMesh(pumpkinParts[0], grassCount);
+      grassPumpkinMesh = getMesh(pumpkinParts[0], Math.round(grassCount / 2));
       pitGroup.add(grassPumpkinMesh);
     }
 
@@ -980,7 +988,11 @@ export function generatePit(
             0
           );
 
-          if (halloweenParts?.length && grassPumpkinMesh) {
+          if (
+            halloweenParts?.length &&
+            grassPumpkinMesh &&
+            Math.random() <= 0.5
+          ) {
             grassPumpkinCouter = putMeshHelper(
               true,
               grassPumpkinMesh,
