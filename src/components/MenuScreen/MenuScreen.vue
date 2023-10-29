@@ -259,8 +259,8 @@
                 v-bind:class="{ 'focused': focused == 'settings.back' }"
             ) Back
 
-        .menu--subtitle(v-show="flags.end && !isPractice") Score {{ score }}
-        .menu--subtitle(v-show="flags.end && !isPractice") Best score {{ maxScore }}
+        .menu--subtitle(v-show="flags.end && !isPractice") Score: {{ score }}
+        .menu--subtitle(v-show="flags.end && !isPractice") Best score: {{ maxScore }}
 
         //- End items
         .menu--buttons(v-show="flags.end")
