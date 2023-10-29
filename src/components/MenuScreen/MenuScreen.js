@@ -559,7 +559,7 @@ export default {
       }
 
       if (this.focused == "settings.pixelRatio") {
-        this.resolution -= 10;
+        this.resolution -= 100;
 
         if (this.resolution <= 0) {
           this.resolution = 0;
@@ -581,7 +581,7 @@ export default {
       }
 
       if (this.focused == "settings.pixelRatio") {
-        this.resolution += 10;
+        this.resolution += 100;
 
         if (this.resolution >= 400) {
           this.resolution = 400;
@@ -659,7 +659,7 @@ export default {
       }
     },
 
-    focused(newValue) {
+    async focused(newValue) {
       if (!newValue) {
         return false;
       }
@@ -669,6 +669,8 @@ export default {
       const [flag, id] = newValue.split(".");
 
       this.lastFocused[flag] = id;
+
+      await nextTick();
 
       this.$refs[newValue].scrollIntoView({
         behavior: "smooth",
