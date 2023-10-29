@@ -516,6 +516,10 @@ export default {
 
       let newIndex = index + 1;
 
+      if (!this.isPractice && refs[newIndex] == "startAgain") {
+        newIndex++;
+      }
+
       if (newIndex >= length) {
         newIndex = length - 1;
       }
@@ -537,6 +541,10 @@ export default {
       const index = refs.indexOf(id);
 
       let newIndex = index - 1;
+
+      if (!this.isPractice && refs[newIndex] == "startAgain") {
+        newIndex--;
+      }
 
       if (newIndex <= 0) {
         newIndex = 0;
