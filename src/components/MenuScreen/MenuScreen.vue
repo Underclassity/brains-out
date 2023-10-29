@@ -270,8 +270,12 @@
                 v-bind:class="{ 'focused': focused == 'end.new' }"
             ) New Game
 
-        //- .menu--buttons(v-show="flags.end")
-        //-     .menu--item--green.menu--button(v-on:click="startAgainCall") Start Again
+        .menu--buttons(v-show="flags.end && isPractice")
+            .menu--item--green.menu--button(
+                v-on:click="startAgainCall"
+                ref="end.startAgain"
+                v-bind:class="{ 'focused': focused == 'end.startAgain' }"
+            ) Start Again
 
         .menu--buttons(v-show="flags.end")
             .menu--item--red.menu--button(
@@ -297,8 +301,12 @@
                 v-bind:class="{ 'focused': focused == 'continue.new' }"
             ) New Game
 
-        //- .menu--buttons(v-show="flags.continue")
-        //-     .menu--item--green.menu--button(v-on:click="startAgainCall") Start Again
+        .menu--buttons(v-show="flags.continue && isPractice")
+            .menu--item--green.menu--button(
+                v-on:click="startAgainCall"
+                ref="continue.startAgain"
+                v-bind:class="{ 'focused': focused == 'continue.startAgain' }"
+            ) Start Again
 
         .menu--buttons(v-show="flags.continue")
             .menu--item--green.menu--button(

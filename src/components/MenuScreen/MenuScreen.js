@@ -77,8 +77,8 @@ export default {
           "controls",
           "back",
         ],
-        end: ["new", "back", "share"],
-        continue: ["new", "continue", "howTo", "back"],
+        end: ["new", "startAgain", "back", "share"],
+        continue: ["new", "startAgain", "continue", "howTo", "back"],
         achievements: ["back"],
       },
 
@@ -516,6 +516,10 @@ export default {
 
       let newIndex = index + 1;
 
+      if (!this.$refs[`${flag}.${refs[newIndex]}`]) {
+        newIndex++;
+      }
+
       if (newIndex >= length) {
         newIndex = length - 1;
       }
@@ -537,6 +541,10 @@ export default {
       const index = refs.indexOf(id);
 
       let newIndex = index - 1;
+
+      if (!this.$refs[`${flag}.${refs[newIndex]}`]) {
+        newIndex--;
+      }
 
       if (newIndex <= 0) {
         newIndex = 0;

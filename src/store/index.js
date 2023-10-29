@@ -323,6 +323,22 @@ export const store = createStore({
 
     updatePractice(state, value) {
       state.isPractice = value ? true : false;
+
+      if (!value) {
+        return false;
+      }
+
+      // Set to 5x5x12
+      state.pitWidth = 5;
+      state.pitHeight = 5;
+      state.pitDepth = 12;
+
+      state.pitSize = "5x5x12";
+
+      // Blocks type flat only
+      this.blocksType = "flat";
+
+      return true;
     },
 
     enableVibration(state) {
