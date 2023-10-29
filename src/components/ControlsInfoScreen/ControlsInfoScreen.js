@@ -163,8 +163,10 @@ export default {
     show(newValue) {
       if (newValue) {
         this.emitter.on("pressA", this.backClick);
+        this.emitter.on("pressB", this.backClick);
       } else {
         this.emitter.off("pressA", this.backClick);
+        this.emitter.off("pressB", this.backClick);
       }
     },
   },
