@@ -854,6 +854,8 @@ export function generatePit(
     let grassPumpkinCouter = 0;
     let grassPumpkinMesh = undefined;
 
+    let pumpkinFlag = viewWidth % 2 == 0 ? false : true;
+
     const halloweenDummy = new Object3D();
     halloweenDummy.scale.multiplyScalar(0.5);
 
@@ -988,11 +990,7 @@ export function generatePit(
             0
           );
 
-          if (
-            halloweenParts?.length &&
-            grassPumpkinMesh &&
-            Math.random() <= 0.5
-          ) {
+          if (halloweenParts?.length && grassPumpkinMesh && pumpkinFlag) {
             grassPumpkinCouter = putMeshHelper(
               true,
               grassPumpkinMesh,
@@ -1017,6 +1015,8 @@ export function generatePit(
               halloweenDummy.matrix
             );
           }
+
+          pumpkinFlag = !pumpkinFlag;
         }
       }
     }
