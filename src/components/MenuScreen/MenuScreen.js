@@ -561,7 +561,7 @@ export default {
       if (this.focused == "settings.pixelRatio") {
         this.resolution -= 100;
 
-        if (this.resolution <= 0) {
+        if (this.resolution <= 100) {
           this.resolution = 0;
         }
       }
