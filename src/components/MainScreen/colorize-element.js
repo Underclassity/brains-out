@@ -26,60 +26,57 @@ export function colorizeElement(element, layer) {
     `color: #${color.getHexString()}`
   );
 
+  const colorize = (material, index = 0) => {
+    material.dispose();
+
+    let atlas = this.greyAtlas;
+    let atlasName = "grey";
+
+    switch (material.name) {
+      case "M_Brains":
+        atlas = this.greyBrains;
+        atlasName = "brains";
+        break;
+      case "M_Guts":
+        atlas = this.greyGuts;
+        atlasName = "guts";
+        break;
+      default:
+        atlas = this.greyAtlas;
+        atlasName = "grey";
+        break;
+    }
+
+    if (this.isOldColorize) {
+      material = new MeshBasicMaterial({ color, map: atlas });
+      material.name = `color-${index}`;
+      return material;
+    }
+
+    material.color.set(color);
+
+    if (atlas) {
+      material.map = atlas;
+    }
+
+    material.name = `color-${color.getHexString()}-${index}`;
+    material.needsUpdate = true;
+
+    return material;
+  };
+
   element.traverse((obj) => {
     if (!obj.isMesh) {
       return false;
     }
 
     if (Array.isArray(obj.material)) {
-      obj.material.forEach((material, index) => {
-        material.dispose();
-
-        if (this.isOldColorize) {
-          material = new MeshBasicMaterial({ color });
-          material.name = `color-${index}`;
-          return;
-        }
-
-        const atlas =
-          material.name == "M_Brains" && this.greyBrains
-            ? this.greyBrains
-            : material.name == "M_Guts" && this.greyGuts
-            ? this.greyGuts
-            : this.greyAtlas;
-
-        material.color.set(color);
-        if (atlas) {
-          material.map = atlas;
-        }
-        material.name = `color-${color.getHexString()}-${index}`;
-        material.needsUpdate = true;
-      });
+      obj.material = obj.material.map(colorize);
 
       return false;
     }
 
-    obj.material.dispose();
-
-    if (this.isOldColorize) {
-      obj.material = new MeshBasicMaterial({ color });
-      obj.material.name = `color-${color.getHexString()}`;
-      return;
-    }
-
-    const atlas =
-      obj.material.name == "M_Brains" && this.greyBrains
-        ? this.greyBrains
-        : obj.material.name == "M_Guts" && this.greyGuts
-        ? this.greyGuts
-        : this.greyAtlas;
-
-    obj.material.color.set(color);
-    if (atlas) {
-      obj.material.map = atlas;
-    }
-    obj.material.name = `color-${color.getHexString()}`;
-    obj.material.needsUpdate = true;
+    obj.material = colorize(obj.material);
   });
 
   return true;
