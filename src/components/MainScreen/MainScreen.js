@@ -2219,7 +2219,7 @@ export default {
       // }
 
       zombie.push(
-        ...halloweenParts.children.filter((item) => item.name.includes("Head"))
+        ...halloweenParts.children.filter((item) => item.name.includes("H_01_") || item.name.includes("H_02_"))
       );
 
       if (!zombie || !pitParts) {

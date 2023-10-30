@@ -865,7 +865,7 @@ export function generatePit(
         .map((item) => item.clone());
 
       const pumpkinParts = halloweenParts
-        .filter((item) => item.name.includes("Head"))
+        .filter((item) => item.name.includes("H_01_Head"))
         .map((item) => item.clone());
 
       const candleParts = halloweenParts
