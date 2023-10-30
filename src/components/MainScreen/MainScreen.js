@@ -613,6 +613,8 @@ export default {
      * @return  {Boolean}                      Result
      */
     newGameCall(isPractice = false) {
+      this.log("New game caller: ", isPractice)
+
       this.$store.commit("updatePractice", isPractice);
 
       if (!this.isControlsInfoShowed) {

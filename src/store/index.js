@@ -315,6 +315,18 @@ export const store = createStore({
 
     enablePractice(state) {
       state.isPractice = true;
+
+      // Set to 5x5x12
+      state.pitWidth = 5;
+      state.pitHeight = 5;
+      state.pitDepth = 12;
+
+      state.pitSize = "5x5x12";
+
+      // Blocks type flat only
+      state.blocksType = "flat";
+
+      return true;
     },
 
     disablePractice(state) {
@@ -336,7 +348,7 @@ export const store = createStore({
       state.pitSize = "5x5x12";
 
       // Blocks type flat only
-      this.blocksType = "flat";
+      state.blocksType = "flat";
 
       return true;
     },

@@ -299,7 +299,7 @@ export default {
 
       this.resetFlags();
 
-      this.$emit("new-game");
+      this.$emit("new-game", this.isPractice);
 
       this.log("Start again call", this.isShow);
     },

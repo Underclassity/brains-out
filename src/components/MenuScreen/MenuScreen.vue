@@ -263,7 +263,7 @@
         .menu--subtitle(v-show="flags.end && !isPractice") Best score: {{ maxScore }}
 
         //- End items
-        .menu--buttons(v-show="flags.end")
+        .menu--buttons(v-show="flags.end && !isPractice")
             .menu--item--green.menu--button(
                 v-on:click="newGameCall"
                 ref="end.new"
@@ -294,7 +294,7 @@
             | Share results
 
         //- Continue items
-        .menu--buttons(v-show="flags.continue")
+        .menu--buttons(v-show="flags.continue && !isPractice")
             .menu--item--green.menu--button(
                 v-on:click="newGameCallForce"
                 ref="continue.new"
