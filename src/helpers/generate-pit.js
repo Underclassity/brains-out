@@ -14,14 +14,12 @@ import {
   Vector3,
 } from "three";
 
-// import { colorPalette } from "../components/MainScreen/color-palette.js";
-
 import generateGrid from "./generate-grid.js";
 import getRandom from "./random.js";
 import log from "./log.js";
 import shuffle from "./shuffle.js";
 
-import { grassColorPalette } from "../components/MainScreen/color-palette.js";
+import { grassColorPalette } from "../store/color-palette.js";
 import { randomBetween, randomBetweenFloats } from "./random-between.js";
 import interpolateArray from "./interpolate-array.js";
 import splitNParts from "./split-n-parts.js";

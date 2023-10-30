@@ -72,7 +72,6 @@ import { initWaterfall, createElement } from "./waterfall.js";
 import { initTweakPane } from "./init-tweakpane.js";
 import colorizeElement from "./colorize-element.js";
 import initShaders from "./init-shaders.js";
-import colorPalette from "./color-palette.js";
 import getRandomForm from "./get-random-form.js";
 import initPoints from "./init-points.js";
 
@@ -89,7 +88,6 @@ export default {
       layersHelpers: {},
       elements: [],
       pitLevels: undefined,
-      colorPalette,
 
       delta: 0,
       timeDelta: 0,
@@ -267,6 +265,9 @@ export default {
       "blocksTypeOptions",
       "blocksType",
 
+      "colorPaletteType",
+      "colorPaletteTypes",
+
       "fov",
       "pixelRatio",
       "antialias",
@@ -303,7 +304,7 @@ export default {
       "gridSecondColor",
     ]),
 
-    ...mapGetters(["maxScore", "minScore", "avgScore"]),
+    ...mapGetters(["maxScore", "minScore", "avgScore", "colorPalette"]),
 
     zombie() {
       const { scene } = this;
@@ -613,7 +614,7 @@ export default {
      * @return  {Boolean}                      Result
      */
     newGameCall(isPractice = false) {
-      this.log("New game caller: ", isPractice)
+      this.log("New game caller: ", isPractice);
 
       this.$store.commit("updatePractice", isPractice);
 
@@ -2221,7 +2222,9 @@ export default {
       // }
 
       zombie.push(
-        ...halloweenParts.children.filter((item) => item.name.includes("H_01_") || item.name.includes("H_02_"))
+        ...halloweenParts.children.filter(
+          (item) => item.name.includes("H_01_") || item.name.includes("H_02_")
+        )
       );
 
       if (!zombie || !pitParts) {
@@ -3726,6 +3729,10 @@ export default {
 
     pitSize(newValue) {
       this.changePitSize(newValue);
+    },
+
+    colorPaletteType(newValue) {
+      this.log("Update color palette type: ", newValue);
     },
 
     blocksType(newValue) {

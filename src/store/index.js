@@ -8,6 +8,8 @@ import roundValue from "../helpers/round-value.js";
 
 import achievements from "./achievements.js";
 
+import colorPalette from "./color-palette.js";
+
 export const store = createStore({
   state: {
     size: 1,
@@ -48,6 +50,9 @@ export const store = createStore({
     gridFirstColor: 0xcf_cf_cf,
     gridSecondColor: 0xff_ff_ff,
 
+    colorPaletteType: "complex",
+    colorPaletteTypes: ["flat", "complex"],
+
     changeSpeedByLevels: true,
 
     isEndless: false,
@@ -82,6 +87,10 @@ export const store = createStore({
     userAchievements: [],
   },
   getters: {
+    colorPalette(state) {
+      return colorPalette[state.colorPaletteType];
+    },
+
     isAccepted(state) {
       return state.isAccepted;
     },
@@ -179,6 +188,16 @@ export const store = createStore({
       if (state.settingsSpeed != newSpeed) {
         state.settingsSpeed = newSpeed;
       }
+    },
+
+    setColorPalette(state, value) {
+      if (!state.colorPaletteTypes.includes(value)) {
+        return false;
+      }
+
+      state.colorPaletteType = value;
+
+      return true;
     },
 
     updateVolume(state, value) {

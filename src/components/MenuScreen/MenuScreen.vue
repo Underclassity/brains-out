@@ -193,6 +193,16 @@
                 .menu--selector--value(v-if="!isPitGrid") No
                 .menu--selector--next(v-on:click="enablePitGrid" v-if="!isPitGrid" ref="settings.grid.next")
 
+            .menu--selector(
+                v-show="flags.settings"
+                ref="settings.color"
+                v-bind:class="{ 'focused': focused == 'settings.color' }"
+            )
+                .menu--label Color
+                .menu--selector--prev(v-on:click="prevColorPalette" v-if="colorPaletteTypes.indexOf(colorPaletteType) != 0" ref="settings.color.prev")
+                .menu--selector--value {{ colorPaletteType }}
+                .menu--selector--next(v-on:click="nextColorPalette" v-if="colorPaletteTypes.indexOf(colorPaletteType) != colorPaletteTypes.length - 1" ref="settings.color.next")
+
             .menu--subtitle Sound
 
             .menu--selector(

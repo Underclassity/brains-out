@@ -70,6 +70,7 @@ export default {
         settings: [
           "pixelRatio",
           "grid",
+          "color",
           "volume",
           "fxVolume",
           "dev",
@@ -99,6 +100,9 @@ export default {
 
       "pitSize",
       "pitSizes",
+
+      "colorPaletteType",
+      "colorPaletteTypes",
 
       "blocksTypeOptions",
       "blocksType",
@@ -420,6 +424,26 @@ export default {
       this.$store.commit("setPixelRatio", value);
     },
 
+    nextColorPalette() {
+      let newIndex = this.colorPaletteTypes.indexOf(this.colorPaletteType) + 1;
+
+      if (newIndex >= this.colorPaletteTypes.length - 1) {
+        newIndex = this.colorPaletteTypes.length - 1;
+      }
+
+      this.$store.commit("setColorPalette", this.colorPaletteTypes[newIndex]);
+    },
+
+    prevColorPalette() {
+      let newIndex = this.colorPaletteTypes.indexOf(this.colorPaletteType) - 1;
+
+      if (newIndex <= 0) {
+        newIndex = 0;
+      }
+
+      this.$store.commit("setColorPalette", this.colorPaletteTypes[newIndex]);
+    },
+
     prevVolume() {
       this.$store.commit("updateVolume", -0.1);
     },
@@ -570,7 +594,7 @@ export default {
         this.resolution -= 100;
 
         if (this.resolution <= 100) {
-          this.resolution = 0;
+          this.resolution = 100;
         }
       }
 

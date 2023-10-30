@@ -1,8 +1,10 @@
+import { mapGetters } from "vuex";
+
 // import levels from "../../assets/img/levels.svg";
 // import pit from "../../assets/img/pit.svg";
 import controller from "../../assets/img/controller.svg";
 import keyboard from "../../assets/img/keyboard.svg";
-import levelsPit from "../../assets/img/levels-pit.svg";
+// import levelsPit from "../../assets/img/levels-pit.svg";
 
 import wImage from "../../assets/img/w.svg";
 import sImage from "../../assets/img/s.svg";
@@ -50,7 +52,7 @@ export default {
       // pit,
       controller,
       keyboard,
-      levelsPit,
+      // levelsPit,
 
       keyboardKeys: [
         {
@@ -150,6 +152,14 @@ export default {
         },
       ],
     };
+  },
+
+  computed: {
+    ...mapGetters(["colorPalette"]),
+
+    colors() {
+      return this.colorPalette.map((item) => `#${item.getHexString()}`);
+    },
   },
 
   methods: {
