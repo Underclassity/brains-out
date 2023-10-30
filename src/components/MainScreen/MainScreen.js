@@ -127,7 +127,7 @@ export default {
       isRandomColor: false,
       isRandomCorner: false,
       isColorizeLevel: true,
-      isOldColorize: false,
+      isOldColorize: true,
       isRotateAnimation: false,
       isRotating: false,
 
