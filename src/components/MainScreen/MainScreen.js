@@ -1664,14 +1664,13 @@ export default {
       const elementPoints = this.getElementLayerPoints(element);
 
       for (const { x, y, z, uuid } of elementPoints) {
+        const el = element.getObjectByProperty("uuid", uuid);
+        const itemPosition = getWorldPosisition(el);
+
         if (this.layers[z][x][y] || itemPosition.z > 1) {
           this.endGameCall(element);
           return false;
         }
-
-        const el = element.getObjectByProperty("uuid", uuid);
-
-        const itemPosition = getWorldPosisition(el);
 
         this.positionHelper(el, "x", itemPosition.x);
         this.positionHelper(el, "y", itemPosition.y);
