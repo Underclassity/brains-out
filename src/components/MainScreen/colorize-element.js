@@ -46,12 +46,6 @@ export function colorizeElement(element, layer) {
         break;
     }
 
-    if (this.isOldColorize) {
-      material = new MeshBasicMaterial({ color, map: atlas });
-      material.name = `color-${index}`;
-      return material;
-    }
-
     material.color.set(color);
 
     if (atlas) {
@@ -67,6 +61,12 @@ export function colorizeElement(element, layer) {
   element.traverse((obj) => {
     if (!obj.isMesh) {
       return false;
+    }
+
+    if (this.isOldColorize) {
+      obj.material = new MeshBasicMaterial({ color });
+      obj.material.name = `color-old-${color.getHexString()}`;
+      return true;
     }
 
     if (Array.isArray(obj.material)) {
