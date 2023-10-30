@@ -337,6 +337,12 @@ function addElementsToGroundAndGrass(
         false
       );
 
+      if (name.includes("Candle")) {
+        dummy.scale.set(1, 1, 1);
+      } else {
+        dummy.scale.set(0.5, 0.5, 0.5);
+      }
+
       const degree = randomBetween(0, 360);
 
       dummy.rotateOnWorldAxis(zAxis, MathUtils.degToRad(degree));
@@ -915,10 +921,18 @@ export function generatePit(
 
       const partsLength = allHalloweenParts.length;
 
-      halloweenPartsCountByIndex = splitNParts(
-        halloweenPartsCount,
-        partsLength
-      );
+      // halloweenPartsCountByIndex = splitNParts(
+      //   halloweenPartsCount,
+      //   partsLength
+      // );
+
+      const skullsCount = Math.round(halloweenPartsCount / 4);
+      const candleCount = halloweenPartsCount - skullsCount;
+
+      halloweenPartsCountByIndex = [
+        ...splitNParts(skullsCount, skullParts.length),
+        ...splitNParts(candleCount, candleParts.length),
+      ];
 
       halloweenPartsCounter = new Array(partsLength).fill(0);
 
@@ -1007,6 +1021,9 @@ export function generatePit(
           );
 
           if (halloweenParts?.length && grassPumpkinMesh && pumpkinFlag) {
+            const xOffset = randomBetweenFloats(-size / 4, size / 4);
+            const yOffset = randomBetweenFloats(-size / 4, size / 4);
+
             grassPumpkinCouter = putMeshHelper(
               true,
               grassPumpkinMesh,
@@ -1015,8 +1032,8 @@ export function generatePit(
               pitGroup,
               false,
               grassPumpkinCouter,
-              x,
-              y,
+              x + xOffset,
+              y + yOffset,
               0.75,
               false
             );

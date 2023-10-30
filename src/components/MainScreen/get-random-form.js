@@ -113,17 +113,21 @@ export function getRandomForm() {
   const isDevParts = Math.random() <= 0.01;
   const devId = Math.random() <= 0.5 ? "I" : "N";
 
-  if (isDevParts) {
+  const isGhost = Math.random() <= 0.15 && this.isHalloween;
+
+  if (isDevParts || isGhost) {
     formFunctions = [generateP2Form];
 
-    zombieParts = zombieParts.filter(
-      (item) => item.name[item.name.length - 1] == devId
-    );
+    zombieParts = isDevParts
+      ? zombieParts.filter((item) => item.name[item.name.length - 1] == devId)
+      : zombieParts.filter((item) => item.name.includes("H_02_"));
   } else {
     zombieParts = zombieParts.filter(
       (item) =>
         item.name[item.name.length - 1] != "I" &&
-        item.name[item.name.length - 1] != "N"
+        item.name[item.name.length - 1] != "N" &&
+        !item.name.includes("H_02_") &&
+        !item.name.includes("H_01_")
     );
   }
 
