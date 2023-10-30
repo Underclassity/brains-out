@@ -22,8 +22,7 @@ export function colorizeElement(element, layer) {
   this.log(
     `Colorize element ${
       element.name
-    } on layer ${layer}: ${color.getHexString()}`,
-    `color: #${color.getHexString()}`
+    } on layer ${layer}: color #${color.getHexString()}`
   );
 
   const colorize = (material, index = 0) => {

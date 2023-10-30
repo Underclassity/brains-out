@@ -1086,10 +1086,6 @@ export default {
         });
       }
 
-      // if (xIndex == -1 || yIndex == -1 || zIndex == -1) {
-      //   debugger;
-      // }
-
       return {
         x: xIndex,
         y: yIndex,
@@ -1318,8 +1314,6 @@ export default {
      * @return  {Boolean}          Result
      */
     dropElement(element) {
-      this.log(`Drop element: ${element.name}`);
-
       // this.vibrateCall(100);
 
       element.userData.drop = true;
@@ -1345,6 +1339,8 @@ export default {
           }
         }
 
+        this.log(`Drop element by Z: ${element.name} - ${minDiff.toFixed(2)}`);
+
         this.translateHelper(element, "z", minDiff);
       } else if (points.length) {
         const lowerPoint = points.reduce((prev, curr) => {
@@ -1367,11 +1363,21 @@ export default {
         const diff = layerPosition - itemPosition.z;
 
         this.translateHelper(element, "z", diff);
+
+        this.log(
+          `Drop element by lower point: ${element.name} - ${diff.toFixed(2)}`
+        );
       } else {
         this.translateHelper(
           element,
           "z",
           this.zCPoints[this.zCPoints.length - 1]
+        );
+
+        this.log(
+          `Drop element in layer point: ${element.name} - ${this.zCPoints[
+            this.zCPoints.length - 1
+          ].toFixed(2)}`
         );
       }
 
@@ -1658,7 +1664,7 @@ export default {
       const elementPoints = this.getElementLayerPoints(element);
 
       for (const { x, y, z, uuid } of elementPoints) {
-        if (this.layers[z][x][y]) {
+        if (this.layers[z][x][y] || itemPosition.z > 1) {
           this.endGameCall(element);
           return false;
         }
@@ -1670,6 +1676,10 @@ export default {
         this.positionHelper(el, "x", itemPosition.x);
         this.positionHelper(el, "y", itemPosition.y);
         this.positionHelper(el, "z", itemPosition.z);
+
+        if (itemPosition.z >= 0) {
+          this.positionHelper(el, "z", 0);
+        }
 
         this.setLayerPoint(x, y, z, 1, updateView);
 
@@ -2744,15 +2754,6 @@ export default {
         // controls.update();
 
         if (this.isShaders) {
-          // this.scene.traverse((item) => {
-          //   try {
-          //     console.log(item.modelViewMatrix);
-          //   } catch (error) {
-          //     console.log(error);
-          //     debugger;
-          //   }
-          // });
-
           composer.render();
         } else {
           renderer.render(scene, camera);
