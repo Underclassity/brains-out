@@ -18,6 +18,18 @@ export default {
     ...mapState(["achievements"]),
 
     item() {
+      if (this.id == "enable-gamepad") {
+        return {
+          title: "Gamepad connected",
+        };
+      }
+
+      if (this.id == "disable-gamepad") {
+        return {
+          title: "Gamepad disconnected",
+        };
+      }
+
       return this.achievements[this.id];
     },
   },
@@ -57,15 +69,31 @@ export default {
         this.openAchievement();
       }
     },
+
+    enableGamepad() {
+      this.id = "enable-gamepad";
+      this.openAchievement();
+    },
+
+    disableGamepad() {
+      this.id = "disable-gamepad";
+      this.openAchievement();
+    },
   },
 
   mounted() {
     this.emitter.on("triggerAchievement", this.triggerAchievement);
     this.emitter.on("addAchievement", this.addAchievement);
+
+    this.emitter.on("enableGamepad", this.enableGamepad);
+    this.emitter.on("disableGamepad", this.disableGamepad);
   },
 
   beforeUnmount() {
     this.emitter.off("triggerAchievement", this.triggerAchievement);
     this.emitter.off("addAchievement", this.addAchievement);
+
+    this.emitter.on("enableGamepad", this.enableGamepad);
+    this.emitter.on("disableGamepad", this.disableGamepad);
   },
 };
