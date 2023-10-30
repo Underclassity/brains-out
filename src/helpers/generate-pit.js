@@ -258,10 +258,24 @@ export function addPlaneHelpers(width, height, depth, size, pit) {
   return true;
 }
 
+/**
+ * Add elements to ground and grass
+ * @param {Number} [x=0]               X position of block
+ * @param {Number} [y=0]               Y position of block
+ * @param {Number} [size=1]            Point size
+ * @param {Object} pitGroup            Pit group object
+ * @param {Object} dummy               Object3D Dummy
+ * @param {Number} partsCountByIndex   All parts count
+ * @param {Number} partsCounter        Parts counter
+ * @param {Array}  meshes              InstancedMeshes array
+ * @param {Number} blocksCount         Block count in 1 block
+ *
+ * @return  {Boolean}  Result
+ */
 function addElementsToGroundAndGrass(
   x = 0,
   y = 0,
-  size,
+  size = 1,
   pitGroup,
   dummy,
   partsCountByIndex,
@@ -610,6 +624,10 @@ export function generatePit(
           true,
           counter % 2 == 0 && pitGrid ? firstColor : secondColor
         );
+        counter++;
+      }
+
+      if (width % 2 == 0) {
         counter++;
       }
     }
