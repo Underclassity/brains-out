@@ -59,7 +59,7 @@ export function generateMatrix(count = 0, skulls, candles = 0) {
       matrix[i] = [];
 
       for (let j = 0; j <= 2; j++) {
-        const meshType = Math.random() <= 0.3 ? 2 : 1;
+        const meshType = Math.random() <= 0.15 ? 2 : 1;
         const meshIndex =
           meshType == 2
             ? randomBetween(0, skulls - 1)
@@ -1173,6 +1173,7 @@ export function generatePit(
       pitGroup.add(grassPumpkinMesh);
 
       const pumpkinDummy = new Object3D();
+      pumpkinDummy.scale.set(0.7, 0.7, 0.7);
 
       let grassPumpkinCouter = 0;
 
@@ -1211,8 +1212,8 @@ export function generatePit(
       const skullDummy = new Object3D();
       const candleDummy = new Object3D();
 
-      skullDummy.scale.set(0.5, 0.5, 0.5);
-      candleDummy.scale.set(0.5, 0.5, 0.5);
+      skullDummy.scale.set(0.7, 0.7, 0.7);
+      candleDummy.scale.set(0.7, 0.7, 0.7);
 
       blocksCache
         .flat()
