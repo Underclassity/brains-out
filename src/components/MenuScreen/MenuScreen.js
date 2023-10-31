@@ -169,27 +169,15 @@ export default {
     },
 
     graphicsMode() {
-      let graphicsMode = "Low";
+      const { scale } = this;
 
-      switch (this.scale) {
-        case 100:
-          graphicsMode = "Low";
-          break;
-        case 200:
-          graphicsMode = "Mid";
-          break;
-        case 300:
-          graphicsMode = "High";
-          break;
-        case 400:
-          graphicsMode = "Ultra";
-          break;
-        default:
-          graphicsMode = "Low";
-          break;
-      }
-
-      return graphicsMode;
+      return scale > 300 && scale <= 400
+        ? "Ultra"
+        : scale > 200 && scale <= 300
+        ? "High"
+        : scale > 100 && scale <= 200
+        ? "Mid"
+        : "Low";
     },
   },
 

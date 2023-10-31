@@ -170,7 +170,7 @@
                 ref="settings.pixelRatio"
                 v-bind:class="{ 'focused': focused == 'settings.pixelRatio' }"
             )
-                .menu--label Resolution
+                .menu--label Quality
                 .menu--dots
                     .menu--dotline
                     .menu--dot(v-bind:class="{ 'menu--dot--active': pixelRatio <= 1 }" v-on:click="setPixelRatio(1)")
