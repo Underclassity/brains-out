@@ -302,6 +302,7 @@ export default {
       "specularColor",
       "gridFirstColor",
       "gridSecondColor",
+      "skullLight",
     ]),
 
     ...mapGetters(["maxScore", "minScore", "avgScore", "colorPalette"]),
@@ -2025,6 +2026,7 @@ export default {
         isPitGrid,
         gridFirstColor,
         gridSecondColor,
+        skullLight,
       } = this;
 
       const [width, height, depth] = pitSize.split("x");
@@ -2070,7 +2072,8 @@ export default {
         gridFirstColor,
         gridSecondColor,
         isHalloween ? halloweenParts : false,
-        halloweenBlocksCount
+        halloweenBlocksCount,
+        skullLight
       );
       scene.add(this.pit);
 

@@ -455,7 +455,8 @@ export function generatePit(
   gridFirstColor = 0xa9_a9_a9,
   gridSecondColor = 0xff_ff_ff,
   halloweenParts = [],
-  halloweenBlocksCount = 9
+  halloweenBlocksCount = 9,
+  skullLight = 0xfa_fa_fa
 ) {
   width = parseInt(width, 10);
   height = parseInt(height, 10);
@@ -1292,7 +1293,7 @@ export function generatePit(
                 );
 
                 if (isAddLight) {
-                  const light = new PointLight(0xfafafa, 1, 5);
+                  const light = new PointLight(skullLight, 1, 5);
                   light.position.set(x + xOffset, y + yOffset, 0.9);
                   pitGroup.add(light);
                 }

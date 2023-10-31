@@ -51,6 +51,7 @@ export const store = createStore({
     specularColor: 0x00_00_00,
     gridFirstColor: 0xcf_cf_cf,
     gridSecondColor: 0xff_ff_ff,
+    skullLight: 0xfa_fa_fa,
 
     colorPaletteType: "complex",
     colorPaletteTypes: ["flat", "complex"],

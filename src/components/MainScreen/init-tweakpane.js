@@ -679,6 +679,25 @@ export function initTweakPane(pane) {
       this.reCreatePit(this.pitSize, true);
     });
 
+  const skullLight = new Color(this.skullLight);
+
+  halloweenFolder
+    .addInput(
+      {
+        skullLight: `#${skullLight.getHexString()}`,
+      },
+      "skullLight",
+      { view: "color" }
+    )
+    .on("change", (ev) => {
+      if (!ev.last) {
+        return false;
+      }
+
+      this.$store.state.skullLight = new Color(ev.value);
+      this.reCreatePit(this.pitSize, true);
+    });
+
   const randomFormsFolder = pane.addFolder({
     title: "Random forms",
     expanded: false,
