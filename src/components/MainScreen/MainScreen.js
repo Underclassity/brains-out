@@ -3738,6 +3738,8 @@ export default {
 
     colorPaletteType(newValue) {
       this.log("Update color palette type: ", newValue);
+
+      this.isOldColorize = newValue == "complex" ? false : true;
     },
 
     blocksType(newValue) {
