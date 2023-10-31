@@ -22,7 +22,7 @@
 
     v-tweakpane.dev-menu(
         v-if="isDev"
-        :pane="{ title: 'Controls' }"
+        :pane="{ title: 'Controls', expanded: isDevControlsOpened }"
         @on-pane-created="initTweakPane"
     )
 

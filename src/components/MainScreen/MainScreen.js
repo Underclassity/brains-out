@@ -104,6 +104,7 @@ export default {
       isLevelHelpers: false,
       isFirstTime: false,
       isTest: false,
+      isDevControlsOpened: true,
 
       isHalloween: false,
       halloweenBlocksCount: 9,
