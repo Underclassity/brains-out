@@ -1667,7 +1667,7 @@ export default {
         const el = element.getObjectByProperty("uuid", uuid);
         const itemPosition = getWorldPosisition(el);
 
-        if (this.layers[z][x][y]) {
+        if (this.layers[z][x][y] || itemPosition.z > 2) {
           this.endGameCall(element);
           return false;
         }
