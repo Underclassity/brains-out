@@ -26,7 +26,13 @@ export function colorizeElement(element, layer) {
   );
 
   const colorize = (material, index = 0) => {
-    material.dispose();
+    if (material) {
+      if (Array.isArray(material)) {
+        material.forEach((item) => item.dispose());
+      } else {
+        material.dispose();
+      }
+    }
 
     let atlas = this.greyAtlas;
     let atlasName = "grey";
@@ -44,6 +50,13 @@ export function colorizeElement(element, layer) {
         atlas = this.greyAtlas;
         atlasName = "grey";
         break;
+    }
+
+    if (this.isOldColorize) {
+      material = new MeshBasicMaterial({ color, map: atlas });
+      material.name = `color-old-${color.getHexString()}`;
+      material.needsUpdate = true;
+      return material;
     }
 
     material.color.set(color);
@@ -64,8 +77,7 @@ export function colorizeElement(element, layer) {
     }
 
     if (this.isOldColorize) {
-      obj.material = new MeshBasicMaterial({ color });
-      obj.material.name = `color-old-${color.getHexString()}`;
+      obj.material = colorize(obj.material);
       return true;
     }
 

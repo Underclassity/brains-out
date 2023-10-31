@@ -6,7 +6,7 @@ const castShadow = true;
 const receiveShadow = true;
 
 /**
- * [loadHelper description]
+ * Load fbx helper
  *
  * @param   {String}    filename        Filename
  * @param   {String}    id              File ID
