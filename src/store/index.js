@@ -44,7 +44,7 @@ export const store = createStore({
     lightColor: 0xff_ff_ff,
     sceneColor: 0xfa_fa_fa,
     // firstLightColor: 0x85_8a_ff,
-    firstLightColor: 0x07_29_eb,
+    firstLightColor: 0x32_4c_db,
     // secondLightColor: 0xff_b0_7e,
     secondLightColor: 0x88_9c_0d,
     thirdLightColor: 0xff_00_03,

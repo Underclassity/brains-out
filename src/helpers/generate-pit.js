@@ -12,7 +12,7 @@ import {
   Object3D,
   PlaneGeometry,
   Vector3,
-  PointLight,
+  // PointLight,
 } from "three";
 
 import generateGrid from "./generate-grid.js";
@@ -1275,7 +1275,7 @@ export function generatePit(
                 yOffset += size / 4;
               }
 
-              const isAddLight = Math.random() <= 0.5;
+              // const isAddLight = Math.random() <= 0.5;
 
               if (meshType == "skull") {
                 skullCounter[index] = putMeshHelper(
@@ -1292,11 +1292,11 @@ export function generatePit(
                   false
                 );
 
-                if (isAddLight) {
-                  const light = new PointLight(skullLight, 1, 5);
-                  light.position.set(x + xOffset, y + yOffset, 0.9);
-                  pitGroup.add(light);
-                }
+                // if (isAddLight) {
+                //   const light = new PointLight(skullLight, 1, 5);
+                //   light.position.set(x + xOffset, y + yOffset, 0.9);
+                //   pitGroup.add(light);
+                // }
               } else {
                 candleCounter[index] = putMeshHelper(
                   true,
