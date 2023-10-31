@@ -59,7 +59,8 @@ export function generateMatrix(count = 0, skulls, candles = 0) {
       matrix[i] = [];
 
       for (let j = 0; j <= 2; j++) {
-        const meshType = Math.random() <= 0.15 ? 2 : 1;
+        // const meshType = Math.random() <= 0.15 ? 2 : 1;
+        const meshType = i == 1 && j == 1 ? 2 : 1;
         const meshIndex =
           meshType == 2
             ? randomBetween(0, skulls - 1)
