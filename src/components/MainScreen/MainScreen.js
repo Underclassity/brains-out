@@ -57,7 +57,6 @@ import {
 import {
   // initLevelPreview,
   // updateLayersPreview,
-  getLayerColor,
   isLayerVisible,
 } from "./init-pit-levels.js";
 import { initLights } from "./init-lights.js";
@@ -2323,7 +2322,6 @@ export default {
     },
 
     // initLevelPreview,
-    getLayerColor,
     isLayerVisible,
     // updateLayersPreview,
 

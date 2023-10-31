@@ -69,7 +69,7 @@ export function initLevelPreview() {
  * @return  {Boolean}  Result
  */
 export function updateLayersPreview() {
-  log("Update layers preview");
+  // log("Update layers preview");
 
   const { layers, pitLevels } = this;
 
@@ -119,25 +119,6 @@ export function isLayerVisible(index) {
   }, []);
 
   return layerValues.includes(1) ? true : false;
-}
-
-/**
- * Get layer color string base on layer index
- *
- * @param   {Number}  index  Layer index value
- *
- * @return  {String}         Color style string
- */
-export function getLayerColor(index) {
-  const { colorPalette } = this;
-
-  const isVisible = this.isLayerVisible(index);
-
-  if (isVisible) {
-    return `background-color: #${colorPalette[index].getHexString()}`;
-  }
-
-  return "background-color: unset";
 }
 
 export default initLevelPreview;

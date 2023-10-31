@@ -184,7 +184,7 @@ export function setLayerPoint(x, y, z, value = 1, updateView = true) {
  * @return  {Boolean}  Result
  */
 export function updateLayersView() {
-  log("Update layers view");
+  // log("Update layers view");
 
   const { isLevelHelpers } = this;
 
