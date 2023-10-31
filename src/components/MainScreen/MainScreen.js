@@ -105,8 +105,8 @@ export default {
       isTest: false,
       isDevControlsOpened: true,
 
-      isHalloween: false,
-      halloweenBlocksCount: 6,
+      isHalloween: true,
+      halloweenBlocksCount: 3,
 
       changeSpeedByLevels: true,
 
@@ -2232,7 +2232,10 @@ export default {
 
       zombie.push(
         ...halloweenParts.children.filter(
-          (item) => item.name.includes("H_01_") || item.name.includes("H_02_")
+          (item) =>
+            (item.name.includes("H_01_") || item.name.includes("H_02_")) &&
+            !item.name.includes("Candle") &&
+            !item.name.includes("Skull")
         )
       );
 
@@ -2245,7 +2248,7 @@ export default {
         this.pitParts.push(child);
 
         if (Array.isArray(child.material)) {
-          child.material.forEach((item, index, array) => {
+          child.material.forEach((item) => {
             item.shininess = 0;
             item.specular = new Color(this.specularColor);
             item.flatShading = true;
@@ -2262,7 +2265,7 @@ export default {
         this.zombieParts.push(child);
 
         if (Array.isArray(child.material)) {
-          child.material.forEach((item, index, array) => {
+          child.material.forEach((item) => {
             item.shininess = 0;
             item.specular = new Color(this.specularColor);
             item.flatShading = true;

@@ -126,8 +126,7 @@ export function getRandomForm() {
       (item) =>
         item.name[item.name.length - 1] != "I" &&
         item.name[item.name.length - 1] != "N" &&
-        !item.name.includes("H_02_") &&
-        !item.name.includes("H_01_")
+        !item.name.includes("H_02_")
     );
   }
 
