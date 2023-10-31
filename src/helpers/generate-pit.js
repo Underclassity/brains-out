@@ -54,7 +54,7 @@ export function generateMatrix(count = 0, skulls, candles = 0) {
 
   let counter = 0;
 
-  while (skullsCount + candlesCount < count && counter < 100) {
+  while (skullsCount + candlesCount <= count && counter < 100) {
     for (let i = 0; i <= 2; i++) {
       matrix[i] = [];
 
@@ -65,8 +65,13 @@ export function generateMatrix(count = 0, skulls, candles = 0) {
           meshType == 2
             ? randomBetween(0, skulls - 1)
             : randomBetween(0, candles - 1);
+
         const isAdd =
-          meshType == 2 ? true : count == 9 ? true : Math.random() > count / 9;
+          meshType == 2
+            ? true
+            : count == 9
+            ? true
+            : Math.random() >= 1 - (count + 1) / 9;
 
         matrix[i][j] = isAdd
           ? {
@@ -75,10 +80,16 @@ export function generateMatrix(count = 0, skulls, candles = 0) {
             }
           : 0;
       }
-
-      skullsCount = matrix.flat().filter((item) => item == 2);
-      candlesCount = matrix.flat().filter((item) => item == 1);
     }
+
+    skullsCount = matrix
+      .flat()
+      .filter((item) => item)
+      .filter((item) => item.meshType == "skull").length;
+    candlesCount = matrix
+      .flat()
+      .filter((item) => item)
+      .filter((item) => item.meshType == "candle").length;
 
     counter++;
   }
