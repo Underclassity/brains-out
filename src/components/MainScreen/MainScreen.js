@@ -2855,7 +2855,7 @@ export default {
       });
 
       joypad.on("button_press", (e) => {
-        const inMenu = this.isMenu || !this.isAccepted;
+        const inMenu = this.isMenu || !this.isAccepted || this.isControlsInfo;
 
         this.log(`Press ${e.detail.buttonName}: menu ${inMenu}`);
 

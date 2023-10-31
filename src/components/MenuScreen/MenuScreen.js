@@ -30,6 +30,7 @@ export default {
         menu: false,
         new: false,
         settings: false,
+        howTo: false,
         controls: false,
         credits: false,
         continue: false,
@@ -543,6 +544,10 @@ export default {
         return false;
       }
 
+      if (this.flags.howTo) {
+        return false;
+      }
+
       const [flag, id] = this.focused.split(".");
 
       const refs = this.refs[flag];
@@ -567,6 +572,10 @@ export default {
 
     upHandler() {
       if (!this.focused) {
+        return false;
+      }
+
+      if (this.flags.howTo) {
         return false;
       }
 
@@ -596,6 +605,10 @@ export default {
         return false;
       }
 
+      if (this.flags.howTo) {
+        return false;
+      }
+
       const leftElement = this.$refs[`${this.focused}.prev`];
 
       if (leftElement) {
@@ -615,6 +628,10 @@ export default {
 
     rightHandler() {
       if (!this.focused) {
+        return false;
+      }
+
+      if (this.flags.howTo) {
         return false;
       }
 
@@ -692,6 +709,14 @@ export default {
         element.scrollWidth > element.clientWidth
       );
     },
+
+    showHowTo() {
+      this.flags.howTo = true;
+    },
+
+    hideHowTo() {
+      this.flags.howTo = false;
+    },
   },
 
   watch: {
@@ -745,6 +770,9 @@ export default {
     this.emitter.on("pressA", this.aHandler);
     this.emitter.on("pressB", this.bHandler);
 
+    this.emitter.on("showHowTo", this.showHowTo);
+    this.emitter.on("hideHowTo", this.hideHowTo);
+
     this.emitter.on("enableGamepad", this.focusFirst);
     this.emitter.on("disableGamepad", this.focusFirst);
 
@@ -770,6 +798,9 @@ export default {
     this.emitter.off("pressRight", this.rightHandler);
     this.emitter.off("pressA", this.aHandler);
     this.emitter.off("pressB", this.bHandler);
+
+    this.emitter.off("showHowTo", this.showHowTo);
+    this.emitter.off("hideHowTo", this.hideHowTo);
 
     this.emitter.off("enableGamepad", this.focusFirst);
     this.emitter.off("disableGamepad", this.focusFirst);
