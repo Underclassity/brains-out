@@ -4,13 +4,13 @@ Transition(duration="300" name="accept")
         .popup--main.popup--glare
             .popup--desc This game is in a state of development and may contain bugs, that can lead to some unexpected behavior. By pressing "Play", you accept any scenario that can happen. Otherwise, close this page.
 
-            .popup--checkbox
-                .popup--checkbox--title Don't show again
-                input.popup--checkbox--input(
-                    type="checkbox"
-                    v-model="save"
-                    ref="checkbox"
-                )
+            //- .popup--checkbox
+            //-     .popup--checkbox--title Don't show again
+            //-     input.popup--checkbox--input(
+            //-         type="checkbox"
+            //-         v-model="save"
+            //-         ref="checkbox"
+            //-     )
 
             .popup--buttons
                 .popup--button.popup--button--green.popup--glare(

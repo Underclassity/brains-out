@@ -3150,9 +3150,9 @@ export default {
             this.moveRight();
           }
           break;
-        case "ShiftLeft":
-          this.isSlow = !this.isSlow;
-          break;
+        // case "ShiftLeft":
+        //   this.isSlow = !this.isSlow;
+        //   break;
         case "Space":
           if (this.isMenu) {
             return false;
@@ -3174,12 +3174,12 @@ export default {
             this.openMenu();
           }
           break;
-        case "KeyR":
-          if (!this.isMenu) {
-            this.movesCounter += 2;
-            this.randomRotate(3);
-          }
-          break;
+        // case "KeyR":
+        //   if (!this.isMenu) {
+        //     this.movesCounter += 2;
+        //     this.randomRotate(3);
+        //   }
+        //   break;
       }
     },
 
