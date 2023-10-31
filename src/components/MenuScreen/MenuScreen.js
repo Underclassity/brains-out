@@ -167,6 +167,30 @@ export default {
 
       return Math.round((pixelRatio / devicePixelRatio) * 100);
     },
+
+    graphicsMode() {
+      let graphicsMode = "Low";
+
+      switch (this.scale) {
+        case 100:
+          graphicsMode = "Low";
+          break;
+        case 200:
+          graphicsMode = "Mid";
+          break;
+        case 300:
+          graphicsMode = "High";
+          break;
+        case 400:
+          graphicsMode = "Ultra";
+          break;
+        default:
+          graphicsMode = "Low";
+          break;
+      }
+
+      return graphicsMode;
+    },
   },
 
   methods: {
