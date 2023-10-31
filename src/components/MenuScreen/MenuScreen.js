@@ -170,13 +170,13 @@ export default {
     },
 
     graphicsMode() {
-      const { scale } = this;
+      const { pixelRatio } = this;
 
-      return scale > 300 && scale <= 400
+      return pixelRatio > 3
         ? "Ultra"
-        : scale > 200 && scale <= 300
+        : pixelRatio > 2 && pixelRatio <= 3
         ? "High"
-        : scale > 100 && scale <= 200
+        : pixelRatio > 1 && pixelRatio <= 2
         ? "Mid"
         : "Low";
     },
