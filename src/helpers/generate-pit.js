@@ -65,7 +65,8 @@ export function generateMatrix(count = 0, skulls, candles = 0) {
           meshType == 2
             ? randomBetween(0, skulls - 1)
             : randomBetween(0, candles - 1);
-        const isAdd = count == 9 ? true : Math.random() > count / 9;
+        const isAdd =
+          meshType == 2 ? true : count == 9 ? true : Math.random() > count / 9;
 
         matrix[i][j] = isAdd
           ? {
@@ -1230,8 +1231,20 @@ export function generatePit(
                 continue;
               }
 
-              let xOffset = randomBetweenFloats(-size / 6, size / 6);
-              let yOffset = randomBetweenFloats(-size / 6, size / 6);
+              const { meshType, index } = matrixItem;
+
+              const mesh =
+                meshType == "skull" ? skullMeshes[index] : candleMeshes[index];
+              const localDummy = meshType == "skull" ? skullDummy : candleDummy;
+
+              let xOffset =
+                meshType == "candle"
+                  ? randomBetweenFloats(-size / 6, size / 6)
+                  : 0;
+              let yOffset =
+                meshType == "candle"
+                  ? randomBetweenFloats(-size / 6, size / 6)
+                  : 0;
 
               if (i == 0) {
                 xOffset -= size / 4;
@@ -1248,12 +1261,6 @@ export function generatePit(
               if (j == 2) {
                 yOffset += size / 4;
               }
-
-              const { meshType, index } = matrixItem;
-
-              const mesh =
-                meshType == "skull" ? skullMeshes[index] : candleMeshes[index];
-              const localDummy = meshType == "skull" ? skullDummy : candleDummy;
 
               if (meshType == "skull") {
                 skullCounter[index] = putMeshHelper(

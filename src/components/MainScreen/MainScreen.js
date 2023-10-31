@@ -106,7 +106,7 @@ export default {
       isDevControlsOpened: true,
 
       isHalloween: false,
-      halloweenBlocksCount: 9,
+      halloweenBlocksCount: 6,
 
       changeSpeedByLevels: true,
 
