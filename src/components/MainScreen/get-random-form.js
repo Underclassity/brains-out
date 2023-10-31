@@ -110,7 +110,7 @@ export function getRandomForm() {
     );
   }
 
-  const isDevParts = Math.random() <= 0.01;
+  const isDevParts = Math.random() <= 0.01 && !this.isPause;
   const devId = Math.random() <= 0.5 ? "I" : "N";
 
   const isGhost = Math.random() <= 0.15 && this.isHalloween;
