@@ -53,7 +53,7 @@ export function colorizeElement(element, layer) {
     }
 
     if (this.isOldColorize) {
-      material = new MeshBasicMaterial({ color, map: atlas });
+      material = new MeshBasicMaterial({ color });
       material.name = `color-old-${color.getHexString()}`;
       material.needsUpdate = true;
       return material;
