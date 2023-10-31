@@ -1,4 +1,4 @@
-import logoSrc from "../../assets/img/green-logo.png";
+import logoSrc from "../../assets/img/halloween-logo.png";
 
 export default {
   name: "LogoScreen",

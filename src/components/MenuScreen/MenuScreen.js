@@ -5,7 +5,7 @@ import assets from "../../store/assets.js";
 
 import log from "../../helpers/log.js";
 
-import logoSrc from "../../assets/img/green-logo.png";
+import logoSrc from "../../assets/img/halloween-logo.png";
 
 export default {
   name: "MenuScreen",
