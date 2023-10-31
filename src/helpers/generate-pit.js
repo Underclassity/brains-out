@@ -1214,7 +1214,7 @@ export function generatePit(
       const candleDummy = new Object3D();
 
       skullDummy.scale.set(0.7, 0.7, 0.7);
-      candleDummy.scale.set(0.7, 0.7, 0.7);
+      candleDummy.scale.set(1, 1, 1);
 
       blocksCache
         .flat()
