@@ -18,6 +18,10 @@ const receiveShadow = true;
 function loadHelper(filename, id, cb, scale = 0.01) {
   log(`Load ${id} model`);
 
+  if (!cb) {
+    cb = log;
+  }
+
   return new Promise((resolve) => {
     const fbxLoader = new FBXLoader();
     fbxLoader.load(

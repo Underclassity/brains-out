@@ -190,6 +190,10 @@ export default {
       gamepad: undefined,
 
       composer: undefined,
+      smaa: undefined,
+      glitch: undefined,
+      chroma: undefined,
+      perturbation: undefined,
 
       lights: {
         l1: undefined,
@@ -342,6 +346,9 @@ export default {
       count += this.fallSoundId.length;
       count += this.rotationSoundId.length;
 
+      count++;
+
+      // Perturbation texture
       count++;
 
       // Fog texture
@@ -2304,6 +2311,25 @@ export default {
     },
 
     /**
+     * Load perturbation texture helper
+     *
+     * @return  {Boolean}  Result
+     */
+    async loadPerturbation() {
+      this.log("Load perturbation texture");
+
+      const perturbationTexture = await textureLoaderHelper(
+        "perturb.jpg",
+        "perturbation",
+        this.progressCb
+      );
+
+      this.perturbation = perturbationTexture;
+
+      return true;
+    },
+
+    /**
      * Update element preview helper
      *
      * @return  {Boolean}  Result
@@ -2425,6 +2451,10 @@ export default {
         return false;
       }
 
+      this.glitch.enabled = true;
+      this.chroma.enabled = true;
+      this.$store.commit("updateShaders", true);
+
       const zIndexes = elements
         .map((item) => item.userData.layer.z)
         .filter((item, index, array) => array.indexOf(item) === index);
@@ -2488,6 +2518,12 @@ export default {
 
       this.updateLayersView();
 
+      setTimeout(() => {
+        this.glitch.enabled = false;
+        this.chroma.enabled = false;
+        this.$store.commit("updateShaders", false);
+      }, 150);
+
       return true;
     },
 
@@ -2514,6 +2550,10 @@ export default {
       if (zIndexes.length <= 1) {
         return false;
       }
+
+      this.glitch.enabled = true;
+      this.chroma.enabled = true;
+      this.$store.commit("updateShaders", true);
 
       let zIndexesAfter = zIndexes
         .map((value) => ({ value, sort: Math.random() }))
@@ -2583,6 +2623,12 @@ export default {
       });
 
       this.updateLayersView();
+
+      setTimeout(() => {
+        this.glitch.enabled = false;
+        this.chroma.enabled = false;
+        this.$store.commit("updateShaders", false);
+      }, 150);
 
       return true;
     },
@@ -2803,7 +2849,7 @@ export default {
 
         // controls.update();
 
-        if (this.isShaders) {
+        if (this.isShaders && composer) {
           composer.render();
         } else {
           renderer.render(scene, camera);
@@ -2845,8 +2891,18 @@ export default {
       container.appendChild(renderer.domElement);
       this.renderer = renderer;
 
-      const composer = this.initShaders(width, height, renderer, scene, camera);
+      const { composer, smaa, glitch, chroma } = this.initShaders(
+        width,
+        height,
+        renderer,
+        scene,
+        camera,
+        this.perturbation
+      );
       this.composer = composer;
+      this.smaa = smaa;
+      this.glitch = glitch;
+      this.chroma = chroma;
 
       if (this.orbitControls) {
         const { OrbitControls } = await import(
@@ -3646,6 +3702,7 @@ export default {
     this.showBestScore = this.maxScore;
 
     await this.loadZombie();
+    await this.loadPerturbation();
     this.initAudio();
     this.init();
 

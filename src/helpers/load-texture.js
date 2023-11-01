@@ -15,6 +15,10 @@ const loader = new TextureLoader();
  * @return  {Object}              Result
  */
 export function textureLoaderHelper(filename, id, cb) {
+  if (!cb) {
+    cb = log;
+  }
+
   return new Promise((resolve) => {
     loader.load(
       `models/${filename}`,

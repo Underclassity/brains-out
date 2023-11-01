@@ -327,6 +327,11 @@ export function initKeyBoard() {
           this.moveRight();
         }
         break;
+    }
+  };
+
+  const momentKeyHandler = ({ code }) => {
+    switch (code) {
       // case "ShiftLeft":
       //   this.isSlow = !this.isSlow;
       //   break;
@@ -365,6 +370,7 @@ export function initKeyBoard() {
   }, 150);
 
   document.addEventListener("keydown", throttledKeyHandler);
+  document.addEventListener("keydown", momentKeyHandler);
 
   return true;
 }

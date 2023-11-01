@@ -1,13 +1,15 @@
 import {
+  BlendFunction,
+  ChromaticAberrationEffect,
+  EdgeDetectionMode,
   EffectComposer,
   EffectPass,
-  RenderPass,
-  // BlendFunction,
-  EdgeDetectionMode,
+  GlitchEffect,
+  NoiseEffect,
   PredicationMode,
+  RenderPass,
   SMAAEffect,
   SMAAPreset,
-  // TextureEffect,
 } from "postprocessing";
 
 import log from "../../helpers/log.js";
@@ -15,16 +17,24 @@ import log from "../../helpers/log.js";
 /**
  * Init shaders on scene
  *
- * @param   {Number}  width     Width
- * @param   {Number}  height    Height
- * @param   {Object}  renderer  Renderer
- * @param   {Object}  scene     Scene
- * @param   {Object}  camera    Camera
+ * @param   {Number}  width           Width
+ * @param   {Number}  height          Height
+ * @param   {Object}  renderer        Renderer
+ * @param   {Object}  scene           Scene
+ * @param   {Object}  camera          Camera
+ * @param   {Object}  perturbation    Perturbation texture
  *
- * @return  {Object}            Composer
+ * @return  {Object}                  Composer
  */
-export function initShaders(width, height, renderer, scene, camera) {
-  log(`Init shaders: ${width}x${height}`);
+export function initShaders(
+  width,
+  height,
+  renderer,
+  scene,
+  camera,
+  perturbation
+) {
+  this.log(`Init shaders: ${width}x${height}`);
 
   const context = renderer.getContext();
 
@@ -41,33 +51,53 @@ export function initShaders(width, height, renderer, scene, camera) {
     predicationMode: PredicationMode.DEPTH,
   });
 
-  // smaaEffect.edgeDetectionMaterial.setEdgeDetectionThreshold(0.02);
-  // smaaEffect.edgeDetectionMaterial.setPredicationMode(PredicationMode.DEPTH);
-  // smaaEffect.edgeDetectionMaterial.setPredicationThreshold(0.002);
-  // smaaEffect.edgeDetectionMaterial.setPredicationScale(1.0);
+  const chromaticAberrationEffect = new ChromaticAberrationEffect();
 
-  // const edgesTextureEffect = new TextureEffect({
-  //   blendFunction: BlendFunction.SKIP,
-  //   texture: smaaEffect.renderTargetEdges.texture,
-  // });
+  const glitchEffect = new GlitchEffect({
+    perturbationMap: perturbation,
+    chromaticAberrationOffset: chromaticAberrationEffect.offset,
+  });
 
-  // const weightsTextureEffect = new TextureEffect({
-  //   blendFunction: BlendFunction.SKIP,
-  //   texture: smaaEffect.renderTargetWeights.texture,
-  // });
+  // 0:DISABLED
+  // 1:SPORADIC
+  // 2:CONSTANT_MILD
+  // 3:CONSTANT_WILD
 
-  const effectPass = new EffectPass(
+  glitchEffect.mode = 3; // CONSTANT_MILD
+
+  const noiseEffect = new NoiseEffect({
+    blendFunction: BlendFunction.COLOR_DODGE,
+  });
+
+  noiseEffect.blendMode.opacity.value = 0.1;
+
+  const smaaPass = new EffectPass(camera, smaaEffect);
+  smaaPass.enabled = false;
+
+  const glitchPass = new EffectPass(camera, glitchEffect, noiseEffect);
+  glitchPass.enabled = false;
+
+  const chromaticAberrationPass = new EffectPass(
     camera,
-    smaaEffect,
-    // edgesTextureEffect,
-    // weightsTextureEffect
+    chromaticAberrationEffect
   );
-  effectPass.renderToScreen = true;
+  chromaticAberrationPass.enabled = false;
 
   composer.addPass(renderPass);
-  composer.addPass(effectPass);
+  composer.addPass(smaaPass);
+  composer.addPass(glitchPass);
+  composer.addPass(chromaticAberrationPass);
 
-  return composer;
+  console.log(smaaPass);
+  console.log(glitchPass);
+  console.log(chromaticAberrationPass);
+
+  return {
+    composer,
+    smaa: smaaPass,
+    glitch: glitchPass,
+    chroma: chromaticAberrationPass,
+  };
 }
 
 export default initShaders;
