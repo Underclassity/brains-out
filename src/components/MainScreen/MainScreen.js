@@ -276,6 +276,10 @@ export default {
       "maxSpeed",
       "speedStep",
 
+      "isTimeless",
+      "timelessMaxTime",
+      "timelessTime",
+
       "isEndless",
       "isPractice",
 
@@ -1598,11 +1602,15 @@ export default {
      * @return  {Boolean}           Result
      */
     endGameCall(element) {
-      const elementPoints = this.getElementLayerPoints(element);
+      if (element) {
+        const elementPoints = this.getElementLayerPoints(element);
 
-      this.log(`End game call on element: ${element.name}`);
+        this.log(`End game call on element: ${element.name}`);
 
-      this.changeScore(elementPoints.length, "points");
+        this.changeScore(elementPoints.length, "points");
+      } else {
+        this.log(`End game call`);
+      }
 
       // if (this.score <= this.pitDepth) {
       //   this.emitter.emit("addAchievement", "are-you-playing");
@@ -2711,6 +2719,18 @@ export default {
         }
 
         const delta = clock.getDelta();
+
+        if (this.isTimeless && this.timelessTime) {
+          const newValue = this.timelessTime - delta * 1000;
+
+          if (newValue <= 0) {
+            this.endGameCall(false);
+          }
+
+          this.$store.commit("setTimelessTime", newValue);
+        } else {
+          this.$store.commit("setTimelessTime", this.timelessMaxTime);
+        }
 
         if (!this.isPause) {
           const divider =

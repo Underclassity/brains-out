@@ -127,6 +127,13 @@ function addActionsFolder(pane) {
   return true;
 }
 
+/**
+ * Add renderer stats folder
+ *
+ * @param   {Object}   pane  Pane
+ *
+ * @return  {Boolean}        Result
+ */
 function addRendererInfoFolder(pane) {
   if (!pane) {
     return false;
@@ -134,7 +141,7 @@ function addRendererInfoFolder(pane) {
 
   const rendererInfoFolder = pane.addFolder({
     title: "Render info",
-    expanded: true,
+    expanded: false,
   });
 
   const params = {
@@ -237,26 +244,79 @@ function addRendererInfoFolder(pane) {
 }
 
 /**
- * Init Tweakpane
+ * Add game info folder
  *
- * @param   {Object}  pane  Input tweakpane object
+ * @param   {Object}   pane  Pane
  *
- * @return  {Boolean}       Result
+ * @return  {Boolean}        Result
  */
-export function initTweakPane(pane) {
+function addGameInfoFolder(pane) {
   if (!pane) {
     return false;
   }
 
-  this.log("Init Tweakpane");
-
   const params = {
-    fps: this.fps,
-    frameTime: this.frameTime,
     score: this.score,
     avgScore: this.avgScore,
     minScore: this.minScore,
     maxScore: this.maxScore,
+  };
+
+  const gameInfoFolder = pane.addFolder({
+    title: "Game info",
+    expanded: false,
+  });
+
+  gameInfoFolder
+    .addMonitor(params, "score", {
+      readonly: true,
+    })
+    .on("update", () => {
+      params.score = this.score;
+    });
+
+  gameInfoFolder
+    .addMonitor(params, "avgScore", {
+      readonly: true,
+    })
+    .on("update", () => {
+      params.avgScore = this.avgScore;
+    });
+
+  gameInfoFolder
+    .addMonitor(params, "minScore", {
+      readonly: true,
+    })
+    .on("update", () => {
+      params.minScore = this.minScore;
+    });
+
+  gameInfoFolder
+    .addMonitor(params, "maxScore", {
+      readonly: true,
+    })
+    .on("update", () => {
+      params.maxScore = this.maxScore;
+    });
+
+  return pane;
+}
+
+/**
+ * Add info folder
+ *
+ * @param   {Object}   pane  Pane
+ *
+ * @return  {Boolean}        Result
+ */
+function addInfoFolder(pane) {
+  if (!pane) {
+    return false;
+  }
+
+  const params = {
+    fps: this.fps,
+    frameTime: this.frameTime,
   };
 
   const infoFolder = pane.addFolder({
@@ -303,44 +363,20 @@ export function initTweakPane(pane) {
       params.frameTime = this.frameTime;
     });
 
-  addRendererInfoFolder.call(this, pane);
+  return pane;
+}
 
-  const gameInfoFolder = pane.addFolder({
-    title: "Game info",
-    expanded: false,
-  });
-
-  gameInfoFolder
-    .addMonitor(params, "score", {
-      readonly: true,
-    })
-    .on("update", () => {
-      params.score = this.score;
-    });
-
-  gameInfoFolder
-    .addMonitor(params, "avgScore", {
-      readonly: true,
-    })
-    .on("update", () => {
-      params.avgScore = this.avgScore;
-    });
-
-  gameInfoFolder
-    .addMonitor(params, "minScore", {
-      readonly: true,
-    })
-    .on("update", () => {
-      params.minScore = this.minScore;
-    });
-
-  gameInfoFolder
-    .addMonitor(params, "maxScore", {
-      readonly: true,
-    })
-    .on("update", () => {
-      params.maxScore = this.maxScore;
-    });
+/**
+ * Add colors folder
+ *
+ * @param   {Object}   pane  Pane
+ *
+ * @return  {Boolean}        Result
+ */
+function addColorsFolder(pane) {
+  if (!pane) {
+    return false;
+  }
 
   const colorsFolder = pane.addFolder({
     title: "Colors",
@@ -354,7 +390,6 @@ export function initTweakPane(pane) {
   const thirdLightColor = new Color(this.thirdLightColor);
   const gridFirstColor = new Color(this.gridFirstColor);
   const gridSecondColor = new Color(this.gridSecondColor);
-  const fogColor = new Color(this.fogColor);
 
   colorsFolder
     .addInput(
@@ -454,6 +489,21 @@ export function initTweakPane(pane) {
       this.$store.state.thirdLightColor = new Color(ev.value);
       this.initLights(true);
     });
+
+  return pane;
+}
+
+/**
+ * Add settings folder
+ *
+ * @param   {Object}   pane  Pane
+ *
+ * @return  {Boolean}        Result
+ */
+function addSettingsFolder(pane) {
+  if (!pane) {
+    return false;
+  }
 
   const settingsFolder = pane.addFolder({
     title: "Settings",
@@ -586,6 +636,21 @@ export function initTweakPane(pane) {
       this.updateBlocksType(ev.value);
     });
 
+  return pane;
+}
+
+/**
+ * Add helpers folder
+ *
+ * @param   {Object}   pane  Pane
+ *
+ * @return  {Boolean}        Result
+ */
+function addHelpersFolder(pane) {
+  if (!pane) {
+    return false;
+  }
+
   const helpersFolder = pane.addFolder({
     title: "Helpers",
     expanded: false,
@@ -602,7 +667,22 @@ export function initTweakPane(pane) {
       this.isLevelHelpers = ev.value;
     });
 
-  addModesFolders.call(this, pane);
+  return pane;
+}
+
+/**
+ * Add fog settings folder
+ *
+ * @param   {Object}   pane  Pane
+ *
+ * @return  {Boolean}        Result
+ */
+function addFogFolder(pane) {
+  if (!pane) {
+    return false;
+  }
+
+  const fogColor = new Color(this.fogColor);
 
   const fogFolder = pane.addFolder({
     title: "Fog",
@@ -647,6 +727,21 @@ export function initTweakPane(pane) {
     .on("change", (ev) => {
       this.fogDensity = ev.value;
     });
+
+  return pane;
+}
+
+/**
+ * Add halloween settings folder
+ *
+ * @param   {Object}   pane  Pane
+ *
+ * @return  {Boolean}        Result
+ */
+function addHalloweenFolder(pane) {
+  if (!pane) {
+    return false;
+  }
 
   const halloweenFolder = pane.addFolder({
     title: "Halloween",
@@ -698,6 +793,21 @@ export function initTweakPane(pane) {
       this.reCreatePit(this.pitSize, true);
     });
 
+  return pane;
+}
+
+/**
+ * Add random forms and shuffle actions folder
+ *
+ * @param   {Object}   pane  Pane
+ *
+ * @return  {Boolean}        Result
+ */
+function addRandomFormsFolder(pane) {
+  if (!pane) {
+    return false;
+  }
+
   const randomFormsFolder = pane.addFolder({
     title: "Random forms",
     expanded: false,
@@ -725,6 +835,91 @@ export function initTweakPane(pane) {
       this.addRandomFigures();
     });
 
+  return pane;
+}
+
+/**
+ * Add random forms and shuffle actions folder
+ *
+ * @param   {Object}   pane  Pane
+ *
+ * @return  {Boolean}        Result
+ */
+function addTimelessFolder(pane) {
+  if (!pane) {
+    return false;
+  }
+
+  const timelessModeFolder = pane.addFolder({
+    title: "Timeless mode",
+    expanded: false,
+  });
+
+  const params = {
+    time: this.timelessTime,
+  };
+
+  timelessModeFolder
+    .addInput(
+      {
+        isTimeless: this.isTimeless,
+      },
+      "isTimeless"
+    )
+    .on("change", (ev) => {
+      this.$store.commit("setTimeless", ev.value);
+    });
+
+  timelessModeFolder
+    .addBlade({
+      view: "slider",
+      label: "Max time",
+      min: 1,
+      max: 10 * 60,
+      format: (v) => Math.round(v),
+      value: this.timelessMaxTime / 1000,
+    })
+    .on("change", (ev) => {
+      this.$store.commit("setTimelessMaxTime", ev.value * 1000);
+    });
+
+  timelessModeFolder
+    .addMonitor(params, "time", {
+      readonly: true,
+      format: (v) => Math.round(v),
+    })
+    .on("update", () => {
+      params.time = this.timelessTime / 1000;
+    });
+
+  return pane;
+}
+
+/**
+ * Init Tweakpane
+ *
+ * @param   {Object}  pane  Input tweakpane object
+ *
+ * @return  {Boolean}       Result
+ */
+export function initTweakPane(pane) {
+  if (!pane) {
+    return false;
+  }
+
+  this.log("Init Tweakpane");
+
+  addInfoFolder.call(this, pane);
+  addRendererInfoFolder.call(this, pane);
+  addGameInfoFolder.call(this, pane);
+  addColorsFolder.call(this, pane);
+  addSettingsFolder.call(this, pane);
+  addHelpersFolder.call(this, pane);
+  addModesFolders.call(this, pane);
+  addFogFolder.call(this, pane);
+  addHalloweenFolder.call(this, pane);
+  addTimelessFolder.call(this, pane);
+  addRandomFormsFolder.call(this, pane);
   addActionsFolder.call(this, pane);
 
   return true;

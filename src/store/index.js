@@ -58,6 +58,9 @@ export const store = createStore({
 
     isEndless: false,
     isPractice: false,
+    isTimeless: false,
+    timelessMaxTime: 5 * 60 * 1000, // 5 sec timer
+    timelessTime: 5 * 60 * 1000, // current timer value
 
     isDev: false,
     isControls: false,
@@ -475,6 +478,34 @@ export const store = createStore({
       state.pitWidth = pitHeight;
       state.pitHeight = pitWidth;
     },
+
+    setTimeless(state, value) {
+      state.isTimeless = value;
+    },
+
+    setTimelessMaxTime(state, value) {
+      if (value <= 0) {
+        value = 1;
+      }
+
+      if (value >= 10 * 60 * 1000) {
+        value = 10 * 60 * 1000;
+      }
+
+      state.timelessMaxTime = value;
+    },
+
+    setTimelessTime(state, value) {
+      if (value <= 0) {
+        value = 0;
+      }
+
+      if (value >= state.timelessMaxTime) {
+        value = state.timelessMaxTime;
+      }
+
+      state.timelessTime = value;
+    },
   },
   actions: {
     addAchievement({ state }, achievement) {
@@ -535,11 +566,14 @@ function parseURLSearchParams() {
     if (id in store.state) {
       log(`Update ${id}`, value);
 
-      if (["speed", "volume", "fxVolume", "settingsSpeed"].includes(id)) {
-        store.state[id] = parseFloat(value, 10);
-      } else {
-        store.state[id] = value;
-      }
+      store.state[id] = [
+        "speed",
+        "volume",
+        "fxVolume",
+        "settingsSpeed",
+      ].includes(id)
+        ? parseFloat(value, 10)
+        : value;
     }
   }
 
