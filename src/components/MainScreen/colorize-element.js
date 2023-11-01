@@ -1,5 +1,7 @@
 import { MeshBasicMaterial } from "three";
 
+const materialCache = {};
+
 /**
  * Colorize element
  *
@@ -52,17 +54,38 @@ export function colorizeElement(element, layer) {
         break;
     }
 
+    const materialName = this.isOldColorize
+      ? `color-old-${color.getHexString()}`
+      : `color-${atlasName}-${color.getHexString()}`;
+
+    // Take material from cache if exists
+    if (materialCache[materialName]) {
+      // this.log(
+      //   `Take from cache ${Object.keys(materialCache).length}: ${materialName}`
+      // );
+
+      material = materialCache[materialName];
+      material.needsUpdate = true;
+      return material;
+    }
+
     if (this.isOldColorize) {
       material = new MeshBasicMaterial({ color });
-      material.name = `color-old-${color.getHexString()}`;
+      material.name = materialName;
       material.needsUpdate = true;
+
+      // Save old colorize material in cache
+      materialCache[materialName] = material;
 
       return material;
     }
 
     material = new MeshBasicMaterial({ color, map: atlas });
-    material.name = `color-old-${color.getHexString()}`;
+    material.name = materialName;
     material.needsUpdate = true;
+
+    // Save new colorize material in cache
+    materialCache[materialName] = material;
 
     return material;
 
