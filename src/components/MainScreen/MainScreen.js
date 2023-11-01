@@ -2,12 +2,17 @@ import { defineAsyncComponent, nextTick } from "vue";
 import { mapState, mapGetters } from "vuex";
 
 import {
+  ClampToEdgeWrapping,
   Clock,
   Color,
   FogExp2,
   Group,
   MathUtils,
+  Mesh,
+  MeshBasicMaterial,
+  MeshLambertMaterial,
   PerspectiveCamera,
+  PlaneGeometry,
   Scene,
   WebGLRenderer,
 } from "three";
@@ -133,9 +138,17 @@ export default {
 
       // Modes
       fog: undefined,
-      fogColor: 0xcccccc,
+      fogColor: 0xcc_cc_cc,
       fogDensity: 0.1,
       isFog: false,
+
+      isFogPlanes: false,
+      fogGroup: undefined,
+      fogTexture: undefined,
+      fogOpacity: 0.5,
+      fogSize: 5,
+      fogParticlesCount: 10,
+      fogParticlesDelta: 0.05,
 
       isSlow: false,
       slowValue: 100,
@@ -329,6 +342,9 @@ export default {
       count += this.fallSoundId.length;
       count += this.rotationSoundId.length;
 
+      count++;
+
+      // Fog texture
       count++;
 
       // Atlases
@@ -2628,6 +2644,9 @@ export default {
       this.initJoyPad();
       this.initKeyBoard();
 
+      // this.addFogPlanes();
+      this.addFogParticles();
+
       // animation
 
       let timeDelta = 0;
@@ -2730,6 +2749,16 @@ export default {
           this.$store.commit("setTimelessTime", newValue);
         } else {
           this.$store.commit("setTimelessTime", this.timelessMaxTime);
+        }
+
+        if (this.particles) {
+          this.particles.forEach((particle) => {
+            const z = particle.rotation.z;
+
+            particle.lookAt(camera.position);
+
+            particle.rotation.z = z + delta * this.fogParticlesDelta;
+          });
         }
 
         if (!this.isPause) {
@@ -3287,6 +3316,102 @@ export default {
 
       return true;
     },
+
+    /**
+     * Add fog planes to all layers
+     *
+     * @return  {Boolean}  Result
+     */
+    async addFogPlanes() {
+      this.log("Add fog planes");
+
+      const { pitWidth, pitHeight, pitDepth, size } = this;
+
+      const fogTexture = await textureLoaderHelper(
+        "fog.png",
+        "fog",
+        this.progressCb
+      );
+      fogTexture.wrapS = ClampToEdgeWrapping;
+      fogTexture.wrapT = ClampToEdgeWrapping;
+
+      const planeGeometry = new PlaneGeometry(pitWidth, pitHeight);
+      planeGeometry.name = "fog-level-geometry";
+      const planeMaterial = new MeshBasicMaterial({
+        color: new Color(0xfa_fa_fa),
+        map: fogTexture,
+      });
+      planeMaterial.name = "fog-level-material";
+      const planeMesh = new Mesh(planeGeometry, planeMaterial);
+
+      for (let i = 0; i < pitDepth; i++) {
+        const mesh = planeMesh.clone();
+        mesh.name = `fog-level-${i}`;
+        mesh.position.set(0, 0, -i + size / 2);
+        this.scene.add(mesh);
+      }
+
+      return true;
+    },
+
+    /**
+     * Add fog planes helper
+     *
+     * @return  {Boolean}  Result
+     */
+    async addFogParticles() {
+      this.log("Add fog planes particles");
+
+      const { scene, fogGroup, fogTexture } = this;
+
+      if (fogGroup) {
+        this.removeObjWithChildren(fogGroup);
+      }
+
+      if (!this.isFogPlanes) {
+        return false;
+      }
+
+      if (!fogTexture) {
+        this.fogTexture = await textureLoaderHelper(
+          "fog.png",
+          "fog",
+          this.progressCb
+        );
+      }
+
+      this.fogGroup = new Group();
+
+      const material = new MeshLambertMaterial({
+        color: this.fogColor,
+        depthWrite: false,
+        map: this.fogTexture,
+        transparent: true,
+        opacity: this.fogOpacity,
+      });
+
+      const geometry = new PlaneGeometry(this.fogSize, this.fogSize);
+      this.particles = [];
+
+      for (let i = 0; i < this.fogParticlesCount; i++) {
+        const particle = new Mesh(geometry, material);
+
+        particle.position.set(
+          (Math.random() - 0.5) * this.fogSize,
+          (Math.random() - 0.5) * this.fogSize,
+          2
+        );
+
+        particle.rotation.z = Math.random() * Math.PI * 2;
+
+        this.fogGroup.add(particle);
+        this.particles.push(particle);
+      }
+
+      scene.add(this.fogGroup);
+
+      return true;
+    },
   },
 
   watch: {
@@ -3487,6 +3612,24 @@ export default {
 
     fogDensity(newValue) {
       this.fog.density = newValue;
+    },
+
+    fogColor(color) {
+      if (this.particles) {
+        this.particles.forEach((item) => {
+          item.material.color = color;
+          item.material.needsUpdate = true;
+        });
+      }
+    },
+
+    fogOpacity(opacity) {
+      if (this.particles) {
+        this.particles.forEach((item) => {
+          item.material.opacity = opacity;
+          item.material.needsUpdate = true;
+        });
+      }
     },
   },
 

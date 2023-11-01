@@ -732,6 +732,115 @@ function addFogFolder(pane) {
 }
 
 /**
+ * Add fog planes settings folder
+ *
+ * @param   {Object}   pane  Pane
+ *
+ * @return  {Boolean}        Result
+ */
+function addFogPlanesFolder(pane) {
+  if (!pane) {
+    return false;
+  }
+
+  const fogColor = new Color(this.fogColor);
+
+  const fogPlanesFolder = pane.addFolder({
+    title: "Fog planes",
+    expanded: false,
+  });
+
+  fogPlanesFolder
+    .addInput(
+      {
+        isFogPlanes: this.isFogPlanes,
+      },
+      "isFogPlanes"
+    )
+    .on("change", (ev) => {
+      this.isFogPlanes = ev.value;
+      this.addFogParticles();
+    });
+
+  fogPlanesFolder
+    .addInput(
+      {
+        fogColor: `#${fogColor.getHexString()}`,
+      },
+      "fogColor",
+      { view: "color" }
+    )
+    .on("change", (ev) => {
+      if (!ev.last) {
+        return false;
+      }
+
+      this.fogColor = new Color(ev.value);
+    });
+
+  fogPlanesFolder
+    .addBlade({
+      view: "slider",
+      label: "Opacity",
+      min: 0.001,
+      max: 1,
+      value: this.fogOpacity,
+    })
+    .on("change", (ev) => {
+      this.fogOpacity = ev.value;
+    });
+
+  fogPlanesFolder
+    .addBlade({
+      view: "slider",
+      label: "Particles count",
+      min: 1,
+      max: 100,
+      format: (v) => Math.round(v),
+      value: this.fogParticlesCount,
+    })
+    .on("change", (ev) => {
+      if (!ev.last) {
+        return false;
+      }
+
+      this.fogParticlesCount = ev.value;
+      this.addFogParticles();
+    });
+
+  fogPlanesFolder
+    .addBlade({
+      view: "slider",
+      label: "Particle size",
+      min: 0.1,
+      max: 10,
+      value: this.fogSize,
+    })
+    .on("change", (ev) => {
+      if (!ev.last) {
+        return false;
+      }
+
+      this.fogSize = ev.value;
+      this.addFogParticles();
+    });
+
+  fogPlanesFolder
+    .addBlade({
+      view: "slider",
+      label: "Speed delta multiplier",
+      min: 0.001,
+      max: 5,
+      value: this.fogParticlesDelta,
+    })
+    .on("change", (ev) => {
+      this.fogParticlesDelta = ev.value;
+    });
+
+  return pane;
+}
+
+/**
  * Add halloween settings folder
  *
  * @param   {Object}   pane  Pane
@@ -917,6 +1026,7 @@ export function initTweakPane(pane) {
   addHelpersFolder.call(this, pane);
   addModesFolders.call(this, pane);
   addFogFolder.call(this, pane);
+  addFogPlanesFolder.call(this, pane);
   addHalloweenFolder.call(this, pane);
   addTimelessFolder.call(this, pane);
   addRandomFormsFolder.call(this, pane);
