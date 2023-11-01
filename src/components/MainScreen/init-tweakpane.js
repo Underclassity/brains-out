@@ -1005,6 +1005,52 @@ function addTimelessFolder(pane) {
 }
 
 /**
+ * Add random forms and shuffle actions folder
+ *
+ * @param   {Object}   pane  Pane
+ *
+ * @return  {Boolean}        Result
+ */
+function addSlowModeFolder(pane) {
+  if (!pane) {
+    return false;
+  }
+
+  const slowModeFolder = pane.addFolder({
+    title: "Slow mode",
+    expanded: false,
+  });
+
+  const params = {
+    time: this.slowValue,
+  };
+
+  slowModeFolder
+    .addInput(
+      {
+        isSlow: this.isSlow,
+      },
+      "isSlow"
+    )
+    .on("change", (ev) => {
+      this.isSlow = ev.value;
+    });
+
+  slowModeFolder
+    .addMonitor(params, "time", {
+      view: "graph",
+      min: 0,
+      max: 4,
+      readonly: true,
+    })
+    .on("update", () => {
+      params.time = this.slowValue;
+    });
+
+  return pane;
+}
+
+/**
  * Init Tweakpane
  *
  * @param   {Object}  pane  Input tweakpane object
@@ -1029,6 +1075,7 @@ export function initTweakPane(pane) {
   addFogPlanesFolder.call(this, pane);
   addHalloweenFolder.call(this, pane);
   addTimelessFolder.call(this, pane);
+  addSlowModeFolder.call(this, pane);
   addRandomFormsFolder.call(this, pane);
   addActionsFolder.call(this, pane);
 

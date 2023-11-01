@@ -151,7 +151,7 @@ export default {
       fogParticlesDelta: 0.05,
 
       isSlow: false,
-      slowValue: 100,
+      slowValue: 3,
       slowDivider: 0,
 
       // Helpers
@@ -813,7 +813,7 @@ export default {
 
       // Reset slow params
       this.isSlow = false;
-      this.slowValue = 100;
+      this.slowValue = 3;
 
       this.movesCounter = 0;
 
@@ -1644,7 +1644,7 @@ export default {
 
       // Reset slow params
       this.isSlow = false;
-      this.slowValue = 100;
+      this.slowValue = 3;
 
       this.vibrateCall();
 
