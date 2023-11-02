@@ -10,6 +10,8 @@ import achievements from "./achievements.js";
 
 import colorPalette from "./color-palette.js";
 
+import is from "is_js";
+
 export const store = createStore({
   state: {
     size: 1,
@@ -36,7 +38,7 @@ export const store = createStore({
 
     fov: 70,
     pixelRatio: 1,
-    antialias: true,
+    antialias: is.mac() || is.mobile() ? false : true,
     isShaders: false,
     lightPower: 5000,
 
