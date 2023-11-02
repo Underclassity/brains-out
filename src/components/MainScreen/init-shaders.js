@@ -88,10 +88,6 @@ export function initShaders(
   composer.addPass(glitchPass);
   composer.addPass(chromaticAberrationPass);
 
-  console.log(smaaPass);
-  console.log(glitchPass);
-  console.log(chromaticAberrationPass);
-
   return {
     composer,
     smaa: smaaPass,

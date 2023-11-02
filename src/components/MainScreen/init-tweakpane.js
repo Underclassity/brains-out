@@ -1005,7 +1005,7 @@ function addTimelessFolder(pane) {
 }
 
 /**
- * Add random forms and shuffle actions folder
+ * Add slow mode folder
  *
  * @param   {Object}   pane  Pane
  *
@@ -1051,6 +1051,50 @@ function addSlowModeFolder(pane) {
 }
 
 /**
+ * Add fps lock folder
+ *
+ * @param   {Object}   pane  Pane
+ *
+ * @return  {Boolean}        Result
+ */
+function addFpsLockFolder(pane) {
+  if (!pane) {
+    return false;
+  }
+
+  const fpsLockFolder = pane.addFolder({
+    title: "Fps lock",
+    expanded: false,
+  });
+
+  fpsLockFolder
+    .addInput(
+      {
+        isFpsLock: this.isFpsLock,
+      },
+      "isFpsLock"
+    )
+    .on("change", (ev) => {
+      this.isFpsLock = ev.value;
+    });
+
+  fpsLockFolder
+    .addBlade({
+      view: "slider",
+      label: "FPS Lock",
+      min: 1,
+      max: 200,
+      format: (v) => Math.round(v),
+      value: this.fpsLockValue,
+    })
+    .on("change", (ev) => {
+      this.fpsLockValue = ev.value;
+    });
+
+  return pane;
+}
+
+/**
  * Init Tweakpane
  *
  * @param   {Object}  pane  Input tweakpane object
@@ -1076,6 +1120,7 @@ export function initTweakPane(pane) {
   addHalloweenFolder.call(this, pane);
   addTimelessFolder.call(this, pane);
   addSlowModeFolder.call(this, pane);
+  addFpsLockFolder.call(this, pane);
   addRandomFormsFolder.call(this, pane);
   addActionsFolder.call(this, pane);
 

@@ -154,6 +154,9 @@ export default {
       slowValue: 3,
       slowDivider: 0,
 
+      isFpsLock: false,
+      fpsLockValue: 60,
+
       // Helpers
       orbitControls: false,
       helpers: false,
@@ -2696,6 +2699,7 @@ export default {
       // animation
 
       let timeDelta = 0;
+      let lockFrameTime = 0;
 
       const animation = () => {
         requestAnimationFrame(animation);
@@ -2818,6 +2822,8 @@ export default {
           timeDelta += delta / divider;
         }
 
+        lockFrameTime += delta * 1000;
+
         const second = Math.round(timeDelta) * this.speed;
 
         this.delta = delta;
@@ -2849,6 +2855,16 @@ export default {
           }
         }
 
+        TWEEN.update();
+
+        if (this.isFpsLock) {
+          const timeLockValue = 1000 / this.fpsLockValue;
+
+          if (lockFrameTime < timeLockValue) {
+            return false;
+          }
+        }
+
         // controls.update();
 
         if (this.isShaders && composer) {
@@ -2857,7 +2873,7 @@ export default {
           renderer.render(scene, camera);
         }
 
-        TWEEN.update();
+        lockFrameTime = 0;
 
         if (!this.isDev) {
           return true;
