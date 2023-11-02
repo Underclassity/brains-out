@@ -38,7 +38,7 @@ export const store = createStore({
 
     fov: 70,
     pixelRatio: window.devicePixelRatio,
-    antialias: is.mac() || is.mobile() ? false : true,
+    antialias: is.mac() ? false : true,
     isShaders: false,
     lightPower: 5000,
 
