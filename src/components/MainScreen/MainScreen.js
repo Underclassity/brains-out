@@ -348,8 +348,8 @@ export default {
 
       count++;
 
-      // Perturbation texture
-      count++;
+      // // Perturbation texture
+      // count++;
 
       // Fog texture
       count++;
