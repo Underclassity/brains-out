@@ -117,6 +117,8 @@ export default {
 
       viewWidth: undefined,
       viewHeight: undefined,
+      width: 800,
+      height: 600,
 
       isAccepted: false,
       isLogo: false,
@@ -2642,19 +2644,78 @@ export default {
     initPoints,
 
     /**
+     * Recreate renderer
+     *
+     * @return  {Boolean}  Result
+     */
+    recreate() {
+      if (!this.renderer) {
+        return false;
+      }
+
+      const { container } = this.$refs;
+
+      container.removeChild(this.renderer.domElement);
+      this.renderer.dispose();
+
+      this.initRenderer();
+
+      if (this.composer) {
+        this.composer.replaceRenderer(this.renderer);
+      }
+
+      if (this.controls) {
+        this.controls.domElement = this.renderer.domElement;
+      }
+
+      this.updateRendererSize();
+
+      return true;
+    },
+
+    /**
+     * Init renderer
+     *
+     * @return  {Object}  Renderer instance
+     */
+    initRenderer() {
+      const { container } = this.$refs;
+      const { width, height } = this;
+
+      this.log(`Init renderer: ${width}wX${height}h`);
+
+      const renderer = new WebGLRenderer({
+        antialias: this.antialias,
+        powerPreference: "high-performance",
+        stencil: false,
+        alpha: false,
+        // depth: false,
+      });
+      renderer.setSize(width, height);
+      renderer.setPixelRatio(this.pixelRatio);
+      renderer.sortObjects = false;
+      // renderer.setAnimationLoop(animation);
+      renderer.gammaFactor = 2.2;
+      container.appendChild(renderer.domElement);
+      this.renderer = renderer;
+
+      return renderer;
+    },
+
+    /**
      * Init all
      *
      * @return  {Boolean}  Result
      */
     async init() {
-      const { container } = this.$refs;
-
-      const width = 800;
-      const height = 600;
-
       const clock = new Clock();
 
-      const camera = new PerspectiveCamera(this.fov, width / height, 0.01, 50);
+      const camera = new PerspectiveCamera(
+        this.fov,
+        this.width / this.height,
+        0.01,
+        50
+      );
       this.camera = camera;
 
       const scene = new Scene();
@@ -2664,10 +2725,11 @@ export default {
       this.reCreatePit(this.pitSize);
 
       const fog = new FogExp2(this.fogColor, this.fogDensity);
+      this.fog = fog;
+
       if (this.isFog) {
         scene.fog = fog;
       }
-      this.fog = fog;
 
       // Init layers
       this.initPoints();
@@ -2869,8 +2931,8 @@ export default {
 
         if (this.isShaders && composer) {
           composer.render();
-        } else {
-          renderer.render(scene, camera);
+        } else if (this.renderer) {
+          this.renderer.render(scene, camera);
         }
 
         lockFrameTime = 0;
@@ -2894,24 +2956,11 @@ export default {
         return true;
       };
 
-      const renderer = new WebGLRenderer({
-        antialias: this.antialias,
-        powerPreference: "high-performance",
-        stencil: false,
-        alpha: false,
-        // depth: false,
-      });
-      renderer.setSize(width, height);
-      renderer.setPixelRatio(this.pixelRatio);
-      renderer.sortObjects = false;
-      // renderer.setAnimationLoop(animation);
-      renderer.gammaFactor = 2.2;
-      container.appendChild(renderer.domElement);
-      this.renderer = renderer;
+      const renderer = this.initRenderer();
 
       const { composer, smaa, glitch, chroma } = this.initShaders(
-        width,
-        height,
+        this.width,
+        this.height,
         renderer,
         scene,
         camera,
@@ -3677,33 +3726,45 @@ export default {
     },
 
     isFog(newValue) {
+      this.log("Update scene fog show: ", newValue);
+
       this.scene.fog = newValue ? this.fog : undefined;
     },
 
-    fogColor(newValue) {
-      this.fog.color = newValue;
-    },
-
     fogDensity(newValue) {
+      this.log("Update fog density: ", newValue);
+
       this.fog.density = newValue;
     },
 
     fogColor(color) {
+      this.log("Update fog color: ", color.getHexString());
+
       if (this.particles) {
         this.particles.forEach((item) => {
           item.material.color = color;
           item.material.needsUpdate = true;
         });
+      } else if (this.fog) {
+        this.fog.color = newValue;
       }
     },
 
     fogOpacity(opacity) {
+      this.log("Update fog opacity: ", opacity);
+
       if (this.particles) {
         this.particles.forEach((item) => {
           item.material.opacity = opacity;
           item.material.needsUpdate = true;
         });
       }
+    },
+
+    antialias(newValue) {
+      this.log("Update antialias: ", newValue);
+
+      this.recreate();
     },
   },
 

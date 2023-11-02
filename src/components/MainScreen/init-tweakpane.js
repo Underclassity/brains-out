@@ -535,6 +535,17 @@ function addSettingsFolder(pane) {
   settingsFolder
     .addInput(
       {
+        antialias: this.antialias,
+      },
+      "antialias"
+    )
+    .on("change", (ev) => {
+      this.$store.commit("updateAntialias", ev.value);
+    });
+
+  settingsFolder
+    .addInput(
+      {
         isSmooth: this.isSmooth,
       },
       "isSmooth"
