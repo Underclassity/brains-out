@@ -37,7 +37,7 @@ export const store = createStore({
     blocksTypeOptions: ["flat", "basic", "extended"],
 
     fov: 70,
-    pixelRatio: 1,
+    pixelRatio: window.devicePixelRatio,
     antialias: is.mac() || is.mobile() ? false : true,
     isShaders: false,
     lightPower: 5000,
