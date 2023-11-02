@@ -2785,16 +2785,18 @@ export default {
 
         const delta = clock.getDelta();
 
-        if (this.isTimeless && this.timelessTime) {
-          const newValue = this.timelessTime - delta * 1000;
+        if (!this.isPause) {
+          if (this.isTimeless && this.timelessTime) {
+            const newValue = this.timelessTime - delta * 1000;
 
-          if (newValue <= 0) {
-            this.endGameCall(false);
+            if (newValue <= 0) {
+              this.endGameCall(false);
+            }
+
+            this.$store.commit("setTimelessTime", newValue);
+          } else {
+            this.$store.commit("setTimelessTime", this.timelessMaxTime);
           }
-
-          this.$store.commit("setTimelessTime", newValue);
-        } else {
-          this.$store.commit("setTimelessTime", this.timelessMaxTime);
         }
 
         if (this.particles) {
