@@ -421,7 +421,8 @@ export default {
         this.camera.updateProjectionMatrix();
 
         if (this.controls) {
-          this.controls.update();
+          this.controls.dispose();
+          this.initOrbitControls();
         }
 
         this.renderer.setSize(containerRect.width, containerRect.height);
@@ -2703,6 +2704,28 @@ export default {
     },
 
     /**
+     * Init orbit controls
+     *
+     * @return  {Object}  Controls
+     */
+    async initOrbitControls() {
+      if (!this.orbitControls) {
+        return false;
+      }
+
+      const { OrbitControls } = await import(
+        "three/addons/controls/OrbitControls.js"
+      );
+
+      const controls = new OrbitControls(this.camera, this.renderer.domElement);
+      controls.maxZoom = 10;
+      controls.maxDistance = 50;
+      this.controls = controls;
+
+      return controls;
+    },
+
+    /**
      * Init all
      *
      * @return  {Boolean}  Result
@@ -2971,16 +2994,7 @@ export default {
       this.glitch = glitch;
       this.chroma = chroma;
 
-      if (this.orbitControls) {
-        const { OrbitControls } = await import(
-          "three/addons/controls/OrbitControls.js"
-        );
-
-        const controls = new OrbitControls(camera, renderer.domElement);
-        controls.maxZoom = 10;
-        controls.maxDistance = 50;
-        this.controls = controls;
-      }
+      this.initOrbitControls();
 
       this.updateRendererSize();
 
