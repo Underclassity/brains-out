@@ -316,6 +316,7 @@ function addInfoFolder(pane) {
 
   const params = {
     fps: this.fps,
+    maxFps: this.maxFps,
     frameTime: this.frameTime,
   };
 
@@ -361,6 +362,14 @@ function addInfoFolder(pane) {
     })
     .on("update", () => {
       params.frameTime = this.frameTime;
+    });
+
+  infoFolder
+    .addMonitor(params, "maxFps", {
+      readonly: true,
+    })
+    .on("update", () => {
+      params.maxFps = this.maxFps;
     });
 
   return pane;

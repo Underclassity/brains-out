@@ -31,6 +31,8 @@ export default defineConfig({
               return "three";
             } else if (id.includes("vue")) {
               return "vue";
+            } else if (id.includes("is_js")) {
+              return "is_js";
             }
 
             return "vendor";

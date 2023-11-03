@@ -230,6 +230,7 @@ export default {
       greyGuts: undefined,
 
       fps: 0,
+      maxFps: 0,
       frameTime: 0,
       frames: 0,
       prevTime: Date.now(),
@@ -2784,10 +2785,17 @@ export default {
       // animation
 
       let timeDelta = 0;
-      let lockFrameTime = 0;
 
       const animation = () => {
-        requestAnimationFrame(animation);
+        if (this.isFpsLock) {
+          const timeLockValue = 1000 / this.fpsLockValue;
+
+          setTimeout(() => {
+            animation();
+          }, timeLockValue);
+        } else {
+          requestAnimationFrame(animation);
+        }
 
         // Save render info
         this.renderInfo = renderer.info;
@@ -2863,15 +2871,6 @@ export default {
           performance.mark("animation-start");
         }
 
-        this.frames++;
-        const time = Date.now();
-
-        if (time >= this.prevTime + 1000) {
-          this.fps = Math.round((this.frames * 1000) / (time - this.prevTime));
-          this.frames = 0;
-          this.prevTime = time;
-        }
-
         const delta = clock.getDelta();
 
         if (!this.isPause) {
@@ -2907,8 +2906,6 @@ export default {
           timeDelta += delta / divider;
         }
 
-        lockFrameTime += delta * 1000;
-
         const second = Math.round(timeDelta) * this.speed;
 
         this.delta = delta;
@@ -2942,12 +2939,13 @@ export default {
 
         TWEEN.update();
 
-        if (this.isFpsLock) {
-          const timeLockValue = 1000 / this.fpsLockValue;
+        const time = Date.now();
+        this.frames++;
 
-          if (lockFrameTime < timeLockValue) {
-            return false;
-          }
+        if (time >= this.prevTime + 1000) {
+          this.fps = Math.round((this.frames * 1000) / (time - this.prevTime));
+          this.frames = 0;
+          this.prevTime = time;
         }
 
         // controls.update();
@@ -2957,8 +2955,6 @@ export default {
         } else if (this.renderer) {
           this.renderer.render(scene, camera);
         }
-
-        lockFrameTime = 0;
 
         if (!this.isDev) {
           return true;
@@ -2972,6 +2968,7 @@ export default {
         );
 
         this.frameTime = measure.duration;
+        this.maxFps = 1000 / this.frameTime;
 
         performance.clearMarks();
         performance.clearMeasures();
