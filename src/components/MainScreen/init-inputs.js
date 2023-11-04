@@ -365,11 +365,11 @@ export function initKeyBoard() {
     }
   };
 
-  const throttledKeyHandler = throttle((event) => {
-    keyHandler(event);
-  }, 150);
+  // const throttledKeyHandler = throttle((event) => {
+  //   keyHandler(event);
+  // }, 150);
 
-  document.addEventListener("keydown", throttledKeyHandler);
+  document.addEventListener("keydown", keyHandler);
   document.addEventListener("keydown", momentKeyHandler);
 
   return true;
