@@ -763,7 +763,8 @@ function addFogPlanesFolder(pane) {
     return false;
   }
 
-  const fogColor = new Color(this.fogColor);
+  const fogCenterColor = new Color(this.fogCenterColor);
+  const fogAroundColor = new Color(this.fogAroundColor);
 
   const fogPlanesFolder = pane.addFolder({
     title: "Fog planes",
@@ -773,21 +774,33 @@ function addFogPlanesFolder(pane) {
   fogPlanesFolder
     .addInput(
       {
-        isFogPlanes: this.isFogPlanes,
+        isFogPlanesCenter: this.isFogPlanesCenter,
       },
-      "isFogPlanes"
+      "isFogPlanesCenter"
     )
     .on("change", (ev) => {
-      this.isFogPlanes = ev.value;
+      this.isFogPlanesCenter = ev.value;
       this.addFogParticles();
     });
 
   fogPlanesFolder
     .addInput(
       {
-        fogColor: `#${fogColor.getHexString()}`,
+        isFogPlanesAround: this.isFogPlanesAround,
       },
-      "fogColor",
+      "isFogPlanesAround"
+    )
+    .on("change", (ev) => {
+      this.isFogPlanesAround = ev.value;
+      this.addFogParticles();
+    });
+
+  fogPlanesFolder
+    .addInput(
+      {
+        fogCenterColor: `#${fogCenterColor.getHexString()}`,
+      },
+      "fogCenterColor",
       { view: "color" }
     )
     .on("change", (ev) => {
@@ -795,36 +808,82 @@ function addFogPlanesFolder(pane) {
         return false;
       }
 
-      this.fogColor = new Color(ev.value);
+      this.fogCenterColor = new Color(ev.value);
+    });
+
+  fogPlanesFolder
+    .addInput(
+      {
+        fogAroundColor: `#${fogAroundColor.getHexString()}`,
+      },
+      "fogAroundColor",
+      { view: "color" }
+    )
+    .on("change", (ev) => {
+      if (!ev.last) {
+        return false;
+      }
+
+      this.fogAroundColor = new Color(ev.value);
     });
 
   fogPlanesFolder
     .addBlade({
       view: "slider",
-      label: "Opacity",
+      label: "Center opacity",
       min: 0.001,
       max: 1,
-      value: this.fogOpacity,
+      value: this.fogCenterOpacity,
     })
     .on("change", (ev) => {
-      this.fogOpacity = ev.value;
+      this.fogCenterOpacity = ev.value;
     });
 
   fogPlanesFolder
     .addBlade({
       view: "slider",
-      label: "Particles count",
+      label: "Around opacity",
+      min: 0.001,
+      max: 1,
+      value: this.fogAroundOpacity,
+    })
+    .on("change", (ev) => {
+      this.fogAroundOpacity = ev.value;
+    });
+
+  fogPlanesFolder
+    .addBlade({
+      view: "slider",
+      label: "Center particles count",
       min: 1,
       max: 100,
       format: (v) => Math.round(v),
-      value: this.fogParticlesCount,
+      value: this.fogCenterParticlesCount,
     })
     .on("change", (ev) => {
       if (!ev.last) {
         return false;
       }
 
-      this.fogParticlesCount = ev.value;
+      this.fogCenterParticlesCount = ev.value;
+      this.addFogParticles();
+    });
+
+  fogPlanesFolder
+    .addBlade({
+      view: "slider",
+      label: "Center particles count",
+      min: 1,
+      max: 100,
+      format: (v) => Math.round(v),
+      value: this.fogAroundParticlesCount,
+    })
+    .on("change", (ev) => {
+      if (!ev.last) {
+        return false;
+      }
+
+      this.fogAroundParticlesCount = ev.value;
       this.addFogParticles();
     });
 
@@ -834,14 +893,14 @@ function addFogPlanesFolder(pane) {
       label: "Particle size",
       min: 0.1,
       max: 10,
-      value: this.fogSize,
+      value: this.fogCenterSize,
     })
     .on("change", (ev) => {
       if (!ev.last) {
         return false;
       }
 
-      this.fogSize = ev.value;
+      this.fogCenterSize = ev.value;
       this.addFogParticles();
     });
 
@@ -1083,7 +1142,7 @@ function addFpsLockFolder(pane) {
   }
 
   const fpsLockFolder = pane.addFolder({
-    title: "Fps lock",
+    title: "FPS lock",
     expanded: false,
   });
 

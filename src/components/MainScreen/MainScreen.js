@@ -19,11 +19,12 @@ import {
 
 import * as TWEEN from "@tweenjs/tween.js";
 
+// import getGroupSize from "../../helpers/get-group-size.js";
 import { loadParts, loadHalloweenParts } from "../../helpers/load-zombie.js";
 import { textureLoaderHelper } from "../../helpers/load-texture.js";
-// import getGroupSize from "../../helpers/get-group-size.js";
-import getWorldPosisition from "../../helpers/get-world-position.js";
 import generatePit from "../../helpers/generate-pit.js";
+import getWorldPosisition from "../../helpers/get-world-position.js";
+import interpolateArray from "../../helpers/interpolate-array.js";
 import log from "../../helpers/log.js";
 import randomBetween from "../../helpers/random-between.js";
 import roundValue from "../../helpers/round-value.js";
@@ -144,12 +145,17 @@ export default {
       fogDensity: 0.1,
       isFog: false,
 
-      isFogPlanes: false,
+      isFogPlanesCenter: false,
+      isFogPlanesAround: false,
+      fogCenterColor: 0xcc_cc_cc,
+      fogAroundColor: 0xcc_cc_cc,
       fogGroup: undefined,
       fogTexture: undefined,
-      fogOpacity: 0.5,
-      fogSize: 5,
-      fogParticlesCount: 10,
+      fogCenterOpacity: 0.2,
+      fogAroundOpacity: 0.2,
+      fogCenterSize: 5,
+      fogCenterParticlesCount: 10,
+      fogAroundParticlesCount: 10,
       fogParticlesDelta: 0.05,
 
       isSlow: false,
@@ -3496,13 +3502,15 @@ export default {
     async addFogParticles() {
       this.log("Add fog planes particles");
 
+      this.updateCameraProjection();
+
       const { scene, fogGroup, fogTexture } = this;
 
       if (fogGroup) {
         this.removeObjWithChildren(fogGroup);
       }
 
-      if (!this.isFogPlanes) {
+      if (!this.isFogPlanesCenter && !this.isFogPlanesAround) {
         return false;
       }
 
@@ -3516,30 +3524,83 @@ export default {
 
       this.fogGroup = new Group();
 
-      const material = new MeshLambertMaterial({
-        color: this.fogColor,
-        depthWrite: false,
-        map: this.fogTexture,
-        transparent: true,
-        opacity: this.fogOpacity,
-      });
-
-      const geometry = new PlaneGeometry(this.fogSize, this.fogSize);
       this.particles = [];
 
-      for (let i = 0; i < this.fogParticlesCount; i++) {
-        const particle = new Mesh(geometry, material);
+      if (this.isFogPlanesCenter) {
+        const size = Math.max(this.pitWidth, this.pitHeight);
 
-        particle.position.set(
-          (Math.random() - 0.5) * this.fogSize,
-          (Math.random() - 0.5) * this.fogSize,
-          2
+        const material = new MeshLambertMaterial({
+          color: this.fogCenterColor,
+          depthWrite: false,
+          map: this.fogTexture,
+          transparent: true,
+          opacity: this.fogCenterOpacity,
+        });
+
+        const geometry = new PlaneGeometry(size, size);
+
+        for (let i = 0; i < this.fogCenterParticlesCount; i++) {
+          const particle = new Mesh(geometry, material);
+
+          particle.position.set(
+            (Math.random() - 0.5) * size,
+            (Math.random() - 0.5) * size,
+            2
+          );
+
+          particle.rotation.z = Math.random() * 2;
+
+          this.fogGroup.add(particle);
+          this.particles.push(particle);
+        }
+      }
+
+      if (this.isFogPlanesAround) {
+        const material = new MeshLambertMaterial({
+          color: this.fogAroundColor,
+          depthWrite: false,
+          map: this.fogTexture,
+          transparent: true,
+          opacity: this.fogAroundOpacity,
+        });
+
+        const size = Math.round(
+          Math.max(
+            (this.viewWidth - this.pitWidth) / 2,
+            (this.viewHeight - this.pitHeight) / 2
+          )
         );
 
-        particle.rotation.z = Math.random() * Math.PI * 2;
+        const leftXPos = (-this.viewWidth / 2 - this.pitWidth / 2) / 2;
+        const bottomYPos = (-this.viewHeight / 2 - this.pitHeight / 2) / 2;
 
-        this.fogGroup.add(particle);
-        this.particles.push(particle);
+        const xPos = [leftXPos, 0, Math.abs(leftXPos)];
+        const yPos = [bottomYPos, 0, Math.abs(bottomYPos)];
+
+        const geometry = new PlaneGeometry(size, size);
+
+        xPos.forEach((xPosition) => {
+          yPos.forEach((yPosition) => {
+            if (!xPosition && !yPosition) {
+              return false;
+            }
+
+            for (let i = 0; i < this.fogAroundParticlesCount; i++) {
+              const particle = new Mesh(geometry, material);
+
+              particle.position.set(
+                (Math.random() - 0.5) * size + xPosition,
+                (Math.random() - 0.5) * size + yPosition,
+                2
+              );
+
+              particle.rotation.z = Math.random() * 2;
+
+              this.fogGroup.add(particle);
+              this.particles.push(particle);
+            }
+          });
+        });
       }
 
       scene.add(this.fogGroup);
