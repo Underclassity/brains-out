@@ -343,7 +343,7 @@
         .menu--title(v-show="flags.achievements") Achievements
 
         .menu--columns(v-show="flags.achievements")
-            .menu--achievement(v-for="(item, name) in achievements" :key="name")
+            .menu--achievement(v-for="(item, name) in achievements" :key="name" v-bind:class="{ 'menu--achievement--earned': userAchievements.includes(name) }")
                 .menu--achievement--row
                     .menu--achievement--icon.material-symbols-outlined(v-if="!userAchievements.includes(name)") lock
                     .menu--achievement--icon.material-symbols-outlined(v-if="userAchievements.includes(name)") {{ item.icon }}
