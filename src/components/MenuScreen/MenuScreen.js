@@ -70,6 +70,7 @@ export default {
         // controls: ["back"],
         settings: [
           "pixelRatio",
+          "antialias",
           "grid",
           "color",
           "volume",
@@ -505,6 +506,14 @@ export default {
 
     enablePitGrid() {
       this.$store.commit("enablePitGrid");
+    },
+
+    disableAntialias() {
+      this.$store.commit("disableAntialias");
+    },
+
+    enableAntialias() {
+      this.$store.commit("enableAntialias");
     },
 
     blurEvent() {

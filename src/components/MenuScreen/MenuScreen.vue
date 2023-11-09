@@ -184,6 +184,17 @@
 
             .menu--selector(
                 v-show="flags.settings"
+                ref="settings.antialias"
+                v-bind:class="{ 'focused': focused == 'settings.antialias' }"
+            )
+                .menu--label Antialiasing
+                .menu--selector--prev(v-on:click="disableAntialias" v-if="antialias" ref="settings.antialias.prev")
+                .menu--selector--value(v-if="antialias") Yes
+                .menu--selector--value(v-if="!antialias") No
+                .menu--selector--next(v-on:click="enableAntialias" v-if="!antialias" ref="settings.antialias.next")
+
+            .menu--selector(
+                v-show="flags.settings"
                 ref="settings.grid"
                 v-bind:class="{ 'focused': focused == 'settings.grid' }"
             )
