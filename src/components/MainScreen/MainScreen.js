@@ -3607,6 +3607,23 @@ export default {
 
       return true;
     },
+
+    /**
+     * Add random achievement
+     *
+     * @return  {Boolean}  Result
+     */
+    async addRandomAchievement() {
+      const achievement = await this.$store.dispatch("addRandomAchievement");
+
+      if (!achievement) {
+        return false;
+      }
+
+      this.log("Add random achievement: ", achievement);
+
+      return true;
+    },
   },
 
   watch: {

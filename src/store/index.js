@@ -4,6 +4,7 @@ import { createStore } from "vuex";
 import vuejsStorage from "vuejs-storage";
 
 import log from "../helpers/log.js";
+import randomBetween from "../helpers/random-between.js";
 import roundValue from "../helpers/round-value.js";
 
 import achievements from "./achievements.js";
@@ -522,6 +523,20 @@ export const store = createStore({
       state.userAchievements.push(achievement);
 
       return true;
+    },
+
+    addRandomAchievement({ state }) {
+      const keys = Object.keys(state.achievements);
+      const index = randomBetween(0, keys.length - 1);
+      const achievement = keys[index];
+
+      if (state.userAchievements.includes(achievement)) {
+        return false;
+      }
+
+      state.userAchievements.push(achievement);
+
+      return achievement;
     },
   },
   modules: {},

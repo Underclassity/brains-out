@@ -124,6 +124,15 @@ function addActionsFolder(pane) {
       this.rotatePit();
     });
 
+  actionsFolder
+    .addButton({
+      title: "Add random",
+      label: "Achievement",
+    })
+    .on("click", () => {
+      this.addRandomAchievement();
+    });
+
   return true;
 }
 
