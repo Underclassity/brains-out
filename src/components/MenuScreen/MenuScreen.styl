@@ -101,6 +101,23 @@
             line-height: 24px
             margin-bottom: 10px
 
+    &--text
+        width: 100%
+        font-size: 30px
+        line-height: 30px
+        margin-bottom: 20px
+        text-align: left
+
+        @media(max-width 767px)
+            font-size: 20px
+            line-height: 20px
+            margin-bottom: 10px
+
+        @media(max-height 900px)
+            font-size: 20px
+            line-height: 20px
+            margin-bottom: 10px
+
     &--label
         font-size: 36px
         line-height: 36px
@@ -121,6 +138,9 @@
         justify-content: space-between
         flex-wrap: nowrap
         margin-bottom: 20px
+
+        &--centered
+            justify-content: center
 
         &.focused
             background-color: rgba(blue, 0.1)

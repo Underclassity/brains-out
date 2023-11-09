@@ -214,8 +214,6 @@ export default {
 
       resizeTimeout: undefined,
 
-      isRotateRestrain: false,
-      maxRotate: 5,
       rotateCount: 0,
 
       isPrevCleared: false,
@@ -311,6 +309,12 @@ export default {
 
       "isEndless",
       "isPractice",
+      "isPitRotating",
+      "isRandomRotate",
+      "isGlitchMayhem",
+
+      "isRotateRestrain",
+      "maxRotate",
 
       "score",
       "lsScore",
@@ -320,6 +324,8 @@ export default {
       "isControls",
       "isVibration",
       "isPitGrid",
+
+      "mode",
 
       // Colors
       "gridColor",
@@ -819,6 +825,67 @@ export default {
      */
     newGame() {
       this.log("New game call");
+
+      switch (this.mode) {
+        case "original":
+          this.$store.commit("setTimeless", false);
+          this.$store.commit("setPitRotating", false);
+          this.$store.commit("setRotationRestrain", false);
+          this.$store.commit("setRandomRotate", false);
+          this.$store.commit("setGlitchMayhem", false);
+          break;
+        case "time attack":
+          this.$store.commit("setTimeless", true);
+          this.$store.commit("setPitRotating", false);
+          this.$store.commit("setRotationRestrain", false);
+          this.$store.commit("setRandomRotate", false);
+          this.$store.commit("setGlitchMayhem", false);
+          break;
+        case "rotating pit":
+          this.$store.commit("setTimeless", false);
+          this.$store.commit("setPitRotating", true);
+          this.$store.commit("setRotationRestrain", false);
+          this.$store.commit("setRandomRotate", false);
+          this.$store.commit("setGlitchMayhem", false);
+          break;
+        case "limited rotations":
+          this.$store.commit("setTimeless", false);
+          this.$store.commit("setPitRotating", false);
+          this.$store.commit("setRotationRestrain", true);
+          this.$store.commit("setRandomRotate", false);
+          this.$store.commit("setGlitchMayhem", false);
+          break;
+        case "random rotations":
+          this.$store.commit("setTimeless", false);
+          this.$store.commit("setPitRotating", false);
+          this.$store.commit("setRotationRestrain", false);
+          this.$store.commit("setRandomRotate", true);
+          this.$store.commit("setGlitchMayhem", false);
+          break;
+        case "glitch mayhem":
+          this.$store.commit("setTimeless", false);
+          this.$store.commit("setPitRotating", false);
+          this.$store.commit("setRotationRestrain", false);
+          this.$store.commit("setRandomRotate", false);
+          this.$store.commit("setGlitchMayhem", true);
+          break;
+        case "pit mess":
+          this.$store.commit("setTimeless", false);
+          this.$store.commit("setPitRotating", false);
+          this.$store.commit("setRotationRestrain", false);
+          this.$store.commit("setRandomRotate", false);
+          this.$store.commit("setGlitchMayhem", false);
+
+          this.addRandomFigures()
+          break;
+        default:
+          this.$store.commit("setTimeless", false);
+          this.$store.commit("setPitRotating", false);
+          this.$store.commit("setRotationRestrain", false);
+          this.$store.commit("setRandomRotate", false);
+          this.$store.commit("setGlitchMayhem", false);
+          break;
+      }
 
       // Reset score and speed
       this.$store.commit("resetScore");
@@ -1420,6 +1487,10 @@ export default {
 
       this.restrainElement(element);
 
+      if (this.isPitRotating) {
+        this.rotatePit();
+      }
+
       // const childs = element.getObjectByName("childs").children;
 
       // const indexes = childs.map(this.findElementIndexes);
@@ -1604,6 +1675,10 @@ export default {
 
       // Update score by tetris formula: https://en.wikipedia.org/wiki/Tetris
       if (filledLevelsCounter) {
+        if (this.isGlitchMayhem) {
+          this.shuffle();
+        }
+
         if (this.isPrevCleared) {
           this.emitter.emit("addAchievement", "speedy-and-glorious");
         }

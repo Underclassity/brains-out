@@ -52,7 +52,7 @@ function addModesFolders(pane) {
       "isRotateRestrain"
     )
     .on("change", (ev) => {
-      this.isRotateRestrain = ev.value;
+      this.$store.commit("setRotationRestrain", ev.value);
     });
 
   rotateRestrainFolder
@@ -65,7 +65,7 @@ function addModesFolders(pane) {
       value: this.maxRotate,
     })
     .on("change", (ev) => {
-      this.maxRotate = ev.value;
+      this.$store.commit("setMaxRotate", ev.value);
     });
 
   return true;

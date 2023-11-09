@@ -104,7 +104,7 @@
         .menu--buttons(v-show="flags.new")
             .menu--item--red.menu--button(
                 v-show="flags.new"
-                v-on:click="back"
+                v-on:click="backToModes"
                 ref="new.back"
                 v-bind:class="{ 'focused': focused == 'new.back' }"
             )
@@ -132,6 +132,63 @@
         //-         ref="controls.back"
         //-         v-bind:class="{ 'focused': focused == 'controls.back' }"
         //-     ) Back
+
+        //- Game modes
+        .menu--title(v-show="flags.mode")
+            span Game Mode
+
+        .menu--selector.menu--selector--centered(
+            v-show="flags.mode"
+            ref="mode.modes"
+            v-bind:class="{ 'focused': focused == 'mode.modes' }"
+        )
+            .menu--selector--prev(v-on:click="prevMode" v-if="modes.indexOf(mode) != 0" ref="settings.antialias.prev")
+            .menu--selector--value(v-for="modeItem in modes" :key="modeItem" v-show="mode == modeItem") {{ modeItem }}
+            .menu--selector--next(v-on:click="nextMode" v-if="modes.indexOf(mode) != modes.length - 1" ref="settings.antialias.next")
+
+        .menu--text(v-if='flags.mode && modes.indexOf(mode) == 0') Regular game without any changes.
+        .menu--text(v-if='flags.mode && modes.indexOf(mode) == 1') Time is limited! Do your best!
+        .menu--text(v-if='flags.mode && modes.indexOf(mode) == 2') Pit rotates after every dropped zombie!
+        .menu--text(v-if='flags.mode && modes.indexOf(mode) == 3') Rotate wisely! Zombies rotations are limited!
+        .menu--text(v-if='flags.mode && modes.indexOf(mode) == 4') Test your luck! All zombies rotations are random!
+        .menu--text(v-if='flags.mode && modes.indexOf(mode) == 5') Something strange is happening!
+        .menu--text(v-if='flags.mode && modes.indexOf(mode) == 6') Some zombies are already in the pit!
+
+        .menu--selector(
+            v-show="flags.mode && modes.indexOf(mode) == 1"
+            ref="mode.time"
+            v-bind:class="{ 'focused': focused == 'mode.time' }"
+        )
+            .menu--label Time
+            .menu--selector--prev(v-on:click="prevTimeTimeless" v-if="timelessMaxTime != 2 * 60 * 1000" ref="mode.time.prev")
+            .menu--selector--value(v-if="timelessMaxTime == 2 * 60 * 1000") 2 min
+            .menu--selector--value(v-if="timelessMaxTime == 60 * 1000") 1 min
+            .menu--selector--value(v-if="timelessMaxTime == 30 * 1000") 30 sec
+            .menu--selector--next(v-on:click="nextTimeTimeless" v-if="timelessMaxTime != 30 * 1000" ref="mode.time.next")
+
+        .menu--selector(
+            v-show="flags.mode && modes.indexOf(mode) == 3"
+            ref="mode.rotates"
+            v-bind:class="{ 'focused': focused == 'mode.rotates' }"
+        )
+            .menu--label Rotates
+            .menu--selector--prev(v-on:click="prevRotates" v-if="maxRotate != 5" ref="mode.rotates.prev")
+            .menu--selector--value {{ maxRotate }}
+            .menu--selector--next(v-on:click="nextRotates" v-if="maxRotate != 3" ref="mode.rotates.next")
+
+        .menu--buttons(v-show="flags.mode")
+            .menu--item--red.menu--button(
+                v-on:click="back"
+                ref="mode.back"
+                v-bind:class="{ 'focused': focused == 'mode.back' }"
+            ) Back
+
+        .menu--buttons(v-show="flags.mode")
+            .menu--item--green.menu--button(
+                v-on:click="nextClick"
+                ref="mode.next"
+                v-bind:class="{ 'focused': focused == 'mode.next' }"
+            ) Next
 
         //- Credits items
         .menu--version(v-show="flags.credits") Version: {{ appVersion }}-{{ version }}

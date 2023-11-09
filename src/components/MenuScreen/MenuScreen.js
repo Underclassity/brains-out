@@ -66,6 +66,7 @@ export default {
           "credits",
         ],
         new: ["pit", "blocksType", "speed", "endless", "back", "play"],
+        modes: ["modes", "back", "next"],
         credits: ["back"],
         // controls: ["back"],
         settings: [
@@ -117,6 +118,8 @@ export default {
       "isEndless",
       "isPractice",
 
+      "maxRotate",
+
       "pixelRatio",
       "antialias",
 
@@ -132,6 +135,11 @@ export default {
 
       "achievements",
       "userAchievements",
+
+      "timelessMaxTime",
+
+      "mode",
+      "modes",
     ]),
 
     ...mapGetters(["maxScore"]),
@@ -249,10 +257,18 @@ export default {
 
     newGameCall() {
       this.resetFlags();
+      this.flags.mode = true;
+      this.focusFirst("modes");
+
+      this.log("New game call", this.isShow);
+    },
+
+    nextClick() {
+      this.resetFlags();
       this.flags.new = true;
       this.focusFirst("new");
 
-      this.log("New game call", this.isShow);
+      this.log("Next click call", this.isShow);
     },
 
     newGameCallForce() {
@@ -342,6 +358,14 @@ export default {
       }
 
       this.log("Back call", this.isShow);
+    },
+
+    backToModes() {
+      this.resetFlags();
+      this.flags.mode = true;
+      this.focusFirst("mode");
+
+      this.log("Back to modes call", this.isShow);
     },
 
     backToMenu() {
@@ -726,6 +750,38 @@ export default {
     hideHowTo() {
       this.flags.howTo = false;
     },
+
+    prevMode() {
+      this.$store.commit("prevMode");
+    },
+
+    nextMode() {
+      this.$store.commit("nextMode");
+    },
+
+    prevTimeTimeless() {
+      if (this.timelessMaxTime == 30 * 1000) {
+        this.$store.commit("setTimelessMaxTime", 60 * 1000);
+      } else {
+        this.$store.commit("setTimelessMaxTime", 2 * 60 * 1000);
+      }
+    },
+
+    nextTimeTimeless() {
+      if (this.timelessMaxTime == 2 * 60 * 1000) {
+        this.$store.commit("setTimelessMaxTime", 60 * 1000);
+      } else {
+        this.$store.commit("setTimelessMaxTime", 30 * 1000);
+      }
+    },
+
+    prevRotates() {
+      this.$store.commit("setMaxRotate", 5);
+    },
+
+    nextRotates() {
+      this.$store.commit("setMaxRotate", 3);
+    },
   },
 
   watch: {
@@ -763,6 +819,37 @@ export default {
       const newPixelRatio = (resolution / 100) * this.devicePixelRatio;
 
       this.$store.commit("setPixelRatio", newPixelRatio);
+    },
+
+    mode(modeType) {
+      switch (modeType) {
+        case "original":
+          this.refs.modes = ["modes", "back", "next"];
+          break;
+        case "time attack":
+          this.refs.modes = ["modes", "back", "next"];
+          break;
+        case "rotating pit":
+          this.refs.modes = ["modes", "time", "back", "next"];
+          break;
+        case "limited rotations":
+          this.refs.modes = ["modes", "rotates", "back", "next"];
+          break;
+        case "random rotations":
+          this.refs.modes = ["modes", "back", "next"];
+          break;
+        case "glitch mayhem":
+          this.refs.modes = ["modes", "back", "next"];
+          break;
+        case "pit mess":
+          this.refs.modes = ["modes", "back", "next"];
+          break;
+        default:
+          this.refs.modes = ["modes", "back", "next"];
+          break;
+      }
+
+      this.focusFirst("modes");
     },
   },
 

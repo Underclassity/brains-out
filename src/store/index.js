@@ -62,8 +62,14 @@ export const store = createStore({
     isEndless: false,
     isPractice: false,
     isTimeless: false,
-    timelessMaxTime: 5 * 60 * 1000, // 5 sec timer
-    timelessTime: 5 * 60 * 1000, // current timer value
+    timelessMaxTime: 2 * 60 * 1000, // 5 sec timer
+    timelessTime: 2 * 60 * 1000, // current timer value
+    isPitRotating: false,
+    isRandomRotate: false,
+    isGlitchMayhem: false,
+
+    isRotateRestrain: false,
+    maxRotate: 5,
 
     isDev: false,
     isControls: false,
@@ -83,15 +89,22 @@ export const store = createStore({
     version: import.meta.env.VITE_APP_VERSION,
     appVersion: import.meta.env.APP_VERSION,
 
-    // isRotateRestrain: false,
-    // maxRotate: 5,
-    // rotateCount: 0,
-
     eta: makeEta({ min: 0, max: 100, autostart: true }),
 
     achievements,
 
     userAchievements: [],
+
+    mode: "original",
+    modes: [
+      "original",
+      "time attack",
+      "rotating pit",
+      "limited rotations",
+      "random rotations",
+      "glitch mayhem",
+      "pit mess",
+    ],
   },
   getters: {
     colorPalette(state) {
@@ -486,6 +499,22 @@ export const store = createStore({
       state.isTimeless = value;
     },
 
+    setPitRotating(state, value) {
+      state.isPitRotating = value;
+    },
+
+    setRotationRestrain(state, value) {
+      state.isRotateRestrain = value;
+    },
+
+    setRandomRotate(state, value) {
+      state.isRandomRotate = value;
+    },
+
+    setGlitchMayhem(state, value) {
+      state.isGlitchMayhem = value;
+    },
+
     setTimelessMaxTime(state, value) {
       if (value <= 0) {
         value = 1;
@@ -508,6 +537,46 @@ export const store = createStore({
       }
 
       state.timelessTime = value;
+    },
+
+    prevMode(state) {
+      let index = state.modes.indexOf(state.mode);
+      index--;
+
+      if (index <= 0) {
+        index = 0;
+      }
+
+      if (state.modes.indexOf(state.mode) != index) {
+        state.mode = state.modes[index];
+        return true;
+      }
+
+      return false;
+    },
+
+    nextMode(state) {
+      let index = state.modes.indexOf(state.mode);
+      index++;
+
+      if (index >= state.modes.length - 1) {
+        index = state.modes.length - 1;
+      }
+
+      if (state.modes.indexOf(state.mode) != index) {
+        state.mode = state.modes[index];
+        return true;
+      }
+
+      return false;
+    },
+
+    setMaxRotate(state, value) {
+      if (!value || value <= 0) {
+        value = 3;
+      }
+
+      state.maxRotate = value;
     },
   },
   actions: {

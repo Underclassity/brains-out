@@ -107,6 +107,8 @@ export function initJoyPad() {
       case "button_4":
         if (inMenu) {
           this.emitter.emit("pressLB");
+        } else if (this.isRandomRotate) {
+          this.randomRotate();
         } else {
           this.rotateZPlus();
         }
@@ -115,6 +117,8 @@ export function initJoyPad() {
       case "button_5":
         if (inMenu) {
           this.emitter.emit("pressRB");
+        } else if (this.isRandomRotate) {
+          this.randomRotate();
         } else {
           this.rotateZMinus();
         }
@@ -166,6 +170,8 @@ export function initJoyPad() {
         case "top":
           if (this.isMenu) {
             return false;
+          } else if (this.isRandomRotate) {
+            this.randomRotate();
           } else {
             this.rotateXMinus();
           }
@@ -173,6 +179,8 @@ export function initJoyPad() {
         case "bottom":
           if (this.isMenu) {
             return false;
+          } else if (this.isRandomRotate) {
+            this.randomRotate();
           } else {
             this.rotateXPlus();
           }
@@ -180,6 +188,8 @@ export function initJoyPad() {
         case "left":
           if (this.isMenu) {
             return false;
+          } else if (this.isRandomRotate) {
+            this.randomRotate();
           } else {
             this.rotateYMinus();
           }
@@ -187,6 +197,8 @@ export function initJoyPad() {
         case "right":
           if (this.isMenu) {
             return false;
+          } else if (this.isRandomRotate) {
+            this.randomRotate();
           } else {
             this.rotateYPlus();
           }
@@ -252,7 +264,11 @@ export function initKeyBoard() {
           return false;
         } else {
           //this.log("Press Q");
-          this.rotateZPlus();
+          if (this.isRandomRotate) {
+            this.randomRotate();
+          } else {
+            this.rotateZPlus();
+          }
         }
         break;
       case "KeyE":
@@ -260,7 +276,11 @@ export function initKeyBoard() {
           return false;
         } else {
           //this.log("Press E");
-          this.rotateZMinus();
+          if (this.isRandomRotate) {
+            this.randomRotate();
+          } else {
+            this.rotateZMinus();
+          }
         }
         break;
       case "KeyW":
@@ -268,7 +288,11 @@ export function initKeyBoard() {
           return false;
         } else {
           //this.log("Press W");
-          this.rotateXMinus();
+          if (this.isRandomRotate) {
+            this.randomRotate();
+          } else {
+            this.rotateXMinus();
+          }
         }
         break;
       case "KeyS":
@@ -276,7 +300,11 @@ export function initKeyBoard() {
           return false;
         } else {
           //this.log("Press S");
-          this.rotateXPlus();
+          if (this.isRandomRotate) {
+            this.randomRotate();
+          } else {
+            this.rotateXPlus();
+          }
         }
         break;
       case "KeyA":
@@ -284,7 +312,11 @@ export function initKeyBoard() {
           return false;
         } else {
           //this.log("Press A");
-          this.rotateYMinus();
+          if (this.isRandomRotate) {
+            this.randomRotate();
+          } else {
+            this.rotateYMinus();
+          }
         }
         break;
       case "KeyD":
@@ -292,7 +324,11 @@ export function initKeyBoard() {
           return false;
         } else {
           //this.log("Press D");
-          this.rotateYPlus();
+          if (this.isRandomRotate) {
+            this.randomRotate();
+          } else {
+            this.rotateYPlus();
+          }
         }
         break;
       case "ArrowUp":
