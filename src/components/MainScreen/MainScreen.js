@@ -146,7 +146,7 @@ export default {
       isFog: false,
 
       isFogPlanesCenter: false,
-      isFogPlanesAround: false,
+      isFogPlanesAround: true,
       fogCenterColor: 0xcc_cc_cc,
       fogAroundColor: 0xcc_cc_cc,
       fogGroup: undefined,
