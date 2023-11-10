@@ -543,32 +543,24 @@ export const store = createStore({
       let index = state.modes.indexOf(state.mode);
       index--;
 
-      if (index <= 0) {
-        index = 0;
+      if (index < 0) {
+        index = state.modes.length - 1;
       }
 
-      if (state.modes.indexOf(state.mode) != index) {
-        state.mode = state.modes[index];
-        return true;
-      }
-
-      return false;
+      state.mode = state.modes[index];
+      return true;
     },
 
     nextMode(state) {
       let index = state.modes.indexOf(state.mode);
       index++;
 
-      if (index >= state.modes.length - 1) {
-        index = state.modes.length - 1;
+      if (index > state.modes.length - 1) {
+        index = 0;
       }
 
-      if (state.modes.indexOf(state.mode) != index) {
-        state.mode = state.modes[index];
-        return true;
-      }
-
-      return false;
+      state.mode = state.modes[index];
+      return true;
     },
 
     setMaxRotate(state, value) {

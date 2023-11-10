@@ -16,6 +16,7 @@
                 ) {{ scoreIncrement > 0 ? `+${scoreIncrement}` : '' }}
 
         .navigation--item Speed: {{ showSpeed }}
+        .navigation--item(v-if="isTimeless") Time: {{ timelessTimeString }}
 
     .navigation--item.navigation--menu(v-on:click="openMenu")
         span.material-symbols-outlined menu

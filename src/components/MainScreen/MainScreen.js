@@ -406,6 +406,15 @@ export default {
 
       return `left:calc(${leftPercent}% - 90px / 2);`;
     },
+
+    timelessTimeString() {
+      const { timelessTime } = this;
+
+      const minutes = Math.floor(timelessTime / 60 / 1000);
+      const seconds = Math.floor((timelessTime - minutes * 60 * 1000) / 1000);
+
+      return `${minutes}:${seconds}`;
+    },
   },
 
   methods: {

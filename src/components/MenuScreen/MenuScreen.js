@@ -28,6 +28,7 @@ export default {
 
       flags: {
         menu: false,
+        mode: false,
         new: false,
         settings: false,
         howTo: false,
@@ -66,7 +67,7 @@ export default {
           "credits",
         ],
         new: ["pit", "blocksType", "speed", "endless", "back", "play"],
-        modes: ["modes", "back", "next"],
+        mode: ["modes", "back", "next"],
         credits: ["back"],
         // controls: ["back"],
         settings: [
@@ -199,6 +200,7 @@ export default {
     focusFirst(id) {
       if (this.isGamepad) {
         id = this.currentView;
+        this.log("Set focus first to: ", id);
       } else {
         this.focused = false;
         this.log("Focus first reset");
@@ -760,27 +762,39 @@ export default {
     },
 
     prevTimeTimeless() {
-      if (this.timelessMaxTime == 30 * 1000) {
-        this.$store.commit("setTimelessMaxTime", 60 * 1000);
-      } else {
-        this.$store.commit("setTimelessMaxTime", 2 * 60 * 1000);
+      const values = [2 * 60 * 1000, 60 * 1000, 30 * 1000, 10 * 1000];
+      let index = values.indexOf(this.timelessMaxTime);
+
+      index--;
+
+      if (index < 0) {
+        index = values.length - 1;
       }
+
+      this.$store.commit("setTimelessMaxTime", values[index]);
     },
 
     nextTimeTimeless() {
-      if (this.timelessMaxTime == 2 * 60 * 1000) {
-        this.$store.commit("setTimelessMaxTime", 60 * 1000);
-      } else {
-        this.$store.commit("setTimelessMaxTime", 30 * 1000);
+      const values = [2 * 60 * 1000, 60 * 1000, 30 * 1000, 10 * 1000];
+      let index = values.indexOf(this.timelessMaxTime);
+
+      index++;
+
+      if (index > values.length - 1) {
+        index = 0;
       }
+
+      this.$store.commit("setTimelessMaxTime", values[index]);
     },
 
     prevRotates() {
-      this.$store.commit("setMaxRotate", 5);
+      const newMaxRotate = this.maxRotate == 5 ? 3 : 5;
+      this.$store.commit("setMaxRotate", newMaxRotate);
     },
 
     nextRotates() {
-      this.$store.commit("setMaxRotate", 3);
+      const newMaxRotate = this.maxRotate == 5 ? 3 : 5;
+      this.$store.commit("setMaxRotate", newMaxRotate);
     },
   },
 
@@ -824,28 +838,28 @@ export default {
     mode(modeType) {
       switch (modeType) {
         case "original":
-          this.refs.modes = ["modes", "back", "next"];
+          this.refs.mode = ["modes", "back", "next"];
           break;
         case "time attack":
-          this.refs.modes = ["modes", "back", "next"];
+          this.refs.mode = ["modes", "time", "back", "next"];
           break;
         case "rotating pit":
-          this.refs.modes = ["modes", "time", "back", "next"];
+          this.refs.mode = ["modes", "back", "next"];
           break;
         case "limited rotations":
-          this.refs.modes = ["modes", "rotates", "back", "next"];
+          this.refs.mode = ["modes", "rotates", "back", "next"];
           break;
         case "random rotations":
-          this.refs.modes = ["modes", "back", "next"];
+          this.refs.mode = ["modes", "back", "next"];
           break;
         case "glitch mayhem":
-          this.refs.modes = ["modes", "back", "next"];
+          this.refs.mode = ["modes", "back", "next"];
           break;
         case "pit mess":
-          this.refs.modes = ["modes", "back", "next"];
+          this.refs.mode = ["modes", "back", "next"];
           break;
         default:
-          this.refs.modes = ["modes", "back", "next"];
+          this.refs.mode = ["modes", "back", "next"];
           break;
       }
 
