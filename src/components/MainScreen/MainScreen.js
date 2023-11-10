@@ -15,6 +15,8 @@ import {
   PlaneGeometry,
   Scene,
   WebGLRenderer,
+  InstancedMesh,
+  Object3D,
 } from "three";
 
 import * as TWEEN from "@tweenjs/tween.js";
@@ -144,6 +146,8 @@ export default {
       fogColor: 0xcc_cc_cc,
       fogDensity: 0.1,
       isFog: false,
+
+      fogParticles: [],
 
       isFogPlanesCenter: false,
       isFogPlanesAround: true,
@@ -876,7 +880,7 @@ export default {
           this.$store.commit("setRandomRotate", false);
           this.$store.commit("setGlitchMayhem", false);
 
-          this.addRandomFigures()
+          this.addRandomFigures();
           break;
         default:
           this.$store.commit("setTimeless", false);
@@ -2968,13 +2972,16 @@ export default {
           }
         }
 
-        if (this.particles) {
-          this.particles.forEach((particle) => {
-            const z = particle.rotation.z;
+        if (this.fogParticles?.length) {
+          this.fogParticles.forEach(({ x, y, z, index, mesh }) => {
+            const dummy = new Object3D();
 
-            particle.lookAt(camera.position);
+            dummy.position.set(x, y, z);
+            dummy.lookAt(camera.position);
 
-            particle.rotation.z = z + delta * this.fogParticlesDelta;
+            dummy.rotation.z = delta * this.fogParticlesDelta;
+
+            mesh.setMatrixAt(index, dummy.matrix);
           });
         }
 
@@ -3599,7 +3606,7 @@ export default {
 
       this.fogGroup = new Group();
 
-      this.particles = [];
+      this.fogParticles = [];
 
       if (this.isFogPlanesCenter) {
         const size = Math.max(this.pitWidth, this.pitHeight);
@@ -3614,19 +3621,33 @@ export default {
 
         const geometry = new PlaneGeometry(size, size);
 
+        const centerPlaneMesh = new InstancedMesh(
+          geometry,
+          material,
+          this.fogCenterParticlesCount
+        );
+        this.fogGroup.add(centerPlaneMesh);
+
+        const dummy = new Object3D();
+
         for (let i = 0; i < this.fogCenterParticlesCount; i++) {
-          const particle = new Mesh(geometry, material);
+          const x = (Math.random() - 0.5) * size;
+          const y = (Math.random() - 0.5) * size;
+          const z = 2;
 
-          particle.position.set(
-            (Math.random() - 0.5) * size,
-            (Math.random() - 0.5) * size,
-            2
-          );
+          dummy.position.set(x, y, z);
+          dummy.rotation.z = Math.random() * 2;
 
-          particle.rotation.z = Math.random() * 2;
+          centerPlaneMesh.setMatrixAt(i, dummy.matrix);
 
-          this.fogGroup.add(particle);
-          this.particles.push(particle);
+          this.fogParticles.push({
+            mesh: centerPlaneMesh,
+            index: i,
+            x,
+            y,
+            z,
+            type: "center",
+          });
         }
       }
 
@@ -3654,6 +3675,18 @@ export default {
 
         const geometry = new PlaneGeometry(size, size);
 
+        const aroundPlaneMesh = new InstancedMesh(
+          geometry,
+          material,
+          8 * this.fogAroundParticlesCount
+        );
+
+        this.fogGroup.add(aroundPlaneMesh);
+
+        const dummy = new Object3D();
+
+        let counter = 0;
+
         xPos.forEach((xPosition) => {
           yPos.forEach((yPosition) => {
             if (!xPosition && !yPosition) {
@@ -3661,18 +3694,25 @@ export default {
             }
 
             for (let i = 0; i < this.fogAroundParticlesCount; i++) {
-              const particle = new Mesh(geometry, material);
+              const x = (Math.random() - 0.5) * size + xPosition;
+              const y = (Math.random() - 0.5) * size + yPosition;
+              const z = 2;
 
-              particle.position.set(
-                (Math.random() - 0.5) * size + xPosition,
-                (Math.random() - 0.5) * size + yPosition,
-                2
-              );
+              dummy.position.set(x, y, z);
+              dummy.rotation.z = Math.random() * 2;
 
-              particle.rotation.z = Math.random() * 2;
+              aroundPlaneMesh.setMatrixAt(counter, dummy.matrix);
 
-              this.fogGroup.add(particle);
-              this.particles.push(particle);
+              this.fogParticles.push({
+                x,
+                y,
+                z,
+                index: counter,
+                mesh: aroundPlaneMesh,
+                type: "around",
+              });
+
+              counter++;
             }
           });
         });

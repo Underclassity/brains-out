@@ -881,7 +881,7 @@ function addFogPlanesFolder(pane) {
   fogPlanesFolder
     .addBlade({
       view: "slider",
-      label: "Center particles count",
+      label: "Around particles count",
       min: 1,
       max: 100,
       format: (v) => Math.round(v),
