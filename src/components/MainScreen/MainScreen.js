@@ -160,7 +160,7 @@ export default {
       fogCenterSize: 5,
       fogCenterParticlesCount: 10,
       fogAroundParticlesCount: 10,
-      fogParticlesDelta: 0.05,
+      fogParticlesDelta: 0.25,
 
       isSlow: false,
       slowValue: 3,
@@ -2983,19 +2983,6 @@ export default {
           }
         }
 
-        if (this.fogParticles?.length) {
-          this.fogParticles.forEach(({ x, y, z, index, mesh }) => {
-            const dummy = new Object3D();
-
-            dummy.position.set(x, y, z);
-            dummy.lookAt(camera.position);
-
-            dummy.rotation.z = delta * this.fogParticlesDelta;
-
-            mesh.setMatrixAt(index, dummy.matrix);
-          });
-        }
-
         if (!this.isPause) {
           const divider =
             this.isSlow && this.slowDivider
@@ -3010,6 +2997,25 @@ export default {
         this.delta = delta;
         this.timeDelta = timeDelta;
         this.second = second;
+
+        if (this.fogParticles?.length) {
+          this.fogParticles.forEach(({ x, y, z, zRot, index, mesh }) => {
+            const dummy = new Object3D();
+
+            dummy.position.set(x, y, z);
+            dummy.lookAt(camera.position);
+
+            zRot += timeDelta * this.fogParticlesDelta;
+
+            dummy.rotation.z = zRot;
+
+            dummy.updateMatrix();
+
+            mesh.setMatrixAt(index, dummy.matrix);
+
+            mesh.instanceMatrix.needsUpdate = true;
+          });
+        }
 
         if (Array.isArray(this.loopCb) && this.loopCb.length && !this.isPause) {
           this.loopCb.forEach((fn) => fn(delta, timeDelta, second));
@@ -3643,8 +3649,10 @@ export default {
           const y = (Math.random() - 0.5) * size;
           const z = 2;
 
+          const zRot = Math.random() * 2;
+
           dummy.position.set(x, y, z);
-          dummy.rotation.z = Math.random() * 2;
+          dummy.rotation.z = zRot;
 
           centerPlaneMesh.setMatrixAt(i, dummy.matrix);
 
@@ -3654,6 +3662,7 @@ export default {
             x,
             y,
             z,
+            zRot,
             type: "center",
           });
         }
@@ -3706,8 +3715,10 @@ export default {
               const y = (Math.random() - 0.5) * size + yPosition;
               const z = 2;
 
+              const zRot = Math.random() * 2;
+
               dummy.position.set(x, y, z);
-              dummy.rotation.z = Math.random() * 2;
+              dummy.rotation.z = zRot;
 
               aroundPlaneMesh.setMatrixAt(counter, dummy.matrix);
 
@@ -3715,6 +3726,7 @@ export default {
                 x,
                 y,
                 z,
+                zRot,
                 index: counter,
                 mesh: aroundPlaneMesh,
                 type: "around",
