@@ -3,7 +3,9 @@
     .container(ref="container" :class="{ 'container--controls': (isControls || isMobile) }")
 
     .navigation(v-show="!isPractice")
-        .navigation--item(v-bind:class="{ 'navigation--item--blinking': score > maxScore }") Best Score: {{ score > maxScore ? score : maxScore }}
+        .navigation--item(
+            v-bind:class="{ 'navigation--item--blinking': score > maxScore }"
+        ) Best Score: {{ score > maxScore ? score : maxScore }}
 
         .navigation--item Score: {{ showScore }}
             Transition(
@@ -16,7 +18,10 @@
                 ) {{ scoreIncrement > 0 ? `+${scoreIncrement}` : '' }}
 
         .navigation--item Speed: {{ showSpeed }}
-        .navigation--item(v-if="isTimeless") Time: {{ timelessTimeString }}
+        .navigation--item(
+            v-if="isTimeless"
+            v-bind:class="{ 'navigation--item--blinking': timelessTime <= 10 * 1000 }"
+        ) Time: {{ timelessTimeString }}
 
     .navigation--item.navigation--menu(v-on:click="openMenu")
         span.material-symbols-outlined menu

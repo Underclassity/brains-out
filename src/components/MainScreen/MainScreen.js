@@ -888,8 +888,6 @@ export default {
           this.$store.commit("setRotationRestrain", false);
           this.$store.commit("setRandomRotate", false);
           this.$store.commit("setGlitchMayhem", false);
-
-          this.addRandomFigures();
           break;
         default:
           this.$store.commit("setTimeless", false);
@@ -966,6 +964,10 @@ export default {
 
       if (this.bgSound) {
         this.bgSound.playbackRate = 1;
+      }
+
+      if (this.mode == "pit mess") {
+        this.addRandomFigures();
       }
 
       return true;
@@ -3434,9 +3436,6 @@ export default {
           }
         }
 
-        // Add to global cache
-        this.elements.push(element);
-
         // Move to random corner
         this.moveToRandomCorner(element);
 
@@ -3936,6 +3935,30 @@ export default {
 
     isPractice(newValue) {
       this.log("Update practice mode: ", newValue);
+    },
+
+    isTimeless(newValue) {
+      this.log("Update timeless mode: ", newValue);
+    },
+
+    isPitRotating(newValue) {
+      this.log("Update pit rotating mode: ", newValue);
+    },
+
+    isRandomRotate(newValue) {
+      this.log("Update random rotate mode: ", newValue);
+    },
+
+    isGlitchMayhem(newValue) {
+      this.log("Update glitch mayhem mode: ", newValue);
+    },
+
+    isRotateRestrain(newValue) {
+      this.log("Update rotate restrain mode: ", newValue);
+    },
+
+    mode(newValue) {
+      this.log("Mode changed: ", newValue);
     },
 
     isFog(newValue) {

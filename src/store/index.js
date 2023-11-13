@@ -99,11 +99,11 @@ export const store = createStore({
     modes: [
       "original",
       "time attack",
-      "rotating pit",
       "limited rotations",
       "random rotations",
       "glitch mayhem",
       "pit mess",
+      // "rotating pit",
     ],
   },
   getters: {
@@ -561,6 +561,14 @@ export const store = createStore({
 
       state.mode = state.modes[index];
       return true;
+    },
+
+    setMode(state, value) {
+      if (!state.modes.includes(value)) {
+        return false;
+      }
+
+      state.mode = value;
     },
 
     setMaxRotate(state, value) {

@@ -73,7 +73,7 @@ export function createElement() {
   if (this.isRandomCorner) {
     this.moveToRandomCorner(this.current);
   }
-  this.next = this.getRandomForm(this.size, this.zombieParts);
+  this.next = this.getRandomForm();
   this.next.position.set(0, 0, 0);
   this.next.scale.set(0.5, 0.5, 0.5);
   this.next.userData.size = this.next.userData?.size

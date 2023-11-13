@@ -156,7 +156,7 @@
 
         .menu--empty(v-if="flags.mode && modes.indexOf(mode) != 1 && modes.indexOf(mode) != 3")
 
-        .menu--selector(
+        .menu--selector.menu--selector--centered(
             v-show="flags.mode && modes.indexOf(mode) == 1"
             ref="mode.time"
             v-bind:class="{ 'focused': focused == 'mode.time' }"
@@ -168,13 +168,13 @@
             .menu--selector--value(v-if="timelessMaxTime == 10 * 1000") 10 sec
             .menu--selector--next(v-on:click="nextTimeTimeless" ref="mode.time.next")
 
-        .menu--selector(
+        .menu--selector.menu--selector--centered(
             v-show="flags.mode && modes.indexOf(mode) == 3"
             ref="mode.rotates"
             v-bind:class="{ 'focused': focused == 'mode.rotates' }"
         )
             .menu--selector--prev(v-on:click="prevRotates" ref="mode.rotates.prev")
-            .menu--selector--value {{ maxRotate }}
+            .menu--selector--value {{ maxRotate }} rotations
             .menu--selector--next(v-on:click="nextRotates" ref="mode.rotates.next")
 
         .menu--buttons(v-show="flags.mode")

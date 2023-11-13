@@ -401,6 +401,8 @@ export default {
 
       this.$emit("new-game", true);
 
+      this.$store.commit("setMode", "original");
+
       this.log("Play click call", this.isShow);
     },
 
