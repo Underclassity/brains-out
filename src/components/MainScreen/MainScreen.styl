@@ -122,6 +122,9 @@
             @media(max-width 768px)
                 margin-top: 4px
 
+        &--score-blinking
+            animation: score-blinker 2s linear infinite
+
         &--blinking
             animation: blinker 2s linear infinite
 
@@ -249,6 +252,10 @@
 @keyframes blinker
   50%
     background-color: #FF4C4C
+
+@keyframes score-blinker
+  50%
+    background-color: #22ff03
 
 .slide-up-enter-active
     transition: all 0.3s ease-out

@@ -4,7 +4,7 @@
 
     .navigation(v-show="!isPractice")
         .navigation--item(
-            v-bind:class="{ 'navigation--item--blinking': score > maxScore }"
+            v-bind:class="{ 'navigation--item--score-blinking': score > maxScore }"
         ) Best Score: {{ score > maxScore ? score : maxScore }}
 
         .navigation--item Score: {{ showScore }}
