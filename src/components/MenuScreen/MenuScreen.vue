@@ -146,13 +146,13 @@
             .menu--selector--value(v-for="modeItem in modes" :key="modeItem" v-show="mode == modeItem") {{ modeItem }}
             .menu--selector--next(v-on:click="nextMode" ref="mode.modes.next")
 
-        p.menu--text(v-if='flags.mode && modes.indexOf(mode) == 0') Regular game without any changes.
-        p.menu--text(v-if='flags.mode && modes.indexOf(mode) == 1') Time is limited! Do your best!
-        p.menu--text(v-if='flags.mode && modes.indexOf(mode) == 2') Pit rotates after every dropped zombie!
-        p.menu--text(v-if='flags.mode && modes.indexOf(mode) == 3') Rotate wisely! Zombies rotations are limited!
-        p.menu--text(v-if='flags.mode && modes.indexOf(mode) == 4') Test your luck! All zombies rotations are random!
-        p.menu--text(v-if='flags.mode && modes.indexOf(mode) == 5') Something strange is happening!
-        p.menu--text(v-if='flags.mode && modes.indexOf(mode) == 6') Some zombies are already in the pit!
+        p.menu--text(v-if='flags.mode && mode == "original"') Regular game without any changes.
+        p.menu--text(v-if='flags.mode && mode == "time attack"') Time is limited! Do your best!
+        p.menu--text(v-if='flags.mode && mode == "rotating pit"') Pit rotates after every dropped zombie!
+        p.menu--text(v-if='flags.mode && mode == "limited rotations"') Rotate wisely! Zombies rotations are limited!
+        p.menu--text(v-if='flags.mode && mode == "random rotations"') Test your luck! All zombies rotations are random!
+        p.menu--text(v-if='flags.mode && mode == "glitch mayhem"') Something strange is happening!
+        p.menu--text(v-if='flags.mode && mode == "pit mess"') Some zombies are already in the pit!
 
         .menu--empty(v-if="flags.mode && modes.indexOf(mode) != 1 && modes.indexOf(mode) != 3")
 
