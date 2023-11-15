@@ -271,6 +271,17 @@
                 .menu--selector--value {{ colorPaletteType }}
                 .menu--selector--next(v-on:click="nextColorPalette" v-if="colorPaletteTypes.indexOf(colorPaletteType) != colorPaletteTypes.length - 1" ref="settings.color.next")
 
+            .menu--selector(
+                v-show="flags.settings"
+                ref="settings.theme"
+                v-bind:class="{ 'focused': focused == 'settings.theme' }"
+            )
+                .menu--label Theme
+                .menu--selector--prev(v-on:click="prevTheme" v-if="isHalloween" ref="settings.theme.prev")
+                .menu--selector--value(v-if="!isHalloween") Standart
+                .menu--selector--value(v-if="isHalloween") Halloween
+                .menu--selector--next(v-on:click="nextTheme" v-if="!isHalloween" ref="settings.theme.next")
+
             .menu--subtitle Sound
 
             .menu--selector(

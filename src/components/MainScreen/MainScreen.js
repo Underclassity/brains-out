@@ -111,7 +111,6 @@ export default {
       isTest: false,
       isDevControlsOpened: true,
 
-      isHalloween: true,
       halloweenBlocksCount: 3,
 
       changeSpeedByLevels: true,
@@ -316,6 +315,7 @@ export default {
       "isPitRotating",
       "isRandomRotate",
       "isGlitchMayhem",
+      "isHalloween",
 
       "isRotateRestrain",
       "maxRotate",
@@ -4013,6 +4013,12 @@ export default {
       this.log("Update antialias: ", newValue);
 
       this.recreate();
+    },
+
+    isHalloween(newValue) {
+      this.log("Update halloween theme: ", newValue);
+
+      this.reCreatePit(this.pitSize, true);
     },
   },
 

@@ -75,6 +75,7 @@ export default {
           "antialias",
           "grid",
           "color",
+          "theme",
           "volume",
           "fxVolume",
           "dev",
@@ -118,6 +119,7 @@ export default {
 
       "isEndless",
       "isPractice",
+      "isHalloween",
 
       "maxRotate",
 
@@ -542,6 +544,14 @@ export default {
 
     enableAntialias() {
       this.$store.commit("enableAntialias");
+    },
+
+    prevTheme() {
+      this.$store.commit("setHalloween", false);
+    },
+
+    nextTheme() {
+      this.$store.commit("setHalloween", true);
     },
 
     blurEvent() {

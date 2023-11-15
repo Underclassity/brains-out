@@ -33,6 +33,8 @@ export default defineConfig({
               return "vue";
             } else if (id.includes("is_js")) {
               return "is_js";
+            } else if (id.includes("v-tweakpane")) {
+              return "v-tweakpane";
             }
 
             return "vendor";

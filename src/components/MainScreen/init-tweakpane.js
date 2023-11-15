@@ -953,8 +953,7 @@ function addHalloweenFolder(pane) {
       "isHalloween"
     )
     .on("change", (ev) => {
-      this.isHalloween = ev.value;
-      this.reCreatePit(this.pitSize, true);
+      this.$store.commit("setHalloween", ev.value);
     });
 
   halloweenFolder

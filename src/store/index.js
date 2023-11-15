@@ -67,6 +67,7 @@ export const store = createStore({
     isPitRotating: false,
     isRandomRotate: false,
     isGlitchMayhem: false,
+    isHalloween: true,
 
     isRotateRestrain: false,
     maxRotate: 5,
@@ -578,6 +579,10 @@ export const store = createStore({
 
       state.maxRotate = value;
     },
+
+    setHalloween(state, value) {
+      state.isHalloween = value ? true : false;
+    },
   },
   actions: {
     addAchievement({ state }, achievement) {
@@ -627,6 +632,7 @@ export const store = createStore({
         "endGameCounter",
         "isVibration",
         "isAccepted",
+        "isHalloween",
       ],
       namespace: "brains-out",
       driver: vuejsStorage.drivers.sessionStorage,
