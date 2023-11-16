@@ -4018,6 +4018,10 @@ export default {
     isHalloween(newValue) {
       this.log("Update halloween theme: ", newValue);
 
+      // Toggle fog planes
+      this.isFogPlanesAround = newValue;
+      this.isFogPlanesCenter = newValue;
+
       this.reCreatePit(this.pitSize, true);
     },
   },

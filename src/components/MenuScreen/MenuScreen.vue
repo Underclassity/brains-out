@@ -278,7 +278,7 @@
             )
                 .menu--label Theme
                 .menu--selector--prev(v-on:click="prevTheme" v-if="isHalloween" ref="settings.theme.prev")
-                .menu--selector--value(v-if="!isHalloween") Standart
+                .menu--selector--value(v-if="!isHalloween") Standard
                 .menu--selector--value(v-if="isHalloween") Halloween
                 .menu--selector--next(v-on:click="nextTheme" v-if="!isHalloween" ref="settings.theme.next")
 
