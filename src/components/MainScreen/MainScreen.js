@@ -3596,8 +3596,6 @@ export default {
      * @return  {Boolean}  Result
      */
     async addFogParticles() {
-      this.log("Add fog planes particles");
-
       this.updateCameraProjection();
 
       const { scene, fogGroup, fogTexture } = this;
@@ -3606,9 +3604,16 @@ export default {
         this.removeObjWithChildren(fogGroup);
       }
 
-      if (!this.isFogPlanesCenter && !this.isFogPlanesAround) {
+      if (
+        (!this.isFogPlanesCenter && !this.isFogPlanesAround) ||
+        !this.isHalloween
+      ) {
         return false;
       }
+
+      this.log(
+        `Add fog planes particles: center-${this.isFogPlanesCenter} around-${this.isFogPlanesAround} halloween-${this.isHalloween}`
+      );
 
       if (!fogTexture) {
         this.fogTexture = await textureLoaderHelper(
@@ -4021,6 +4026,8 @@ export default {
       // Toggle fog planes
       this.isFogPlanesAround = newValue;
       this.isFogPlanesCenter = newValue;
+
+      this.addFogParticles();
 
       this.reCreatePit(this.pitSize, true);
     },
