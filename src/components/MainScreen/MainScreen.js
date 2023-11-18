@@ -26,7 +26,6 @@ import { loadParts, loadHalloweenParts } from "../../helpers/load-zombie.js";
 import { textureLoaderHelper } from "../../helpers/load-texture.js";
 import generatePit from "../../helpers/generate-pit.js";
 import getWorldPosisition from "../../helpers/get-world-position.js";
-import interpolateArray from "../../helpers/interpolate-array.js";
 import log from "../../helpers/log.js";
 import randomBetween from "../../helpers/random-between.js";
 import roundValue from "../../helpers/round-value.js";
@@ -346,12 +345,11 @@ export default {
 
     ...mapGetters(["maxScore", "minScore", "avgScore", "colorPalette"]),
 
-    zombie() {
-      const { scene } = this;
-
-      return scene.children.find((item) => item.userData.name == "Zombie");
-    },
-
+    /**
+     * Get current scene time value
+     *
+     * @return  {Number}  Time value
+     */
     time() {
       if (this.isPractice) {
         return 0;
@@ -360,6 +358,11 @@ export default {
       return this.isSmooth ? this.timeDelta : this.second;
     },
 
+    /**
+     * Get load assets percent between 0 and 1
+     *
+     * @return  {Number}  Load percent
+     */
     loadPercent() {
       const { loadingProcessCache } = this;
 
@@ -394,6 +397,11 @@ export default {
       return totalCount / count;
     },
 
+    /**
+     * Get css string offset for levels plain
+     *
+     * @return  {String}  CSS string with left offset
+     */
     levelsOffsetStyle() {
       const { viewWidth, pitWidth, size, isMobile, isControls } = this;
 
@@ -407,6 +415,11 @@ export default {
       return `left:calc(${leftPercent}% - 90px / 2);`;
     },
 
+    /**
+     * Get timeless mode time string
+     *
+     * @return  {String}  Time string
+     */
     timelessTimeString() {
       const { timelessTime } = this;
 
@@ -418,6 +431,11 @@ export default {
   },
 
   methods: {
+    /**
+     * Log all helper
+     *
+     * @return  {Function}  Log function for component
+     */
     log() {
       return log(`[${this.$options.name}]:`, ...arguments);
     },
@@ -753,22 +771,45 @@ export default {
       return true;
     },
 
+    /**
+     * Update simple view call
+     *
+     * @param   {Boolean}  isSimple  Is simple view flag
+     *
+     * @return  {Boolean}            Result
+     */
     updateSimple(isSimple) {
-      this.isSimple = isSimple ? true : false;
+      this.isSimple = isSimple;
       this.log(`Simple updated: ${this.isSimple}`);
       this.newGame();
     },
 
+    /**
+     * Update controls call
+     *
+     * @return  {Boolean}  Result
+     */
     updateControls() {
       this.updateRendererSize();
       this.log(`Controls updated: ${this.isControls}`);
+
+      return true;
     },
 
+    /**
+     * Update bg sound with new one
+     *
+     * @param   {String}  sound   New sound ID
+     *
+     * @return  {Boolean}         Result
+     */
     updateSound(sound) {
       this.bgSoundId = sound;
       this.log(`Update sound: ${sound}`);
 
       this.initAudio();
+
+      return true;
     },
 
     /**
@@ -1369,45 +1410,6 @@ export default {
         } else {
           isFreeze = true;
         }
-
-        // const { x, y, z, pX, pY, pZ } = this.findElementIndexes(child);
-
-        // if (z != -1 && x != -1 && y != -1) {
-        //   const layer = this.layers[z + 1];
-
-        //   if (layer) {
-        //     if (
-        //       layer == undefined ||
-        //       layer[x] == undefined ||
-        //       layer[x][y] == undefined
-        //     ) {
-        //       this.error = `Layer not found ${
-        //         element.name
-        //       }!(${x}/${y}/${z})(${pX.toFixed(1)}/${pY.toFixed(1)}/${pZ.toFixed(
-        //         1
-        //       )})(${child.position.x.toFixed(1)}/${child.position.y.toFixed(
-        //         1
-        //       )}/${child.position.z.toFixed(1)})`;
-        //       throw new Error(this.error);
-        //     }
-
-        //     const nextLayerValue = layer[x][y];
-
-        //     //this.log(
-        //     //   this.layers[zIndex + 1].map((xLayer) => xLayer.join("-")).join("\n")
-        //     // );
-
-        //     if (nextLayerValue) {
-        //       isFreeze = true;
-        //     }
-        //   } else {
-        //     // Reached end
-        //     isFreeze = true;
-        //   }
-        // } else {
-        //   this.error = `Index not found ${child.name}!(${x}/${y}/${z})(${pX}/${pY}/${pZ})`;
-        //   throw new Error(this.error);
-        // }
       }
 
       return isFreeze;
@@ -1505,51 +1507,6 @@ export default {
       if (this.isPitRotating) {
         this.rotatePit();
       }
-
-      // const childs = element.getObjectByName("childs").children;
-
-      // const indexes = childs.map(this.findElementIndexes);
-
-      // const collisionPoints = [];
-
-      // for (const { x, y, z, pX, pY, pZ, uuid, el } of indexes) {
-      //   for (let zIndex = 0; zIndex < this.zPoints.length; zIndex++) {
-      //     if (this.layers[zIndex + 1] && this.layers[zIndex + 1][x][y]) {
-      //       collisionPoints.push({ x, y, z, pX, pY, pZ, zIndex, uuid, el });
-      //     }
-      //   }
-      // }
-
-      // if (collisionPoints.length) {
-      //   //this.log(`Found ${collisionPoints.length} collision points`);
-
-      //   const uuids = collisionPoints.map((item) => item.uuid);
-
-      //   const maxZ = Math.max(...collisionPoints.map(({ z }) => z));
-
-      //   const { uuid } = indexes.find(
-      //     (item) => item.z === maxZ && uuids.includes(item.uuid)
-      //   );
-      //   const maxPoint = childs.find((item) => item.uuid === uuid);
-
-      //   const collisionZ = collisionPoints.find(
-      //     (item) => item.uuid == uuid
-      //   ).zIndex;
-
-      //   const maxPointPosition = new Vector3();
-      //   maxPoint.getWorldPosition(maxPointPosition);
-
-      //   const tZ = this.zPoints[collisionZ] - maxPointPosition.z;
-
-      //   this.translateHelper(element, "z", tZ);
-      // } else {
-      //   this.positionHelper(
-      //     element,
-      //     "z",
-      //     this.zPoints[this.zPoints.length - 1]
-      //   );
-      //   this.restrainElement(element);
-      // }
 
       return element;
     },
@@ -1842,137 +1799,11 @@ export default {
 
       this.changeScore(elementPoints.length, "points");
 
-      // const collisionPoints = this.findCollissionElements(element);
-
-      // const childs = element.getObjectByName("childs").children;
-
-      // const indexes = childs.map(this.findElementIndexes);
-
-      // const position = element.position;
-
-      //this.log(
-      //   `Petrify element: ${element.name}(${position.x.toFixed(
-      //     1
-      //   )}-${position.y.toFixed(1)}-${position.z.toFixed(1)})`
-      // );
-
-      // let zOffset = 0;
-
-      // for (let { z, uuid } of indexes) {
-      //   const collisionPoint = collisionPoints.find(
-      //     (item) => item.uuid == uuid
-      //   );
-
-      //   if (!collisionPoint) {
-      //     continue;
-      //   }
-
-      //   if (!collisionPoint.el.userData.size) {
-      //     collisionPoint.el.userData.size = getGroupSize(collisionPoint.el);
-      //   }
-
-      //   if (
-      //     collisionPoint &&
-      //     (collisionPoint.z != collisionPoint.zIndex ||
-      //       collisionPoint.z != z ||
-      //       collisionPoint.zIndex != z)
-      //   ) {
-      //     const zIndexDiff = collisionPoint.zIndex - collisionPoint.z;
-
-      //     if ((!zOffset || zOffset != zIndexDiff) && zIndexDiff < 0) {
-      //       zOffset = zIndexDiff;
-      //     }
-      //   }
-      // }
-
-      // for (let { x, y, z, pX, pY, pZ, el } of indexes) {
-      //   z += zOffset;
-
-      //   const layer = this.layers[z];
-
-      //   if (z != -1 && x != -1 && y != -1) {
-      //     if (
-      //       layer == undefined ||
-      //       layer[x] == undefined ||
-      //       layer[x][y] == undefined
-      //     ) {
-      //       this.error = `Element not found in layers!(${x}/${y}/${z})(${pX}/${pY}/${pZ})`;
-      //       throw new Error(this.error);
-      //     }
-
-      //     if (layer[x][y] && !element.userData.drop) {
-      //       this.changeScore(indexes.length);
-      //       this.$store.commit("saveScore");
-
-      //      this.log(
-      //         `Element already petrified!(${x}-${y}-${z})(${pX}-${pY}-${pZ})`
-      //       );
-      //       this.isEnd = true;
-      //       this.openMenu();
-
-      //       this.emitter.emit("openEndMenu");
-
-      //       if (this.lights?.l1 && this.lights?.l2 && this.lights?.l3) {
-      //         this.lights.l1.power = 0;
-      //         this.lights.l1.visible = false;
-      //         this.lights.l2.power = 0;
-      //         this.lights.l2.visible = false;
-      //         this.lights.l3.power = this.lightPower;
-      //         this.lights.l3.visible = true;
-      //       }
-
-      //       this.removeObjWithChildren(element);
-
-      //       if (this.endSound) {
-      //         this.endSound.play();
-      //       }
-      //       return false;
-      //     }
-
-      //     this.changeScore(1);
-
-      //     this.setLayerPoint(x, y, z);
-
-      //     this.positionHelper(el, "x", pX);
-      //     this.positionHelper(el, "y", pY);
-      //     this.positionHelper(el, "z", this.zPoints[z] - this.size / 2);
-
-      //     el.userData.static = true;
-      //     el.userData.layer = {
-      //       x,
-      //       y,
-      //       z,
-      //     };
-
-      //     this.colorizeElement(el, z);
-
-      //     this.layersElements[z].push(el);
-      //     this.scene.add(el);
-
-      //     for (const id in this.dropSounds) {
-      //       if (this.dropSounds[id].isPlaying) {
-      //         this.dropSounds[id].stop();
-      //       }
-      //     }
-
-      //     const randomId = randomBetween(0, this.fallSoundId.length - 1);
-
-      //     if (this.dropSounds[this.fallSoundId[randomId]]) {
-      //       this.dropSounds[this.fallSoundId[randomId]].play();
-      //     }
-      //   } else {
-      //     this.error = `Index not found!(${x}/${y}/${z})(${pX}/${pY}/${pZ})`;
-      //     throw new Error(this.error);
-      //   }
-      // }
-
       // Remove element after process layers
       this.removeObjWithChildren(element);
 
       // Check layers
       this.layersCheck();
-
-      // this.updateLayersPreview();
 
       //this.log(
       //   this.layers
@@ -2025,65 +1856,27 @@ export default {
 
       const { pitWidth, pitHeight, pitDepth, xPoints, yPoints, size } = this;
 
-      // element.updateMatrixWorld();
-
       const position = getWorldPosisition(element);
 
-      // const sizeBefore = element.userData.size;
-
       const { x: sizeX, y: sizeY, z: sizeZ } = element.userData.size;
-
-      // if (sizeBefore.x != sizeX) {
-      //  this.log("Move to X point");
-      //   element.translateX((sizeBefore.x - sizeX) / 2);
-      // }
-
-      // if (sizeBefore.y != sizeY) {
-      //  this.log("Move to Y point");
-      //   element.translateY((sizeBefore.y - sizeY) / 2);
-      // }
-
-      //this.log(
-      //   element.userData.name,
-      //   "position",
-      //   {
-      //     x: position.x.toFixed(1),
-      //     y: position.y.toFixed(1),
-      //     z: position.z.toFixed(1),
-      //   },
-      //   "size",
-      //   {
-      //     x: element.userData.size.x.toFixed(1),
-      //     y: element.userData.size.y.toFixed(1),
-      //     z: element.userData.size.z.toFixed(1),
-      //   }
-      // );
 
       const xPosition = Math.round((position.x - sizeX / 2) * 100) / 100;
       const yPosition = Math.round((position.y - sizeY / 2) * 100) / 100;
 
       if (!xPoints.includes(xPosition)) {
-        //this.log("x before", xPosition);
-
         xPoints.forEach((point, index, array) => {
           if (xPosition > point && xPosition < array[index + 1]) {
             this.translateHelper(element, "x", point - xPosition);
           }
         });
-
-        //this.log("x after", element.position.x);
       }
 
       if (!yPoints.includes(yPosition)) {
-        //this.log("y before", yPosition);
-
         yPoints.forEach((point, index, array) => {
           if (yPosition > point && yPosition < array[index + 1]) {
             this.translateHelper(element, "y", point - yPosition);
           }
         });
-
-        //this.log("y after", element.position.y);
       }
 
       // Restrain position
@@ -3099,18 +2892,6 @@ export default {
       this.initOrbitControls();
 
       this.updateRendererSize();
-
-      // Add test points
-      // for (let i = 0; i > -this.pitDepth; i--) {
-      //   const onePoint = generateP0Form(this.size, false, true);
-      //   onePoint.position.set(-10, -10, i);
-      //   this.restrainElement(onePoint);
-      //   this.scene.add(onePoint);
-
-      //   if (this.layersElements[i]) {
-      //     this.layersElements[i].push(onePoint);
-      //   }
-      // }
 
       animation();
 

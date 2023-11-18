@@ -12,7 +12,7 @@ import ToQuads from "./to-quads.js";
  *
  * @return  {Object}            Grid plane
  */
-export function generateGrid(width = 10, height = 10, color = 0x808080) {
+export function generateGrid(width = 10, height = 10, color = 0x80_80_80) {
   // log(`Generate grid ${width}x${height}`);
 
   const group = new Group();
