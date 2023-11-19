@@ -37,6 +37,9 @@ export const store = createStore({
     blocksType: "flat",
     blocksTypeOptions: ["flat", "basic", "extended"],
 
+    theme: "halloween",
+    themes: ["simple", "halloween", "standart"],
+
     fov: 70,
     pixelRatio: window.devicePixelRatio,
     antialias: is.mac() ? false : true,
@@ -68,6 +71,8 @@ export const store = createStore({
     isRandomRotate: false,
     isGlitchMayhem: false,
     isHalloween: true,
+    isSmooth: true,
+    isSimple: false,
 
     isRotateRestrain: false,
     maxRotate: 5,
@@ -582,6 +587,14 @@ export const store = createStore({
 
     setHalloween(state, value) {
       state.isHalloween = value ? true : false;
+    },
+
+    setSimple(state, value) {
+      state.isSimple = value ? true : false;
+    },
+
+    setSmooth(state, value) {
+      state.isSmooth = value ? true : false;
     },
   },
   actions: {

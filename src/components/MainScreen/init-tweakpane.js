@@ -569,8 +569,7 @@ function addSettingsFolder(pane) {
       "isSmooth"
     )
     .on("change", (ev) => {
-      this.isSmooth = ev.value;
-      this.updateSmooth(this.isSmooth);
+      this.$store.commit("setSmooth", ev.value);
     });
 
   settingsFolder
@@ -592,8 +591,7 @@ function addSettingsFolder(pane) {
       "isSimple"
     )
     .on("change", (ev) => {
-      this.isSimple = ev.value;
-      this.updateSimple(this.isSimple);
+      this.$store.commit("setSimple", ev.value);
     });
 
   settingsFolder

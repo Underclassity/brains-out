@@ -1,7 +1,8 @@
 :root {
   --orange: #E77812;
-  --light-orange: #ffa500;
+  --light-orange: #FFA500;
   --black: #000;
+  --light-black: #222;
 
   font-family: 'Luckiest Guy', Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;

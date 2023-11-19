@@ -99,8 +99,6 @@ export default {
 
       isPause: true,
       isMenu: true,
-      isSmooth: true,
-      isSimple: false,
       isEnd: false,
       isInstanced: true,
       isPetrify: false,
@@ -315,6 +313,8 @@ export default {
       "isRandomRotate",
       "isGlitchMayhem",
       "isHalloween",
+      "isSimple",
+      "isSmooth",
 
       "isRotateRestrain",
       "maxRotate",
@@ -742,20 +742,6 @@ export default {
     },
 
     /**
-     * Change smooth flag helper
-     *
-     * @param   {Boolean}  isSmooth  New smooth flag
-     *
-     * @return  {Boolean}            Result
-     */
-    updateSmooth(isSmooth) {
-      this.isSmooth = isSmooth;
-      this.log(`Smooth updated: ${this.isSmooth}`);
-
-      return true;
-    },
-
-    /**
      * Update instanced flag
      *
      * @param   {Boolean}  isInstanced  New instanced flag
@@ -769,19 +755,6 @@ export default {
       this.newGame();
 
       return true;
-    },
-
-    /**
-     * Update simple view call
-     *
-     * @param   {Boolean}  isSimple  Is simple view flag
-     *
-     * @return  {Boolean}            Result
-     */
-    updateSimple(isSimple) {
-      this.isSimple = isSimple;
-      this.log(`Simple updated: ${this.isSimple}`);
-      this.newGame();
     },
 
     /**
@@ -2166,7 +2139,7 @@ export default {
       );
 
       if (!zombie || !pitParts) {
-        this.isSimple = true;
+        this.$store.commit("setSimple", true);
         return false;
       }
 
@@ -3811,6 +3784,15 @@ export default {
       this.addFogParticles();
 
       this.reCreatePit(this.pitSize, true);
+    },
+
+    isSimple(newValue) {
+      this.log("Simple updated: ", newValue);
+      this.newGame();
+    },
+
+    isSmooth(newValue) {
+      this.log("Smooth updated: ", newValue);
     },
   },
 
