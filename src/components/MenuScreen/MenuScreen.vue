@@ -277,10 +277,9 @@
                 v-bind:class="{ 'focused': focused == 'settings.theme' }"
             )
                 .menu--label Theme
-                .menu--selector--prev(v-on:click="prevTheme" v-if="isHalloween" ref="settings.theme.prev")
-                .menu--selector--value(v-if="!isHalloween") Standard
-                .menu--selector--value(v-if="isHalloween") Halloween
-                .menu--selector--next(v-on:click="nextTheme" v-if="!isHalloween" ref="settings.theme.next")
+                .menu--selector--prev(v-on:click="prevTheme" v-if="theme != themes[0]" ref="settings.theme.prev")
+                .menu--selector--value {{ theme }}
+                .menu--selector--next(v-on:click="nextTheme" v-if="theme != themes[themes.length - 1]" ref="settings.theme.next")
 
             .menu--subtitle Sound
 

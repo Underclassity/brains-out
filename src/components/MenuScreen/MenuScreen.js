@@ -119,7 +119,9 @@ export default {
 
       "isEndless",
       "isPractice",
-      "isHalloween",
+
+      "theme",
+      "themes",
 
       "maxRotate",
 
@@ -547,11 +549,17 @@ export default {
     },
 
     prevTheme() {
-      this.$store.commit("setHalloween", false);
+      this.$store.commit(
+        "setTheme",
+        this.themes[this.themes.indexOf(this.theme) - 1]
+      );
     },
 
     nextTheme() {
-      this.$store.commit("setHalloween", true);
+      this.$store.commit(
+        "setTheme",
+        this.themes[this.themes.indexOf(this.theme) + 1]
+      );
     },
 
     blurEvent() {

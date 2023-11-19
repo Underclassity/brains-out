@@ -38,7 +38,7 @@ export const store = createStore({
     blocksTypeOptions: ["flat", "basic", "extended"],
 
     theme: "halloween",
-    themes: ["simple", "halloween", "standart"],
+    themes: ["standard", "halloween", "simple"],
 
     fov: 70,
     pixelRatio: window.devicePixelRatio,
@@ -595,6 +595,14 @@ export const store = createStore({
 
     setSmooth(state, value) {
       state.isSmooth = value ? true : false;
+    },
+
+    setTheme(state, value) {
+      if (!state.themes.includes(value)) {
+        return false;
+      }
+
+      state.theme = value;
     },
   },
   actions: {

@@ -319,6 +319,9 @@ export default {
       "isRotateRestrain",
       "maxRotate",
 
+      "theme",
+      "themes",
+
       "score",
       "lsScore",
       "endGameCounter",
@@ -3774,16 +3777,48 @@ export default {
       this.recreate();
     },
 
-    isHalloween(newValue) {
-      this.log("Update halloween theme: ", newValue);
+    theme(newValue) {
+      this.log("Update theme: ", newValue);
 
-      // Toggle fog planes
-      this.isFogPlanesAround = newValue;
-      this.isFogPlanesCenter = newValue;
+      switch (newValue) {
+        case "simple":
+          this.$store.commit("setSimple", true);
+          this.$store.commit("setSmooth", false);
+          this.$store.commit("setHalloween", false);
+          break;
+        case "standard":
+          this.$store.commit("setSimple", false);
+          this.$store.commit("setSmooth", true);
+          this.$store.commit("setHalloween", false);
+
+          this.isFogPlanesAround = false;
+          this.isFogPlanesCenter = false;
+          break;
+        case "halloween":
+          this.$store.commit("setSimple", false);
+          this.$store.commit("setSmooth", true);
+          this.$store.commit("setHalloween", true);
+
+          this.isFogPlanesAround = true;
+          this.isFogPlanesCenter = true;
+
+          break;
+        default:
+          this.$store.commit("setSimple", false);
+          this.$store.commit("setSmooth", true);
+
+          this.isFogPlanesAround = false;
+          this.isFogPlanesCenter = false;
+          break;
+      }
 
       this.addFogParticles();
 
       this.reCreatePit(this.pitSize, true);
+    },
+
+    isHalloween(newValue) {
+      this.log("Update halloween: ", newValue);
     },
 
     isSimple(newValue) {
