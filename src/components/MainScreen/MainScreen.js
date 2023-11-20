@@ -37,6 +37,7 @@ import {
   moveUp,
   playRandomRotateSound,
   randomRotate,
+  canRotate,
   rotateXMinus,
   rotateXPlus,
   rotateYMinus,
@@ -1803,6 +1804,7 @@ export default {
     moveLeft,
     moveRight,
 
+    canRotate,
     randomRotate,
     rotateXMinus,
     rotateXPlus,

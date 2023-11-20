@@ -14,17 +14,6 @@ export async function initAudio() {
     return false;
   }
 
-  // // Update sound
-  // if (bgSound) {
-  //   const audioBuffer = await loadAudio(bgSoundId, this.progressCb);
-
-  //   bgSound.stop();
-  //   bgSound.setBuffer(audioBuffer);
-  //   bgSound.play();
-
-  //   return true;
-  // }
-
   await Promise.all([
     this.initBgSound(),
     this.initBgMenuSound(),
@@ -109,6 +98,7 @@ export async function initBgMenuSound() {
   this.bgMenuSound = soundInstance;
 
   let counter = 0;
+
   while (
     Math.round(this.bgMenuSound.getVolume() * 100) / 100 != volume &&
     counter <= 100
@@ -117,6 +107,8 @@ export async function initBgMenuSound() {
     counter++;
     await new Promise((resolve) => setTimeout(resolve, 100));
   }
+
+  return true;
 }
 
 /**

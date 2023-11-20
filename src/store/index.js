@@ -653,7 +653,7 @@ export const store = createStore({
         "endGameCounter",
         "isVibration",
         "isAccepted",
-        "isHalloween",
+        "theme",
       ],
       namespace: "brains-out",
       driver: vuejsStorage.drivers.sessionStorage,

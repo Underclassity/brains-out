@@ -103,12 +103,25 @@ export function moveDown() {
 }
 
 /**
+ * Check rotate support
+ *
+ * @return  {Boolean}  Result
+ */
+export function canRotate() {
+  if (this.isRotateRestrain && this.rotateCount == this.maxRotate) {
+    return false;
+  }
+
+  return true;
+}
+
+/**
  * Rotate current element 90 degrees on X axis
  *
  * @return  {Object}  Current element
  */
 export function rotateXPlus() {
-  if (this.isRotateRestrain && this.rotateCount == this.maxRotate) {
+  if (this.canRotate()) {
     return false;
   }
 
@@ -130,7 +143,7 @@ export function rotateXPlus() {
  * @return  {Object}  Current element
  */
 export function rotateXMinus() {
-  if (this.isRotateRestrain && this.rotateCount == this.maxRotate) {
+  if (this.canRotate()) {
     return false;
   }
 
@@ -152,7 +165,7 @@ export function rotateXMinus() {
  * @return  {Object}  Current element
  */
 export function rotateYPlus() {
-  if (this.isRotateRestrain && this.rotateCount == this.maxRotate) {
+  if (this.canRotate()) {
     return false;
   }
 
@@ -174,7 +187,7 @@ export function rotateYPlus() {
  * @return  {Object}  Current element
  */
 export function rotateYMinus() {
-  if (this.isRotateRestrain && this.rotateCount == this.maxRotate) {
+  if (this.canRotate()) {
     return false;
   }
 
@@ -196,7 +209,7 @@ export function rotateYMinus() {
  * @return  {Object}  Current element
  */
 export function rotateZPlus() {
-  if (this.isRotateRestrain && this.rotateCount == this.maxRotate) {
+  if (this.canRotate()) {
     return false;
   }
 
@@ -218,7 +231,7 @@ export function rotateZPlus() {
  * @return  {Object}  Current element
  */
 export function rotateZMinus() {
-  if (this.isRotateRestrain && this.rotateCount == this.maxRotate) {
+  if (this.canRotate()) {
     return false;
   }
 
