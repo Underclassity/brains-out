@@ -154,10 +154,10 @@
         p.menu--text(v-if='flags.mode && mode == "glitch mayhem"') Something strange is happening!
         p.menu--text(v-if='flags.mode && mode == "pit mess"') Some zombies are already in the pit!
 
-        .menu--empty(v-if="flags.mode && modes.indexOf(mode) != 1 && modes.indexOf(mode) != 3")
+        .menu--empty(v-if="flags.mode && mode != 'time attack' && mode != 'limited rotations' && mode != 'pit mess'")
 
         .menu--selector.menu--selector--centered(
-            v-show="flags.mode && modes.indexOf(mode) == 1"
+            v-show="flags.mode && mode == 'time attack'"
             ref="mode.time"
             v-bind:class="{ 'focused': focused == 'mode.time' }"
         )
@@ -169,13 +169,22 @@
             .menu--selector--next(v-on:click="nextTimeTimeless" ref="mode.time.next")
 
         .menu--selector.menu--selector--centered(
-            v-show="flags.mode && modes.indexOf(mode) == 3"
+            v-show="flags.mode && mode == 'limited rotations'"
             ref="mode.rotates"
             v-bind:class="{ 'focused': focused == 'mode.rotates' }"
         )
             .menu--selector--prev(v-on:click="prevRotates" ref="mode.rotates.prev")
             .menu--selector--value {{ maxRotate }} rotations
             .menu--selector--next(v-on:click="nextRotates" ref="mode.rotates.next")
+
+        .menu--selector.menu--selector--centered(
+            v-show="flags.mode && mode == 'pit mess'"
+            ref="mode.mess"
+            v-bind:class="{ 'focused': focused == 'mode.mess' }"
+        )
+            .menu--selector--prev(v-on:click="changeRandomFigures" ref="mode.mess.prev")
+            .menu--selector--value {{ randomFiguresCount }} figures
+            .menu--selector--next(v-on:click="changeRandomFigures" ref="mode.mess.next")
 
         .menu--buttons(v-show="flags.mode")
             .menu--item--red.menu--button(

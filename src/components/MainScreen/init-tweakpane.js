@@ -1014,10 +1014,10 @@ function addRandomFormsFolder(pane) {
       min: 1,
       max: 10,
       format: (v) => Math.round(v),
-      value: this.randomFormsCount,
+      value: this.randomFiguresCount,
     })
     .on("change", (ev) => {
-      this.randomFormsCount = ev.value;
+      this.$store.commit("setRandomFiguresCount", ev.value);
     });
 
   randomFormsFolder

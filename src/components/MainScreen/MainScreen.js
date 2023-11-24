@@ -136,8 +136,6 @@ export default {
       isRotateAnimation: false,
       isRotating: false,
 
-      randomFormsCount: 5,
-
       // Modes
       fog: undefined,
       fogColor: 0xcc_cc_cc,
@@ -319,6 +317,8 @@ export default {
 
       "isRotateRestrain",
       "maxRotate",
+
+      "randomFiguresCount",
 
       "theme",
       "themes",
@@ -1711,6 +1711,9 @@ export default {
       }
 
       this.isPetrify = false;
+
+      // Reset mode to original
+      this.$store.commit("setMode", "original");
 
       return true;
     },
@@ -3169,11 +3172,11 @@ export default {
      * @return  {Boolean}  Result
      */
     addRandomFigures() {
-      const { randomFormsCount } = this;
+      const { randomFiguresCount } = this;
 
-      this.log("Add random forms: ", randomFormsCount);
+      this.log("Add random forms: ", randomFiguresCount);
 
-      for (let i = 0; i < randomFormsCount; i++) {
+      for (let i = 0; i < randomFiguresCount; i++) {
         const element = this.getRandomForm();
 
         for (let i = 0; i < 5; i++) {
@@ -3830,6 +3833,10 @@ export default {
 
     isSmooth(newValue) {
       this.log("Smooth updated: ", newValue);
+    },
+
+    randomFiguresCount(newValue) {
+      this.log("Change random figures: ", newValue);
     },
   },
 

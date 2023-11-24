@@ -123,6 +123,8 @@ export default {
       "theme",
       "themes",
 
+      "randomFiguresCount",
+
       "maxRotate",
 
       "pixelRatio",
@@ -562,6 +564,13 @@ export default {
       );
     },
 
+    changeRandomFigures() {
+      this.$store.commit(
+        "setRandomFiguresCount",
+        this.randomFiguresCount == 5 ? 10 : 5
+      );
+    },
+
     blurEvent() {
       if (this.isShow) {
         return false;
@@ -876,7 +885,7 @@ export default {
           this.refs.mode = ["modes", "back", "next"];
           break;
         case "pit mess":
-          this.refs.mode = ["modes", "back", "next"];
+          this.refs.mode = ["modes", "mess", "back", "next"];
           break;
         default:
           this.refs.mode = ["modes", "back", "next"];

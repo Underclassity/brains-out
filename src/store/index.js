@@ -73,6 +73,7 @@ export const store = createStore({
     isHalloween: true,
     isSmooth: true,
     isSimple: false,
+    randomFiguresCount: 5,
 
     isRotateRestrain: false,
     maxRotate: 5,
@@ -603,6 +604,18 @@ export const store = createStore({
       }
 
       state.theme = value;
+    },
+
+    setRandomFiguresCount(state, value) {
+      if (value <= 0) {
+        value = 0;
+      }
+
+      if (value >= 10) {
+        value = 10;
+      }
+
+      state.randomFiguresCount = value;
     },
   },
   actions: {
