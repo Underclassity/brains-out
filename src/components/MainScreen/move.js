@@ -121,7 +121,7 @@ export function canRotate() {
  * @return  {Object}  Current element
  */
 export function rotateXPlus() {
-  if (this.canRotate()) {
+  if (!this.canRotate()) {
     return false;
   }
 
@@ -143,7 +143,7 @@ export function rotateXPlus() {
  * @return  {Object}  Current element
  */
 export function rotateXMinus() {
-  if (this.canRotate()) {
+  if (!this.canRotate()) {
     return false;
   }
 
@@ -165,7 +165,7 @@ export function rotateXMinus() {
  * @return  {Object}  Current element
  */
 export function rotateYPlus() {
-  if (this.canRotate()) {
+  if (!this.canRotate()) {
     return false;
   }
 
@@ -187,7 +187,7 @@ export function rotateYPlus() {
  * @return  {Object}  Current element
  */
 export function rotateYMinus() {
-  if (this.canRotate()) {
+  if (!this.canRotate()) {
     return false;
   }
 
@@ -209,7 +209,7 @@ export function rotateYMinus() {
  * @return  {Object}  Current element
  */
 export function rotateZPlus() {
-  if (this.canRotate()) {
+  if (!this.canRotate()) {
     return false;
   }
 
@@ -231,7 +231,7 @@ export function rotateZPlus() {
  * @return  {Object}  Current element
  */
 export function rotateZMinus() {
-  if (this.canRotate()) {
+  if (!this.canRotate()) {
     return false;
   }
 
