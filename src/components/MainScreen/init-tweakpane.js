@@ -529,6 +529,33 @@ function addSettingsFolder(pane) {
   });
 
   settingsFolder
+    .addBlade({
+      view: "list",
+      label: "Mode",
+      options: this.modes.map((item) => {
+        return { text: item, value: item };
+      }),
+      value: this.mode,
+    })
+    .on("change", (ev) => {
+      this.$store.commit("setMode", ev.value);
+      this.newGameCall(this.isPractice);
+    });
+
+  settingsFolder
+    .addBlade({
+      view: "list",
+      label: "Theme",
+      options: this.themes.map((item) => {
+        return { text: item, value: item };
+      }),
+      value: this.theme,
+    })
+    .on("change", (ev) => {
+      this.$store.commit("setTheme", ev.value);
+    });
+
+  settingsFolder
     .addInput(
       {
         isPitGrid: this.isPitGrid,

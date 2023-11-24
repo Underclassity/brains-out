@@ -333,6 +333,7 @@ export default {
       "isPitGrid",
 
       "mode",
+      "modes",
 
       // Colors
       "gridColor",
