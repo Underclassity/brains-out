@@ -2059,6 +2059,7 @@ export default {
       this.initLayers();
       this.initLights();
       // this.initLevelPreview();
+      this.addFogParticles();
 
       this.createElement();
 
