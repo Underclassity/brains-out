@@ -613,17 +613,6 @@ function addSettingsFolder(pane) {
   settingsFolder
     .addInput(
       {
-        isSimple: this.isSimple,
-      },
-      "isSimple"
-    )
-    .on("change", (ev) => {
-      this.$store.commit("setSimple", ev.value);
-    });
-
-  settingsFolder
-    .addInput(
-      {
         isInstanced: this.isInstanced,
       },
       "isInstanced"

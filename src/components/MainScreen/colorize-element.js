@@ -15,8 +15,9 @@ export function colorizeElement(element, layer) {
     return false;
   }
 
+  // Get point for colorize
   if (this.isSimple) {
-    return false;
+    element = element.getObjectByName("point");
   }
 
   const color = this.colorPalette[layer];

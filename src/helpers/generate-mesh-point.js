@@ -57,7 +57,7 @@ export function generateMeshPoint(
 
   mesh.userData.size = new Vector3(1, 1, 1);
 
-  if (!line && !isSimple) {
+  if (!line) {
     return mesh;
   }
 
