@@ -1626,7 +1626,7 @@ export default {
       // Update score by tetris formula: https://en.wikipedia.org/wiki/Tetris
       if (filledLevelsCounter) {
         if (this.isGlitchMayhem) {
-          this.shuffle();
+          this.shuffleLayers();
         }
 
         if (this.isPrevCleared) {
