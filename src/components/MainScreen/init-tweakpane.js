@@ -960,17 +960,6 @@ function addHalloweenFolder(pane) {
   });
 
   halloweenFolder
-    .addInput(
-      {
-        isHalloween: this.isHalloween,
-      },
-      "isHalloween"
-    )
-    .on("change", (ev) => {
-      this.$store.commit("setHalloween", ev.value);
-    });
-
-  halloweenFolder
     .addBlade({
       view: "slider",
       label: "Count",

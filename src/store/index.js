@@ -70,7 +70,6 @@ export const store = createStore({
     isPitRotating: false,
     isRandomRotate: false,
     isGlitchMayhem: false,
-    isHalloween: true,
     isSmooth: true,
     isSimple: false,
     randomFiguresCount: 5,
@@ -116,6 +115,10 @@ export const store = createStore({
   getters: {
     colorPalette(state) {
       return colorPalette[state.colorPaletteType];
+    },
+
+    isHalloween(state) {
+      return state.theme == "halloween";
     },
 
     isAccepted(state) {
@@ -584,10 +587,6 @@ export const store = createStore({
       }
 
       state.maxRotate = value;
-    },
-
-    setHalloween(state, value) {
-      state.isHalloween = value ? true : false;
     },
 
     setSimple(state, value) {

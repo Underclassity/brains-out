@@ -456,7 +456,8 @@ export function generatePit(
   gridSecondColor = 0xff_ff_ff,
   halloweenParts = [],
   halloweenBlocksCount = 9,
-  skullLight = 0xfa_fa_fa
+  skullLight = 0xfa_fa_fa,
+  propsParts = []
 ) {
   width = parseInt(width, 10);
   height = parseInt(height, 10);
@@ -1327,6 +1328,161 @@ export function generatePit(
             }
           }
         });
+    }
+
+    if (propsParts?.length) {
+      const propsDummy = new Object3D();
+
+      let groundAndGrassParts = blocksCache
+        .flat()
+        .filter((item) => item.type == "GNG");
+
+      getRandom(groundAndGrassParts, 3).forEach((item, index) => {
+        const { x, y } = item;
+        let z = size / 2;
+
+        item.add = true;
+
+        let mesh;
+
+        switch (index) {
+          case 0:
+            const shovelPart = propsParts.find(
+              (item) => item.name == "P_Shovel_01"
+            );
+
+            mesh = getMesh(shovelPart, 1);
+            mesh.name = "shovel";
+            z += 0.1;
+            break;
+          case 1:
+            const baseballBatPart = propsParts.find(
+              (item) => item.name == "P_BaseballBat_01"
+            );
+
+            mesh = getMesh(baseballBatPart, 1);
+            mesh.name = "baseball-bat";
+            break;
+          case 2:
+            const shotgutPart = propsParts.find(
+              (item) => item.name == "P_Shotgun_01"
+            );
+
+            mesh = getMesh(shotgutPart, 1);
+            mesh.name = "shotgun";
+            break;
+        }
+
+        propsDummy.position.set(x, y, z);
+
+        const rotateAngle = randomBetween(0, 360);
+
+        propsDummy.rotateOnWorldAxis(zAxis, MathUtils.degToRad(rotateAngle));
+
+        propsDummy.updateMatrix();
+
+        mesh.setMatrixAt(0, propsDummy.matrix);
+
+        pitGroup.add(mesh);
+      });
+
+      // Reset dummy
+      propsDummy.position.set(0, 0, 0);
+      propsDummy.rotation.set(0, 0, 0);
+
+      const spruces = propsParts.filter((item) => item.name.includes("Spruce"));
+
+      let chessFlag = true;
+
+      blocksCache.forEach((layer) => {
+        layer.forEach((item) => {
+          item.add = chessFlag && item.type == "G";
+
+          if (item.type == "G" && item.add) {
+            item.spruce = randomBetween(0, spruces.length);
+          }
+
+          chessFlag = !chessFlag;
+        });
+
+        if (layer.length % 2 == 0) {
+          chessFlag = !chessFlag;
+        }
+      });
+
+      for (const [index, spruce] of spruces.entries()) {
+        const partsToAdd = blocksCache
+          .flat()
+          .filter(
+            (item) => item.type == "G" && item.add && item.spruce == index
+          );
+
+        const spruceMesh = getMesh(spruce, partsToAdd.length);
+        spruceMesh.name = `spruce-${index}`;
+
+        pitGroup.add(spruceMesh);
+
+        partsToAdd.forEach((item, index) => {
+          const { x, y } = item;
+
+          // Reset dummy
+          propsDummy.position.set(0, 0, 0);
+          propsDummy.rotation.set(0, 0, 0);
+
+          propsDummy.position.set(x, y, hSize);
+          propsDummy.updateMatrix();
+
+          spruceMesh.setMatrixAt(index, propsDummy.matrix);
+        });
+      }
+
+      const diggedGroundParts = propsParts.filter((item) =>
+        item.name.includes("DiggedGround")
+      );
+
+      groundAndGrassParts = blocksCache
+        .flat()
+        .filter((item) => item.type == "GNG" && !item.add);
+
+      groundAndGrassParts = getRandom(
+        groundAndGrassParts,
+        Math.floor(groundAndGrassParts.length / 2)
+      ).map((item) => {
+        item.add = true;
+        item.diggedGround = randomBetween(0, diggedGroundParts.length);
+      });
+
+      for (const [index, diggedGroundPart] of diggedGroundParts.entries()) {
+        const partsToAdd = blocksCache
+          .flat()
+          .filter(
+            (item) =>
+              item.type == "GNG" && item.add && item.diggedGround == index
+          );
+
+        if (!partsToAdd.length) {
+          continue;
+        }
+
+        const diggedGroundMesh = getMesh(diggedGroundPart, partsToAdd.length);
+        diggedGroundMesh.name = `spruce-${index}`;
+
+        pitGroup.add(diggedGroundMesh);
+
+        partsToAdd.forEach((item, index) => {
+          const { x, y } = item;
+
+          // Reset dummy
+          propsDummy.position.set(0, 0, 0);
+          propsDummy.rotation.set(0, 0, 0);
+
+          propsDummy.position.set(x, y, hSize);
+
+          propsDummy.updateMatrix();
+
+          diggedGroundMesh.setMatrixAt(index, propsDummy.matrix);
+        });
+      }
     }
 
     addPlaneHelpers(width, height, depth, size, pit);

@@ -315,7 +315,7 @@ export default {
       "isPitRotating",
       "isRandomRotate",
       "isGlitchMayhem",
-      "isHalloween",
+
       "isSimple",
       "isSmooth",
 
@@ -352,7 +352,13 @@ export default {
       "skullLight",
     ]),
 
-    ...mapGetters(["maxScore", "minScore", "avgScore", "colorPalette"]),
+    ...mapGetters([
+      "maxScore",
+      "minScore",
+      "avgScore",
+      "colorPalette",
+      "isHalloween",
+    ]),
 
     /**
      * Get current scene time value
@@ -1951,6 +1957,7 @@ export default {
         gridFirstColor,
         gridSecondColor,
         skullLight,
+        propsParts,
       } = this;
 
       const [width, height, depth] = pitSize.split("x");
@@ -1997,7 +2004,8 @@ export default {
         gridSecondColor,
         isHalloween ? halloweenParts : false,
         halloweenBlocksCount,
-        skullLight
+        skullLight,
+        propsParts
       );
       scene.add(this.pit);
 
@@ -2094,14 +2102,14 @@ export default {
     async loadZombie() {
       const parts = await loadParts(this.progressCb);
       const halloweenParts = await loadHalloweenParts(this.progressCb);
-      // const propsParts = await loadPropsParts(this.progressCb);
+      const propsParts = await loadPropsParts(this.progressCb);
 
       this.halloweenParts = halloweenParts.children;
 
-      // this.propsParts = propsParts.children.map((item) => {
-      //   item.scale.set(1, 1, 1);
-      //   return item;
-      // });
+      this.propsParts = propsParts.children.map((item) => {
+        item.scale.set(1, 1, 1);
+        return item;
+      });
 
       const pitParts = parts.children.filter((item) =>
         item.name.includes("G_")
@@ -3815,12 +3823,10 @@ export default {
         case "simple":
           this.$store.commit("setSimple", true);
           this.$store.commit("setSmooth", false);
-          this.$store.commit("setHalloween", false);
           break;
         case "standard":
           this.$store.commit("setSimple", false);
           this.$store.commit("setSmooth", true);
-          this.$store.commit("setHalloween", false);
 
           this.isFogPlanesAround = false;
           this.isFogPlanesCenter = false;
@@ -3828,7 +3834,6 @@ export default {
         case "halloween":
           this.$store.commit("setSimple", false);
           this.$store.commit("setSmooth", true);
-          this.$store.commit("setHalloween", true);
 
           this.isFogPlanesAround = true;
           this.isFogPlanesCenter = true;
@@ -3846,10 +3851,6 @@ export default {
       this.addFogParticles();
 
       this.reCreatePit(this.pitSize, true);
-    },
-
-    isHalloween(newValue) {
-      this.log("Update halloween: ", newValue);
     },
 
     isSimple(newValue) {
