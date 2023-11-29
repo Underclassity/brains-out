@@ -688,14 +688,10 @@ export default {
     /**
      * New game call helper
      *
-     * @param   {Boolean}  [isPractice=false]  Practice flag
-     *
-     * @return  {Boolean}                      Result
+     * @return  {Boolean}      Result
      */
-    newGameCall(isPractice = false) {
-      this.log("New game caller: ", isPractice);
-
-      this.$store.commit("updatePractice", isPractice);
+    newGameCall() {
+      this.log("New game caller: ", this.isPractice);
 
       if (!this.isControlsInfoShowed) {
         this.isControlsInfoPlay = true;
@@ -858,63 +854,79 @@ export default {
     newGame() {
       this.log("New game call");
 
-      switch (this.mode) {
-        case "original":
-          this.$store.commit("setTimeless", false);
-          this.$store.commit("setPitRotating", false);
-          this.$store.commit("setRotationRestrain", false);
-          this.$store.commit("setRandomRotate", false);
-          this.$store.commit("setGlitchMayhem", false);
-          break;
-        case "time attack":
-          this.$store.commit("setTimeless", true);
-          this.$store.commit("setPitRotating", false);
-          this.$store.commit("setRotationRestrain", false);
-          this.$store.commit("setRandomRotate", false);
-          this.$store.commit("setGlitchMayhem", false);
-          break;
-        case "rotating pit":
-          this.$store.commit("setTimeless", false);
-          this.$store.commit("setPitRotating", true);
-          this.$store.commit("setRotationRestrain", false);
-          this.$store.commit("setRandomRotate", false);
-          this.$store.commit("setGlitchMayhem", false);
-          break;
-        case "limited rotations":
-          this.$store.commit("setTimeless", false);
-          this.$store.commit("setPitRotating", false);
-          this.$store.commit("setRotationRestrain", true);
-          this.$store.commit("setRandomRotate", false);
-          this.$store.commit("setGlitchMayhem", false);
-          break;
-        case "random rotations":
-          this.$store.commit("setTimeless", false);
-          this.$store.commit("setPitRotating", false);
-          this.$store.commit("setRotationRestrain", false);
-          this.$store.commit("setRandomRotate", true);
-          this.$store.commit("setGlitchMayhem", false);
-          break;
-        case "glitch mayhem":
-          this.$store.commit("setTimeless", false);
-          this.$store.commit("setPitRotating", false);
-          this.$store.commit("setRotationRestrain", false);
-          this.$store.commit("setRandomRotate", false);
-          this.$store.commit("setGlitchMayhem", true);
-          break;
-        case "pit mess":
-          this.$store.commit("setTimeless", false);
-          this.$store.commit("setPitRotating", false);
-          this.$store.commit("setRotationRestrain", false);
-          this.$store.commit("setRandomRotate", false);
-          this.$store.commit("setGlitchMayhem", false);
-          break;
-        default:
-          this.$store.commit("setTimeless", false);
-          this.$store.commit("setPitRotating", false);
-          this.$store.commit("setRotationRestrain", false);
-          this.$store.commit("setRandomRotate", false);
-          this.$store.commit("setGlitchMayhem", false);
-          break;
+      if (this.isPractice) {
+        this.$store.commit("setTimeless", false);
+        this.$store.commit("setPitRotating", false);
+        this.$store.commit("setRotationRestrain", false);
+        this.$store.commit("setRandomRotate", false);
+        this.$store.commit("setGlitchMayhem", false);
+      } else {
+        switch (this.mode) {
+          case "original":
+            this.$store.commit("setTimeless", false);
+            this.$store.commit("setPitRotating", false);
+            this.$store.commit("setRotationRestrain", false);
+            this.$store.commit("setRandomRotate", false);
+            this.$store.commit("setGlitchMayhem", false);
+            this.$store.commit("disablePractice");
+            break;
+          case "time attack":
+            this.$store.commit("setTimeless", true);
+            this.$store.commit("setPitRotating", false);
+            this.$store.commit("setRotationRestrain", false);
+            this.$store.commit("setRandomRotate", false);
+            this.$store.commit("setGlitchMayhem", false);
+            this.$store.commit("disablePractice");
+            break;
+          case "rotating pit":
+            this.$store.commit("setTimeless", false);
+            this.$store.commit("setPitRotating", true);
+            this.$store.commit("setRotationRestrain", false);
+            this.$store.commit("setRandomRotate", false);
+            this.$store.commit("setGlitchMayhem", false);
+            this.$store.commit("disablePractice");
+            break;
+          case "limited rotations":
+            this.$store.commit("setTimeless", false);
+            this.$store.commit("setPitRotating", false);
+            this.$store.commit("setRotationRestrain", true);
+            this.$store.commit("setRandomRotate", false);
+            this.$store.commit("setGlitchMayhem", false);
+            this.$store.commit("disablePractice");
+            break;
+          case "random rotations":
+            this.$store.commit("setTimeless", false);
+            this.$store.commit("setPitRotating", false);
+            this.$store.commit("setRotationRestrain", false);
+            this.$store.commit("setRandomRotate", true);
+            this.$store.commit("setGlitchMayhem", false);
+            this.$store.commit("disablePractice");
+            break;
+          case "glitch mayhem":
+            this.$store.commit("setTimeless", false);
+            this.$store.commit("setPitRotating", false);
+            this.$store.commit("setRotationRestrain", false);
+            this.$store.commit("setRandomRotate", false);
+            this.$store.commit("setGlitchMayhem", true);
+            this.$store.commit("disablePractice");
+            break;
+          case "pit mess":
+            this.$store.commit("setTimeless", false);
+            this.$store.commit("setPitRotating", false);
+            this.$store.commit("setRotationRestrain", false);
+            this.$store.commit("setRandomRotate", false);
+            this.$store.commit("setGlitchMayhem", false);
+            this.$store.commit("disablePractice");
+            break;
+          default:
+            this.$store.commit("setTimeless", false);
+            this.$store.commit("setPitRotating", false);
+            this.$store.commit("setRotationRestrain", false);
+            this.$store.commit("setRandomRotate", false);
+            this.$store.commit("setGlitchMayhem", false);
+            this.$store.commit("disablePractice");
+            break;
+        }
       }
 
       // Reset score and speed
@@ -3110,7 +3122,7 @@ export default {
 
       if (!this.isControlsInfoShowed && !this.isMenu) {
         this.isControlsInfoShowed = true;
-        this.newGameCall(this.isPractice);
+        this.newGameCall();
       }
 
       this.isControlsInfoShowed = true;

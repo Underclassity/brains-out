@@ -539,7 +539,7 @@ function addSettingsFolder(pane) {
     })
     .on("change", (ev) => {
       this.$store.commit("setMode", ev.value);
-      this.newGameCall(this.isPractice);
+      this.newGameCall();
     });
 
   settingsFolder

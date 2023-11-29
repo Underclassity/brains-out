@@ -341,7 +341,8 @@ export default {
 
       this.resetFlags();
 
-      this.$emit("new-game", this.isPractice);
+      this.$store.commit("updatePractice", true);
+      this.$emit("new-game");
 
       this.log("Start again call", this.isShow);
     },
@@ -393,6 +394,7 @@ export default {
         this.isStarted = true;
       }
 
+      this.$store.commit("updatePractice", false);
       this.$emit("new-game");
 
       this.log("Play click call", this.isShow);
@@ -405,7 +407,8 @@ export default {
         this.isStarted = true;
       }
 
-      this.$emit("new-game", true);
+      this.$store.commit("updatePractice", true);
+      this.$emit("new-game");
 
       this.$store.commit("setMode", "original");
 
