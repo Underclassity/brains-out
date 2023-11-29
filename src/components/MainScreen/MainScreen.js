@@ -22,7 +22,11 @@ import {
 import * as TWEEN from "@tweenjs/tween.js";
 
 // import getGroupSize from "../../helpers/get-group-size.js";
-import { loadParts, loadHalloweenParts } from "../../helpers/load-zombie.js";
+import {
+  loadParts,
+  loadHalloweenParts,
+  loadPropsParts,
+} from "../../helpers/load-zombie.js";
 import { textureLoaderHelper } from "../../helpers/load-texture.js";
 import generatePit from "../../helpers/generate-pit.js";
 import getWorldPosisition from "../../helpers/get-world-position.js";
@@ -376,6 +380,9 @@ export default {
       count += this.fallSoundId.length;
       count += this.rotationSoundId.length;
 
+      count++;
+
+      // Props parts
       count++;
 
       // // Perturbation texture
@@ -2086,10 +2093,15 @@ export default {
      */
     async loadZombie() {
       const parts = await loadParts(this.progressCb);
-
       const halloweenParts = await loadHalloweenParts(this.progressCb);
+      // const propsParts = await loadPropsParts(this.progressCb);
 
       this.halloweenParts = halloweenParts.children;
+
+      // this.propsParts = propsParts.children.map((item) => {
+      //   item.scale.set(1, 1, 1);
+      //   return item;
+      // });
 
       const pitParts = parts.children.filter((item) =>
         item.name.includes("G_")

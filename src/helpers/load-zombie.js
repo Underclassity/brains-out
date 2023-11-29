@@ -121,4 +121,15 @@ export async function loadParts(cb) {
   return loadHelper("BrainsOutModels_01.fbx", "parts", cb, 1);
 }
 
+/**
+ * Load props parts helper
+ *
+ * @param   {Function}  cb  Load callback
+ *
+ * @return  {Object}        Promise
+ */
+export async function loadPropsParts(cb) {
+  return loadHelper("PropsModels_01.fbx", "props", cb, 1);
+}
+
 export default loadZombie;
