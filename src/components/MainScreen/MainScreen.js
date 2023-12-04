@@ -3153,10 +3153,10 @@ export default {
     },
 
     closeControlsInfo() {
-      this.log("Close controls info");
+      this.log("Close controls info: ", this.isControlsInfoShowed);
       this.isControlsInfo = false;
 
-      if (!this.isControlsInfoShowed && !this.isMenu) {
+      if ((!this.isControlsInfoShowed && !this.isMenu) || !this.current) {
         this.isControlsInfoShowed = true;
         this.newGameCall();
       }
