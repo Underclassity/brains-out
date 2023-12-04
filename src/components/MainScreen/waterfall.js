@@ -98,6 +98,9 @@ export function createElement() {
     }
   }
 
+  // Restrain after all changes
+  this.restrainElement(element);
+
   return element;
 }
 
@@ -156,10 +159,13 @@ export function initWaterfall() {
       if (element.userData.drop && this.isFastDrop) {
         this.dropElement(element);
       } else {
+        if (this.time - elTime > elSpeed * 2 && !this.isSmooth) {
+          element.userData.time = this.time;
+          return false;
+        }
+
         const newZPosition =
           -(this.time - elTime) * elSpeed - elSize.z / 2 + this.size / 2 + 1;
-
-        // console.log(element.position.z, newZPosition);
 
         this.positionHelper(element, "z", newZPosition);
         this.restrainElement(element);
