@@ -72,6 +72,7 @@ export default {
         // controls: ["back"],
         settings: [
           "pixelRatio",
+          "fpsLock",
           "antialias",
           "grid",
           "color",
@@ -122,6 +123,9 @@ export default {
 
       "theme",
       "themes",
+
+      "isFpsLock",
+      "fpsLockValue",
 
       "randomFiguresCount",
 
@@ -475,6 +479,15 @@ export default {
 
     setPixelRatio(value = 1) {
       this.$store.commit("setPixelRatio", value);
+    },
+
+    setFpsLock(value) {
+      if (value) {
+        this.$store.commit("setFpsLockValue", value);
+        this.$store.commit("setFpsLock", true);
+      } else {
+        this.$store.commit("setFpsLock", false);
+      }
     },
 
     nextColorPalette() {

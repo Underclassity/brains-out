@@ -250,6 +250,19 @@
 
             .menu--selector(
                 v-show="flags.settings"
+                ref="settings.fpsLock"
+                v-bind:class="{ 'focused': focused == 'settings.fpsLock' }"
+            )
+                .menu--label FPS Lock
+                .menu--dots
+                    .menu--dotline
+                    .menu--dot(v-bind:class="{ 'menu--dot--active': fpsLockValue == 30 && isFpsLock }" v-on:click="setFpsLock(30)")
+                    .menu--dot(v-bind:class="{ 'menu--dot--active': fpsLockValue == 60 && isFpsLock }" v-on:click="setFpsLock(60)")
+                    .menu--dot(v-bind:class="{ 'menu--dot--active': !isFpsLock }" v-on:click="setFpsLock(false)")
+                .menu--selector--value {{ isFpsLock ? fpsLockValue : 'No' }}
+
+            .menu--selector(
+                v-show="flags.settings"
                 ref="settings.antialias"
                 v-bind:class="{ 'focused': focused == 'settings.antialias' }"
             )

@@ -1165,7 +1165,7 @@ function addFpsLockFolder(pane) {
       "isFpsLock"
     )
     .on("change", (ev) => {
-      this.isFpsLock = ev.value;
+      this.$store.dispatch("setFpsLock", ev.value);
     });
 
   fpsLockFolder
@@ -1178,7 +1178,7 @@ function addFpsLockFolder(pane) {
       value: this.fpsLockValue,
     })
     .on("change", (ev) => {
-      this.fpsLockValue = ev.value;
+      this.$store.dispatch("setFpsLockValue", ev.value);
     });
 
   return pane;

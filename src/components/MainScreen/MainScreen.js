@@ -1,6 +1,8 @@
 import { defineAsyncComponent, nextTick } from "vue";
 import { mapState, mapGetters } from "vuex";
 
+import is from "is_js";
+
 import {
   ClampToEdgeWrapping,
   Clock,
@@ -165,9 +167,6 @@ export default {
       slowValue: 3,
       slowDivider: 0,
 
-      isFpsLock: false,
-      fpsLockValue: 60,
-
       // Helpers
       orbitControls: false,
       helpers: false,
@@ -321,6 +320,9 @@ export default {
 
       "isRotateRestrain",
       "maxRotate",
+
+      "isFpsLock",
+      "fpsLockValue",
 
       "randomFiguresCount",
 
@@ -2708,7 +2710,11 @@ export default {
 
       const animation = () => {
         if (this.isFpsLock) {
-          const timeLockValue = 1000 / this.fpsLockValue;
+          let timeLockValue = 1000 / this.fpsLockValue;
+
+          if (is.firefox()) {
+            timeLockValue /= 1.2;
+          }
 
           setTimeout(() => {
             animation();
@@ -3880,6 +3886,10 @@ export default {
 
     randomFiguresCount(newValue) {
       this.log("Change random figures: ", newValue);
+    },
+
+    fpsLockValue(newValue) {
+      this.log("FPS lock changed: ", newValue);
     },
   },
 

@@ -46,6 +46,9 @@ export const store = createStore({
     isShaders: false,
     lightPower: 5000,
 
+    isFpsLock: false,
+    fpsLockValue: 60,
+
     gridColor: 0x9b_43_0e,
     lightColor: 0xff_ff_ff,
     sceneColor: 0x12_12_12,
@@ -615,6 +618,18 @@ export const store = createStore({
       }
 
       state.randomFiguresCount = value;
+    },
+
+    setFpsLock(state, value) {
+      state.isFpsLock = value ? true : false;
+    },
+
+    setFpsLockValue(state, value) {
+      if (value <= 1) {
+        value = 1;
+      }
+
+      state.fpsLockValue = parseInt(value, 10);
     },
   },
   actions: {
