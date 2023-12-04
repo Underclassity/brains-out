@@ -1010,7 +1010,7 @@ export default {
         this.bgSound.playbackRate = 1;
       }
 
-      if (this.mode == "pit mess") {
+      if (this.mode == "pit mess" && !this.isPractice) {
         this.addRandomFigures();
       }
 

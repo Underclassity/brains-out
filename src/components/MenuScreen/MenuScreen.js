@@ -342,6 +342,8 @@ export default {
       this.resetFlags();
 
       this.$store.commit("updatePractice", true);
+      this.$store.commit("setMode", "original");
+
       this.$emit("new-game");
 
       this.log("Start again call", this.isShow);
