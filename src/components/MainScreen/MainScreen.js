@@ -1947,7 +1947,6 @@ export default {
         gridColor,
         pitParts,
         halloweenParts,
-        isHalloween,
         halloweenBlocksCount,
         isSimple,
         isInstanced,
@@ -1958,6 +1957,7 @@ export default {
         gridSecondColor,
         skullLight,
         propsParts,
+        theme,
       } = this;
 
       const [width, height, depth] = pitSize.split("x");
@@ -2002,10 +2002,10 @@ export default {
         isPitGrid,
         gridFirstColor,
         gridSecondColor,
-        isHalloween ? halloweenParts : false,
+        theme == "halloween" ? halloweenParts : false,
         halloweenBlocksCount,
         skullLight,
-        propsParts
+        theme == "standard" ? propsParts : false
       );
       scene.add(this.pit);
 
@@ -2217,6 +2217,22 @@ export default {
           child.material.flatShading = true;
         }
       }
+
+      this.propsParts.forEach((child) => {
+        if (Array.isArray(child.material)) {
+          child.material.forEach((item) => {
+            item.shininess = 0;
+            item.specular = new Color(this.specularColor);
+            item.flatShading = true;
+          });
+
+          return;
+        }
+
+        child.material.shininess = 0;
+        child.material.specular = new Color(this.specularColor);
+        child.material.flatShading = true;
+      });
 
       return true;
     },
