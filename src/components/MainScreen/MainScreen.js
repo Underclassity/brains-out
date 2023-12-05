@@ -298,6 +298,8 @@ export default {
       "antialias",
       "isShaders",
       "lightPower",
+      "cameraOffsetDesktop",
+      "cameraOffsetMobile",
 
       "minSpeed",
       "speed",
@@ -505,13 +507,22 @@ export default {
      * @return  {Boolean}  Result
      */
     updateCameraProjection() {
-      const { camera, controls, pitWidth, pitHeight, pitDepth } = this;
+      const {
+        camera,
+        controls,
+        pitWidth,
+        pitHeight,
+        pitDepth,
+        cameraOffsetDesktop,
+        cameraOffsetMobile,
+      } = this;
 
       this.log(
         `Update camera projection call: ${pitWidth}-${pitHeight}-${pitDepth}`
       );
 
-      const offset = camera.aspect > 1 ? 2.5 : 0;
+      const offset =
+        camera.aspect > 1 ? cameraOffsetDesktop : cameraOffsetMobile;
 
       const maxSize = Math.max(pitWidth, pitHeight, 0) + offset;
       const fitHeightDistance =
@@ -529,7 +540,11 @@ export default {
 
       let counter = 0;
 
-      while (viewWidthDiff > 2 && viewHeightDiff > 2 && counter <= 10) {
+      while (
+        viewWidthDiff > offset &&
+        viewHeightDiff > offset &&
+        counter <= 10
+      ) {
         distance -= 0.5;
         this.viewHeight = 2 * Math.tan(vFOV / 2) * (distance - maxSize);
         this.viewWidth = this.viewHeight * camera.aspect;

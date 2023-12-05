@@ -943,10 +943,14 @@ export function generatePit(
 
     let layersCounter = 0;
 
+    let xi = 0;
+
     for (let x = -hWidth + hSize - widthDiff; x < hWidth + widthDiff; x++) {
       blocksCache[layersCounter] = [];
 
       const layer = blocksCache[layersCounter];
+
+      let yi = 0;
 
       for (
         let y = -hHeight + hSize - heightDiff;
@@ -954,7 +958,8 @@ export function generatePit(
         y++
       ) {
         if (xArr.includes(x) && yArr.includes(y)) {
-          layer.push({ x, y, type: "E" });
+          layer.push({ x, y, type: "E", xi, yi });
+          yi++;
           continue;
         }
 
@@ -984,7 +989,7 @@ export function generatePit(
             false
           );
 
-          layer.push({ x, y, type: "GNG" });
+          layer.push({ x, y, type: "GNG", xi, yi });
         } else {
           let index = randomBetween(0, grassParts.length - 1);
 
@@ -1007,9 +1012,13 @@ export function generatePit(
             0
           );
 
-          layer.push({ x, y, type: "G" });
+          layer.push({ x, y, type: "G", xi, yi });
         }
+
+        yi++;
       }
+
+      xi++;
 
       layersCounter++;
     }
@@ -1392,30 +1401,56 @@ export function generatePit(
 
       const spruces = propsParts.filter((item) => item.name.includes("Spruce"));
 
-      let chessFlag = true;
+      blocksCache.forEach((layer, yIndex) => {
+        layer.forEach((item, xIndex) => {
+          const isCeil = yIndex % 2 ? xIndex % 2 : !(xIndex % 2);
 
-      blocksCache.forEach((layer) => {
-        layer.forEach((item) => {
-          item.add = chessFlag && item.type == "G";
+          if (item.type == "G" && isCeil) {
+            item.spruce = randomBetween(0, spruces.length - 1);
+            item.add = true;
+          }
+        });
+      });
 
-          if (item.type == "G" && item.add) {
-            item.spruce = randomBetween(0, spruces.length);
+      blocksCache.forEach((layer, yIndex) => {
+        layer.forEach((item, xIndex) => {
+          if (item.type !== "GNG") {
+            return;
           }
 
-          chessFlag = !chessFlag;
-        });
+          const topItem = blocksCache[yIndex - 1]?.[xIndex];
+          const bottomItem = blocksCache[yIndex + 1]?.[xIndex];
+          const leftItem = blocksCache[yIndex]?.[xIndex - 1];
+          const rightItem = blocksCache[yIndex]?.[xIndex + 1];
 
-        if (layer.length % 2 == 0) {
-          chessFlag = !chessFlag;
-        }
+          if (topItem?.type == "G" && topItem?.add) {
+            topItem.add = false;
+          }
+
+          if (bottomItem?.type == "G" && bottomItem?.add) {
+            bottomItem.add = false;
+          }
+
+          if (leftItem?.type == "G" && leftItem?.add) {
+            leftItem.add = false;
+          }
+
+          if (rightItem?.type == "G" && rightItem?.add) {
+            rightItem.add = false;
+          }
+        });
       });
+
+      // console.log(
+      //   blocksCache
+      //     .map((layer) => layer.map((item) => (item.add ? 1 : 0)).join("-"))
+      //     .join("\n")
+      // );
 
       for (const [index, spruce] of spruces.entries()) {
         const partsToAdd = blocksCache
           .flat()
-          .filter(
-            (item) => item.type == "G" && item.add && item.spruce == index
-          );
+          .filter((item) => item.spruce == index && item.add);
 
         const spruceMesh = getMesh(spruce, partsToAdd.length);
         spruceMesh.name = `spruce-${index}`;

@@ -37,7 +37,7 @@ export const store = createStore({
     blocksType: "flat",
     blocksTypeOptions: ["flat", "basic", "extended"],
 
-    theme: "halloween",
+    theme: "standard",
     themes: ["standard", "halloween", "simple"],
 
     fov: 70,
@@ -45,6 +45,8 @@ export const store = createStore({
     antialias: is.mac() ? false : true,
     isShaders: false,
     lightPower: 5000,
+    cameraOffsetDesktop: 2.5,
+    cameraOffsetMobile: 0,
 
     isFpsLock: false,
     fpsLockValue: 60,
@@ -630,6 +632,34 @@ export const store = createStore({
       }
 
       state.fpsLockValue = parseInt(value, 10);
+    },
+
+    setCameraOffsetDesktop(state, value) {
+      value = parseInt(value, 10);
+
+      if (value <= 0) {
+        value = 0;
+      }
+
+      if (value >= 10) {
+        value = 10;
+      }
+
+      state.cameraOffsetDesktop = value;
+    },
+
+    setCameraOffsetMobile(state, value) {
+      value = parseInt(value, 10);
+
+      if (value <= 0) {
+        value = 0;
+      }
+
+      if (value >= 10) {
+        value = 10;
+      }
+
+      state.cameraOffsetMobile = value;
     },
   },
   actions: {

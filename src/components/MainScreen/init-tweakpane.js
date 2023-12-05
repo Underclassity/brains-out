@@ -679,6 +679,32 @@ function addSettingsFolder(pane) {
       this.updateBlocksType(ev.value);
     });
 
+  settingsFolder
+    .addBlade({
+      view: "slider",
+      label: "Camera offset desktop",
+      min: 0,
+      max: 10,
+      value: this.cameraOffsetDesktop,
+    })
+    .on("change", (ev) => {
+      this.$store.commit("setCameraOffsetDesktop", ev.value);
+      this.updateCameraProjection();
+    });
+
+  settingsFolder
+    .addBlade({
+      view: "slider",
+      label: "Camera offset mobile",
+      min: 0,
+      max: 10,
+      value: this.cameraOffsetMobile,
+    })
+    .on("change", (ev) => {
+      this.$store.commit("setCameraOffsetMobile", ev.value);
+      this.updateCameraProjection();
+    });
+
   return pane;
 }
 
