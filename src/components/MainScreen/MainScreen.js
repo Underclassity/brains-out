@@ -3844,7 +3844,7 @@ export default {
       switch (newValue) {
         case "simple":
           this.$store.commit("setSimple", true);
-          this.$store.commit("setSmooth", false);
+          this.$store.commit("setSmooth", true);
           break;
         case "standard":
           this.$store.commit("setSimple", false);
