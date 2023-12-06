@@ -1,0 +1,597 @@
+### Version 0.1.3
+
+- Task 153: Add materials cache for colorize methods
+- Task 101: Throttle keyboard event
+- Task 152: Add timeless mode
+- Task 135: Add fog particles mode
+- Task 134: Add slow mode to dev GUI
+- Task 111: Add glitch effect on shuffle elements
+- Update load percent calculation
+- Add is.js; add check mobile and mac check for antialias
+- Change pixelRatio to devicePixelRatio from start
+- Disable antialias only on mobile by default
+- Task 152: Add check for pause state in timeless mode
+- Task 155: Add lock FPS settings via dev GUI
+- Task 154: Add antialias toggle in dev GUI
+- Task 154: Fix orbit controls re-init
+- Task 155: Update lock fps logic
+- Task 156: Add fog for halloween mode
+- Task 101: Remove throttle for keyboard events
+- Task 157: Add earned achievements color
+- Task 154: Add antialias selector in settings
+- Task 157: Update settings achiements colors
+- Task 156: Enable fog around pit by default
+- Task 89: Add game modes selector; update modes logic
+- Re-write fog to instanced meshes for better performance
+- Task 89: Updated modes menu
+- Task 89: Modes updates
+- Fix fog planes animation for instanced mesh
+- Task 161: Theme selector
+- Task 159: Add bottom space for menu title
+- Task 160: Update score blinking style
+- Task 89: Game mode selector fixes
+- Task 161: Toggle fog planes fix
+- Task 161: Fixed theme selector logic
+- Update docs; remove old code
+- Move simple and smooth flags to store
+- Task 161: Add simple theme; update themes logic
+- Move app styles to stylus file
+- Task 163: Fix can rotate check
+- Task 89: Update modes selector
+- Task 162: Update fog particles placement on change pit size
+- Add modes and themes selector in dev menu
+- Task 161: Fix simple theme view and colorize
+- Task 111: Change glitch mode shuffle to layers
+- Task 89: Re-write practice mode call
+- Task 161: Lock dev achievements for simple mode
+- Task 80: Add props models file
+- Task 80: Add props for standart theme
+- Task 89: Fix pit mess bug
+- Fix props parts show
+- Task 165: Fix new game call after focus
+- Task 155: Add FPS lock in settings
+- Task 161: Fix element create position bug
+- Task 161: Add smooth for simple mode
+- Task 80: Add 1 block radius for spruces
+- Task 80: Add directions and rotate restrains for props
+- Task 80: Add random rotate part based on direction
+- Task 168: Remove user-select for all in app
+
+### Version 0.1.3
+
+- Comment key handlers
+- Update lights colors
+- Update lights colors
+- Fix colorize performance
+- Fix old colorize method
+- Update first light color
+- Change old colorize default state
+- Change colorize method on color palette change
+- Remove lights for skulls; update light color
+- Add skull light change in dev settings
+- Add lights for skulls
+- Update main lights colors
+- Update layers position in layers-pit image
+- Change scale to pixel ratio for graphics mode getter
+- Add pumpkins to zombie blocks
+- Update pit and candles generation logic
+- Restrain end game position
+- Remove end game call on 1 point higher that level
+- Update pit skull position
+- Update candles scale
+- Update skull position on pit
+- Task 141: Update scale params for pit parts
+- Task 149: Update keyhandler logic on how to screen
+- Task 146: Update color palette get for layers view
+- Task 127: Renamed to quality in settings
+- Task 141: Re-write all pit creation logic
+- Task 144: Check pause state for dev zombies
+- Task 127: Rename scale to graphics mode in settings
+- Update colorize method
+- Task 147: Remove text stroke for accepted screen
+- Task 151: Change logo to halloween type logo
+- Task 67: Enable old colorize method by default
+- Task 57: Fix old colorize method
+- Task 53: Fix error on drop
+- Task 53: Update item position on last level
+- Task 141: Halloween updates
+- Task 150: Fix chess pattern for even numbers
+- Task 146: Add color palatte selector
+- Add connected-disconnected gamepad message
+- Task 143: Update menu buttons state
+- Task 141: Update halloween models
+- Update colorize function structure
+- Fix for pumpkin placement
+- Fix focus on start again menu items if not showed
+- Task 149: Add back click handler for B press on controller
+- Remove controller increment ref
+- Task 143: Update practice mode logic
+- Task 146: Update D-Pad restrains
+- Task 141: Update halloween generation logic
+- Task 148: Add ":"
+- Task 146: Fixed focused position
+- Task 147: Change checkbox title font
+- Task 141: Update parts positions
+- Task 146: Menu fixes
+- Task 148: Add score and best score in end screen
+- Task 147: Change accepted screen font family
+- Add dispose materials before change; add material ids
+- Fix grass material
+- Add stats counter for tweakpane
+- Update perfromance; add performance logs
+- Add pumpkins to grass for halloween mode
+- Task 146:  Settings scroll updates
+- Task 141: First iteration of halloween parts logic
+- Task 146: Add pit grid to settings; add scroll in settings
+- Update halloween models
+- Task 53: Remove random corner; change start position to 1
+- Add foggy material helper
+- Task 100: Fix start position
+- Task 146: Update levels-pit image
+- Task 138: Fix pit rotation
+- Update build chunks
+- Update levels-pit image colors
+- Cut orbit controls to async import
+- Update color palette
+- Task 135: Add fog
+- Task 143: Fix point earn
+- Change play button in controls info screen
+- Task 57: Add grey atlases for guts and brains models
+- Add Play button to controls info screen
+- Disable shaders and enable antialias
+- Move shaders flag to store
+- Task 57: Update colorize element with grey atlas
+- Task 143: Update layout for modes
+- Task 127: Update menu width
+- Add frame time calculation and show in dev GUI
+- Task 144: Fix element creation logic
+- Task 127: Update mobile style for menu
+- Task 22: Update pit grid show logic
+- Task 143: Add endless and practice modes in menu
+- Update overflow for controls info screen
+- Task 142: Update levels-pit image
+- Task 129: Fix bottom margin on mobile for controls screen
+- Task 127: Change range slider to dots
+- Task 142: Change levels colorpalette colors
+- Remove old code; update load files logic
+- Remove old code
+- Task 92: Add grid by levels with colors
+- Add candels on grass models
+- Add grid for pit walls
+- Update pit grid colors
+- Update halloween models
+- Move actions buttons to new dev GUI
+- Update colors view to hex string
+- Add grid colors to dev GUI
+- Add fps show in dev menu
+- Update lock files
+- Add color managment for new dev GUI
+- Add new dev UI
+- Add get world position helper
+- Update halloween models
+- Comment emissive animation
+- Update emissive animation params and delay
+- Update emissive animation params
+- Add emissive animation on halloween head
+- Update halloween models
+- Fix point position detection
+- Add halloween models prototype
+- Update pit grid color
+- Task 129: Update controls info layout
+- Task 129: Update controls info screen
+- Update performance of add random figures
+- Update pit grid colors
+- Update pit grid color
+- Task 129: Layout fixes for controls screen
+- Task 134: Update slow params
+- Change generated grid colors
+- Task 92: Add grid for pit meshes
+- Task 134: Add slow time with left  shift press
+- Task 57: Add old colorize support
+- Add color vars
+- Update range slider styles
+- Task 133: Fix re-drop elements
+- Add rorate restrain change via dev menu
+- Task 129: Layout updates for controls info screen
+- Add basic pit rotation for testing via dev menu
+- Task 129: Update show controls info screen logic
+- Task 57: Update colorize method
+- Task 88: Add practice mode
+- Update controls info screen layout
+- Change scale to resolution slider in dev menu
+- Fix re-init lights; add tween for camera distance change
+- Task 137: Endless mode
+- Task 88: Add random forms add via dev menu
+- Add gamepad support for controls info screen
+- Add logic for controls info screen show
+- Update pit and levels images params for controls info screen
+- Update controls info screen layout
+- Add controls info screen
+- Add hide loading screen animation
+- Add show logo animation
+- Update shaders params
+- Swap lights colors
+- Add postprocessing library; change antialias to effect pass
+- Change lights position
+- Update lights colors
+- Add dont show checkbox on accepted screen
+- Remove load lights from fbx file
+- Add filter for blocks for dev parts
+- Update to all-in-one file models
+- Fix update cache for shuffles
+- Fix while loop for shuffle
+- Add shuffle by layers via dev menu
+- Add shuffle points via dev menu
+- Fix change pit size re-creation
+- Comment back R press for random rotate
+- Fix mesh show on diff screen resolutions
+- Move controls to separate component
+- Change render loop to rAF
+- Task 127: Add scale change
+- Task 131: Render only visible objects
+- Update others assets links with target blank
+- Add target blank for assets links
+
+### Version 0.1.2
+
+- Update levels preview
+- Fix drop press
+- Add target blank for open in new window
+- Update low height displays menu layout
+- Update levels preview on low height devices
+- Disable antialias by default
+- Add share permissions check
+- Remove user select from menu icon
+- Remove user select from accept screen
+- Remove select on navigation items
+- Update version show in credits
+
+### Version 0.1.1
+
+- Fix version get from package.json
+- Add app version show
+- Comment random rotate on R press
+- Task 61: Update colors and add increment type
+- Update color atlas
+- Task 122: Add dev achievements
+- Update press R random rotate to 3 times random
+- Task 121: Add controls events helper
+- Add differenct color for increment show
+- Add show increment score animation
+- Task 105: Fix rotation issue
+- Chande dev chance from 5 to 1 percent
+- Update tween animation params for score and speed
+- Remove close menu on escape
+- Add dev parts and logic
+- Add blinking on score gt best score
+- Add change score animation
+- Fix log helper strings split
+- Re-write log helper in components
+- Add first time check for escape button press
+- Fix trigger menu call
+- Add menu check for gamepad sticks events
+- Add drop on RB press
+- Add movement on left stick
+- Add enable-disable gamepad events
+- Use both gamepad sticks for movement
+- Changed focused view for gamepad
+- Update gamepad buttons layout
+- Update lock files
+- Add gamepad support
+- Try to fix play-pause on focus-blur window
+- Simplify play-pause music logic on window blur
+- Add force check for update playback rate helper
+- Add divider count for round value helper
+- Update leyout for levels
+- Update levels layout; add flip for levels preview if controls enabled
+- Task 117: Add score show
+- Update achievements icons
+- Update share text
+- Task 114: Fix music pause on page blur
+- Add playing check for playbackrate change
+- Add playbackrate set on new game call
+- Task 29: Share button update
+- Task 81: 2d + 3d love
+- Task 59: Add vibration checkbox in settings
+- Task 109: Remove R random rotate
+- Remove start again menu button
+- Update achievement view
+- Update bg sound playbackrate calculation
+- Update playbackrate calculation
+- Task 105: Fix rotation problems
+- Fix bg audio playbackrate change
+- Task 56: Random rotate on R press
+- Add share button
+- Task 77: Landing inside forms
+- Comment zombieland and fast-and-furious achievements
+- Add reset bg sound playback rate on new game call
+- Add clear layer cache object on layer delete
+- Try to fix fantom layers
+- Fix keep-rolling achievement
+- Add MIT license file
+- Update restrain key press for keydown event
+- Update Z axis restrain
+- Fix layer check
+- Fix achievement show
+- Update achievement
+- Keypress to keydown backup
+- Change keyup to keypress
+- Change back keydown to keyup
+- Change key handler logic to throttle
+- Remove settings dev button for prod build
+- Fix element drop on bottom
+- Update achievements system
+- Task 99: Fix pit depth
+- Update key press event logic
+- Change keyup to keydown event
+- Update color palette
+- Delete webp and avif logos
+- Fix build for itch.io
+- Update logo images
+- Update screen layout
+- Update logos images
+- Fix multiple rotation call
+- Task 87: Fix drop if collision found
+- Convert sounds to aac; add webp logo image support
+- Remove old resources
+
+### Version 0.1.0
+
+- Update performance for show-hide level helpers
+- Re-write layers helpers show
+- Update layers helpers shift
+- Prettify text styles
+- Add layers helpers show
+- Fix achievements add if dev menu opened
+- Task 73: Fix rotations animation
+- Add readme for forms images folder
+- Task 85: Fix 3 blocks form size
+- Task 86: Fix rotation after petrify
+- Task 84: Fix first figure position
+- Add authors links in credits menu
+- Fix link in readme
+- Remove studio name from credits
+- Add assets links to credits menu
+- Remove hammerjs lib
+- Update README.md with credits
+- Fix shaders
+- Fix score reset after end menu show
+- Fix avg score show in dev menu
+- Fix "are-you-playing" achievement
+- Add check speed set value
+- Update achievement menu layout
+- Add "sanitizer" achievement
+- Update score in dev menu
+- Add "zombieland" achievement
+- Add "are-you-playing" achievement
+- Add "still-playing" achievement
+- Add achievements system
+- Remove 50% FX volume on rotation sounds
+- Update rotation sound
+- Improve speed; fix get index error
+- Important: Rewrite drop and petrify
+- Update pit levels color palette
+- Move dev menu to right bottom corner
+- Add fast drop change via dev menu
+- Rotate levels preview on mobile(from left to right)
+- Move set layer point helper to layers file
+- Cut main to separate files
+- Update code docs
+- Add restrain by x and y axis
+- Comment color in palette
+- Remove 1 color from palette
+- Fix preview show
+- Add static pit levels preview
+- 50% FX volume rotation sounds
+- Add parse URL params for store
+- Update sounds; move dev and controls flag to store
+- Update PWA manifest
+- Update rotation sounds
+- Small updates
+- Fix estimate show
+- Remove old menu component
+- Add rotation animation support via dev menu
+- Cut shaders to separate file
+- Cut init audio to separate file
+- Fix estimate show on loading screen
+- Change pit levels to opacity show-hide logic
+- Update pit levels show-hide
+- Add opacity for error bg
+- Move pit levels to separate file
+- Add ETA calculation for loading screen
+- Add other shaders examples
+- Add new shaders for test
+- Add score check for max score
+- Add shaders flag in dev menu
+- Fix rotate count
+- Reset rotate count on restrain rotate change
+- Add restrain rotates mode
+- Save scores and speed in sessionstorage
+- Update default volume values
+- Fix new game call
+- Update accept screen size
+- Update accept screen
+- Update sound; add levels destroy helper and colorize
+- Update rotation sounds
+- Fix multiple buttons press
+- Move some values to vuex store; add save in storage store
+- Add hacks for update audio volume
+- Update sound init
+- Return sound call logic
+- Add sound play check
+- Update menu sound logic
+- Update sound and add tween for volume
+- Add convert to aac script; convert sounds to aac
+- Update menu screen file
+- Delete public image folder
+- Update green logo with stroke
+- Update green logo to png version
+- Update logo in menu screen
+- Update logo size
+- Update svg logo
+- Update logo to new green svg version
+- Add error screen; update dev menu; add playbackrate change on score change
+- Rewrite positions for better collision check
+- Fix logo static bug
+- Update show menu on blur window logic
+- Update show menu on blur logic
+- Fix pause state change on blur
+- Add pause flag change for blur-focus event
+- Move show menu on blur to menu screen logic
+- Menu show on blur only on play screen
+- Fix continue click after window blur
+- Remove hover from navigation items
+- Task 54: Block half size offset bug
+- Update blur event
+- Update mobile buttons layout
+- Replace 7x4x12 with 7x5x12
+- Add play-pause music on focus-blur page
+- Add force controls on mobile and tablet
+- Update rotation icons
+- Add arrow icons for mobile menu
+- Update Z offset for portrait view
+- Task 62: Add flat shading for grass
+- Fix speed change bug
+- Update controls mobile bottom padding
+- Fix body height
+- Fix load screen hide
+- Add loaded percent log
+- Add loading screen
+- Replace text-shadow with text-stroke
+- Remove vibration from menu
+- Update mobile layout
+- Add main google font
+- Add vibration for test
+- Update controls buttons layout
+- Add update render size on controls change
+- Add controls flag in settings
+- Update mobile view and layout
+- Move version to menu credits screen
+- Update preview form size and position
+- Add version
+- Update camera offset
+- Update navigation position
+- Update navigation position
+- Add layers preview; add glare for menu buttons
+- Add grass background planes for pit
+- Add pit planes
+- Fix menu show
+- Update speed step
+- Change floor to round for menu values change
+- Fix dev menu change
+- Update P8 and P9 forms
+- Update P6 and P7 forms
+- Update P6 form
+- Update P2 and P5 forms
+- Update P1 form
+- Update model; update form generation
+- Cut form generator function into separate file
+- Fix back menu bug
+- Add colors to end menu screen
+- Fix back to menu button
+- Fix menu show
+- Update menus layout
+- Remove font include
+- Fix build error
+- Add accept and logo screens
+- Update app icons
+- Disable buttons on menu show
+- Add calculated size vector for forms
+- Add FPS meter
+- Task 40: Add color variation for grass
+- Task 49: Wrong blocks drop
+- Task 47: Fix game lagging after change pit size
+- Remove test param
+- Task 42: Reset score on new game
+- Task 43: Swap controls for test
+- Task 28: LocalStorage for score
+- Update score show
+- Update lights settings
+- Update lights show-hide logic
+- Add speed info
+- Task 32L Basic and Extended block forms
+- Update blocks generators structure
+- Update menu opacity
+- Task 16: Remove pause
+- Task 25: Death Red Light
+- Task 15: Remove orbit controls
+- Task 27: Update score system
+- Bug 37: "Next block to spawn" is not showing
+- Bug 39: Fix rotation for GrassToGroundBlocks
+- Bug 38: Fix holes in gameworld
+- Add form types selector; add new form types
+- Add block images for develop
+- Fix bugs
+- Remove point lights helper
+- Fix new game bug
+- Update materials in depth
+- Update zombie parts materials
+- Update flat shading for materials
+- Update color state
+- Update scene lights
+- Add sound effects; add volume change
+- Add music; add instaced pit generation
+- Add simple mode; update menu
+- Update grid color
+- Add ground
+- Add controls flag
+- Add drop button
+- Add controls buttons
+- Update styles; add end game support
+- Add score calculation, layer check and new game support
+- Add color levels and color palette
+- Add preview object
+- Add drop support
+- Update performance
+- Fix waterflow layers
+- Cut to separate files; update menu
+- Move some functions to separate file
+- Fix position restrain
+- Add smooth waterfall checkbox
+- Update rotation logic
+- Update models; add zombie parts generator
+- Fix pit bg; add prev corner save
+- Fix grop position calculation
+- Update README file
+- Fix pause logic and time delta calculation
+- Move pause to waterfall test
+- Add pause-play loop button
+- Add orbit controls
+- Add update camera projection method for fit screen
+- Add menu fade; add reset.css
+- Update waterfall logic
+- Add waterfall test
+- Update menu
+- Add PWA support
+- Add menu component
+- Update controls
+- Change workflow name
+- Fix models folder path
+- Fix resize handler
+- Delete first deploy workflow
+- Fix pit size bug
+- Update run scripts
+- Rename folder workflow to workflows
+- Delete root deploy.yml file
+- Add logs; change title
+- Add logs for helpers
+- Add basic vite workflow deploy
+- Try to fix deploy
+- Update deploy to Vite Github Pages Deployer
+- Update deploy.yml
+- Add change pit size selector
+- Update main view styles
+- Add new helpers
+- Cut main file into helpers
+- Add surface planes
+- Add zombie model and controls
+- Add grid planes by params
+- Add planes; add animation loop hook
+- Try default vite config for deploy
+- Update deploy script
+- Move deploy.yml to github folder
+- Add deploy.yml
+- Add basic three js scene and forms
+
+### Version 0.0.0
+
