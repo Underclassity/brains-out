@@ -79,8 +79,8 @@ Transition(name="controls")
                             .controls-info--key--title {{ title }}
 
             .controls-info--buttons
-                .controls-info--button(v-on:click="backClick" ref="back" v-if="!playButton") Back
-                .controls-info--button.controls-info--button--green(v-on:click="backClick" ref="back" v-if="playButton") Play
+                .controls-info--button(v-on:click="backClick" ref="back" v-if="!playButton") {{ $t('back') }}
+                .controls-info--button.controls-info--button--green(v-on:click="backClick" ref="back" v-if="playButton") {{ $t('play') }}
 </template>
 
 <script src="./ControlsInfoScreen.js"></script>

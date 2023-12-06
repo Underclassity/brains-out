@@ -11,7 +11,7 @@
             ref="menu.newGame"
             v-bind:class="{ 'focused': focused === 'menu.newGame' }"
         )
-            span New Game
+            span {{ $t('newGame') }}
 
         .menu--item(
             v-show="flags.menu"
@@ -19,7 +19,7 @@
             ref="menu.practice"
             v-bind:class="{ 'focused': focused == 'menu.practice' }"
         )
-            span Practice
+            span {{ $t('practice') }}
 
         .menu--item(
             v-show="flags.menu"
@@ -27,7 +27,7 @@
             ref="menu.settings"
             v-bind:class="{ 'focused': focused == 'menu.settings' }"
         )
-            span Settings
+            span {{ $t('settings') }}
         //- .menu--item(
         //-     v-show="flags.menu"
         //-     v-on:click="controlsCall"
@@ -40,21 +40,21 @@
             ref="menu.howTo"
             v-bind:class="{ 'focused': focused == 'menu.howTo' }"
         )
-            span How to play
+            span {{ $t('howToPlay') }}
         .menu--item(
             v-show="flags.menu"
             v-on:click="achievementsCall"
             ref="menu.achievements"
             v-bind:class="{ 'focused': focused == 'menu.achievements' }"
         )
-            span Achievements
+            span {{ $t('achievements') }}
         .menu--item(
             v-show="flags.menu"
             v-on:click="creditsCall"
             ref="menu.credits"
             v-bind:class="{ 'focused': focused == 'menu.credits' }"
         )
-            span Credits
+            span {{ $t('credits') }}
 
         //- New game items
         .menu--title(v-show="flags.new")
@@ -108,14 +108,14 @@
                 ref="new.back"
                 v-bind:class="{ 'focused': focused == 'new.back' }"
             )
-                span Back
+                span {{ $t('back') }}
             .menu--item--new.menu--button(
                 v-show="flags.new"
                 v-on:click="playClick"
                 ref="new.play"
                 v-bind:class="{ 'focused': focused == 'new.play' }"
             )
-                span Play
+                span {{ $t('play') }}
 
         //- Controls items
         //- .menu--title(v-show="flags.controls") Controls
@@ -131,7 +131,7 @@
         //-         v-on:click="back"
         //-         ref="controls.back"
         //-         v-bind:class="{ 'focused': focused == 'controls.back' }"
-        //-     ) Back
+        //-     ) {{ $t('back') }}
 
         //- Game modes
         .menu--title(v-show="flags.mode")
@@ -191,13 +191,13 @@
                 v-on:click="back"
                 ref="mode.back"
                 v-bind:class="{ 'focused': focused == 'mode.back' }"
-            ) Back
+            ) {{ $t('back') }}
 
             .menu--item--new.menu--button(
                 v-on:click="nextClick"
                 ref="mode.next"
                 v-bind:class="{ 'focused': focused == 'mode.next' }"
-            ) Next
+            ) {{ $t('next') }}
 
         //- Credits items
         .menu--version(v-show="flags.credits") Version: {{ appVersion }}-{{ version }}
@@ -221,7 +221,7 @@
                 v-on:click="back"
                 ref="credits.back"
                 v-bind:class="{ 'focused': focused == 'credits.back' }"
-            ) Back
+            ) {{ $t('back') }}
 
         //- Settings items
         .menu--title(v-show="flags.settings") Settings
@@ -328,6 +328,16 @@
             .menu--subtitle Other
 
             .menu--selector(
+                v-show="flags.settings"
+                ref="settings.language"
+                v-bind:class="{ 'focused': focused == 'settings.language' }"
+            )
+                .menu--label Language
+                .menu--selector--prev(v-on:click="prevLanguage" v-if="locale != 'ru'" ref="settings.language.prev")
+                .menu--selector--value {{ locale }}
+                .menu--selector--next(v-on:click="nextLanguage" v-if="locale != 'en'" ref="settings.language.next")
+
+            .menu--selector(
                 v-show="flags.settings && isDevApproved"
                 ref="settings.dev"
                 v-bind:class="{ 'focused': focused == 'settings.dev' }"
@@ -367,7 +377,7 @@
                 v-on:click="back"
                 ref="settings.back"
                 v-bind:class="{ 'focused': focused == 'settings.back' }"
-            ) Back
+            ) {{ $t('back') }}
 
         .menu--subtitle(v-show="flags.end && !isPractice") Score: {{ score }}
         .menu--subtitle(v-show="flags.end && !isPractice") Best score: {{ maxScore }}
@@ -378,7 +388,7 @@
                 v-on:click="newGameCall"
                 ref="end.new"
                 v-bind:class="{ 'focused': focused == 'end.new' }"
-            ) New Game
+            ) {{ $t('newGame') }}
 
         .menu--buttons(v-show="flags.end && isPractice")
             .menu--item--green.menu--button(
@@ -392,7 +402,7 @@
                 v-on:click="backToMenu"
                 ref="end.back"
                 v-bind:class="{ 'focused': focused == 'end.back' }"
-            ) Back to menu
+            ) {{ $t('backToMenu') }}
 
         .menu--item(
             v-show="flags.end && isShare"
@@ -409,7 +419,7 @@
                 v-on:click="newGameCallForce"
                 ref="continue.new"
                 v-bind:class="{ 'focused': focused == 'continue.new' }"
-            ) New Game
+            ) {{ $t('newGame') }}
 
         .menu--buttons(v-show="flags.continue && isPractice")
             .menu--item--green.menu--button(
@@ -430,14 +440,14 @@
                 v-on:click="howToPlay"
                 ref="continue.howTo"
                 v-bind:class="{ 'focused': focused == 'continue.howTo' }"
-            ) How to play
+            ) {{ $t('howToPlay') }}
 
         .menu--buttons(v-show="flags.continue")
             .menu--item--red.menu--button(
                 v-on:click="backToMenu"
                 ref="continue.back"
                 v-bind:class="{ 'focused': focused == 'continue.back' }"
-            ) Back to menu
+            ) {{ $t('backToMenu') }}
 
         //- Achiements items
         .menu--title(v-show="flags.achievements") Achievements
@@ -455,7 +465,7 @@
                 v-on:click="back"
                 ref="achievements.back"
                 v-bind:class="{ 'focused': focused == 'achievements.back' }"
-            ) Back
+            ) {{ $t('back') }}
 </template>
 
 <script src="./MenuScreen.js"></script>

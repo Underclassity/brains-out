@@ -15,6 +15,8 @@ import is from "is_js";
 
 export const store = createStore({
   state: {
+    locale: "en",
+
     size: 1,
 
     minSpeed: 0.5,
@@ -661,6 +663,10 @@ export const store = createStore({
 
       state.cameraOffsetMobile = value;
     },
+
+    changeLocale(state, value) {
+      state.locale = value;
+    },
   },
   actions: {
     addAchievement({ state }, achievement) {
@@ -695,6 +701,7 @@ export const store = createStore({
   plugins: [
     vuejsStorage({
       keys: [
+        "locale",
         "size",
         "settingsSpeed",
         "lsScore",

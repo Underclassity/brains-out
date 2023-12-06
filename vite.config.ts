@@ -1,16 +1,25 @@
 import { defineConfig, splitVendorChunkPlugin, type PluginOption } from "vite";
 import { visualizer } from "rollup-plugin-visualizer";
 import vue from "@vitejs/plugin-vue";
+import VueI18nPlugin from "@intlify/unplugin-vue-i18n/vite";
+
 import process from "child_process";
 import packageJson from "./package.json";
 
-const commitHash = process.execSync("git rev-parse --short HEAD").toString();
+let commitHash = "";
+
+try {
+  commitHash = process.execSync("git rev-parse --short HEAD").toString();
+} catch (error) {
+  console.log(error);
+}
 
 // https://vitejs.dev/config/
 export default defineConfig({
   base: "",
   plugins: [
     vue(),
+    VueI18nPlugin(),
     splitVendorChunkPlugin(),
     visualizer({
       template: "treemap", // or sunburst

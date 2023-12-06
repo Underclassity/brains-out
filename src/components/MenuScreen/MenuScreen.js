@@ -79,6 +79,7 @@ export default {
           "theme",
           "volume",
           "fxVolume",
+          "language",
           "dev",
           "vibration",
           "controls",
@@ -99,6 +100,8 @@ export default {
 
   computed: {
     ...mapState([
+      "locale",
+
       "volume",
       "fxVolume",
 
@@ -587,6 +590,16 @@ export default {
         "setRandomFiguresCount",
         this.randomFiguresCount == 5 ? 10 : 5
       );
+    },
+
+    prevLanguage() {
+      this.$store.commit("changeLocale", "ru");
+      this.$i18n.locale = "ru";
+    },
+
+    nextLanguage() {
+      this.$store.commit("changeLocale", "en");
+      this.$i18n.locale = "en";
     },
 
     blurEvent() {
