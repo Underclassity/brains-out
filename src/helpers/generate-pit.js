@@ -1340,6 +1340,51 @@ export function generatePit(
     }
 
     if (propsParts?.length) {
+      blocksCache.forEach((layer, yIndex) => {
+        layer.forEach((item, xIndex) => {
+          if (item.type !== "GNG") {
+            return;
+          }
+
+          const topItem = blocksCache[xIndex + 1]?.[yIndex];
+          const bottomItem = blocksCache[xIndex - 1]?.[yIndex];
+          const leftItem = blocksCache[xIndex]?.[yIndex - 1];
+          const rightItem = blocksCache[xIndex]?.[yIndex + 1];
+
+          if (topItem?.type == "G") {
+            if (item?.direction) {
+              item.direction.push("top");
+            } else {
+              item.direction = ["top"];
+            }
+          }
+
+          if (bottomItem?.type == "G") {
+            if (item?.direction) {
+              item.direction.push("bottom");
+            } else {
+              item.direction = ["bottom"];
+            }
+          }
+
+          if (leftItem?.type == "G") {
+            if (item?.direction) {
+              item.direction.push("left");
+            } else {
+              item.direction = ["left"];
+            }
+          }
+
+          if (rightItem?.type == "G") {
+            if (item?.direction) {
+              item.direction.push("right");
+            } else {
+              item.direction = ["right"];
+            }
+          }
+        });
+      });
+
       const propsDummy = new Object3D();
 
       let groundAndGrassParts = blocksCache
@@ -1353,6 +1398,8 @@ export function generatePit(
         item.add = true;
 
         let mesh;
+
+        console.log(x, y, item.direction);
 
         switch (index) {
           case 0:
@@ -1384,7 +1431,13 @@ export function generatePit(
 
         propsDummy.position.set(x, y, z);
 
-        const rotateAngle = randomBetween(0, 360);
+        const rotateAngle =
+          index == 0 || index == 1
+            ? item.direction.includes("bottom") ||
+              item.direction.includes("top")
+              ? randomBetween(75, 105)
+              : randomBetween(-15, 15)
+            : randomBetween(0, 360);
 
         propsDummy.rotateOnWorldAxis(zAxis, MathUtils.degToRad(rotateAngle));
 
@@ -1418,34 +1471,28 @@ export function generatePit(
             return;
           }
 
-          const topItem = blocksCache[yIndex - 1]?.[xIndex];
-          const bottomItem = blocksCache[yIndex + 1]?.[xIndex];
-          const leftItem = blocksCache[yIndex]?.[xIndex - 1];
-          const rightItem = blocksCache[yIndex]?.[xIndex + 1];
+          const topItem = blocksCache[xIndex + 1]?.[yIndex];
+          const bottomItem = blocksCache[xIndex - 1]?.[yIndex];
+          const leftItem = blocksCache[xIndex]?.[yIndex - 1];
+          const rightItem = blocksCache[xIndex]?.[yIndex + 1];
 
-          if (topItem?.type == "G" && topItem?.add) {
+          if (topItem?.type == "G") {
             topItem.add = false;
           }
 
-          if (bottomItem?.type == "G" && bottomItem?.add) {
+          if (bottomItem?.type == "G") {
             bottomItem.add = false;
           }
 
-          if (leftItem?.type == "G" && leftItem?.add) {
+          if (leftItem?.type == "G") {
             leftItem.add = false;
           }
 
-          if (rightItem?.type == "G" && rightItem?.add) {
+          if (rightItem?.type == "G") {
             rightItem.add = false;
           }
         });
       });
-
-      // console.log(
-      //   blocksCache
-      //     .map((layer) => layer.map((item) => (item.add ? 1 : 0)).join("-"))
-      //     .join("\n")
-      // );
 
       for (const [index, spruce] of spruces.entries()) {
         const partsToAdd = blocksCache
