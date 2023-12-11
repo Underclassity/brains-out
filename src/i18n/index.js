@@ -1,4 +1,4 @@
-import { createI18n } from "vue-i18n/dist/vue-i18n.esm-browser.prod";
+import { createI18n } from "../../node_modules/vue-i18n/dist/vue-i18n.esm-browser.prod.js";
 
 import store from "../store/index.js";
 
