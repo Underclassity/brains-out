@@ -25,6 +25,10 @@ export const store = createStore({
     maxSpeed: 10,
     speedStep: 0.1,
 
+    isPetrifyDelay: false,
+    petrifyDelayStatus: false,
+    petrifyDelayMaxTime: 300, // ms
+
     score: 0,
     lsScore: [],
 
@@ -695,6 +699,24 @@ export const store = createStore({
       state.userAchievements.push(achievement);
 
       return achievement;
+    },
+
+    setPetrifyDelayStatus({ state }, value) {
+      state.petrifyDelayStatus = value ? true : false;
+    },
+
+    setPetrifyDelayMaxTime({ state }, value) {
+      value = parseInt(value, 10);
+
+      if (value <= 0) {
+        value = 0;
+      }
+
+      state.petrifyDelayMaxTime = value;
+    },
+
+    setPetrifyDelay({ state }, value) {
+      state.isPetrifyDelay = value ? true : false;
     },
   },
   modules: {},

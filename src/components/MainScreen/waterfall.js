@@ -15,6 +15,10 @@ import log from "../../helpers/log.js";
  * @return  {Object}  Element object
  */
 export function createElement() {
+  if (this.isPetrifyDelay && this.petrifyDelayStatus) {
+    return false;
+  }
+
   if (this.isPetrify) {
     return false;
   }

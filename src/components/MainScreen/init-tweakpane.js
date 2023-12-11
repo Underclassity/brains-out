@@ -1211,6 +1211,55 @@ function addFpsLockFolder(pane) {
 }
 
 /**
+ * Add petrify delay folder
+ *
+ * @param   {Object}   pane  Pane
+ *
+ * @return  {Boolean}        Result
+ */
+function addPetrifyDelayFolder(pane) {
+  if (!pane) {
+    return false;
+  }
+
+  const petrifyDelayFolder = pane.addFolder({
+    title: "Petrify delay",
+    expanded: false,
+  });
+
+  petrifyDelayFolder
+    .addInput(
+      {
+        isPetrifyDelay: this.isPetrifyDelay,
+      },
+      "isPetrifyDelay"
+    )
+    .on("change", (ev) => {
+      this.$store.dispatch("setPetrifyDelay", ev.value);
+    });
+
+  petrifyDelayFolder.addInput(
+    {
+      petrifyDelayStatus: this.petrifyDelayStatus,
+    },
+    "petrifyDelayStatus"
+  );
+
+  petrifyDelayFolder
+    .addBlade({
+      view: "slider",
+      label: "Max time",
+      min: 1,
+      max: 1000,
+      format: (v) => Math.round(v),
+      value: this.petrifyDelayMaxTime,
+    })
+    .on("change", (ev) => {
+      this.$store.dispatch("petrifyDelayMaxTime", ev.value);
+    });
+}
+
+/**
  * Init Tweakpane
  *
  * @param   {Object}  pane  Input tweakpane object
@@ -1237,6 +1286,7 @@ export function initTweakPane(pane) {
   addTimelessFolder.call(this, pane);
   addSlowModeFolder.call(this, pane);
   addFpsLockFolder.call(this, pane);
+  addPetrifyDelayFolder.call(this, pane);
   addRandomFormsFolder.call(this, pane);
   addActionsFolder.call(this, pane);
 

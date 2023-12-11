@@ -35,6 +35,7 @@ import getWorldPosisition from "../../helpers/get-world-position.js";
 import log from "../../helpers/log.js";
 import randomBetween from "../../helpers/random-between.js";
 import roundValue from "../../helpers/round-value.js";
+import sleep from "../../helpers/sleep.js";
 
 import {
   moveDown,
@@ -306,6 +307,10 @@ export default {
       "settingsSpeed",
       "maxSpeed",
       "speedStep",
+
+      "isPetrifyDelay",
+      "petrifyDelayStatus",
+      "petrifyDelayMaxTime",
 
       "isTimeless",
       "timelessMaxTime",
@@ -1769,7 +1774,15 @@ export default {
      *
      * @return  {Boolean}                     Result
      */
-    petrify(element, updateView = true) {
+    async petrify(element, updateView = true) {
+      if (this.isPetrifyDelay) {
+        this.$store.dispatch("setPetrifyDelayStatus", true);
+
+        await sleep(this.petrifyDelayMaxTime / this.speed);
+
+        this.$store.dispatch("setPetrifyDelayStatus", false);
+      }
+
       this.isPetrify = true;
 
       const elementPoints = this.getElementLayerPoints(element);
@@ -1837,6 +1850,10 @@ export default {
       // );
 
       this.isPetrify = false;
+
+      if (this.isPetrifyDelay) {
+        this.createElement();
+      }
 
       return true;
     },
@@ -3905,6 +3922,18 @@ export default {
 
     fpsLockValue(newValue) {
       this.log("FPS lock changed: ", newValue);
+    },
+
+    isPetrifyDelay(newValue) {
+      this.log("Petrify delay changed: ", newValue);
+    },
+
+    petrifyDelayStatus(newValue) {
+      this.log("Petrify delay status changed: ", newValue);
+    },
+
+    petrifyDelayMaxTime(newValue) {
+      this.log("Petrify delay time changed: ", newValue);
     },
   },
 
