@@ -423,6 +423,108 @@ function addElementsToGroundAndGrass(
 }
 
 /**
+ * Return item neighbours blocks
+ *
+ * @param   {Object}  item    Item block
+ * @param   {Array}  blocks   Blocks array
+ *
+ * @return  {Object}          Neighbours object
+ */
+function getNeighbours(item, blocks) {
+  const { xi, yi } = item;
+
+  return {
+    top: blocks[xi + 1][yi],
+    bottom: blocks[xi - 1][yi],
+    left: blocks[xi][yi - 1],
+    right: blocks[xi][yi + 1],
+  };
+}
+
+/**
+ * Get GNG item for add long block
+ *
+ * @param   {Array}  parts   Parts array for randomize
+ * @param   {Array}  blocks  Blocks array
+ *
+ * @return  {Object}         GNG item
+ */
+function getGNGItem(blocks) {
+  let item;
+
+  let isTopBlock = true;
+  let isBottomBlock = true;
+  let isLeftBlock = true;
+  let isRightBlock = true;
+
+  let count = 0;
+
+  while (
+    (isTopBlock || isBottomBlock || isLeftBlock || isRightBlock) &&
+    count != 100
+  ) {
+    const parts = blocks
+      .flat()
+      .filter((item) => item.type == "GNG" && !item.add);
+
+    item = getRandom(parts, 1)[0];
+
+    const { top, bottom, left, right } = getNeighbours(item, blocks);
+
+    isTopBlock = top.type == "GNG" && top.add;
+    isBottomBlock = bottom.type == "GNG" && bottom.add;
+    isLeftBlock = left.type == "GNG" && left.add;
+    isRightBlock = right.type == "GNG" && right.add;
+
+    count++;
+  }
+
+  if (count == 100) {
+    return false;
+  }
+
+  return item;
+}
+
+/**
+ * Update neighbours blocks
+ *
+ * @param   {Object}  item    Block item
+ * @param   {Array}   blocks  Blocks array
+ *
+ * @return  {Boolean}         Result
+ */
+function updateNeighbours(item, blocks) {
+  const { direction } = item;
+
+  const { top, bottom, left, right } = getNeighbours(item, blocks);
+
+  if (!direction) {
+    debugger;
+  }
+
+  if (direction.includes("bottom") || direction.includes("top")) {
+    if (top.type == "GNG") {
+      top.add = true;
+    }
+
+    if (bottom.type == "GNG") {
+      bottom.add = true;
+    }
+  } else {
+    if (left.type == "GNG") {
+      left.add = true;
+    }
+
+    if (right.type == "GNG") {
+      right.add = true;
+    }
+  }
+
+  return true;
+}
+
+/**
  * Generate pit
  *
  * @param   {Number}    [width=5]                      Pit width
@@ -1343,15 +1445,12 @@ export function generatePit(
       blocksCache.forEach((layer, yIndex) => {
         layer.forEach((item, xIndex) => {
           if (item.type !== "GNG") {
-            return;
+            return false;
           }
 
-          const topItem = blocksCache[xIndex + 1]?.[yIndex];
-          const bottomItem = blocksCache[xIndex - 1]?.[yIndex];
-          const leftItem = blocksCache[xIndex]?.[yIndex - 1];
-          const rightItem = blocksCache[xIndex]?.[yIndex + 1];
+          const { top, bottom, left, right } = getNeighbours(item, blocksCache);
 
-          if (topItem?.type == "G") {
+          if (top?.type == "G") {
             if (item?.direction) {
               item.direction.push("top");
             } else {
@@ -1359,7 +1458,7 @@ export function generatePit(
             }
           }
 
-          if (bottomItem?.type == "G") {
+          if (bottom?.type == "G") {
             if (item?.direction) {
               item.direction.push("bottom");
             } else {
@@ -1367,7 +1466,7 @@ export function generatePit(
             }
           }
 
-          if (leftItem?.type == "G") {
+          if (left?.type == "G") {
             if (item?.direction) {
               item.direction.push("left");
             } else {
@@ -1375,7 +1474,7 @@ export function generatePit(
             }
           }
 
-          if (rightItem?.type == "G") {
+          if (right?.type == "G") {
             if (item?.direction) {
               item.direction.push("right");
             } else {
@@ -1387,38 +1486,22 @@ export function generatePit(
 
       const propsDummy = new Object3D();
 
-      let groundAndGrassParts = blocksCache
-        .flat()
-        .filter((item) => item.type == "GNG");
+      for (let index = 0; index < 3; index++) {
+        const item = getGNGItem(blocksCache);
 
-      getRandom(groundAndGrassParts, 3).forEach((item, index) => {
-        const { x, y, xi, yi } = item;
+        if (!item) {
+          continue;
+        }
+
+        const { x, y } = item;
+
         let z = size / 2;
 
         item.add = true;
 
         let mesh;
 
-        if (
-          item.direction.includes("bottom") ||
-          item.direction.includes("top")
-        ) {
-          if (blocksCache[xi - 1][yi].type == "GNG") {
-            blocksCache[xi - 1][yi].add = true;
-          }
-
-          if (blocksCache[xi + 1][yi].type == "GNG") {
-            blocksCache[xi + 1][yi].add = true;
-          }
-        } else {
-          if (blocksCache[xi][yi - 1].type == "GNG") {
-            blocksCache[xi][yi - 1].add = true;
-          }
-
-          if (blocksCache[xi][yi + 1].type == "GNG") {
-            blocksCache[xi][yi + 1].add = true;
-          }
-        }
+        updateNeighbours(item, blocksCache);
 
         switch (index) {
           case 0:
@@ -1469,7 +1552,7 @@ export function generatePit(
         mesh.setMatrixAt(0, propsDummy.matrix);
 
         pitGroup.add(mesh);
-      });
+      }
 
       // Reset dummy
       propsDummy.position.set(0, 0, 0);
@@ -1480,8 +1563,9 @@ export function generatePit(
       blocksCache.forEach((layer, yIndex) => {
         layer.forEach((item, xIndex) => {
           const isCeil = yIndex % 2 ? xIndex % 2 : !(xIndex % 2);
+          const isAddSpruce = Math.random() <= 0.8;
 
-          if (item.type == "G" && isCeil) {
+          if (item.type == "G" && isCeil && isAddSpruce) {
             item.spruce = randomBetween(0, spruces.length - 1);
             item.add = true;
           }
@@ -1541,25 +1625,36 @@ export function generatePit(
         });
       }
 
-      const diggedGroundParts = propsParts.filter((item) =>
-        item.name.includes("DiggedGround")
+      const diggedGroundParts = propsParts
+        .filter((item) => item.name.includes("DiggedGround"))
+        .reverse();
+
+      const groundAndGrassPartsCount =
+        blocksCache.flat().filter((item) => item.type == "GNG" && !item.add)
+          .length - 1;
+
+      let diggedGroundPartsLength = Math.floor(
+        (groundAndGrassPartsCount / 4) * 3
       );
 
-      groundAndGrassParts = blocksCache
-        .flat()
-        .filter((item) => item.type == "GNG" && !item.add);
+      if (diggedGroundPartsLength < groundAndGrassPartsCount) {
+        diggedGroundPartsLength = groundAndGrassPartsCount;
+      }
 
-      groundAndGrassParts = getRandom(
-        groundAndGrassParts,
-        Math.floor((groundAndGrassParts.length / 4) * 3)
-      ).map((item) => {
-        item.add = true;
-        item.diggedGround = randomBetween(0, diggedGroundParts.length);
+      for (let index = 0; index < diggedGroundPartsLength; index++) {
+        const item = getGNGItem(blocksCache);
 
-        if (item.direction.length) {
-          item.diggedGround = randomBetween(0, diggedGroundParts.length - 1);
+        if (!item) {
+          continue;
         }
-      });
+
+        item.add = true;
+        item.diggedGround = randomBetween(0, diggedGroundParts.length - 1);
+
+        if (!item.diggedGround) {
+          updateNeighbours(item, blocksCache);
+        }
+      }
 
       for (const [partIndex, diggedGroundPart] of diggedGroundParts.entries()) {
         const partsToAdd = blocksCache
@@ -1574,12 +1669,12 @@ export function generatePit(
         }
 
         const diggedGroundMesh = getMesh(diggedGroundPart, partsToAdd.length);
-        diggedGroundMesh.name = `spruce-${partIndex}`;
+        diggedGroundMesh.name = `digged-ground-${partIndex}`;
 
         pitGroup.add(diggedGroundMesh);
 
         partsToAdd.forEach((item, index) => {
-          const { x, y } = item;
+          const { x, y, direction } = item;
 
           // Reset dummy
           propsDummy.position.set(0, 0, 0);
@@ -1587,12 +1682,12 @@ export function generatePit(
 
           propsDummy.position.set(x, y, hSize);
 
+          // Random rotate between +- 15 deg based on direction
           const rotateAngle =
-            partIndex == 2
-              ? item.direction.includes("bottom") ||
-                item.direction.includes("top")
-                ? randomBetween(75, 105)
-                : randomBetween(-15, 15)
+            partIndex == 0
+              ? direction.includes("bottom") || direction.includes("top")
+                ? randomBetween(-15, 15)
+                : randomBetween(75, 105)
               : randomBetween(0, 360);
 
           propsDummy.rotateOnWorldAxis(zAxis, MathUtils.degToRad(rotateAngle));
