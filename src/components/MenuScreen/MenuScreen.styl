@@ -578,3 +578,73 @@
 
             @media(max-height 900px)
                 border: 2px solid #000000
+
+    &--selector-vertical
+        display: flex
+        align-items: center
+        justify-content: center
+        flex-direction: column
+        padding: 8px
+        background-color: var(--orange, #E77812)
+        box-shadow: inset 0px 20px 20px -10px rgba(white, 0.3), inset 0px -20px 20px -10px rgba(black, 0.3)
+        position: relative
+        border-radius: 20px
+        border: 5px solid #222
+        box-sizing: border-box
+
+        &--value
+        &--span
+        .material-symbols-outlined
+            -webkit-text-stroke: 1px var(--black, #000)
+            font-size: 36px
+            line-height: 36px
+
+            @media(max-width 767px)
+                font-size: 20px
+                line-height: 24px
+
+            @media(max-height 900px)
+                font-size: 20px
+                line-height: 24px
+
+        .material-symbols-outlined
+            cursor: pointer
+            transform: scale(1)
+            transition: transform 300ms ease-on-out
+
+            &:hover
+                transform: scale(1.2)
+
+        &--value
+            margin-top: 8px
+            margin-bottom: 8px
+
+        @media(max-width 767px)
+            border-radius: 10px
+            padding: 8px
+            border: 2px solid #222
+            font-size: 20px
+            line-height: 24px
+
+        @media(max-height 900px)
+            border-radius: 10px
+            padding: 8px
+            border: 2px solid #222
+            font-size: 20px
+            line-height: 24px
+
+        &:before
+            content: ''
+            position: absolute
+            top: 20px
+            left: 15px
+            width: 10px
+            height: 10px
+            background-color: rgba(white, 0.2)
+            border-radius: 50%
+
+            @media(max-width 768px)
+                display: none
+
+            @media(max-height 900px)
+                display: none

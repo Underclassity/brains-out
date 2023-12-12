@@ -60,46 +60,68 @@
         .menu--title(v-show="flags.new")
             span Game Preferences
 
-        .menu--selector(
-            v-show="flags.new"
-            ref="new.pit"
-            v-bind:class="{ 'focused': focused == 'new.pit' }"
-        )
-            .menu--label Pit Size
-            .menu--selector--prev(v-on:click="prevPitSize" v-if="pitSizes.indexOf(pitSize) != 0" ref="new.pit.prev")
-            .menu--selector--value {{ pitSize }}
-            .menu--selector--next(v-on:click="nextPitSize" v-if="pitSizes.indexOf(pitSize) != pitSizes.length - 1" ref="new.pit.next")
 
-        .menu--selector(
-            v-show="flags.new"
-            ref="new.blocksType"
-            v-bind:class="{ 'focused': focused == 'new.blocksType' }"
-        )
-            .menu--label Block Type
-            .menu--selector--prev(v-on:click="prevBlockType" v-if="blocksTypeOptions.indexOf(blocksType) != 0" ref="new.blocksType.prev")
-            .menu--selector--value {{ blocksType }}
-            .menu--selector--next(v-on:click="nextBlockType" v-if="blocksTypeOptions.indexOf(blocksType) != blocksTypeOptions.length - 1" ref="new.blocksType.next")
+        .menu--scroll(v-show="flags.new" v-bind:class="{ 'menu--scroll--overflow': isOverflow('new.scroll') }" ref="new.scroll")
+            .menu--selector(
+                v-show="flags.new"
+                ref="new.pit"
+                v-bind:class="{ 'focused': focused == 'new.pit' }"
+            )
+                .menu--label Pit Size
 
-        .menu--selector(
-            v-show="flags.new"
-            ref="new.speed"
-            v-bind:class="{ 'focused': focused == 'new.speed' }"
-        )
-            .menu--label Speed
-            .menu--selector--prev(v-on:click="prevSpeed" v-if="settingsSpeed != minSpeed" ref="new.speed.prev")
-            .menu--selector--value {{ settingsSpeed }}
-            .menu--selector--next(v-on:click="nextSpeed" v-if="settingsSpeed != maxSpeed" ref="new.speed.next")
+                .menu--selector-vertical(ref="new.pit.width")
+                    .menu--selector-vertical--prev.material-symbols-outlined(v-on:click="upPitWidth") keyboard_arrow_up
+                    .menu--selector-vertical--value {{ pitWidth }}
+                    .menu--selector-vertical--next.material-symbols-outlined(v-on:click="downPitWidth") keyboard_arrow_down
 
-        .menu--selector(
-            v-show="flags.new"
-            ref="new.endless"
-            v-bind:class="{ 'focused': focused == 'new.endless' }"
-        )
-            .menu--label Endless mode
-            .menu--selector--prev(v-on:click="disableEndless" v-if="isEndless" ref="new.endless.prev")
-            .menu--selector--value(v-if="isEndless") Yes
-            .menu--selector--value(v-if="!isEndless") No
-            .menu--selector--next(v-on:click="enableEndless" v-if="!isEndless" ref="new.endless.next")
+                .menu--selector-vertical--span X
+
+                .menu--selector-vertical(ref="new.pit.height")
+                    .menu--selector-vertical--prev.material-symbols-outlined(v-on:click="upPitHeight") keyboard_arrow_up
+                    .menu--selector-vertical--value {{ pitHeight }}
+                    .menu--selector-vertical--next.material-symbols-outlined(v-on:click="downPitHeight") keyboard_arrow_down
+
+                .menu--selector-vertical--span X
+
+                .menu--selector-vertical(ref="new.pit.depth")
+                    .menu--selector-vertical--prev.material-symbols-outlined(v-on:click="upPitDepth") keyboard_arrow_up
+                    .menu--selector-vertical--value {{ pitDepth }}
+                    .menu--selector-vertical--next.material-symbols-outlined(v-on:click="downPitDepth") keyboard_arrow_down
+
+                //- .menu--selector--prev(v-on:click="prevPitSize" v-if="pitSizes.indexOf(pitSize) != 0" ref="new.pit.prev")
+                //- .menu--selector--value {{ pitSize }}
+                //- .menu--selector--next(v-on:click="nextPitSize" v-if="pitSizes.indexOf(pitSize) != pitSizes.length - 1" ref="new.pit.next")
+
+            .menu--selector(
+                v-show="flags.new"
+                ref="new.blocksType"
+                v-bind:class="{ 'focused': focused == 'new.blocksType' }"
+            )
+                .menu--label Block Type
+                .menu--selector--prev(v-on:click="prevBlockType" v-if="blocksTypeOptions.indexOf(blocksType) != 0" ref="new.blocksType.prev")
+                .menu--selector--value {{ blocksType }}
+                .menu--selector--next(v-on:click="nextBlockType" v-if="blocksTypeOptions.indexOf(blocksType) != blocksTypeOptions.length - 1" ref="new.blocksType.next")
+
+            .menu--selector(
+                v-show="flags.new"
+                ref="new.speed"
+                v-bind:class="{ 'focused': focused == 'new.speed' }"
+            )
+                .menu--label Speed
+                .menu--selector--prev(v-on:click="prevSpeed" v-if="settingsSpeed != minSpeed" ref="new.speed.prev")
+                .menu--selector--value {{ settingsSpeed }}
+                .menu--selector--next(v-on:click="nextSpeed" v-if="settingsSpeed != maxSpeed" ref="new.speed.next")
+
+            .menu--selector(
+                v-show="flags.new"
+                ref="new.endless"
+                v-bind:class="{ 'focused': focused == 'new.endless' }"
+            )
+                .menu--label Endless mode
+                .menu--selector--prev(v-on:click="disableEndless" v-if="isEndless" ref="new.endless.prev")
+                .menu--selector--value(v-if="isEndless") Yes
+                .menu--selector--value(v-if="!isEndless") No
+                .menu--selector--next(v-on:click="enableEndless" v-if="!isEndless" ref="new.endless.next")
 
         .menu--buttons(v-show="flags.new")
             .menu--item--red.menu--button(

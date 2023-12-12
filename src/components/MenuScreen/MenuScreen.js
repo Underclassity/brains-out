@@ -109,6 +109,9 @@ export default {
 
       "pitSize",
       "pitSizes",
+      "pitWidth",
+      "pitHeight",
+      "pitDepth",
 
       "colorPaletteType",
       "colorPaletteTypes",
@@ -860,6 +863,48 @@ export default {
     nextRotates() {
       const newMaxRotate = this.maxRotate == 5 ? 3 : 5;
       this.$store.commit("setMaxRotate", newMaxRotate);
+    },
+
+    upPitWidth() {
+      this.$store.commit(
+        "updatePitSize",
+        `${this.pitWidth + 1}x${this.pitHeight}x${this.pitDepth}`
+      );
+    },
+
+    downPitWidth() {
+      this.$store.commit(
+        "updatePitSize",
+        `${this.pitWidth - 1}x${this.pitHeight}x${this.pitDepth}`
+      );
+    },
+
+    upPitHeight() {
+      this.$store.commit(
+        "updatePitSize",
+        `${this.pitWidth}x${this.pitHeight + 1}x${this.pitDepth}`
+      );
+    },
+
+    downPitHeight() {
+      this.$store.commit(
+        "updatePitSize",
+        `${this.pitWidth}x${this.pitHeight - 1}x${this.pitDepth}`
+      );
+    },
+
+    upPitDepth() {
+      this.$store.commit(
+        "updatePitSize",
+        `${this.pitWidth}x${this.pitHeight}x12`
+      );
+    },
+
+    downPitDepth() {
+      this.$store.commit(
+        "updatePitSize",
+        `${this.pitWidth}x${this.pitHeight}x8`
+      );
     },
   },
 

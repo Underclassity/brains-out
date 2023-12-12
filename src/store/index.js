@@ -174,11 +174,31 @@ export const store = createStore({
     },
 
     updatePitSize(state, newPitSizeString) {
-      if (!state.pitSizes.includes(newPitSizeString)) {
-        return false;
+      // if (!state.pitSizes.includes(newPitSizeString)) {
+      //   return false;
+      // }
+
+      let [pitWidth, pitHeight, pitDepth] = newPitSizeString.split("x");
+
+      if (pitWidth <= 5) {
+        pitWidth = 5;
       }
 
-      const [pitWidth, pitHeight, pitDepth] = newPitSizeString.split("x");
+      if (pitWidth >= 10) {
+        pitWidth = 10;
+      }
+
+      if (pitHeight <= 5) {
+        pitHeight = 5;
+      }
+
+      if (pitHeight >= 10) {
+        pitHeight = 10;
+      }
+
+      if (pitDepth != 12 && pitDepth != 8) {
+        pitDepth = 12;
+      }
 
       state.pitWidth = pitWidth;
       state.pitHeight = pitHeight;

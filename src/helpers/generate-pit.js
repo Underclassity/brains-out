@@ -175,6 +175,10 @@ function updateInstancedMesh(
 
   dummy.updateMatrix();
 
+  if (!mesh) {
+    return counter;
+  }
+
   mesh.setMatrixAt(counter, dummy.matrix);
   counter++;
 
