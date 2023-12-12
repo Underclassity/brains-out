@@ -49,24 +49,25 @@ export function createElement() {
   element.userData.time = this.time;
   element.userData.static = false;
 
-  if (this.isRandomColor) {
-    let color = getRandom(this.colorPalette, 1)[0];
+  if (this.isRandomColor || this.isOneColor) {
+    let color = this.colorlessColor.clone();
 
-    while (color == this.prevColor) {
+    if (this.isRandomColor) {
       color = getRandom(this.colorPalette, 1)[0];
-    }
 
-    // Save prev color
-    this.prevColor = color;
-
-    element.traverse((obj) => {
-      if (!obj.isMesh) {
-        return;
+      while (color == this.prevColor) {
+        color = getRandom(this.colorPalette, 1)[0];
       }
 
-      obj.material.dispose();
-      obj.material = new MeshBasicMaterial({ color });
-      obj.material.name = "random-mesh-color";
+      // Save prev color
+      this.prevColor = color;
+    } else {
+      this.prevColor = false;
+    }
+
+    // Colorize element in random color
+    element.getObjectByName("childs").children.map((item) => {
+      this.colorizeElement(item, 0, color);
     });
   }
 

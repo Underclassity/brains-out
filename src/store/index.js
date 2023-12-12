@@ -84,6 +84,9 @@ export const store = createStore({
     isSmooth: true,
     isSimple: false,
     randomFiguresCount: 5,
+    isColorless: false,
+    colorlessRandom: false,
+    colorlessColorIndex: 0,
 
     isRotateRestrain: false,
     maxRotate: 5,
@@ -97,7 +100,6 @@ export const store = createStore({
 
     isGamepad: false,
 
-    isRandomColor: false,
     isColorizeLevel: true,
 
     volume: 0.1,
@@ -120,6 +122,7 @@ export const store = createStore({
       "random rotations",
       "glitch mayhem",
       "pit mess",
+      "colorless",
       // "rotating pit",
     ],
   },
@@ -134,6 +137,19 @@ export const store = createStore({
 
     isAccepted(state) {
       return state.isAccepted;
+    },
+
+    isRandomColor(state) {
+      return state.mode == "colorless" && state.colorlessRandom;
+    },
+
+    isOneColor(state) {
+      return state.mode == "colorless" && !state.colorlessRandom;
+    },
+
+    colorlessColor(state) {
+      const palette = colorPalette[state.colorPaletteType];
+      return palette[state.colorlessColorIndex];
     },
 
     maxScore(state) {
@@ -534,6 +550,16 @@ export const store = createStore({
 
     setGlitchMayhem(state, value) {
       state.isGlitchMayhem = value;
+    },
+
+    setColorless(state, value) {
+      state.isColorless = value;
+      state.colorlessColorIndex = randomBetween(0, 11);
+    },
+
+    setColorlessRandom(state, value) {
+      state.colorlessRandom = value ? true : false;
+      state.colorlessColorIndex = randomBetween(0, 11);
     },
 
     setTimelessMaxTime(state, value) {

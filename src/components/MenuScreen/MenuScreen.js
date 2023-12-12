@@ -123,6 +123,7 @@ export default {
 
       "isEndless",
       "isPractice",
+      "colorlessRandom",
 
       "theme",
       "themes",
@@ -592,6 +593,10 @@ export default {
       );
     },
 
+    changeColorless() {
+      this.$store.commit("setColorlessRandom", !this.colorlessRandom);
+    },
+
     prevLanguage() {
       this.$store.commit("changeLocale", "ru");
       this.$i18n.locale = "ru";
@@ -917,6 +922,9 @@ export default {
           break;
         case "pit mess":
           this.refs.mode = ["modes", "mess", "back", "next"];
+          break;
+        case "colorless":
+          this.refs.mode = ["modes", "colorless", "back", "next"];
           break;
         default:
           this.refs.mode = ["modes", "back", "next"];

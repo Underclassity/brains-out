@@ -7,11 +7,17 @@ const materialCache = {};
  *
  * @param   {Object}  element  Element
  * @param   {Number}  layer    Layer index
+ * @param   {Object}  color    Input color object
  *
  * @return  {Boolean}          Result
  */
-export function colorizeElement(element, layer) {
+export function colorizeElement(element, layer, color = false) {
   if (!this.isColorizeLevel) {
+    return false;
+  }
+
+  // Disable colorize item for colorless mode
+  if ((this.isRandomColor || this.isOneColor) && !color) {
     return false;
   }
 
@@ -20,7 +26,9 @@ export function colorizeElement(element, layer) {
     element = element.getObjectByName("point");
   }
 
-  const color = this.colorPalette[layer];
+  if (!color) {
+    color = this.colorPalette[layer];
+  }
 
   this.log(
     `Colorize element ${

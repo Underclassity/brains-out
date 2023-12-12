@@ -136,7 +136,6 @@ export default {
       isLoading: true,
       loadingProcessCache: {},
 
-      isRandomColor: false,
       isRandomCorner: false,
       isColorizeLevel: true,
       isOldColorize: false,
@@ -321,6 +320,9 @@ export default {
       "isPitRotating",
       "isRandomRotate",
       "isGlitchMayhem",
+      "isColorless",
+      "colorlessRandom",
+      "colorlessColorIndex",
 
       "isSimple",
       "isSmooth",
@@ -367,6 +369,9 @@ export default {
       "avgScore",
       "colorPalette",
       "isHalloween",
+      "isRandomColor",
+      "isOneColor",
+      "colorlessColor",
     ]),
 
     /**
@@ -895,6 +900,7 @@ export default {
         this.$store.commit("setRotationRestrain", false);
         this.$store.commit("setRandomRotate", false);
         this.$store.commit("setGlitchMayhem", false);
+        this.$store.commit("setColorless", false);
       } else {
         switch (this.mode) {
           case "original":
@@ -904,6 +910,7 @@ export default {
             this.$store.commit("setRandomRotate", false);
             this.$store.commit("setGlitchMayhem", false);
             this.$store.commit("disablePractice");
+            this.$store.commit("setColorless", false);
             break;
           case "time attack":
             this.$store.commit("setTimeless", true);
@@ -912,6 +919,7 @@ export default {
             this.$store.commit("setRandomRotate", false);
             this.$store.commit("setGlitchMayhem", false);
             this.$store.commit("disablePractice");
+            this.$store.commit("setColorless", false);
             break;
           case "rotating pit":
             this.$store.commit("setTimeless", false);
@@ -920,6 +928,7 @@ export default {
             this.$store.commit("setRandomRotate", false);
             this.$store.commit("setGlitchMayhem", false);
             this.$store.commit("disablePractice");
+            this.$store.commit("setColorless", false);
             break;
           case "limited rotations":
             this.$store.commit("setTimeless", false);
@@ -928,6 +937,7 @@ export default {
             this.$store.commit("setRandomRotate", false);
             this.$store.commit("setGlitchMayhem", false);
             this.$store.commit("disablePractice");
+            this.$store.commit("setColorless", false);
             break;
           case "random rotations":
             this.$store.commit("setTimeless", false);
@@ -936,6 +946,7 @@ export default {
             this.$store.commit("setRandomRotate", true);
             this.$store.commit("setGlitchMayhem", false);
             this.$store.commit("disablePractice");
+            this.$store.commit("setColorless", false);
             break;
           case "glitch mayhem":
             this.$store.commit("setTimeless", false);
@@ -944,6 +955,7 @@ export default {
             this.$store.commit("setRandomRotate", false);
             this.$store.commit("setGlitchMayhem", true);
             this.$store.commit("disablePractice");
+            this.$store.commit("setColorless", false);
             break;
           case "pit mess":
             this.$store.commit("setTimeless", false);
@@ -952,6 +964,16 @@ export default {
             this.$store.commit("setRandomRotate", false);
             this.$store.commit("setGlitchMayhem", false);
             this.$store.commit("disablePractice");
+            this.$store.commit("setColorless", false);
+            break;
+          case "colorless":
+            this.$store.commit("setTimeless", false);
+            this.$store.commit("setPitRotating", false);
+            this.$store.commit("setRotationRestrain", false);
+            this.$store.commit("setRandomRotate", false);
+            this.$store.commit("setGlitchMayhem", false);
+            this.$store.commit("disablePractice");
+            this.$store.commit("setColorless", true);
             break;
           default:
             this.$store.commit("setTimeless", false);
@@ -960,6 +982,7 @@ export default {
             this.$store.commit("setRandomRotate", false);
             this.$store.commit("setGlitchMayhem", false);
             this.$store.commit("disablePractice");
+            this.$store.commit("setColorless", false);
             break;
         }
       }
@@ -3822,6 +3845,21 @@ export default {
 
     isRotateRestrain(newValue) {
       this.log("Update rotate restrain mode: ", newValue);
+    },
+
+    isColorless(newValue) {
+      this.log("Update colorless: ", newValue);
+    },
+
+    colorlessRandom(newValue) {
+      this.log("Update colorless random: ", newValue);
+    },
+
+    colorlessColorIndex(newValue) {
+      this.log(
+        "Update one color for colorless: ",
+        this.colorlessColor.getHexString()
+      );
     },
 
     mode(newValue) {
