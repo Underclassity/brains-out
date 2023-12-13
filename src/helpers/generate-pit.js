@@ -438,10 +438,10 @@ function getNeighbours(item, blocks) {
   const { xi, yi } = item;
 
   return {
-    top: blocks[xi + 1][yi],
-    bottom: blocks[xi - 1][yi],
-    left: blocks[xi][yi - 1],
-    right: blocks[xi][yi + 1],
+    top: blocks[xi][yi + 1],
+    bottom: blocks[xi][yi - 1],
+    left: blocks[xi - 1][yi],
+    right: blocks[xi + 1][yi],
   };
 }
 
@@ -1446,8 +1446,8 @@ export function generatePit(
     }
 
     if (propsParts?.length) {
-      blocksCache.forEach((layer, yIndex) => {
-        layer.forEach((item, xIndex) => {
+      blocksCache.forEach((layer) => {
+        layer.forEach((item) => {
           if (item.type !== "GNG") {
             return false;
           }
@@ -1497,7 +1497,7 @@ export function generatePit(
           continue;
         }
 
-        const { x, y } = item;
+        const { x, y, direction } = item;
 
         let z = size / 2;
 
@@ -1543,8 +1543,7 @@ export function generatePit(
 
         const rotateAngle =
           index == 0 || index == 1
-            ? item.direction.includes("bottom") ||
-              item.direction.includes("top")
+            ? direction.includes("bottom") || direction.includes("top")
               ? randomBetween(75, 105)
               : randomBetween(-15, 15)
             : randomBetween(0, 360);
@@ -1690,8 +1689,8 @@ export function generatePit(
           const rotateAngle =
             partIndex == 0
               ? direction.includes("bottom") || direction.includes("top")
-                ? randomBetween(-15, 15)
-                : randomBetween(75, 105)
+                ? 90
+                : 0
               : randomBetween(0, 360);
 
           propsDummy.rotateOnWorldAxis(zAxis, MathUtils.degToRad(rotateAngle));
