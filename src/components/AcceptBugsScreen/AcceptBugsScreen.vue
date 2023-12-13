@@ -3,8 +3,9 @@ Transition(duration="300" name="accept")
     .popup--overlay
         .popup--main.popup--glare
             .popup--title {{ $t('title') }}
-            .popup--desc {{ $t('desc1') }}
-            .popup--desc {{ $t('desc2') }}
+            .popup--scroll
+                .popup--desc {{ $t('desc1') }}
+                .popup--desc {{ $t('desc2') }}
 
             //- .popup--checkbox
             //-     .popup--checkbox--title Don't show again

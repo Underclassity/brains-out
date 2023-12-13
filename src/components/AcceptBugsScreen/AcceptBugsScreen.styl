@@ -33,16 +33,30 @@
         border: 5px solid #222
         padding: 40px
         background-color: var(--orange, #E77812)
+        display: flex
+        flex-direction: column
 
         @media(max-width 767px)
             max-width: unset
             padding: 20px
             width: 90%
+            max-height: 90%
             border: 2px solid #222
 
         @media(max-height 900px)
             padding: 20px
             border: 2px solid #222
+
+    &--scroll
+        height: 100%
+        overflow: auto
+        margin-bottom: 40px
+
+        @media(max-width 767px)
+            margin-bottom: 20px
+
+        @media(max-height 900px)
+            margin-bottom: 20px
 
     &--title
         font-size: 46px
@@ -54,11 +68,19 @@
             font-size: 32px
             line-height: 36px
 
+        @media(max-height 900px)
+            margin-bottom: 10px
+            font-size: 32px
+            line-height: 36px
+
     &--desc
         font-size: 24px
         line-height: 30px
         margin-bottom: 40px
         font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
+
+        &:last-child
+            margin-bottom: 0px
 
         @media(max-width 767px)
             margin-bottom: 20px
