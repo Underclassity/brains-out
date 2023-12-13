@@ -54,6 +54,8 @@ export default {
       keyboard,
       // levelsPit,
 
+      showCount: 0,
+
       keyboardKeys: [
         {
           id: "w",
@@ -176,7 +178,14 @@ export default {
         this.emitter.on("pressB", this.backClick);
 
         this.emitter.emit("showHowTo");
-        return;
+
+        this.showCount++;
+
+        if (this.showCount >= 2) {
+          this.emitter.emit("addAchievement", "how-to-play");
+        }
+
+        return true;
       }
 
       this.emitter.off("pressA", this.backClick);

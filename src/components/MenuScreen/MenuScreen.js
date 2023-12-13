@@ -310,6 +310,8 @@ export default {
       this.flags.achievements = true;
       this.focusFirst("achievements");
 
+      this.emitter.emit("addAchievement", "click-me");
+
       this.log("Achievements call", this.isShow);
     },
 

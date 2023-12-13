@@ -40,6 +40,16 @@ export const achievements = {
     title: "Hoodie boy",
     desc: "You have been visited by art dev",
   },
+  "click-me": {
+    icon: "ads_click",
+    title: "Click me",
+    desc: "Quite intresting...",
+  },
+  "how-to-play": {
+    icon: "contact_support",
+    title: "How to play",
+    desc: "How to play this, you say?",
+  },
 
   // Not done yet
   // "fast-and-furious": {
