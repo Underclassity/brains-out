@@ -17,7 +17,10 @@ export function colorizeElement(element, layer, color = false) {
   }
 
   // Disable colorize item for colorless mode
-  if ((this.isRandomColor || this.isOneColor) && !color) {
+  if (
+    (this.isRandomColor || this.isOneColor || this.isAllRandomColor) &&
+    !color
+  ) {
     return false;
   }
 

@@ -321,8 +321,8 @@ export default {
       "isRandomRotate",
       "isGlitchMayhem",
       "isColorless",
-      "colorlessRandom",
       "colorlessColorIndex",
+      "colorlessMode",
 
       "isSimple",
       "isSmooth",
@@ -371,6 +371,7 @@ export default {
       "isHalloween",
       "isRandomColor",
       "isOneColor",
+      "isAllRandomColor",
       "colorlessColor",
     ]),
 
@@ -966,7 +967,7 @@ export default {
             this.$store.commit("disablePractice");
             this.$store.commit("setColorless", false);
             break;
-          case "colorless":
+          case "color madness":
             this.$store.commit("setTimeless", false);
             this.$store.commit("setPitRotating", false);
             this.$store.commit("setRotationRestrain", false);
@@ -3851,8 +3852,8 @@ export default {
       this.log("Update colorless: ", newValue);
     },
 
-    colorlessRandom(newValue) {
-      this.log("Update colorless random: ", newValue);
+    colorlessMode(newValue) {
+      this.log("Update colorless mode: ", newValue);
     },
 
     colorlessColorIndex(newValue) {

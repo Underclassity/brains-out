@@ -126,7 +126,9 @@ export default {
 
       "isEndless",
       "isPractice",
-      "colorlessRandom",
+
+      "colorlessMode",
+      "colorlessModes",
 
       "theme",
       "themes",
@@ -596,8 +598,28 @@ export default {
       );
     },
 
-    changeColorless() {
-      this.$store.commit("setColorlessRandom", !this.colorlessRandom);
+    prevColorlessMode() {
+      let index = this.colorlessModes.indexOf(this.colorlessMode);
+
+      index--;
+
+      if (index < 0) {
+        index = this.colorlessModes.length - 1;
+      }
+
+      this.$store.commit("setColorlessMode", this.colorlessModes[index]);
+    },
+
+    nextColorlessMode() {
+      let index = this.colorlessModes.indexOf(this.colorlessMode);
+
+      index++;
+
+      if (index > this.colorlessModes.length - 1) {
+        index = 0;
+      }
+
+      this.$store.commit("setColorlessMode", this.colorlessModes[index]);
     },
 
     prevLanguage() {
@@ -968,7 +990,7 @@ export default {
         case "pit mess":
           this.refs.mode = ["modes", "mess", "back", "next"];
           break;
-        case "colorless":
+        case "color madness":
           this.refs.mode = ["modes", "colorless", "back", "next"];
           break;
         default:

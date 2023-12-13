@@ -49,7 +49,7 @@ export function createElement() {
   element.userData.time = this.time;
   element.userData.static = false;
 
-  if (this.isRandomColor || this.isOneColor) {
+  if (this.isRandomColor || this.isOneColor || this.isAllRandomColor) {
     let color = this.colorlessColor.clone();
 
     if (this.isRandomColor) {
@@ -67,7 +67,11 @@ export function createElement() {
 
     // Colorize element in random color
     element.getObjectByName("childs").children.map((item) => {
-      this.colorizeElement(item, 0, color);
+      if (this.isAllRandomColor) {
+        this.colorizeElement(item, 0, getRandom(this.colorPalette, 1)[0]);
+      } else {
+        this.colorizeElement(item, 0, color);
+      }
     });
   }
 

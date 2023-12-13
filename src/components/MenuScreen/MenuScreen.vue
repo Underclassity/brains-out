@@ -175,9 +175,9 @@
         p.menu--text(v-if='flags.mode && mode == "random rotations"') Test your luck! All zombies rotations are random!
         p.menu--text(v-if='flags.mode && mode == "glitch mayhem"') Something strange is happening!
         p.menu--text(v-if='flags.mode && mode == "pit mess"') Some zombies are already in the pit!
-        p.menu--text(v-if='flags.mode && mode == "colorless"') Colors are ok. Trust us!
+        p.menu--text(v-if='flags.mode && mode == "color madness"') Colors are ok. Trust us!
 
-        .menu--empty(v-if="flags.mode && mode != 'time attack' && mode != 'limited rotations' && mode != 'pit mess' && mode != 'colorless'")
+        .menu--empty(v-if="flags.mode && mode != 'time attack' && mode != 'limited rotations' && mode != 'pit mess' && mode != 'color madness'")
 
         .menu--selector.menu--selector--centered(
             v-show="flags.mode && mode == 'time attack'"
@@ -210,14 +210,17 @@
             .menu--selector--next(v-on:click="changeRandomFigures" ref="mode.mess.next")
 
         .menu--selector.menu--selector--centered(
-            v-show="flags.mode && mode == 'colorless'"
+            v-show="flags.mode && mode == 'color madness'"
             ref="mode.colorless"
             v-bind:class="{ 'focused': focused == 'mode.colorless' }"
         )
-            .menu--selector--prev(v-on:click="changeColorless" ref="mode.colorless.prev")
-            .menu--selector--value(v-if="colorlessRandom") Random color
-            .menu--selector--value(v-if="!colorlessRandom") One color
-            .menu--selector--next(v-on:click="changeColorless" ref="mode.colorless.next")
+            .menu--selector--prev(v-on:click="prevColorlessMode" ref="mode.colorless.prev")
+            .menu--selector--value(
+                v-for="item of colorlessModes"
+                :key="item"
+                v-show="item == colorlessMode"
+            ) {{ item }}
+            .menu--selector--next(v-on:click="nextColorlessMode" ref="mode.colorless.next")
 
         .menu--buttons(v-show="flags.mode")
             .menu--item--red.menu--button(

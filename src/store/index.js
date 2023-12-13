@@ -85,8 +85,9 @@ export const store = createStore({
     isSimple: false,
     randomFiguresCount: 5,
     isColorless: false,
-    colorlessRandom: false,
     colorlessColorIndex: 0,
+    colorlessMode: "random colors",
+    colorlessModes: ["random colors", "one color", "chaotic colors"],
 
     isRotateRestrain: false,
     maxRotate: 5,
@@ -122,7 +123,7 @@ export const store = createStore({
       "random rotations",
       "glitch mayhem",
       "pit mess",
-      "colorless",
+      "color madness",
       // "rotating pit",
     ],
   },
@@ -140,11 +141,21 @@ export const store = createStore({
     },
 
     isRandomColor(state) {
-      return state.mode == "colorless" && state.colorlessRandom;
+      return (
+        state.mode == "color madness" && state.colorlessMode == "random colors"
+      );
     },
 
     isOneColor(state) {
-      return state.mode == "colorless" && !state.colorlessRandom;
+      return (
+        state.mode == "color madness" && state.colorlessMode == "one color"
+      );
+    },
+
+    isAllRandomColor(state) {
+      return (
+        state.mode == "color madness" && state.colorlessMode == "chaotic colors"
+      );
     },
 
     colorlessColor(state) {
@@ -577,8 +588,12 @@ export const store = createStore({
       state.colorlessColorIndex = randomBetween(0, 11);
     },
 
-    setColorlessRandom(state, value) {
-      state.colorlessRandom = value ? true : false;
+    setColorlessMode(state, value) {
+      if (!state.colorlessModes.includes(value)) {
+        return false;
+      }
+
+      state.colorlessMode = value;
       state.colorlessColorIndex = randomBetween(0, 11);
     },
 
