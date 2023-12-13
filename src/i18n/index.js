@@ -14,9 +14,6 @@ const i18n = createI18n({
       achievements: "Achievements",
       credits: "Credits",
 
-      acceptedBugsDesc:
-        "This game is in a state of development and may contain bugs, that can lead to some unexpected behavior. By pressing «Play», you accept any scenario that can happen. Otherwise, close this page.",
-
       back: "Back",
       backToMenu: "Back to menu",
       next: "Next",
@@ -30,9 +27,6 @@ const i18n = createI18n({
       howToPlay: "Как играть",
       achievements: "Достижения",
       credits: "О нас",
-
-      acceptedBugsDesc:
-        "Эта игра находится в стадии разработки и может содержать ошибки, которые могут привести к неожиданному поведению. Нажимая «Играть», вы принимаете любой сценарий, который может произойти. В противном случае закройте эту страницу.",
 
       back: "Назад",
       backToMenu: "Назад в меню",

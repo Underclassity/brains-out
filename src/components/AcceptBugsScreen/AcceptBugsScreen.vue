@@ -2,7 +2,9 @@
 Transition(duration="300" name="accept")
     .popup--overlay
         .popup--main.popup--glare
-            .popup--desc {{ $t('acceptedBugsDesc') }}
+            .popup--title {{ $t('title') }}
+            .popup--desc {{ $t('desc1') }}
+            .popup--desc {{ $t('desc2') }}
 
             //- .popup--checkbox
             //-     .popup--checkbox--title Don't show again
@@ -21,3 +23,4 @@ Transition(duration="300" name="accept")
 
 <script src="./AcceptBugsScreen.js"></script>
 <style src="./AcceptBugsScreen.styl" lang="stylus"></style>
+<i18n src="./AcceptBugsScreen.json"></i18n>
