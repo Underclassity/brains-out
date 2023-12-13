@@ -58,8 +58,7 @@
 
         //- New game items
         .menu--title(v-show="flags.new")
-            span Game Preferences
-
+            span {{ $t('gamePreferences') }}
 
         .menu--scroll(v-show="flags.new" v-bind:class="{ 'menu--scroll--overflow': isOverflow('new.scroll') }" ref="new.scroll")
             .menu--selector(
@@ -67,7 +66,7 @@
                 ref="new.pit"
                 v-bind:class="{ 'focused': focused == 'new.pit' }"
             )
-                .menu--label Pit Size
+                .menu--label {{ $t('pitSize') }}
 
                 .menu--selector-vertical(ref="new.pit.width")
                     .menu--selector-vertical--prev.material-symbols-outlined(v-on:click="upPitWidth") keyboard_arrow_up
@@ -97,7 +96,7 @@
                 ref="new.blocksType"
                 v-bind:class="{ 'focused': focused == 'new.blocksType' }"
             )
-                .menu--label Block Type
+                .menu--label {{ $t('blockType') }}
                 .menu--selector--prev(v-on:click="prevBlockType" v-if="blocksTypeOptions.indexOf(blocksType) != 0" ref="new.blocksType.prev")
                 .menu--selector--value {{ blocksType }}
                 .menu--selector--next(v-on:click="nextBlockType" v-if="blocksTypeOptions.indexOf(blocksType) != blocksTypeOptions.length - 1" ref="new.blocksType.next")
@@ -107,7 +106,7 @@
                 ref="new.speed"
                 v-bind:class="{ 'focused': focused == 'new.speed' }"
             )
-                .menu--label Speed
+                .menu--label {{ $t('speed') }}
                 .menu--selector--prev(v-on:click="prevSpeed" v-if="settingsSpeed != minSpeed" ref="new.speed.prev")
                 .menu--selector--value {{ settingsSpeed }}
                 .menu--selector--next(v-on:click="nextSpeed" v-if="settingsSpeed != maxSpeed" ref="new.speed.next")
@@ -117,10 +116,10 @@
                 ref="new.endless"
                 v-bind:class="{ 'focused': focused == 'new.endless' }"
             )
-                .menu--label Endless mode
+                .menu--label {{ $t('endlessMode') }}
                 .menu--selector--prev(v-on:click="disableEndless" v-if="isEndless" ref="new.endless.prev")
-                .menu--selector--value(v-if="isEndless") Yes
-                .menu--selector--value(v-if="!isEndless") No
+                .menu--selector--value(v-if="isEndless") {{ $t('yes') }}
+                .menu--selector--value(v-if="!isEndless") {{ $t('no') }}
                 .menu--selector--next(v-on:click="enableEndless" v-if="!isEndless" ref="new.endless.next")
 
         .menu--buttons(v-show="flags.new")
@@ -157,7 +156,7 @@
 
         //- Game modes
         .menu--title(v-show="flags.mode")
-            span Game Mode
+            span {{ $t('gameMode') }}
 
         .menu--selector.menu--selector--centered(
             v-show="flags.mode"
@@ -236,14 +235,14 @@
             ) {{ $t('next') }}
 
         //- Credits items
-        .menu--version(v-show="flags.credits") Version: {{ appVersion }}-{{ version }}
+        .menu--version(v-show="flags.credits") {{ $t('version') }}: {{ appVersion }}-{{ version }}
 
-        .menu--assets--title(v-show="flags.credits") Authors
+        .menu--assets--title(v-show="flags.credits") {{ $t('authors') }}
 
         a.menu--link(v-show="flags.credits" href="https://www.linkedin.com/in/ivan-gornovskiy-a1a290282/" target="_blank") Ivan Gornovskiy
         a.menu--link(v-show="flags.credits" href="https://www.linkedin.com/in/nikolai-gavrev-6010ba215/" target="_blank") Nikolai Gavrev
 
-        .menu--assets--title(v-show="flags.credits") Assets
+        .menu--assets--title(v-show="flags.credits") {{ $t('assets') }}
 
         .menu--assets(v-show="flags.credits" v-for="asset of assets" :key="asset.title")
             a.menu--assets--link(:href="asset.link" target="_blank") {{ asset.title }}
@@ -260,19 +259,19 @@
             ) {{ $t('back') }}
 
         //- Settings items
-        .menu--title(v-show="flags.settings") Settings
+        .menu--title(v-show="flags.settings") {{ $t('settings') }}
 
         hr.menu--divider(v-show="flags.settings")
 
         .menu--scroll(v-show="flags.settings" v-bind:class="{ 'menu--scroll--overflow': isOverflow('settings.scroll') }" ref="settings.scroll")
-            .menu--subtitle Graphics
+            .menu--subtitle {{ $t('graphics') }}
 
             .menu--selector(
                 v-show="flags.settings"
                 ref="settings.pixelRatio"
                 v-bind:class="{ 'focused': focused == 'settings.pixelRatio' }"
             )
-                .menu--label Quality
+                .menu--label {{ $t('quality') }}
                 .menu--dots
                     .menu--dotline
                     .menu--dot(v-bind:class="{ 'menu--dot--active': pixelRatio <= 1 }" v-on:click="setPixelRatio(1)")
@@ -289,23 +288,23 @@
                 ref="settings.fpsLock"
                 v-bind:class="{ 'focused': focused == 'settings.fpsLock' }"
             )
-                .menu--label FPS Lock
+                .menu--label {{ $t('fpsLock') }}
                 .menu--dots
                     .menu--dotline
                     .menu--dot(v-bind:class="{ 'menu--dot--active': fpsLockValue == 30 && isFpsLock }" v-on:click="setFpsLock(30)")
                     .menu--dot(v-bind:class="{ 'menu--dot--active': fpsLockValue == 60 && isFpsLock }" v-on:click="setFpsLock(60)")
                     .menu--dot(v-bind:class="{ 'menu--dot--active': !isFpsLock }" v-on:click="setFpsLock(false)")
-                .menu--selector--value {{ isFpsLock ? fpsLockValue : 'No' }}
+                .menu--selector--value {{ isFpsLock ? fpsLockValue : $t('no') }}
 
             .menu--selector(
                 v-show="flags.settings"
                 ref="settings.antialias"
                 v-bind:class="{ 'focused': focused == 'settings.antialias' }"
             )
-                .menu--label Antialiasing
+                .menu--label {{ $t('antialiasing') }}
                 .menu--selector--prev(v-on:click="disableAntialias" v-if="antialias" ref="settings.antialias.prev")
-                .menu--selector--value(v-if="antialias") Yes
-                .menu--selector--value(v-if="!antialias") No
+                .menu--selector--value(v-if="antialias") {{ $t('yes') }}
+                .menu--selector--value(v-if="!antialias") {{ $t('no') }}
                 .menu--selector--next(v-on:click="enableAntialias" v-if="!antialias" ref="settings.antialias.next")
 
             .menu--selector(
@@ -313,10 +312,10 @@
                 ref="settings.grid"
                 v-bind:class="{ 'focused': focused == 'settings.grid' }"
             )
-                .menu--label Pit Grid
+                .menu--label {{ $t('pitGrid') }}
                 .menu--selector--prev(v-on:click="disablePitGrid" v-if="isPitGrid" ref="settings.grid.prev")
-                .menu--selector--value(v-if="isPitGrid") Yes
-                .menu--selector--value(v-if="!isPitGrid") No
+                .menu--selector--value(v-if="isPitGrid") {{ $t('yes') }}
+                .menu--selector--value(v-if="!isPitGrid") {{ $t('no') }}
                 .menu--selector--next(v-on:click="enablePitGrid" v-if="!isPitGrid" ref="settings.grid.next")
 
             .menu--selector(
@@ -324,7 +323,7 @@
                 ref="settings.color"
                 v-bind:class="{ 'focused': focused == 'settings.color' }"
             )
-                .menu--label Color
+                .menu--label {{ $t('color') }}
                 .menu--selector--prev(v-on:click="prevColorPalette" v-if="colorPaletteTypes.indexOf(colorPaletteType) != 0" ref="settings.color.prev")
                 .menu--selector--value {{ colorPaletteType }}
                 .menu--selector--next(v-on:click="nextColorPalette" v-if="colorPaletteTypes.indexOf(colorPaletteType) != colorPaletteTypes.length - 1" ref="settings.color.next")
@@ -334,19 +333,19 @@
                 ref="settings.theme"
                 v-bind:class="{ 'focused': focused == 'settings.theme' }"
             )
-                .menu--label Theme
+                .menu--label {{ $t('theme') }}
                 .menu--selector--prev(v-on:click="prevTheme" v-if="theme != themes[0]" ref="settings.theme.prev")
                 .menu--selector--value {{ theme }}
                 .menu--selector--next(v-on:click="nextTheme" v-if="theme != themes[themes.length - 1]" ref="settings.theme.next")
 
-            .menu--subtitle Sound
+            .menu--subtitle {{ $t('sound') }}
 
             .menu--selector(
                 v-show="flags.settings"
                 ref="settings.volume"
                 v-bind:class="{ 'focused': focused == 'settings.volume' }"
             )
-                .menu--label Volume
+                .menu--label {{ $t('volume') }}
                 .menu--selector--prev(v-on:click="prevVolume" v-if="volume != 0" ref="settings.volume.prev")
                 .menu--selector--value {{ volume }}
                 .menu--selector--next(v-on:click="nextVolume" v-if="volume != 1" ref="settings.volume.next")
@@ -356,19 +355,19 @@
                 ref="settings.fxVolume"
                 v-bind:class="{ 'focused': focused == 'settings.fxVolume' }"
             )
-                .menu--label FX Volume
+                .menu--label {{ $t('fxVolume') }}
                 .menu--selector--prev(v-on:click="prevFxVolume" v-if="fxVolume != 0" ref="settings.fxVolume.prev")
                 .menu--selector--value {{ fxVolume }}
                 .menu--selector--next(v-on:click="nextFxVolume" v-if="fxVolume != 1" ref="settings.fxVolume.next")
 
-            .menu--subtitle Other
+            .menu--subtitle {{ $t('other') }}
 
             .menu--selector(
                 v-show="flags.settings"
                 ref="settings.language"
                 v-bind:class="{ 'focused': focused == 'settings.language' }"
             )
-                .menu--label Language
+                .menu--label {{ $t('language') }}
                 .menu--selector--prev(v-on:click="prevLanguage" v-if="locale != 'ru'" ref="settings.language.prev")
                 .menu--selector--value {{ locale }}
                 .menu--selector--next(v-on:click="nextLanguage" v-if="locale != 'en'" ref="settings.language.next")
@@ -378,10 +377,10 @@
                 ref="settings.dev"
                 v-bind:class="{ 'focused': focused == 'settings.dev' }"
             )
-                .menu--label Dev mode
+                .menu--label {{ $t('devMode') }}
                 .menu--selector--prev(v-on:click="disableDevMode" v-if="isDev" ref="settings.dev.prev")
-                .menu--selector--value(v-if="isDev") Yes
-                .menu--selector--value(v-if="!isDev") No
+                .menu--selector--value(v-if="isDev") {{ $t('yes') }}
+                .menu--selector--value(v-if="!isDev") {{ $t('no') }}
                 .menu--selector--next(v-on:click="enableDevMode" v-if="!isDev" ref="settings.dev.next")
 
             .menu--selector(
@@ -389,10 +388,10 @@
                 ref="settings.vibration"
                 v-bind:class="{ 'focused': focused == 'settings.vibration' }"
             )
-                .menu--label Vibration
+                .menu--label {{ $t('vibration') }}
                 .menu--selector--prev(v-on:click="disableVibration" v-if="isVibration" ref="settings.vibration.prev")
-                .menu--selector--value(v-if="isVibration") Yes
-                .menu--selector--value(v-if="!isVibration") No
+                .menu--selector--value(v-if="isVibration") {{ $t('yes') }}
+                .menu--selector--value(v-if="!isVibration") {{ $t('no') }}
                 .menu--selector--next(v-on:click="enableVibration" v-if="!isVibration" ref="settings.vibration.next")
 
             .menu--selector(
@@ -400,10 +399,10 @@
                 ref="settings.controls"
                 v-bind:class="{ 'focused': focused == 'settings.controls' }"
             )
-                .menu--label Controls
+                .menu--label {{ $t('controls') }}
                 .menu--selector--prev(v-on:click="disableControls" v-if="isControls" ref="settings.controls.prev")
-                .menu--selector--value(v-if="isControls") Yes
-                .menu--selector--value(v-if="!isControls") No
+                .menu--selector--value(v-if="isControls") {{ $t('yes') }}
+                .menu--selector--value(v-if="!isControls") {{ $t('no') }}
                 .menu--selector--next(v-on:click="enableControls" v-if="!isControls" ref="settings.controls.next")
 
         hr.menu--divider(v-show="flags.settings")
@@ -415,8 +414,8 @@
                 v-bind:class="{ 'focused': focused == 'settings.back' }"
             ) {{ $t('back') }}
 
-        .menu--subtitle(v-show="flags.end && !isPractice") Score: {{ score }}
-        .menu--subtitle(v-show="flags.end && !isPractice") Best score: {{ maxScore }}
+        .menu--subtitle(v-show="flags.end && !isPractice") {{ $t('score') }}: {{ score }}
+        .menu--subtitle(v-show="flags.end && !isPractice") {{ $t('best') }}: {{ maxScore }}
 
         //- End items
         .menu--buttons(v-show="flags.end && !isPractice")
@@ -431,7 +430,7 @@
                 v-on:click="startAgainCall"
                 ref="end.startAgain"
                 v-bind:class="{ 'focused': focused == 'end.startAgain' }"
-            ) Start Again
+            ) {{ $t('startAgain') }}
 
         .menu--buttons(v-show="flags.end")
             .menu--item--red.menu--button(
@@ -447,7 +446,7 @@
             v-bind:class="{ 'focused': focused == 'end.share' }"
         )
             .menu--item--icon.material-symbols-outlined share
-            | Share results
+            | {{ $t('shareResults') }}
 
         //- Continue items
         .menu--buttons(v-show="flags.continue && !isPractice")
@@ -462,14 +461,14 @@
                 v-on:click="startAgainCall"
                 ref="continue.startAgain"
                 v-bind:class="{ 'focused': focused == 'continue.startAgain' }"
-            ) Start Again
+            ) {{ $t('startAgain') }}
 
         .menu--buttons(v-show="flags.continue")
             .menu--item--green.menu--button(
                 v-on:click="closeMenu"
                 ref="continue.continue"
                 v-bind:class="{ 'focused': focused == 'continue.continue' }"
-            ) Continue
+            ) {{ $t('continue') }}
 
         .menu--buttons(v-show="flags.continue")
             .menu--button(
@@ -486,7 +485,7 @@
             ) {{ $t('backToMenu') }}
 
         //- Achiements items
-        .menu--title(v-show="flags.achievements") Achievements
+        .menu--title(v-show="flags.achievements") {{ $t('achievements') }}
 
         .menu--columns(v-show="flags.achievements")
             .menu--achievement(v-for="(item, name) in achievements" :key="name" v-bind:class="{ 'menu--achievement--earned': userAchievements.includes(name) }")
@@ -506,3 +505,4 @@
 
 <script src="./MenuScreen.js"></script>
 <style src="./MenuScreen.styl" lang="stylus"></style>
+<i18n src="./MenuScreen.json"></i18n>

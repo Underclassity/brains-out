@@ -18,10 +18,15 @@ const i18n = createI18n({
       backToMenu: "Back to menu",
       next: "Next",
       play: "Play",
+      startAgain: "Start Again",
+      continue: "Continue",
 
       or: "or",
 
       drop: "Drop",
+
+      yes: "Yes",
+      no: "No",
     },
 
     ru: {
@@ -36,10 +41,15 @@ const i18n = createI18n({
       backToMenu: "Назад в меню",
       next: "Дальше",
       play: "Играть",
+      startAgain: "Начать заново",
+      continue: "Продолжить",
 
       or: "или",
 
       drop: "Уронить",
+
+      yes: "Да",
+      no: "Нет",
     },
   },
 });

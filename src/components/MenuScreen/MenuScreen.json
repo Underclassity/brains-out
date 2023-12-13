@@ -1,0 +1,74 @@
+{
+  "en": {
+    "gamePreferences": "Game Preferences",
+    "pitSize": "Pit Size",
+    "blockType": "Block Type",
+    "speed": "Speed",
+    "endlessMode": "Endless mode",
+    "gameMode": "Game Mode",
+
+    "version": "Version",
+    "authors": "Authors",
+    "assets": "Assets",
+
+    "settings": "Settings",
+    "graphics": "Graphics",
+    "quality": "Quality",
+    "fpsLock": "FPS Lock",
+    "antialiasing": "Antialiasing",
+    "pitGrid": "Pit Grid",
+    "color": "Color",
+    "theme": "Theme",
+    "sound": "Sound",
+    "volume": "Volume",
+    "fxVolume": "FX Volume",
+    "other": "Other",
+    "language": "Language",
+    "devMode": "Dev mode",
+    "vibration": "Vibration",
+    "controls": "Controls",
+    "best": "Best score",
+    "score": "Score",
+    "time": "Time",
+
+    "shareResults": "Share results",
+
+    "achievements": "Achievements"
+  },
+  "ru": {
+    "gamePreferences": "Настройки игры",
+    "pitSize": "Размер ямы",
+    "blockType": "Тип блока",
+    "speed": "Скорость",
+    "endlessMode": "Бесконечный режим",
+    "gameMode": "Игровой режим",
+
+    "version": "Версия",
+    "authors": "Авторы",
+    "assets": "Используемые материалы",
+
+    "settings": "Настройки",
+    "graphics": "Графика",
+    "quality": "Качество",
+    "fpsLock": "Блокировка FPS",
+    "antialiasing": "Сглаживание",
+    "pitGrid": "Сетка ямы",
+    "color": "Цвет",
+    "theme": "Тема",
+    "sound": "Звук",
+    "volume": "Громкость музыки",
+    "fxVolume": "Громкость звуков",
+    "other": "Другое",
+    "language": "Язык",
+    "devMode": "Режим разработчика",
+    "vibration": "Вибрация",
+    "controls": "Управление",
+    "best": "Лучший счет",
+    "score": "Счет",
+    "time": "Время",
+
+    "shareResults": "Поделиться результатами",
+
+    "achievements": "Достижения"
+  }
+}
