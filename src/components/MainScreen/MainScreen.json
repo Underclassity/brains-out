@@ -1,0 +1,14 @@
+{
+  "en": {
+    "best": "Best score",
+    "score": "Score",
+    "speed": "Speed",
+    "time": "Time"
+  },
+  "ru": {
+    "best": "Лучший счет",
+    "score": "Счет",
+    "speed": "Скорость",
+    "time": "Время"
+  }
+}

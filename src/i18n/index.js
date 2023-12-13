@@ -18,6 +18,10 @@ const i18n = createI18n({
       backToMenu: "Back to menu",
       next: "Next",
       play: "Play",
+
+      or: "or",
+
+      drop: "Drop",
     },
 
     ru: {
@@ -32,6 +36,10 @@ const i18n = createI18n({
       backToMenu: "Назад в меню",
       next: "Дальше",
       play: "Играть",
+
+      or: "или",
+
+      drop: "Уронить",
     },
   },
 });

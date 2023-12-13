@@ -60,64 +60,64 @@ export default {
         {
           id: "w",
           img: wImage,
-          title: "Rotate forward",
+          title: this.$t("rotateForward"),
         },
         {
           id: "s",
           img: sImage,
-          title: "Rotate backward",
+          title: this.$t("rotateBackward"),
         },
         {
           id: "a",
           img: aImage,
-          title: "Rotate left",
+          title: this.$t("rotateLeft"),
         },
         {
           id: "d",
           img: dImage,
-          title: "Rotate right",
+          title: this.$t("rotateRight"),
         },
         {
           id: "q",
           img: qImage,
-          title: "Rotate counterclockwise",
+          title: this.$t("rotateCounterclockwise"),
         },
         {
           id: "e",
           img: eImage,
-          title: "Rotate clockwise",
+          title: this.$t("rotateClockwise"),
         },
 
         {
           id: "up",
           img: upImage,
-          title: "Move up",
+          title: this.$t("moveUp"),
         },
         {
           id: "down",
           img: downImage,
-          title: "Move down",
+          title: this.$t("moveDown"),
         },
         {
           id: "left",
           img: leftImage,
-          title: "Move left",
+          title: this.$t("moveLeft"),
         },
         {
           id: "right",
           img: rightImage,
-          title: "Move right",
+          title: this.$t("moveRight"),
         },
 
         {
           id: "space",
           img: spaceImage,
-          title: "Drop figure",
+          title: this.$t("dropFigure"),
         },
         {
           id: "esc",
           img: escImage,
-          title: "Pause/Open menu",
+          title: this.$t("pauseOpen"),
         },
       ],
 
@@ -125,32 +125,32 @@ export default {
         {
           id: "right-stick",
           img: rightStickImage,
-          title: "Rotate forward, backward, left or right",
+          title: this.$t("rotate"),
         },
         {
           id: "lb",
           img: lbImage,
-          title: "Rotate counterclockwise",
+          title: this.$t("rotateCounterclockwise"),
         },
         {
           id: "rb",
           img: rbImage,
-          title: "Rotate clockwise",
+          title: this.$t("rotateClockwise"),
         },
         {
           id: "movement",
           img: [leftStickImage, dpadImage],
-          title: "Move up, down, left or right",
+          title: this.$t("move"),
         },
         {
           id: "drop",
           img: [rtImage, aButtonImage],
-          title: "Drop figure",
+          title: this.$t("dropFigure"),
         },
         {
           id: "menu",
           img: menuButtonImage,
-          title: "Pause/Open menu",
+          title: this.$t("pauseOpen"),
         },
       ],
     };

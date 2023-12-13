@@ -37,7 +37,7 @@
 
     .controls--spacebar
         .controls--button.controls--button--spacebar(v-on:click="$emit('spacebar-click')")
-            span Drop
+            span {{ $t('drop') }}
 
     //- .control-item.control-item-left(v-on:click="moveLeft" v-if="isControls")
     //-     .material-symbols-outlined west

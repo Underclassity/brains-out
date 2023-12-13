@@ -43,11 +43,9 @@ Transition(name="controls")
                         | <defs><radialGradient id="paint0_radial_294_602" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(207 168) rotate(90) scale(167 167)"><stop stop-color="#5A2804"/><stop offset="1" stop-color="#773201" stop-opacity="0.81"/></radialGradient><radialGradient id="paint1_radial_294_602" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(207 168) rotate(90) scale(167 167)"><stop stop-color="#5A2804"/><stop offset="1" stop-color="#773201" stop-opacity="0.81"/></radialGradient><radialGradient id="paint2_radial_294_602" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(207 168) rotate(90) scale(167 167)"><stop stop-color="#5A2804"/><stop offset="1" stop-color="#773201" stop-opacity="0.81"/></radialGradient><radialGradient id="paint3_radial_294_602" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(207 168) rotate(90) scale(167 167)"><stop stop-color="#5A2804"/><stop offset="1" stop-color="#773201" stop-opacity="0.81"/></radialGradient><radialGradient id="paint4_radial_294_602" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(207 168) rotate(90) scale(167 167)"><stop stop-color="#5A2804"/><stop offset="1" stop-color="#773201" stop-opacity="0.81"/></radialGradient><radialGradient id="paint5_radial_294_602" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(207 168) rotate(90) scale(167 167)"><stop stop-color="#5A2804"/><stop offset="1" stop-color="#773201" stop-opacity="0.81"/></radialGradient><radialGradient id="paint6_radial_294_602" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(207 168) rotate(90) scale(167 167)"><stop stop-color="#5A2804"/><stop offset="1" stop-color="#773201" stop-opacity="0.81"/></radialGradient><linearGradient id="paint7_linear_294_602" x1="144.706" y1="252.826" x2="144.495" y2="267.67" gradientUnits="userSpaceOnUse"><stop stop-color="#C9D64F" stop-opacity="0.5"/><stop offset="1" stop-color="white" stop-opacity="0"/></linearGradient><linearGradient id="paint8_linear_294_602" x1="144.494" y1="310.083" x2="144.494" y2="335.001" gradientUnits="userSpaceOnUse"><stop stop-color="#C9D64F" stop-opacity="0.5"/><stop offset="1" stop-color="white" stop-opacity="0"/></linearGradient><linearGradient id="paint9_linear_294_602" x1="106.8" y1="298.949" x2="121.644" y2="298.95" gradientUnits="userSpaceOnUse"><stop stop-color="white" stop-opacity="0"/><stop offset="1" stop-color="#C9D64F" stop-opacity="0.5"/></linearGradient><linearGradient id="paint10_linear_294_602" x1="173.07" y1="299.003" x2="179.432" y2="299.003" gradientUnits="userSpaceOnUse"><stop stop-color="white" stop-opacity="0"/><stop offset="1" stop-color="#C9D64F" stop-opacity="0.5"/></linearGradient></defs>
 
                 .controls-info--column.controls-info--text
-                    p Zombies (light green cube) occur in the front and flies away to the bottom of the pit (brown). You can rotate the falling zombie in all 3 axes and move it horizontally and vertically. Zombies can be fast dropped down with the special key.
-
-                    p When a zombie drops to the bottom of the pit or on other zombies, it is painted according to the level of the pit - from purple (bottom) to red (top). Don`t let zombies fall higher than the top of the pit (red) or the game will be over.
-
-                    p To reduce the number of zombies in the pit, they must be aligned at the same layer on the level of the pit. When the falling zombie fits to the last empty space in a layer - it closes the layer and the layer removed from the pit. All other zombie`s parts, that was above that removed layer - drops down.
+                    p {{ $t('desc1') }}
+                    p {{ $t('desc2') }}
+                    p {{ $t('desc3') }}
 
             .controls-info--columns
                 .controls-info--column
@@ -74,7 +72,7 @@ Transition(name="controls")
                             .controls-info--key--img
                                 img(:src="img" v-if="!Array.isArray(img)")
                                 img(:src="img[0]" v-if="Array.isArray(img)")
-                                span(v-if="Array.isArray(img)") or
+                                span(v-if="Array.isArray(img)") {{ $t('or') }}
                                 img(:src="img[1]" v-if="Array.isArray(img)")
                             .controls-info--key--title {{ title }}
 
@@ -85,3 +83,4 @@ Transition(name="controls")
 
 <script src="./ControlsInfoScreen.js"></script>
 <style src="./ControlsInfoScreen.styl" lang="stylus"></style>
+<i18n src="./ControlsInfoScreen.json"></i18n>

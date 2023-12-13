@@ -5,9 +5,9 @@
     .navigation(v-show="!isPractice")
         .navigation--item(
             v-bind:class="{ 'navigation--item--score-blinking': score > maxScore }"
-        ) Best Score: {{ score > maxScore ? score : maxScore }}
+        ) {{ $t('best') }}: {{ score > maxScore ? score : maxScore }}
 
-        .navigation--item Score: {{ showScore }}
+        .navigation--item {{ $t('score') }}: {{ showScore }}
             Transition(
                 :duration="150"
                 name="slide-up"
@@ -17,11 +17,11 @@
                     v-bind:class="{ 'navigation--item--inc--yellow':  scoreIncrementType == 'levels', 'navigation--item--inc--red':  scoreIncrementType == 'levels-max' }"
                 ) {{ scoreIncrement > 0 ? `+${scoreIncrement}` : '' }}
 
-        .navigation--item Speed: {{ showSpeed }}
+        .navigation--item {{ $t('speed') }}: {{ showSpeed }}
         .navigation--item(
             v-if="isTimeless"
             v-bind:class="{ 'navigation--item--blinking': timelessTime <= 10 * 1000 }"
-        ) Time: {{ timelessTimeString }}
+        ) {{ $t('time') }}: {{ timelessTimeString }}
 
     .navigation--item.navigation--menu(v-on:click="openMenu")
         span.material-symbols-outlined menu
@@ -75,3 +75,4 @@ ControlsInfoScreen(
 
 <script src="./MainScreen.js"></script>
 <style src="./MainScreen.styl" lang="stylus"></style>
+<i18n src="./MainScreen.json"></i18n>
