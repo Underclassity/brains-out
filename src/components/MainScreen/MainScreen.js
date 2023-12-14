@@ -31,6 +31,7 @@ import {
 } from "../../helpers/load-zombie.js";
 import { textureLoaderHelper } from "../../helpers/load-texture.js";
 import generatePit from "../../helpers/generate-pit.js";
+import getRandom from "../../helpers/random.js";
 import getWorldPosisition from "../../helpers/get-world-position.js";
 import log from "../../helpers/log.js";
 import randomBetween from "../../helpers/random-between.js";
@@ -1640,9 +1641,15 @@ export default {
 
       this.log(`Layers indexes after delete layer ${zIndex}`, layers);
 
+      const colorlessColor = this.getColorlessColor();
+
       this.layersElements.forEach((elements, index) => {
         elements.forEach((el) => {
-          this.colorizeElement(el, index);
+          if (this.isAllRandomColor) {
+            this.colorizeElement(el, index, getRandom(this.colorPalette, 1)[0]);
+          } else {
+            this.colorizeElement(el, index, colorlessColor);
+          }
         });
       });
 
@@ -1811,6 +1818,8 @@ export default {
 
       const elementPoints = this.getElementLayerPoints(element);
 
+      const colorlessColor = this.getColorlessColor();
+
       for (const { x, y, z, uuid } of elementPoints) {
         const el = element.getObjectByProperty("uuid", uuid);
         const itemPosition = getWorldPosisition(el);
@@ -1839,7 +1848,11 @@ export default {
 
         el.applyQuaternion(element.getObjectByName("childs").quaternion);
 
-        this.colorizeElement(el, z);
+        if (this.isAllRandomColor) {
+          this.colorizeElement(el, z, getRandom(this.colorPalette, 1)[0]);
+        } else {
+          this.colorizeElement(el, z, colorlessColor);
+        }
 
         this.layersElements[z].push(el);
         this.scene.add(el);
@@ -2444,6 +2457,8 @@ export default {
         .map((item) => item.userData.layer.z)
         .filter((item, index, array) => array.indexOf(item) === index);
 
+      const colorlessColor = this.getColorlessColor();
+
       elements.forEach((element) => {
         let x = randomBetween(0, pitWidth - 1);
         let y = randomBetween(0, pitHeight - 1);
@@ -2495,7 +2510,11 @@ export default {
           this.zCPoints[z]
         );
 
-        this.colorizeElement(element, z);
+        if (this.isAllRandomColor) {
+          this.colorizeElement(el, index, getRandom(this.colorPalette, 1)[0]);
+        } else {
+          this.colorizeElement(el, index, colorlessColor);
+        }
 
         // Add to new layer
         this.layersElements[z].push(element);
@@ -2564,6 +2583,8 @@ export default {
         );
       });
 
+      const colorlessColor = this.getColorlessColor();
+
       elements.forEach((element) => {
         const elementLayer = element.userData.layer;
 
@@ -2604,7 +2625,11 @@ export default {
 
         this.layersElements[newZ].push(element);
 
-        this.colorizeElement(element, newZ);
+        if (this.isAllRandomColor) {
+          this.colorizeElement(el, index, getRandom(this.colorPalette, 1)[0]);
+        } else {
+          this.colorizeElement(el, index, colorlessColor);
+        }
       });
 
       this.updateLayersView();
@@ -3637,6 +3662,34 @@ export default {
       this.log("Add random achievement: ", achievement);
 
       return true;
+    },
+
+    /**
+     * Get random colorless color
+     *
+     * @return  {Object}  Color object
+     */
+    getColorlessColor() {
+      if (this.isRandomColor || this.isOneColor) {
+        let color = this.colorlessColor.clone();
+
+        if (this.isRandomColor) {
+          color = getRandom(this.colorPalette, 1)[0];
+
+          while (color == this.prevColor) {
+            color = getRandom(this.colorPalette, 1)[0];
+          }
+
+          // Save prev color
+          this.prevColor = color;
+        } else {
+          this.prevColor = false;
+        }
+
+        return color;
+      }
+
+      return false;
     },
   },
 

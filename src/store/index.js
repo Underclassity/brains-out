@@ -86,7 +86,7 @@ export const store = createStore({
     randomFiguresCount: 5,
     isColorless: false,
     colorlessColorIndex: 0,
-    colorlessMode: "random colors",
+    colorlessMode: "one color",
     colorlessModes: ["one color", "random colors", "chaotic colors"],
 
     isRotateRestrain: false,

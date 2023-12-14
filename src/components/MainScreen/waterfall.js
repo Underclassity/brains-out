@@ -1,10 +1,9 @@
 // import generateSForm from "../../helpers/generate-s-form.js";
 // import generateThreePoints from "../../helpers/generate-three-points.js";
 
-import { MeshBasicMaterial, Vector3 } from "three";
+import { Vector3 } from "three";
 
 import getGroupSize from "../../helpers/get-group-size.js";
-import getRandom from "../../helpers/random.js";
 import getWorldPosisition from "../../helpers/get-world-position.js";
 import log from "../../helpers/log.js";
 // import roundValue from "../../helpers/round-value.js";
@@ -48,32 +47,6 @@ export function createElement() {
 
   element.userData.time = this.time;
   element.userData.static = false;
-
-  if (this.isRandomColor || this.isOneColor || this.isAllRandomColor) {
-    let color = this.colorlessColor.clone();
-
-    if (this.isRandomColor) {
-      color = getRandom(this.colorPalette, 1)[0];
-
-      while (color == this.prevColor) {
-        color = getRandom(this.colorPalette, 1)[0];
-      }
-
-      // Save prev color
-      this.prevColor = color;
-    } else {
-      this.prevColor = false;
-    }
-
-    // Colorize element in random color
-    element.getObjectByName("childs").children.map((item) => {
-      if (this.isAllRandomColor) {
-        this.colorizeElement(item, 0, getRandom(this.colorPalette, 1)[0]);
-      } else {
-        this.colorizeElement(item, 0, color);
-      }
-    });
-  }
 
   // set start position on Z axis
   this.positionHelper(element, "z", 1);
