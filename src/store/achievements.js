@@ -43,12 +43,12 @@ export const achievements = {
   "click-me": {
     icon: "ads_click",
     title: "Click me",
-    desc: "Quite intresting...",
+    desc: "That was easy",
   },
   "how-to-play": {
     icon: "contact_support",
-    title: "How to play",
-    desc: "How to play this, you say?",
+    title: "How to play, you say?",
+    desc: "Visit `How to play` twice",
   },
 
   // Not done yet

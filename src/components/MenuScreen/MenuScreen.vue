@@ -487,13 +487,14 @@
         //- Achiements items
         .menu--title(v-show="flags.achievements") {{ $t('achievements') }}
 
-        .menu--columns(v-show="flags.achievements")
-            .menu--achievement(v-for="(item, name) in achievements" :key="name" v-bind:class="{ 'menu--achievement--earned': userAchievements.includes(name) }")
-                .menu--achievement--row
-                    .menu--achievement--icon.material-symbols-outlined(v-if="!userAchievements.includes(name)") lock
-                    .menu--achievement--icon.material-symbols-outlined(v-if="userAchievements.includes(name)") {{ item.icon }}
-                    .menu--achievement--title {{ item.title }}
-                .menu--achievement--desc(v-if="userAchievements.includes(name)") {{ item.desc }}
+        .menu--scroll(v-show="flags.achievements" v-bind:class="{ 'menu--scroll--overflow': isOverflow('achievements.scroll') }" ref="achievements.scroll")
+            .menu--columns(v-show="flags.achievements")
+                .menu--achievement(v-for="(item, name) in achievements" :key="name" v-bind:class="{ 'menu--achievement--earned': userAchievements.includes(name) }")
+                    .menu--achievement--row
+                        .menu--achievement--icon.material-symbols-outlined(v-if="!userAchievements.includes(name)") lock
+                        .menu--achievement--icon.material-symbols-outlined(v-if="userAchievements.includes(name)") {{ item.icon }}
+                        .menu--achievement--title {{ item.title }}
+                    .menu--achievement--desc(v-if="userAchievements.includes(name)") {{ item.desc }}
 
         .menu--buttons(v-show="flags.achievements")
             .menu--item--red.menu--button(
