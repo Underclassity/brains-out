@@ -3243,7 +3243,10 @@ export default {
       this.log("Close controls info: ", this.isControlsInfoShowed);
       this.isControlsInfo = false;
 
-      if ((!this.isControlsInfoShowed && !this.isMenu) || !this.current) {
+      if (
+        (!this.isControlsInfoShowed && !this.isMenu) ||
+        (!this.current && !this.isMenu)
+      ) {
         this.isControlsInfoShowed = true;
         this.newGameCall();
       }
