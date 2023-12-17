@@ -3,6 +3,8 @@ import makeEta from "simple-eta";
 import { createStore } from "vuex";
 import vuejsStorage from "vuejs-storage";
 
+import i18n from "../i18n/index.js";
+
 import log from "../helpers/log.js";
 import randomBetween from "../helpers/random-between.js";
 import roundValue from "../helpers/round-value.js";
@@ -731,6 +733,7 @@ export const store = createStore({
 
     changeLocale(state, value) {
       state.locale = value;
+      i18n.global.locale = value;
     },
   },
   actions: {

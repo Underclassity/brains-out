@@ -625,13 +625,11 @@ export default {
     prevLanguage() {
       this.$store.commit("changeLocale", "ru");
       this.emitter.emit("changeLocale", "ru");
-      this.$i18n.locale = "ru";
     },
 
     nextLanguage() {
       this.$store.commit("changeLocale", "en");
       this.emitter.emit("changeLocale", "en");
-      this.$i18n.locale = "en";
     },
 
     blurEvent() {
