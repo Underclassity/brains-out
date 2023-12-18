@@ -164,17 +164,17 @@
             v-bind:class="{ 'focused': focused == 'mode.modes' }"
         )
             .menu--selector--prev(v-on:click="prevMode" ref="mode.modes.prev")
-            .menu--selector--value(v-for="modeItem in modes" :key="modeItem" v-show="mode == modeItem") {{ modeItem }}
+            .menu--selector--value(v-for="modeItem in modes" :key="modeItem" v-show="mode == modeItem") {{ $t(modeItem) }}
             .menu--selector--next(v-on:click="nextMode" ref="mode.modes.next")
 
-        p.menu--text(v-if='flags.mode && mode == "original"') Regular game without any changes.
-        p.menu--text(v-if='flags.mode && mode == "time attack"') Time is limited! Do your best!
-        p.menu--text(v-if='flags.mode && mode == "rotating pit"') Pit rotates after every dropped zombie!
-        p.menu--text(v-if='flags.mode && mode == "limited rotations"') Rotate wisely! Zombies rotations are limited!
-        p.menu--text(v-if='flags.mode && mode == "random rotations"') Test your luck! All zombies rotations are random!
-        p.menu--text(v-if='flags.mode && mode == "glitch mayhem"') Something strange is happening!
-        p.menu--text(v-if='flags.mode && mode == "pit mess"') Some zombies are already in the pit!
-        p.menu--text(v-if='flags.mode && mode == "color madness"') Colors are ok. Trust us!
+        p.menu--text(v-if='flags.mode && mode == "original"') {{ $t('originalDesc') }}
+        p.menu--text(v-if='flags.mode && mode == "time attack"') {{ $t('timeAttackDesc') }}
+        p.menu--text(v-if='flags.mode && mode == "rotating pit"') {{ $t('rotatingPitDesc') }}
+        p.menu--text(v-if='flags.mode && mode == "limited rotations"') {{ $t('limitedRotationsDesc') }}
+        p.menu--text(v-if='flags.mode && mode == "random rotations"') {{ $t('randomRotationsDesc') }}
+        p.menu--text(v-if='flags.mode && mode == "glitch mayhem"') {{ $t('glitchMayhemDesc') }}
+        p.menu--text(v-if='flags.mode && mode == "pit mess"') {{ $t('pitMessDesc') }}
+        p.menu--text(v-if='flags.mode && mode == "color madness"') {{ $t('colorMadnessDesc') }}
 
         .menu--empty(v-if="flags.mode && mode != 'time attack' && mode != 'limited rotations' && mode != 'pit mess' && mode != 'color madness'")
 
@@ -184,10 +184,10 @@
             v-bind:class="{ 'focused': focused == 'mode.time' }"
         )
             .menu--selector--prev(v-on:click="prevTimeTimeless" ref="mode.time.prev")
-            .menu--selector--value(v-if="timelessMaxTime == 2 * 60 * 1000") 2 min
-            .menu--selector--value(v-if="timelessMaxTime == 60 * 1000") 1 min
-            .menu--selector--value(v-if="timelessMaxTime == 30 * 1000") 30 sec
-            .menu--selector--value(v-if="timelessMaxTime == 10 * 1000") 10 sec
+            .menu--selector--value(v-if="timelessMaxTime == 2 * 60 * 1000") 2 {{ $t('min') }}
+            .menu--selector--value(v-if="timelessMaxTime == 60 * 1000") 1 {{ $t('min') }}
+            .menu--selector--value(v-if="timelessMaxTime == 30 * 1000") 30 {{ $t('sec') }}
+            .menu--selector--value(v-if="timelessMaxTime == 10 * 1000") 10 {{ $t('sec') }}
             .menu--selector--next(v-on:click="nextTimeTimeless" ref="mode.time.next")
 
         .menu--selector.menu--selector--centered(
@@ -196,7 +196,7 @@
             v-bind:class="{ 'focused': focused == 'mode.rotates' }"
         )
             .menu--selector--prev(v-on:click="prevRotates" ref="mode.rotates.prev")
-            .menu--selector--value {{ maxRotate }} rotations
+            .menu--selector--value {{ maxRotate }} {{ $t('rotations') }}
             .menu--selector--next(v-on:click="nextRotates" ref="mode.rotates.next")
 
         .menu--selector.menu--selector--centered(
@@ -205,7 +205,7 @@
             v-bind:class="{ 'focused': focused == 'mode.mess' }"
         )
             .menu--selector--prev(v-on:click="changeRandomFigures" ref="mode.mess.prev")
-            .menu--selector--value {{ randomFiguresCount }} figures
+            .menu--selector--value {{ randomFiguresCount }} {{ $t('figures') }}
             .menu--selector--next(v-on:click="changeRandomFigures" ref="mode.mess.next")
 
         .menu--selector.menu--selector--centered(
@@ -218,7 +218,7 @@
                 v-for="item of colorlessModes"
                 :key="item"
                 v-show="item == colorlessMode"
-            ) {{ item }}
+            ) {{ $t(item) }}
             .menu--selector--next(v-on:click="nextColorlessMode" ref="mode.colorless.next")
 
         .menu--buttons(v-show="flags.mode")
@@ -325,7 +325,8 @@
             )
                 .menu--label {{ $t('color') }}
                 .menu--selector--prev(v-on:click="prevColorPalette" v-if="colorPaletteTypes.indexOf(colorPaletteType) != 0" ref="settings.color.prev")
-                .menu--selector--value {{ colorPaletteType }}
+                .menu--selector--value(v-if="colorPaletteType == 'complex'") {{ $t('complex') }}
+                .menu--selector--value(v-if="colorPaletteType == 'flat'") {{ $t('flat') }}
                 .menu--selector--next(v-on:click="nextColorPalette" v-if="colorPaletteTypes.indexOf(colorPaletteType) != colorPaletteTypes.length - 1" ref="settings.color.next")
 
             .menu--selector(
@@ -335,7 +336,9 @@
             )
                 .menu--label {{ $t('theme') }}
                 .menu--selector--prev(v-on:click="prevTheme" v-if="theme != themes[0]" ref="settings.theme.prev")
-                .menu--selector--value {{ theme }}
+                .menu--selector--value(v-if="theme == 'simple'") {{ $t('simple') }}
+                .menu--selector--value(v-if="theme == 'standard'") {{ $t('standard') }}
+                .menu--selector--value(v-if="theme == 'halloween'") {{ $t('halloween') }}
                 .menu--selector--next(v-on:click="nextTheme" v-if="theme != themes[themes.length - 1]" ref="settings.theme.next")
 
             .menu--subtitle {{ $t('sound') }}
@@ -492,9 +495,9 @@
                 .menu--achievement(v-for="(item, name) in achievements" :key="name" v-bind:class="{ 'menu--achievement--earned': userAchievements.includes(name) }")
                     .menu--achievement--row
                         .menu--achievement--icon.material-symbols-outlined(v-if="!userAchievements.includes(name)") lock
-                        .menu--achievement--icon.material-symbols-outlined(v-if="userAchievements.includes(name)") {{ item.icon }}
-                        .menu--achievement--title {{ item.title }}
-                    .menu--achievement--desc(v-if="userAchievements.includes(name)") {{ item.desc }}
+                        .menu--achievement--icon.material-symbols-outlined(v-if="userAchievements.includes(name)") {{ getAchiementItem(name).icon }}
+                        .menu--achievement--title {{ getAchiementItem(name).title }}
+                    .menu--achievement--desc(v-if="userAchievements.includes(name)") {{ getAchiementItem(name).desc }}
 
         .menu--buttons(v-show="flags.achievements")
             .menu--item--red.menu--button(

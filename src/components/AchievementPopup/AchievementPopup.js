@@ -3,6 +3,8 @@ import { mapState } from "vuex";
 import log from "../../helpers/log.js";
 import sleep from "../../helpers/sleep.js";
 
+import achievements from "../../i18n/achievements.js";
+
 export default {
   name: "AchievementPopup",
 
@@ -15,22 +17,20 @@ export default {
   },
 
   computed: {
-    ...mapState(["achievements"]),
-
     item() {
       if (this.id == "enable-gamepad") {
         return {
-          title: "Gamepad connected",
+          title: this.$t("gamepadConnected"),
         };
       }
 
       if (this.id == "disable-gamepad") {
         return {
-          title: "Gamepad disconnected",
+          title: this.$t("gamepadDisconnected"),
         };
       }
 
-      return this.achievements[this.id];
+      return achievements[this.$i18n.locale][this.id];
     },
   },
 

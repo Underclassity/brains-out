@@ -33,7 +33,41 @@
 
     "shareResults": "Share results",
 
-    "achievements": "Achievements"
+    "achievements": "Achievements",
+
+    "ultra": "Ultra",
+    "high": "High",
+    "mid": "Mid",
+    "low": "Low",
+
+    "complex": "Complex",
+    "flat": "Flat",
+
+    "standard": "Standard",
+    "halloween": "Halloween",
+    "simple": "Simple",
+
+    "one color": "1 color",
+    "random colors": "Randoms color",
+    "chaotic colors": "Chaotic colors",
+
+    "original": "Original",
+    "time attack": "Time attack",
+    "rotating pit": "Rotating pit",
+    "limited rotations": "Limited rotations",
+    "random rotations": "Random rotations",
+    "glitch mayhem": "Glitch mayhem",
+    "pit mess": "Pit mess",
+    "color madness": "Color madness",
+
+    "originalDesc": "Regular game without any changes",
+    "timeAttackDesc": "Time is limited! Do your best!",
+    "rotatingPitDesc": "Pit rotates after every dropped zombie!",
+    "limitedRotationsDesc": "Rotate wisely! Zombie rotations are limited",
+    "randomRotationsDesc": "Test your luck! All zombies rotations are random",
+    "glitchMayhemDesc": "Something strange is happening!",
+    "pitMessDesc": "Some zombies are already in the pit!",
+    "colorMadnessDesc": "Colors are ok! Trust us!"
   },
   "ru": {
     "gamePreferences": "Настройки игры",
@@ -62,13 +96,47 @@
     "language": "Язык",
     "devMode": "Режим разработчика",
     "vibration": "Вибрация",
-    "controls": "Управление",
+    "controls": "Кнопки",
     "best": "Лучший счет",
     "score": "Счет",
     "time": "Время",
 
     "shareResults": "Поделиться результатами",
 
-    "achievements": "Достижения"
+    "achievements": "Достижения",
+
+    "ultra": "Ульт",
+    "high": "Выс",
+    "mid": "Сред",
+    "low": "Низ",
+
+    "complex": "Сложный",
+    "flat": "Плоский",
+
+    "standard": "Стандартная",
+    "halloween": "Хэллоуин",
+    "simple": "Простая",
+
+    "one color": "1 цвет",
+    "random colors": "Случайные цвета",
+    "chaotic colors": "Хаотичные цвета",
+
+    "original": "Оригинальный",
+    "time attack": "Ограниченное время",
+    "rotating pit": "Вращающаяся яма",
+    "limited rotations": "Ограниченные вращения",
+    "random rotations": "Случайные вращения",
+    "glitch mayhem": "Глючное безумие",
+    "pit mess": "Беспорядок в яме",
+    "color madness": "Цветовое безумие",
+
+    "originalDesc": "Обычная игры без изменений",
+    "timeAttackDesc": "Время ограничено! Поспеши!",
+    "rotatingPitDesc": "Яма вращается после каждого упавшего зомби!",
+    "limitedRotationsDesc": "Вращай мудро! Вращения зомби ограничены!",
+    "randomRotationsDesc": "Проверь свою удачу! Все вращения зомби случайны!",
+    "glitchMayhemDesc": "Что-то странное творится!",
+    "pitMessDesc": "Некоторые зомби уже в яме!",
+    "colorMadnessDesc": "Цвета в порядке! Поверь нам!"
   }
 }

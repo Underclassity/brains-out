@@ -25,8 +25,17 @@ const i18n = createI18n({
 
       drop: "Drop",
 
+      sec: "sec",
+      min: "min",
+
+      rotations: "rotations",
+      figures: "figures",
+
       yes: "Yes",
       no: "No",
+
+      gamepadConnected: "Gamepad connected",
+      gamepadDisconnected: "Gamepad disconnected",
     },
 
     ru: {
@@ -48,8 +57,17 @@ const i18n = createI18n({
 
       drop: "Уронить",
 
+      sec: "сек",
+      min: "мин",
+
+      rotations: "поворотов",
+      figures: "фигур",
+
       yes: "Да",
       no: "Нет",
+
+      gamepadConnected: "Геймпад подключен",
+      gamepadDisconnected: "Геймпад отключен",
     },
   },
 });

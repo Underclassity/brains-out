@@ -7,6 +7,8 @@ import log from "../../helpers/log.js";
 
 import logoSrc from "../../assets/img/halloween-logo.png";
 
+import achievements from "../../i18n/achievements.js";
+
 export default {
   name: "MenuScreen",
 
@@ -202,12 +204,12 @@ export default {
       const { pixelRatio } = this;
 
       return pixelRatio > 3
-        ? "Ultra"
+        ? this.$t("ultra")
         : pixelRatio > 2 && pixelRatio <= 3
-        ? "High"
+        ? this.$t("high")
         : pixelRatio > 1 && pixelRatio <= 2
-        ? "Mid"
-        : "Low";
+        ? this.$t("mid")
+        : this.$t("low");
     },
   },
 
@@ -927,6 +929,10 @@ export default {
         "updatePitSize",
         `${this.pitWidth}x${this.pitHeight}x8`
       );
+    },
+
+    getAchiementItem(id) {
+      return achievements[this.$i18n.locale][id];
     },
   },
 
