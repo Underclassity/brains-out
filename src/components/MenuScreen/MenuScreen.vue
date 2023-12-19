@@ -63,33 +63,42 @@
         .menu--scroll(v-show="flags.new" v-bind:class="{ 'menu--scroll--overflow': isOverflow('new.scroll') }" ref="new.scroll")
             .menu--selector(
                 v-show="flags.new"
-                ref="new.pit"
-                v-bind:class="{ 'focused': focused == 'new.pit' }"
+                ref="new.pitWidth"
+                v-bind:class="{ 'focused': focused == 'new.pitWidth' }"
             )
-                .menu--label {{ $t('pitSize') }}
+                .menu--label {{ $t('pitWidth') }}
 
-                .menu--selector-vertical(ref="new.pit.width")
-                    .menu--selector-vertical--prev.material-symbols-outlined(v-on:click="upPitWidth") keyboard_arrow_up
-                    .menu--selector-vertical--value {{ pitWidth }}
-                    .menu--selector-vertical--next.material-symbols-outlined(v-on:click="downPitWidth") keyboard_arrow_down
+                .menu--selector--prev(v-on:click="downPitWidth" ref="new.pitWidth.prev")
+                .menu--selector--value {{ pitWidth }}
+                .menu--selector--next(v-on:click="upPitWidth" ref="new.pitWidth.next")
 
-                .menu--selector-vertical--span X
+            .menu--selector(
+                v-show="flags.new"
+                ref="new.pitHeight"
+                v-bind:class="{ 'focused': focused == 'new.pitHeight' }"
+            )
+                .menu--label {{ $t('pitHeight') }}
 
-                .menu--selector-vertical(ref="new.pit.height")
-                    .menu--selector-vertical--prev.material-symbols-outlined(v-on:click="upPitHeight") keyboard_arrow_up
-                    .menu--selector-vertical--value {{ pitHeight }}
-                    .menu--selector-vertical--next.material-symbols-outlined(v-on:click="downPitHeight") keyboard_arrow_down
+                .menu--selector--prev(v-on:click="downPitHeight" ref="new.pitHeight.prev")
+                .menu--selector--value {{ pitHeight }}
+                .menu--selector--next(v-on:click="upPitHeight" ref="new.pitHeight.next")
 
-                .menu--selector-vertical--span X
+            .menu--selector(
+                v-show="flags.new"
+                ref="new.pitDepth"
+                v-bind:class="{ 'focused': focused == 'new.pitDepth' }"
+            )
+                .menu--label {{ $t('pitDepth') }}
 
-                .menu--selector-vertical(ref="new.pit.depth")
-                    .menu--selector-vertical--prev.material-symbols-outlined(v-on:click="upPitDepth") keyboard_arrow_up
-                    .menu--selector-vertical--value {{ pitDepth }}
-                    .menu--selector-vertical--next.material-symbols-outlined(v-on:click="downPitDepth") keyboard_arrow_down
+                .menu--selector--prev(v-on:click="downPitDepth" ref="new.pitDepth.prev")
+                .menu--selector--value {{ pitDepth }}
+                .menu--selector--next(v-on:click="upPitDepth" ref="new.pitDepth.next")
 
                 //- .menu--selector--prev(v-on:click="prevPitSize" v-if="pitSizes.indexOf(pitSize) != 0" ref="new.pit.prev")
                 //- .menu--selector--value {{ pitSize }}
                 //- .menu--selector--next(v-on:click="nextPitSize" v-if="pitSizes.indexOf(pitSize) != pitSizes.length - 1" ref="new.pit.next")
+
+            hr.menu--divider(v-show="flags.new")
 
             .menu--selector(
                 v-show="flags.new"

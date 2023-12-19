@@ -191,7 +191,9 @@ export const store = createStore({
       //   return false;
       // }
 
-      let [pitWidth, pitHeight, pitDepth] = newPitSizeString.split("x");
+      let [pitWidth, pitHeight, pitDepth] = newPitSizeString
+        .split("x")
+        .map((item) => parseInt(item, 10));
 
       if (pitWidth <= 5) {
         pitWidth = 5;
@@ -217,7 +219,7 @@ export const store = createStore({
       state.pitHeight = pitHeight;
       state.pitDepth = pitDepth;
 
-      state.pitSize = newPitSizeString;
+      state.pitSize = `${pitWidth}x${pitHeight}x${pitDepth}`;
     },
 
     updateSpeed(state, value) {

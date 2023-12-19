@@ -37,6 +37,10 @@ const i18n = createI18n({
 
       gamepadConnected: "Gamepad connected",
       gamepadDisconnected: "Gamepad disconnected",
+
+      pitWidth: "Pit width",
+      pitHeight: "Pit height",
+      pitDepth: "Pit depth",
     },
 
     ru: {
@@ -70,6 +74,10 @@ const i18n = createI18n({
 
       gamepadConnected: "Геймпад подключен",
       gamepadDisconnected: "Геймпад отключен",
+
+      pitWidth: "Ширина ямы",
+      pitHeight: "Высота ямы",
+      pitDepth: "Глубина ямы",
     },
   },
 });
