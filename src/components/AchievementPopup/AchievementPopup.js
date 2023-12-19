@@ -79,10 +79,6 @@ export default {
       this.id = "disable-gamepad";
       this.openAchievement();
     },
-
-    achievementClick() {
-      this.emitter.emit("addAchievement", "click-me");
-    },
   },
 
   mounted() {

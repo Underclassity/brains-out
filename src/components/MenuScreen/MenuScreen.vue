@@ -492,7 +492,12 @@
 
         .menu--scroll(v-show="flags.achievements" v-bind:class="{ 'menu--scroll--overflow': isOverflow('achievements.scroll') }" ref="achievements.scroll")
             .menu--columns(v-show="flags.achievements")
-                .menu--achievement(v-for="(item, name) in achievements" :key="name" v-bind:class="{ 'menu--achievement--earned': userAchievements.includes(name) }")
+                .menu--achievement(
+                    v-for="(item, name) in achievements"
+                    :key="name"
+                    v-bind:class="{ 'menu--achievement--earned': userAchievements.includes(name) }"
+                    v-on:click="achievementClick(name)"
+                )
                     .menu--achievement--row
                         .menu--achievement--icon.material-symbols-outlined(v-if="!userAchievements.includes(name)") lock
                         .menu--achievement--icon.material-symbols-outlined(v-if="userAchievements.includes(name)") {{ getAchiementItem(name).icon }}

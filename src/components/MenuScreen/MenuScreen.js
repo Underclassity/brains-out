@@ -934,6 +934,12 @@ export default {
     getAchiementItem(id) {
       return achievements[this.$i18n.locale][id];
     },
+
+    achievementClick(name) {
+      if (name == "click-me") {
+        this.emitter.emit("addAchievement", "click-me");
+      }
+    },
   },
 
   watch: {
