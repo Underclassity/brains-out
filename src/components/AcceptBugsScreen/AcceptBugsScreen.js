@@ -11,6 +11,26 @@ export default {
     yesClick() {
       this.$emit("accept");
     },
+
+    async isOverflow(refId) {
+      if (!refId) {
+        return false;
+      }
+
+      const element = this.$refs[refId];
+
+      if (!element) {
+        return false;
+      }
+
+      // Wait for ref load
+      await nextTick();
+
+      return (
+        element.scrollHeight > element.clientHeight ||
+        element.scrollWidth > element.clientWidth
+      );
+    },
   },
 
   watch: {

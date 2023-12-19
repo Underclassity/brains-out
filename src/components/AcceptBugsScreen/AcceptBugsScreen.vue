@@ -3,7 +3,7 @@ Transition(duration="300" name="accept")
     .popup--overlay
         .popup--main.popup--glare
             .popup--title {{ $t('title') }}
-            .popup--scroll
+            .popup--scroll(v-bind:class="{ 'menu--scroll--overflow': isOverflow('scroll') }" ref="scroll")
                 .popup--desc {{ $t('desc1') }}
                 .popup--desc {{ $t('desc2') }}
 
