@@ -55,8 +55,18 @@ export default {
       // levelsPit,
 
       showCount: 0,
+    };
+  },
 
-      keyboardKeys: [
+  computed: {
+    ...mapGetters(["colorPalette"]),
+
+    colors() {
+      return this.colorPalette.map((item) => `#${item.getHexString()}`);
+    },
+
+    keyboardKeys() {
+      return [
         {
           id: "w",
           img: wImage,
@@ -119,9 +129,11 @@ export default {
           img: escImage,
           title: this.$t("pauseOpen"),
         },
-      ],
+      ];
+    },
 
-      controllerKeys: [
+    controllerKeys() {
+      return [
         {
           id: "right-stick",
           img: rightStickImage,
@@ -152,15 +164,7 @@ export default {
           img: menuButtonImage,
           title: this.$t("pauseOpen"),
         },
-      ],
-    };
-  },
-
-  computed: {
-    ...mapGetters(["colorPalette"]),
-
-    colors() {
-      return this.colorPalette.map((item) => `#${item.getHexString()}`);
+      ];
     },
   },
 

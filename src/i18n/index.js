@@ -28,7 +28,8 @@ const i18n = createI18n({
       sec: "sec",
       min: "min",
 
-      rotations: "rotations",
+      rotations5: "rotations",
+      rotations3: "rotations",
       figures: "figures",
 
       yes: "Yes",
@@ -60,7 +61,8 @@ const i18n = createI18n({
       sec: "сек",
       min: "мин",
 
-      rotations: "поворотов",
+      rotations5: "поворотов",
+      rotations3: "поворота",
       figures: "фигур",
 
       yes: "Да",

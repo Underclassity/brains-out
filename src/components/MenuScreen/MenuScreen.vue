@@ -196,7 +196,8 @@
             v-bind:class="{ 'focused': focused == 'mode.rotates' }"
         )
             .menu--selector--prev(v-on:click="prevRotates" ref="mode.rotates.prev")
-            .menu--selector--value {{ maxRotate }} {{ $t('rotations') }}
+            .menu--selector--value(v-if="maxRotate == 3") {{ maxRotate }} {{ $t('rotations3') }}
+            .menu--selector--value(v-if="maxRotate == 5") {{ maxRotate }} {{ $t('rotations5') }}
             .menu--selector--next(v-on:click="nextRotates" ref="mode.rotates.next")
 
         .menu--selector.menu--selector--centered(
@@ -372,7 +373,8 @@
             )
                 .menu--label {{ $t('language') }}
                 .menu--selector--prev(v-on:click="prevLanguage" v-if="locale != 'ru'" ref="settings.language.prev")
-                .menu--selector--value {{ locale }}
+                .menu--selector--value(v-if="locale == 'ru'") Рус
+                .menu--selector--value(v-if="locale == 'en'") Eng
                 .menu--selector--next(v-on:click="nextLanguage" v-if="locale != 'en'" ref="settings.language.next")
 
             .menu--selector(
