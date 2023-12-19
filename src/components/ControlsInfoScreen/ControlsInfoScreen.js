@@ -173,6 +173,11 @@ export default {
       log("Back click");
       this.$emit("back");
     },
+
+    playClick() {
+      log("Play click");
+      this.$emit("play");
+    },
   },
 
   watch: {

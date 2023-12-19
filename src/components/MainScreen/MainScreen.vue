@@ -63,7 +63,8 @@ LoadingScreen(:show="isLoading" :percent="loadPercent")
 ControlsInfoScreen(
     :playButton="isControlsInfoPlay"
     :show="isControlsInfo"
-    v-on:back="closeControlsInfo"
+    v-on:back="closeControlsInfo(false)"
+    v-on:play="closeControlsInfo(true)"
 )
 
 .levels(v-show="!isMenu" :style="levelsOffsetStyle" v-bind:class="{ 'levels--flip': isControls }")

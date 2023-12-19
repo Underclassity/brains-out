@@ -3239,13 +3239,13 @@ export default {
       return true;
     },
 
-    closeControlsInfo() {
-      this.log("Close controls info: ", this.isControlsInfoShowed);
+    closeControlsInfo(playFlag) {
+      this.log("Close controls info: ", this.isControlsInfoShowed, playFlag);
       this.isControlsInfo = false;
 
       if (
         (!this.isControlsInfoShowed && !this.isMenu) ||
-        (!this.current && !this.isMenu)
+        (!this.current && playFlag)
       ) {
         this.isControlsInfoShowed = true;
         this.newGameCall();
