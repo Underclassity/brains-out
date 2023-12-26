@@ -614,43 +614,47 @@ export function generatePit(
 
   if (simple) {
     const bottomPlane = generateGrid(width, height, color);
-    bottomPlane.position.z = -depth;
+    bottomPlane.position.z = -depth + size / 2;
 
     const downPlane = generateGrid(width, depth, color);
     downPlane.rotateX(Math.PI / 2);
-    downPlane.position.z = -depth / 2;
+    downPlane.position.z = -depth / 2 + size / 2;
     downPlane.position.y = -height / 2;
 
     const upPlane = generateGrid(width, depth, color);
     upPlane.rotateX(Math.PI / 2);
-    upPlane.position.z = -depth / 2;
+    upPlane.position.z = -depth / 2 + size / 2;
     upPlane.position.y = height / 2;
 
     const leftPlane = generateGrid(height, depth, color);
     leftPlane.rotateY(Math.PI / 2);
     leftPlane.rotateZ(Math.PI / 2);
-    leftPlane.position.z = -depth / 2;
+    leftPlane.position.z = -depth / 2 + size / 2;
     leftPlane.position.x = -width / 2;
 
     const rightPlane = generateGrid(height, depth, color);
     rightPlane.rotateY(Math.PI / 2);
     rightPlane.rotateZ(Math.PI / 2);
-    rightPlane.position.z = -depth / 2;
+    rightPlane.position.z = -depth / 2 + size / 2;
     rightPlane.position.x = width / 2;
 
     const rightBgPlane = generateGrid(100, 100, color);
     rightBgPlane.position.y = height / 2;
     rightBgPlane.position.x = width / 2 + 100 / 2;
+    rightBgPlane.position.z = size / 2;
 
     const leftBgPlane = generateGrid(100, 100, color);
     leftBgPlane.position.y = height / 2;
     leftBgPlane.position.x = -width / 2 - 100 / 2;
+    leftBgPlane.position.z = size / 2;
 
     const topBgPlane = generateGrid(width, 50, color);
     topBgPlane.position.y = 50 / 2 + height / 2;
+    topBgPlane.position.z = size / 2;
 
     const bottomBgPlane = generateGrid(width, 50 - height, color);
     bottomBgPlane.position.y = -50 / 2;
+    bottomBgPlane.position.z = size / 2;
 
     pit.add(bottomPlane);
 
@@ -674,7 +678,7 @@ export function generatePit(
     const cube = new Mesh(geometry, material);
     cube.name = "pit";
 
-    cube.position.z = -depth / 2;
+    cube.position.z = -depth / 2 + size / 2;
 
     pit.add(cube);
   } else {

@@ -964,6 +964,10 @@ export default {
 
       await nextTick();
 
+      if (!this.$refs[newValue]) {
+        return false;
+      }
+
       this.$refs[newValue].scrollIntoView({
         behavior: "smooth",
         block: "center",

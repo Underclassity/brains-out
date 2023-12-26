@@ -3592,23 +3592,23 @@ export default {
           opacity: this.fogAroundOpacity,
         });
 
-        const vWidth = Math.round(viewWidth);
-        const vHeight = Math.round(viewHeight);
-        const maxSize = Math.max(vWidth, vHeight) - 1;
+        // const vWidth = Math.round(viewWidth);
+        // const vHeight = Math.round(viewHeight);
+        // const maxSize = Math.max(vWidth, vHeight) - 1;
 
-        console.log(vWidth, vHeight, maxSize);
-        console.log(pitWidth, pitHeight);
+        // console.log(vWidth, vHeight, maxSize);
+        // console.log(pitWidth, pitHeight);
 
-        const heightDiff = (maxSize - pitHeight) / 2;
-        const widthDiff = (maxSize - pitWidth) / 2;
+        // const heightDiff = (maxSize - pitHeight) / 2;
+        // const widthDiff = (maxSize - pitWidth) / 2;
 
-        console.log(heightDiff, widthDiff);
+        // console.log(heightDiff, widthDiff);
 
         const size = Math.round(
           Math.max((viewWidth - pitWidth) / 2, (viewHeight - pitHeight) / 2)
         );
 
-        console.log(widthDiff, heightDiff);
+        // console.log(widthDiff, heightDiff);
 
         const leftXPos = (-this.viewWidth / 2 - this.pitWidth / 2) / 2;
         const bottomYPos = (-this.viewHeight / 2 - this.pitHeight / 2) / 2;
