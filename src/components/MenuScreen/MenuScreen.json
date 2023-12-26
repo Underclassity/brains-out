@@ -42,6 +42,8 @@
 
     "complex": "Complex",
     "flat": "Flat",
+    "basic": "Basic",
+    "extended": "Extended",
 
     "standard": "Standard",
     "halloween": "Halloween",
@@ -112,6 +114,8 @@
 
     "complex": "Сложный",
     "flat": "Плоский",
+    "basic": "Базовый",
+    "extended": "Расширенный",
 
     "standard": "Стандартная",
     "halloween": "Хэллоуин",

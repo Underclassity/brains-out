@@ -162,6 +162,128 @@
             width: 20px
             height: 20px
 
+    &--selector
+        width: 100%
+        display: flex
+        align-items: center
+        justify-content: space-between
+        flex-wrap: nowrap
+        margin-bottom: 20px
+
+        &--centered
+            justify-content: center
+            margin-top: 20px
+
+        &.focused
+            background-color: rgba(blue, 0.1)
+
+        &:last-child
+            margin-bottom: 0px
+
+        &--prev
+            border-left: solid 0px transparent
+            border-right: solid 52px #222
+            border-top: solid 26px transparent
+            border-bottom: solid 26px transparent
+            position: relative
+            cursor: pointer
+            margin-right: 8px
+            box-shadow: inset 0px 20px 20px -10px rgba(white, 0.3), inset 0px -20px 20px -10px rgba(black, 0.3)
+
+            @media(max-width 767px)
+                transform: scale(0.7)
+
+            @media(max-height 900px)
+                transform: scale(0.7)
+
+            &:before
+                content: ""
+                position: absolute
+                top: -50%
+                left: -50%
+                border-left: solid 0px transparent
+                border-right: solid 44px var(--orange, #E77812)
+                border-top: solid 20px transparent
+                border-bottom: solid 20px transparent
+                transform: translate(5px, -50%)
+
+            &:hover
+                &:before
+                    border-right: solid 44px rgba(#E77812, 0.6)
+
+        &--next
+            border-left: solid 52px #222
+            border-right: solid 0px transparent
+            border-top: solid 26px transparent
+            border-bottom: solid 26px transparent
+            position: relative
+            cursor: pointer
+            margin-left: 8px
+            box-shadow: inset 0px 20px 20px -10px rgba(white, 0.3), inset 0px -20px 20px -10px rgba(black, 0.3)
+
+            @media(max-width 767px)
+                transform: scale(0.7)
+
+            @media(max-height 900px)
+                transform: scale(0.7)
+
+            &:before
+                content: ""
+                position: absolute
+                top: 0px
+                left: 0px
+                border-left: solid 44px var(--orange, #E77812)
+                border-right: solid 0px transparent
+                border-top: solid 20px transparent
+                border-bottom: solid 20px transparent
+                transform: translate(calc(-100% - 5px), -50%)
+
+            &:hover
+                &:before
+                    border-left: solid 44px rgba(#E77812, 0.6)
+
+        &--value
+            box-sizing: border-box
+            border-radius: 20px
+            border: 5px solid #222
+            padding: 8px 16px
+            background-color: var(--orange, #E77812)
+            font-size: 36px
+            line-height: 36px
+            -webkit-text-stroke: 1px var(--black, #000)
+            position: relative
+            box-shadow: inset 0px 20px 20px -10px rgba(white, 0.3), inset 0px -20px 20px -10px rgba(black, 0.3)
+
+            @media(max-width 767px)
+                border-radius: 10px
+                padding: 8px
+                border: 2px solid #222
+                font-size: 20px
+                line-height: 24px
+
+            @media(max-height 900px)
+                border-radius: 10px
+                padding: 8px
+                border: 2px solid #222
+                font-size: 20px
+                line-height: 24px
+
+            &:before
+                content: ''
+                position: absolute
+                top: 20px
+                left: 15px
+                width: 10px
+                height: 10px
+                background-color: rgba(white, 0.2)
+                border-radius: 50%
+
+                @media(max-width 768px)
+                    display: none
+
+                @media(max-height 900px)
+                    display: none
+
 .accept-enter-active
 .accept-leave-active
     transition: opacity 0.5s ease;

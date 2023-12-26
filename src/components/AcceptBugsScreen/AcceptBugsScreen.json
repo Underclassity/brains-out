@@ -2,11 +2,15 @@
   "en": {
     "title": "Warning!",
     "desc1": "This game may contains flashing lights and/or images, loud noises and/or other things, that may be unsuitable for some people. Player discretion is advised. By pressing «Play», you accept any scenario that can happen, for which we take no responsibility. Otherwise, close this page.",
-    "desc2": "This game is in unfinished state of development and may contain bugs, that can lead to some unexpected behavior. By pressing «Play», you accept any scenario that can happen, for which we take no responsibility. Otherwise, close this page."
+    "desc2": "This game is in unfinished state of development and may contain bugs, that can lead to some unexpected behavior. By pressing «Play», you accept any scenario that can happen, for which we take no responsibility. Otherwise, close this page.",
+
+    "language": "Language"
   },
   "ru": {
     "title": "Внимание!",
     "desc1": "Эта игра может содержать мигающие огни и/или изображения, громкие шумы и/или другие вещи, которые могут быть непригодными для некоторых людей. Игроку рекомендуется соблюдать осторожность. Нажимая «Играть», вы принимаете любой сценарий, который может произойти, за что мы не несем ответственности. В противном случае закройте эту страницу.",
-    "desc2": "Эта игра находится в незавершенной стадии разработки и может содержать ошибки, которые могут привести к неожиданному поведению. Нажимая «Играть», вы принимаете любой возможный сценарий, за который мы не несем ответственности. В противном случае закройте эту страницу."
+    "desc2": "Эта игра находится в незавершенной стадии разработки и может содержать ошибки, которые могут привести к неожиданному поведению. Нажимая «Играть», вы принимаете любой возможный сценарий, за который мы не несем ответственности. В противном случае закройте эту страницу.",
+
+    "language": "Язык"
   }
 }

@@ -107,7 +107,9 @@
             )
                 .menu--label {{ $t('blockType') }}
                 .menu--selector--prev(v-on:click="prevBlockType" v-if="blocksTypeOptions.indexOf(blocksType) != 0" ref="new.blocksType.prev")
-                .menu--selector--value {{ blocksType }}
+                .menu--selector--value(v-if="blocksType == 'flat'") {{ $t('flat') }}
+                .menu--selector--value(v-if="blocksType == 'basic'") {{ $t('basic') }}
+                .menu--selector--value(v-if="blocksType == 'extended'") {{ $t('extended') }}
                 .menu--selector--next(v-on:click="nextBlockType" v-if="blocksTypeOptions.indexOf(blocksType) != blocksTypeOptions.length - 1" ref="new.blocksType.next")
 
             .menu--selector(

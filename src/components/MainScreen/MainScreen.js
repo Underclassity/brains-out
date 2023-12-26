@@ -3500,21 +3500,29 @@ export default {
     async addFogParticles() {
       this.updateCameraProjection();
 
-      const { scene, fogGroup, fogTexture } = this;
+      const {
+        scene,
+        fogGroup,
+        fogTexture,
+        isFogPlanesAround,
+        isFogPlanesCenter,
+        isHalloween,
+        viewWidth,
+        viewHeight,
+        pitWidth,
+        pitHeight,
+      } = this;
 
       if (fogGroup) {
         this.removeObjWithChildren(fogGroup);
       }
 
-      if (
-        (!this.isFogPlanesCenter && !this.isFogPlanesAround) ||
-        !this.isHalloween
-      ) {
+      if ((!isFogPlanesCenter && !isFogPlanesAround) || !isHalloween) {
         return false;
       }
 
       this.log(
-        `Add fog planes particles: center-${this.isFogPlanesCenter} around-${this.isFogPlanesAround} halloween-${this.isHalloween}`
+        `Add fog planes particles: center-${isFogPlanesCenter} around-${isFogPlanesAround} halloween-${isHalloween}`
       );
 
       if (!fogTexture) {
@@ -3529,8 +3537,8 @@ export default {
 
       this.fogParticles = [];
 
-      if (this.isFogPlanesCenter) {
-        const size = Math.max(this.pitWidth, this.pitHeight);
+      if (isFogPlanesCenter) {
+        const size = Math.max(pitWidth, pitHeight);
 
         const material = new MeshLambertMaterial({
           color: this.fogCenterColor,
@@ -3575,7 +3583,7 @@ export default {
         }
       }
 
-      if (this.isFogPlanesAround) {
+      if (isFogPlanesAround) {
         const material = new MeshLambertMaterial({
           color: this.fogAroundColor,
           depthWrite: false,
@@ -3584,12 +3592,23 @@ export default {
           opacity: this.fogAroundOpacity,
         });
 
+        const vWidth = Math.round(viewWidth);
+        const vHeight = Math.round(viewHeight);
+        const maxSize = Math.max(vWidth, vHeight) - 1;
+
+        console.log(vWidth, vHeight, maxSize);
+        console.log(pitWidth, pitHeight);
+
+        const heightDiff = (maxSize - pitHeight) / 2;
+        const widthDiff = (maxSize - pitWidth) / 2;
+
+        console.log(heightDiff, widthDiff);
+
         const size = Math.round(
-          Math.max(
-            (this.viewWidth - this.pitWidth) / 2,
-            (this.viewHeight - this.pitHeight) / 2
-          )
+          Math.max((viewWidth - pitWidth) / 2, (viewHeight - pitHeight) / 2)
         );
+
+        console.log(widthDiff, heightDiff);
 
         const leftXPos = (-this.viewWidth / 2 - this.pitWidth / 2) / 2;
         const bottomYPos = (-this.viewHeight / 2 - this.pitHeight / 2) / 2;

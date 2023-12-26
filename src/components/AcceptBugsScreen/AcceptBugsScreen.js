@@ -1,13 +1,32 @@
+import { mapState } from "vuex";
+import { nextTick } from "vue";
+
+import log from "../../helpers/log.js";
+
 export default {
   name: "AcceptBugsScreen",
 
   data() {
     return {
       save: false,
+
+      focused: "screen.language",
+
+      refs: {
+        screen: ["language", "back"],
+      },
     };
   },
 
+  computed: {
+    ...mapState(["locale"]),
+  },
+
   methods: {
+    log() {
+      return log(`[${this.$options.name}]:`, ...arguments);
+    },
+
     yesClick() {
       this.$emit("accept");
     },
@@ -31,25 +50,120 @@ export default {
         element.scrollWidth > element.clientWidth
       );
     },
+
+    prevLanguage() {
+      this.$store.commit("changeLocale", "ru");
+      this.emitter.emit("changeLocale", "ru");
+    },
+
+    nextLanguage() {
+      this.$store.commit("changeLocale", "en");
+      this.emitter.emit("changeLocale", "en");
+    },
+
+    downHandler() {
+      if (!this.focused) {
+        return false;
+      }
+
+      const [flag, id] = this.focused.split(".");
+
+      const refs = this.refs[flag];
+      const length = refs.length;
+
+      const index = refs.indexOf(id);
+
+      let newIndex = index + 1;
+
+      if (newIndex >= length) {
+        newIndex = length - 1;
+      }
+
+      this.focused = `${flag}.${refs[newIndex]}`;
+
+      return true;
+    },
+
+    upHandler() {
+      if (!this.focused) {
+        return false;
+      }
+
+      const [flag, id] = this.focused.split(".");
+
+      const refs = this.refs[flag];
+
+      const index = refs.indexOf(id);
+
+      let newIndex = index - 1;
+
+      if (newIndex <= 0) {
+        newIndex = 0;
+      }
+
+      this.focused = `${flag}.${refs[newIndex]}`;
+
+      return true;
+    },
+
+    leftHandler() {
+      if (!this.focused) {
+        return false;
+      }
+
+      const leftElement = this.$refs[`${this.focused}.prev`];
+
+      if (leftElement) {
+        leftElement.click();
+      }
+
+      return true;
+    },
+
+    rightHandler() {
+      if (!this.focused) {
+        return false;
+      }
+
+      const leftElement = this.$refs[`${this.focused}.next`];
+
+      if (leftElement) {
+        leftElement.click();
+      }
+
+      return true;
+    },
   },
 
   watch: {
     save(newValue) {
       this.$store.commit("updateAccepted", newValue);
     },
+
+    focused(newValue) {
+      if (!newValue) {
+        return false;
+      }
+
+      this.log(`New focused: ${newValue}`);
+    },
   },
 
   mounted() {
-    const { button } = this.$refs;
-
-    if (button) {
-      button.focus();
-    }
+    this.emitter.on("pressDown", this.downHandler);
+    this.emitter.on("pressUp", this.upHandler);
+    this.emitter.on("pressLeft", this.leftHandler);
+    this.emitter.on("pressRight", this.rightHandler);
 
     this.emitter.on("pressA", this.yesClick);
   },
 
   beforeUnmount() {
+    this.emitter.off("pressDown", this.downHandler);
+    this.emitter.off("pressUp", this.upHandler);
+    this.emitter.off("pressLeft", this.leftHandler);
+    this.emitter.off("pressRight", this.rightHandler);
+
     this.emitter.off("pressA", this.yesClick);
   },
 };
