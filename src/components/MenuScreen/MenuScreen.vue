@@ -98,7 +98,7 @@
                 //- .menu--selector--value {{ pitSize }}
                 //- .menu--selector--next(v-on:click="nextPitSize" v-if="pitSizes.indexOf(pitSize) != pitSizes.length - 1" ref="new.pit.next")
 
-            hr.menu--divider(v-show="flags.new")
+            //- hr.menu--divider(v-show="flags.new")
 
             .menu--selector(
                 v-show="flags.new"

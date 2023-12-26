@@ -569,6 +569,14 @@ export function generatePit(
   height = parseInt(height, 10);
   depth = parseInt(depth, 10);
 
+  if (width >= viewWidth) {
+    viewWidth = width + 4;
+  }
+
+  if (height >= viewHeight) {
+    viewHeight = height + 4;
+  }
+
   const pit = new Group();
   pit.userData.name = "Pit";
 
@@ -711,12 +719,6 @@ export function generatePit(
       2 * height * (depth - 1) +
       4 * depth +
       (width + height) * 2;
-    // const grassCount =
-    //   (width + 20) * (height + 20) -
-    //   width * height -
-    //   width * 2 -
-    //   height * 2 -
-    //   4;
 
     const widthDiff = Math.round((viewWidth - width) / 2);
     const heightDiff = Math.round((viewHeight - height) / 2);
