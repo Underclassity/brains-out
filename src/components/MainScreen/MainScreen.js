@@ -2626,9 +2626,13 @@ export default {
         this.layersElements[newZ].push(element);
 
         if (this.isAllRandomColor) {
-          this.colorizeElement(el, index, getRandom(this.colorPalette, 1)[0]);
+          this.colorizeElement(
+            element,
+            newZ,
+            getRandom(this.colorPalette, 1)[0]
+          );
         } else {
-          this.colorizeElement(el, index, colorlessColor);
+          this.colorizeElement(element, newZ, colorlessColor);
         }
       });
 
