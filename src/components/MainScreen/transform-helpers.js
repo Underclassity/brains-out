@@ -23,9 +23,9 @@ export function rotateHelper(element, axisType = "x", angle = 90) {
     return false;
   }
 
-  if (this.isPetrifyDelay && this.petrifyDelayStatus) {
-    return false;
-  }
+  // if (this.isPetrifyDelay && this.petrifyDelayStatus) {
+  //   return false;
+  // }
 
   if (this.isRotating) {
     return false;
