@@ -15,20 +15,20 @@ Transition(duration="300" name="accept")
             //-         ref="checkbox"
             //-     )
 
-            .popup--selector(
+            .popup--selector.popup--selector--centered(
                 ref="language"
                 v-bind:class="{ 'focused': focused == 'screen.language' }"
             )
-                .popup--label {{ $t('language') }}
-                .popup--selector--prev(v-on:click="prevLanguage" v-if="locale != 'ru'" ref="screen.language.prev")
+                .popup--selector--prev(v-on:click="changeLanguage" ref="screen.language.prev")
                 .popup--selector--value(v-if="locale == 'ru'") Рус
                 .popup--selector--value(v-if="locale == 'en'") Eng
-                .popup--selector--next(v-on:click="nextLanguage" v-if="locale != 'en'" ref="screen.language.next")
+                .popup--selector--next(v-on:click="changeLanguage" ref="screen.language.next")
 
             .popup--buttons
                 .popup--button.popup--button--green.popup--glare(
                     v-on:click="yesClick"
                     ref="screen.back"
+                    v-bind:class="{ 'focused': focused == 'screen.back' }"
                 ) {{ $t('play') }}
 </template>
 

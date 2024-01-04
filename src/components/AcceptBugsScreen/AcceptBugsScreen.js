@@ -51,14 +51,13 @@ export default {
       );
     },
 
-    prevLanguage() {
-      this.$store.commit("changeLocale", "ru");
-      this.emitter.emit("changeLocale", "ru");
-    },
+    changeLanguage() {
+      const newLocale = this.locale == "ru" ? "en" : "ru";
 
-    nextLanguage() {
-      this.$store.commit("changeLocale", "en");
-      this.emitter.emit("changeLocale", "en");
+      this.log(`Change locale to: ${newLocale}`);
+
+      this.$store.commit("changeLocale", newLocale);
+      this.emitter.emit("changeLocale", newLocale);
     },
 
     downHandler() {
@@ -133,6 +132,12 @@ export default {
 
       return true;
     },
+
+    aHandler() {
+      if (this.focused == "screen.back") {
+        this.yesClick();
+      }
+    },
   },
 
   watch: {
@@ -155,7 +160,7 @@ export default {
     this.emitter.on("pressLeft", this.leftHandler);
     this.emitter.on("pressRight", this.rightHandler);
 
-    this.emitter.on("pressA", this.yesClick);
+    this.emitter.on("pressA", this.aHandler);
   },
 
   beforeUnmount() {
@@ -164,6 +169,6 @@ export default {
     this.emitter.off("pressLeft", this.leftHandler);
     this.emitter.off("pressRight", this.rightHandler);
 
-    this.emitter.off("pressA", this.yesClick);
+    this.emitter.off("pressA", this.aHandler);
   },
 };
