@@ -44,6 +44,14 @@ export function initJoyPad() {
 
     this.movesCounter += 1;
 
+    if (this.isMenu) {
+      this.pauseBgSound();
+      this.playMenuBgSound();
+    } else {
+      this.playBgSound();
+      this.pauseMenuBgSound();
+    }
+
     switch (e.detail.buttonName) {
       // Left
       case "button_14":
