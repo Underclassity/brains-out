@@ -569,11 +569,11 @@ export function generatePit(
   height = parseInt(height, 10);
   depth = parseInt(depth, 10);
 
-  if (width >= viewWidth) {
+  if (width >= viewWidth || Math.abs(viewWidth - width) <= 2) {
     viewWidth = width + 4;
   }
 
-  if (height >= viewHeight) {
+  if (height >= viewHeight || Math.abs(viewHeight - height) <= 2) {
     viewHeight = height + 4;
   }
 
