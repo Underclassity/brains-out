@@ -10,7 +10,7 @@ export default {
     return {
       save: false,
 
-      focused: "screen.language",
+      focused: "",
 
       refs: {
         screen: ["language", "back"],
@@ -19,7 +19,7 @@ export default {
   },
 
   computed: {
-    ...mapState(["locale"]),
+    ...mapState(["locale", "isGamepad"]),
   },
 
   methods: {
@@ -138,6 +138,18 @@ export default {
         this.yesClick();
       }
     },
+
+    focusFirst() {
+      if (!this.isGamepad) {
+        this.focused = false;
+        this.log("Focus first reset");
+        return false;
+      }
+
+      this.focused = "screen.language";
+
+      return true;
+    },
   },
 
   watch: {
@@ -155,6 +167,9 @@ export default {
   },
 
   mounted() {
+    this.emitter.on("enableGamepad", this.focusFirst);
+    this.emitter.on("disableGamepad", this.focusFirst);
+
     this.emitter.on("pressDown", this.downHandler);
     this.emitter.on("pressUp", this.upHandler);
     this.emitter.on("pressLeft", this.leftHandler);
@@ -164,6 +179,9 @@ export default {
   },
 
   beforeUnmount() {
+    this.emitter.off("enableGamepad", this.focusFirst);
+    this.emitter.off("disableGamepad", this.focusFirst);
+
     this.emitter.off("pressDown", this.downHandler);
     this.emitter.off("pressUp", this.upHandler);
     this.emitter.off("pressLeft", this.leftHandler);
