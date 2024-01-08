@@ -54,7 +54,7 @@ export const store = createStore({
     isShaders: false,
     lightPower: 5000,
     cameraOffsetDesktop: 2.5,
-    cameraOffsetMobile: 0,
+    cameraOffsetMobile: 1.2,
 
     isFpsLock: false,
     fpsLockValue: 60,
