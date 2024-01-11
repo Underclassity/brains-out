@@ -3103,7 +3103,8 @@ export default {
       if (
         this.bgMenuSound &&
         !this.bgMenuSound.isPlaying &&
-        this.isWindowFocus
+        this.isWindowFocus &&
+        this.isAccepted
       ) {
         this.bgMenuSound.play();
       }
