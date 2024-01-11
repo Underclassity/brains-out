@@ -1,7 +1,7 @@
 <template lang="pug">
 .logo(v-show="show")
     Transition(name="logo" :duration="1500")
-        img(:src="logoSrc" v-if="show")
+        img(:src="theme != 'halloween' ? logoSrc : halloweenLogo" v-if="show")
 </template>
 
 <script src="./LogoScreen.js"></script>

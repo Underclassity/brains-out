@@ -5,7 +5,8 @@ import assets from "../../store/assets.js";
 
 import log from "../../helpers/log.js";
 
-import logoSrc from "../../assets/img/halloween-logo.png";
+import logoSrc from "../../assets/img/green-logo.png";
+import halloweenLogo from "../../assets/img/halloween-logo.png";
 
 import achievements from "../../i18n/achievements.js";
 
@@ -27,6 +28,7 @@ export default {
   data() {
     return {
       logoSrc,
+      halloweenLogo,
 
       flags: {
         menu: false,
