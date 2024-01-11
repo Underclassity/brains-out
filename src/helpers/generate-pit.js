@@ -503,10 +503,6 @@ function updateNeighbours(item, blocks) {
 
   const { top, bottom, left, right } = getNeighbours(item, blocks);
 
-  if (!direction) {
-    debugger;
-  }
-
   if (direction.includes("bottom") || direction.includes("top")) {
     if (top.type == "GNG") {
       top.add = true;

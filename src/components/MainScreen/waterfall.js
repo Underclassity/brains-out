@@ -49,14 +49,14 @@ export function createElement() {
   element.userData.static = false;
 
   // set start position on Z axis
-  this.positionHelper(element, "z", 1);
+  this.positionHelper(element, "z", 2);
 
   this.current = element;
   if (this.isRandomCorner) {
     this.moveToRandomCorner(this.current);
   }
   this.next = this.getRandomForm();
-  this.next.position.set(0, 0, 0);
+  this.next.position.set(0, 0, 2);
   this.next.scale.set(0.5, 0.5, 0.5);
   this.next.userData.size = this.next.userData?.size
     ? new Vector3(
@@ -147,7 +147,7 @@ export function initWaterfall() {
         }
 
         const newZPosition =
-          -(this.time - elTime) * elSpeed - elSize.z / 2 + this.size / 2 + 1;
+          -(this.time - elTime) * elSpeed - elSize.z / 2 + this.size / 2 + 2;
 
         this.positionHelper(element, "z", newZPosition);
         this.restrainElement(element);
@@ -217,6 +217,10 @@ export function initWaterfall() {
         }
 
         if (minDiff >= 0 || isFreeze) {
+          if (element.userData.position.z > 0) {
+            return true;
+          }
+
           // Translate back
           if (!isFreeze) {
             this.translateHelper(element, "z", -minDiff);

@@ -1829,11 +1829,18 @@ export default {
 
       const colorlessColor = this.getColorlessColor();
 
+      const { cover } = this.getCollisionPoints(element);
+
+      if (cover?.length) {
+        this.endGameCall(element);
+        return false;
+      }
+
       for (const { x, y, z, uuid } of elementPoints) {
         const el = element.getObjectByProperty("uuid", uuid);
         const itemPosition = getWorldPosisition(el);
 
-        if (this.layers[z][x][y] || itemPosition.z > 2) {
+        if (this.layers[z][x][y]) {
           this.endGameCall(element);
           return false;
         }
@@ -1987,8 +1994,8 @@ export default {
         this.positionHelper(element, "z", -pitDepth + sizeZ / 2 + size / 2);
       }
 
-      if (position.z >= 1) {
-        this.positionHelper(element, "z", 1);
+      if (position.z >= 2) {
+        this.positionHelper(element, "z", 2);
       }
 
       // const newPosition = getWorldPosisition(element);
@@ -3945,7 +3952,7 @@ export default {
       this.log("Update colorless mode: ", newValue);
     },
 
-    colorlessColorIndex(newValue) {
+    colorlessColorIndex() {
       this.log(
         "Update one color for colorless: ",
         this.colorlessColor.getHexString()
