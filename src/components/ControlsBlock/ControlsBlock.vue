@@ -6,34 +6,34 @@
                 .controls--column
                     //- W
                     .controls--button.controls--button--s(v-on:click="$emit('w-click')")
-                        .material-symbols-outlined switch_access_shortcut
+                        span.material-symbols-outlined switch_access_shortcut
                     //- A
                     .controls--button.controls--button--a(v-on:click="$emit('a-click')")
-                        .material-symbols-outlined switch_access_shortcut
+                        span.material-symbols-outlined switch_access_shortcut
                     //- Q
                     .controls--button.controls--button--q(v-on:click="$emit('q-click')")
-                        .material-symbols-outlined forward_media
+                        span.material-symbols-outlined forward_media
                 .controls--column
                     //- S
                     .controls--button.controls--button--w(v-on:click="$emit('s-click')")
-                        .material-symbols-outlined switch_access_shortcut
+                        span.material-symbols-outlined switch_access_shortcut
                     //- D
                     .controls--button.controls--button--d(v-on:click="$emit('d-click')")
-                        .material-symbols-outlined switch_access_shortcut
+                        span.material-symbols-outlined switch_access_shortcut
                     //- E
                     .controls--button.controls--button--e(v-on:click="$emit('e-click')")
-                        .material-symbols-outlined forward_media
+                        span.material-symbols-outlined forward_media
 
         .controls--column.controls--column--buttons
             .controls--button(v-on:click="$emit('up-click')")
-                .material-symbols-outlined arrow_upward
+                span.material-symbols-outlined arrow_upward
             .controls--buttons
                 .controls--button(v-on:click="$emit('left-click')")
-                    .material-symbols-outlined arrow_back
+                    span.material-symbols-outlined arrow_back
                 .controls--button(v-on:click="$emit('right-click')")
-                    .material-symbols-outlined arrow_forward
+                    span.material-symbols-outlined arrow_forward
             .controls--button(v-on:click="$emit('down-click')")
-                .material-symbols-outlined arrow_downward
+                span.material-symbols-outlined arrow_downward
 
     .controls--spacebar
         .controls--button.controls--button--spacebar(v-on:click="$emit('spacebar-click')")

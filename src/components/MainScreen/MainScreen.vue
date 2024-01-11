@@ -1,6 +1,11 @@
 <template lang="pug">
 .main
     .container(ref="container" :class="{ 'container--controls': (isControls || isMobile) }")
+        .levels(
+            v-show="!isMenu"
+            :style="levelsOffsetStyle"
+        )
+            .level-item(v-for="(value, index) of layers.slice().reverse()" :key="index" :style="isLayerVisible(index) ? `background-color: #${colorPalette[index].getHexString()}` : ''")
 
     .navigation(v-show="!isPractice")
         .navigation--item(
@@ -67,8 +72,6 @@ ControlsInfoScreen(
     v-on:play="closeControlsInfo(true)"
 )
 
-.levels(v-show="!isMenu" :style="levelsOffsetStyle" v-bind:class="{ 'levels--flip': isControls }")
-    .level-item(v-for="(value, index) of layers.slice().reverse()" :key="index" :style="isLayerVisible(index) ? `background-color: #${colorPalette[index].getHexString()}` : ''")
 
 .error-overlay(v-if="error")
     .error-text {{ error }}
