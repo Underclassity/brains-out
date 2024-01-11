@@ -56,6 +56,122 @@
 - Task 80: Add directions and rotate restrains for props
 - Task 80: Add random rotate part based on direction
 - Task 168: Remove user-select for all in app
+- Task 166: Generate changelog file
+- Add i18n support
+- Update font with cyrilic support
+- Fix i18n build error
+- Update libraries
+- Task 80: Update props part generation
+- Task 164: Add petrify delay logic
+- Task 169: Add colorless mode
+- Task 67: Add pit size vertical selector in menu
+- Task 158: Update font-family to Pangolin
+- Task 80: Update pit props generation
+- Task 158: Update font-family to Neucha
+- Task 158: Update font-family to Russo One
+- Task 169: Colorless mode updates
+- Task 167: Update accept page text
+- Task 167: Add scroll container for accept screen
+- Task 169: Update colorless modes list order
+- Task 50: Add new achievements
+- Task 158: Add localization for screens
+- Task 158: Update menu localization
+- Task 169: Change update colors logic
+- Task 167: Update accept screen
+- Task 50: Fixed achievements screen
+- Task 158: Fix localization change
+- Task 170: FIx back click in how to play menu
+- Task 158: Update localization for modes etc.
+- Task 167: Add margin for overflow in accepted screen
+- Task 50: Change click-me achievement logic
+- Task 158: Localization fixes
+- Task 170: How to play buttons fix
+- Add transition for menu background color
+- Task 67: Update pit change menu
+- Task 158: Add language selector for accepted screen
+- Task 172: Fixed simple view pit position
+- Task 171: Fix glitch mayhem
+- Task 67: Fixed negative grass count
+- Task 158: Change language selector on accepted screen
+- Task 174: Change font size for game modes
+- Task 173: Add music check on controller inputs calls
+- Task 67: Update pit generation params
+- Task 164: Add rotate support for petrify delay
+- Task 158: Fix gamepad init on accept screen
+- Task 67: Update mobile offset for camera
+- Task 67: Change mobile screen offset to 1.5
+- Task 67: Update next figure mobile position
+- Task 175: Add accepted check for play bg music
+- Task 176: Fix double music play on theme change
+- Task 178: Update logo logic
+- Task 179: Add scroll page by gamepad stick
+- Task 173: Add window focus on gamepad connection
+- Task 67: Update camera mobile offset to 1.3
+- Task 179: Fix back click in controls info screen
+- Task 179: Add scroll via gamepad in menu scroll blocks
+- Task 53: Update petrify logic
+- Task 182: Update mobile controls layout
+- Task 182: Update mobile layout params
+- Task 162: Update fog planes logic
+
+### Version 0.1.3
+
+- Task 153: Add materials cache for colorize methods
+- Task 101: Throttle keyboard event
+- Task 152: Add timeless mode
+- Task 135: Add fog particles mode
+- Task 134: Add slow mode to dev GUI
+- Task 111: Add glitch effect on shuffle elements
+- Update load percent calculation
+- Add is.js; add check mobile and mac check for antialias
+- Change pixelRatio to devicePixelRatio from start
+- Disable antialias only on mobile by default
+- Task 152: Add check for pause state in timeless mode
+- Task 155: Add lock FPS settings via dev GUI
+- Task 154: Add antialias toggle in dev GUI
+- Task 154: Fix orbit controls re-init
+- Task 155: Update lock fps logic
+- Task 156: Add fog for halloween mode
+- Task 101: Remove throttle for keyboard events
+- Task 157: Add earned achievements color
+- Task 154: Add antialias selector in settings
+- Task 157: Update settings achiements colors
+- Task 156: Enable fog around pit by default
+- Task 89: Add game modes selector; update modes logic
+- Re-write fog to instanced meshes for better performance
+- Task 89: Updated modes menu
+- Task 89: Modes updates
+- Fix fog planes animation for instanced mesh
+- Task 161: Theme selector
+- Task 159: Add bottom space for menu title
+- Task 160: Update score blinking style
+- Task 89: Game mode selector fixes
+- Task 161: Toggle fog planes fix
+- Task 161: Fixed theme selector logic
+- Update docs; remove old code
+- Move simple and smooth flags to store
+- Task 161: Add simple theme; update themes logic
+- Move app styles to stylus file
+- Task 163: Fix can rotate check
+- Task 89: Update modes selector
+- Task 162: Update fog particles placement on change pit size
+- Add modes and themes selector in dev menu
+- Task 161: Fix simple theme view and colorize
+- Task 111: Change glitch mode shuffle to layers
+- Task 89: Re-write practice mode call
+- Task 161: Lock dev achievements for simple mode
+- Task 80: Add props models file
+- Task 80: Add props for standart theme
+- Task 89: Fix pit mess bug
+- Fix props parts show
+- Task 165: Fix new game call after focus
+- Task 155: Add FPS lock in settings
+- Task 161: Fix element create position bug
+- Task 161: Add smooth for simple mode
+- Task 80: Add 1 block radius for spruces
+- Task 80: Add directions and rotate restrains for props
+- Task 80: Add random rotate part based on direction
+- Task 168: Remove user-select for all in app
 
 ### Version 0.1.3
 
