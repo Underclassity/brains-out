@@ -606,11 +606,20 @@ export default {
       this.log("Update bg playbackrate to: ", newPlaybackRate);
 
       if (this.bgSound) {
-        this.log("Change bg sound playbackrate to: ", newPlaybackRate);
+        const isPlaying = this.bgSound.isPlaying;
+
+        this.log(
+          "Change bg sound playbackrate to: ",
+          newPlaybackRate,
+          isPlaying
+        );
 
         this.pauseBgSound();
         this.bgSound.playbackRate = newPlaybackRate;
-        this.playBgSound();
+
+        if (isPlaying) {
+          this.playBgSound();
+        }
       }
 
       return true;
