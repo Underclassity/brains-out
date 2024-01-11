@@ -951,6 +951,41 @@ export default {
         this.emitter.emit("addAchievement", "click-me");
       }
     },
+
+    handleStick(event) {
+      let container;
+
+      if (this.flags.settings) {
+        container = this.$refs["settings.scroll"];
+      }
+
+      if (this.flags.new) {
+        container = this.$refs["new.scroll"];
+      }
+
+      if (this.flags.achievements) {
+        container = this.$refs["achievements.scroll"];
+      }
+
+      if (!container) {
+        return false;
+      }
+
+      const { directionOfMovement } = event;
+
+      const scrollValue = window.innerHeight / 5;
+
+      switch (directionOfMovement) {
+        case "top":
+          container.scrollBy(0, -scrollValue);
+          break;
+        case "bottom":
+          container.scrollBy(0, scrollValue);
+          break;
+      }
+
+      return true;
+    },
   },
 
   watch: {
@@ -1042,6 +1077,8 @@ export default {
     this.emitter.on("pressA", this.aHandler);
     this.emitter.on("pressB", this.bHandler);
 
+    this.emitter.on("stickEvent", this.handleStick);
+
     this.emitter.on("showHowTo", this.showHowTo);
     this.emitter.on("hideHowTo", this.hideHowTo);
 
@@ -1070,6 +1107,8 @@ export default {
     this.emitter.off("pressRight", this.rightHandler);
     this.emitter.off("pressA", this.aHandler);
     this.emitter.off("pressB", this.bHandler);
+
+    this.emitter.off("stickEvent", this.handleStick);
 
     this.emitter.off("showHowTo", this.showHowTo);
     this.emitter.off("hideHowTo", this.hideHowTo);
