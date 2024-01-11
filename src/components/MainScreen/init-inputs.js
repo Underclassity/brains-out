@@ -29,6 +29,8 @@ export function initJoyPad() {
 
     this.$store.commit("enableGamepad");
     this.emitter.emit("enableGamepad");
+
+    window.focus();
   });
 
   joypad.on("disconnect", (e) => {
