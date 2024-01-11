@@ -10,6 +10,7 @@
     justify-content: center
     align-items: center
     padding: 10px 10px 30px 10px
+    flex-shrink: 0
 
     &:before
         content: ''
@@ -31,6 +32,11 @@
         width: calc(50% - 4px)
 
         .controls--button
+            width: 48px
+            height: 48px
+            display: flex
+            align-items: center
+            justify-content: center
             margin-bottom: 10px
 
             &:last-child
