@@ -2348,7 +2348,7 @@ export default {
           next.position.set(
             0,
             -pitHeight / 2 - size / 2,
-            1.1 * next.userData.size.z + size / 2
+            1.1 * next.userData.size.z + size / 2 + 1
           );
         }
       }
