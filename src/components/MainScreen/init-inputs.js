@@ -172,84 +172,89 @@ export function initJoyPad() {
     return true;
   });
 
-  const throttledMovement = throttle((stickMoved, directionOfMovement) => {
-    if (stickMoved == "right_stick") {
-      switch (directionOfMovement) {
-        case "top":
-          if (this.isMenu) {
-            return false;
-          } else if (this.isRandomRotate) {
-            this.randomRotate();
-          } else {
-            this.rotateXMinus();
-          }
-          break;
-        case "bottom":
-          if (this.isMenu) {
-            return false;
-          } else if (this.isRandomRotate) {
-            this.randomRotate();
-          } else {
-            this.rotateXPlus();
-          }
-          break;
-        case "left":
-          if (this.isMenu) {
-            return false;
-          } else if (this.isRandomRotate) {
-            this.randomRotate();
-          } else {
-            this.rotateYMinus();
-          }
-          break;
-        case "right":
-          if (this.isMenu) {
-            return false;
-          } else if (this.isRandomRotate) {
-            this.randomRotate();
-          } else {
-            this.rotateYPlus();
-          }
-          break;
+  const throttledMovement = throttle(
+    (stickMoved, directionOfMovement, event) => {
+      this.emitter.emit("stickEvent", event.detail);
+
+      if (stickMoved == "right_stick") {
+        switch (directionOfMovement) {
+          case "top":
+            if (this.isMenu) {
+              return false;
+            } else if (this.isRandomRotate) {
+              this.randomRotate();
+            } else {
+              this.rotateXMinus();
+            }
+            break;
+          case "bottom":
+            if (this.isMenu) {
+              return false;
+            } else if (this.isRandomRotate) {
+              this.randomRotate();
+            } else {
+              this.rotateXPlus();
+            }
+            break;
+          case "left":
+            if (this.isMenu) {
+              return false;
+            } else if (this.isRandomRotate) {
+              this.randomRotate();
+            } else {
+              this.rotateYMinus();
+            }
+            break;
+          case "right":
+            if (this.isMenu) {
+              return false;
+            } else if (this.isRandomRotate) {
+              this.randomRotate();
+            } else {
+              this.rotateYPlus();
+            }
+            break;
+        }
+      } else {
+        switch (directionOfMovement) {
+          case "top":
+            if (this.isMenu) {
+              return false;
+            } else {
+              this.moveUp();
+            }
+            break;
+          case "bottom":
+            if (this.isMenu) {
+              return false;
+            } else {
+              this.moveDown();
+            }
+            break;
+          case "left":
+            if (this.isMenu) {
+              return false;
+            } else {
+              this.moveLeft();
+            }
+            break;
+          case "right":
+            if (this.isMenu) {
+              return false;
+            } else {
+              this.moveRight();
+            }
+            break;
+        }
       }
-    } else {
-      switch (directionOfMovement) {
-        case "top":
-          if (this.isMenu) {
-            return false;
-          } else {
-            this.moveUp();
-          }
-          break;
-        case "bottom":
-          if (this.isMenu) {
-            return false;
-          } else {
-            this.moveDown();
-          }
-          break;
-        case "left":
-          if (this.isMenu) {
-            return false;
-          } else {
-            this.moveLeft();
-          }
-          break;
-        case "right":
-          if (this.isMenu) {
-            return false;
-          } else {
-            this.moveRight();
-          }
-          break;
-      }
-    }
-  }, 150);
+    },
+    150
+  );
 
   joypad.on("axis_move", (e) => {
     const { stickMoved, directionOfMovement } = e.detail;
 
-    throttledMovement(stickMoved, directionOfMovement);
+    throttledMovement(stickMoved, directionOfMovement, e);
   });
 
   return true;

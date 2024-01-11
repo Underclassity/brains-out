@@ -1,6 +1,6 @@
 <template lang="pug">
 Transition(name="controls")
-    .controls-info(v-if="show")
+    .controls-info(v-if="show" ref="container")
         .controls-info--content
             .controls-info--columns
                 .controls-info--column.controls-info--images

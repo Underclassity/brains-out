@@ -150,6 +150,29 @@ export default {
 
       return true;
     },
+
+    handleStick(event) {
+      const container = this.$refs["scroll"];
+
+      if (!container) {
+        return false;
+      }
+
+      const { directionOfMovement } = event;
+
+      const scrollValue = window.innerHeight / 5;
+
+      switch (directionOfMovement) {
+        case "top":
+          container.scrollBy(0, -scrollValue);
+          break;
+        case "bottom":
+          container.scrollBy(0, scrollValue);
+          break;
+      }
+
+      return true;
+    },
   },
 
   watch: {
@@ -175,6 +198,8 @@ export default {
     this.emitter.on("pressLeft", this.leftHandler);
     this.emitter.on("pressRight", this.rightHandler);
 
+    this.emitter.on("stickEvent", this.handleStick);
+
     this.emitter.on("pressA", this.aHandler);
   },
 
@@ -186,6 +211,8 @@ export default {
     this.emitter.off("pressUp", this.upHandler);
     this.emitter.off("pressLeft", this.leftHandler);
     this.emitter.off("pressRight", this.rightHandler);
+
+    this.emitter.off("stickEvent", this.handleStick);
 
     this.emitter.off("pressA", this.aHandler);
   },

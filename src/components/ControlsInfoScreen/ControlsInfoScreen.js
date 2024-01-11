@@ -204,11 +204,42 @@ export default {
     },
   },
 
+  methods: {
+    handleStick(event) {
+      if (!this.show) {
+        return false;
+      }
+
+      const container = this.$refs["container"];
+
+      if (!container) {
+        return false;
+      }
+
+      const { directionOfMovement } = event;
+
+      const scrollValue = window.innerHeight / 5;
+
+      switch (directionOfMovement) {
+        case "top":
+          container.scrollBy(0, -scrollValue);
+          break;
+        case "bottom":
+          container.scrollBy(0, scrollValue);
+          break;
+      }
+
+      return true;
+    },
+  },
+
   mounted() {
     const { back } = this.$refs;
 
     if (back) {
       back.focus();
     }
+
+    this.emitter.on("stickEvent", this.handleStick);
   },
 };
