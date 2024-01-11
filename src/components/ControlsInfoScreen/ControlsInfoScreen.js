@@ -178,33 +178,7 @@ export default {
       log("Play click");
       this.$emit("play");
     },
-  },
 
-  watch: {
-    show(newValue) {
-      if (newValue) {
-        this.emitter.on("pressA", this.backClick);
-        this.emitter.on("pressB", this.backClick);
-
-        this.emitter.emit("showHowTo");
-
-        this.showCount++;
-
-        if (this.showCount >= 2) {
-          this.emitter.emit("addAchievement", "how-to-play");
-        }
-
-        return true;
-      }
-
-      this.emitter.off("pressA", this.backClick);
-      this.emitter.off("pressB", this.backClick);
-
-      this.emitter.emit("hideHowTo");
-    },
-  },
-
-  methods: {
     handleStick(event) {
       if (!this.show) {
         return false;
@@ -230,6 +204,30 @@ export default {
       }
 
       return true;
+    },
+  },
+
+  watch: {
+    show(newValue) {
+      if (newValue) {
+        this.emitter.on("pressA", this.backClick);
+        this.emitter.on("pressB", this.backClick);
+
+        this.emitter.emit("showHowTo");
+
+        this.showCount++;
+
+        if (this.showCount >= 2) {
+          this.emitter.emit("addAchievement", "how-to-play");
+        }
+
+        return true;
+      }
+
+      this.emitter.off("pressA", this.backClick);
+      this.emitter.off("pressB", this.backClick);
+
+      this.emitter.emit("hideHowTo");
     },
   },
 
