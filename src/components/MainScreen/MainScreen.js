@@ -12,12 +12,10 @@ import {
   MathUtils,
   Mesh,
   MeshBasicMaterial,
-  MeshLambertMaterial,
   PerspectiveCamera,
   PlaneGeometry,
   Scene,
   WebGLRenderer,
-  InstancedMesh,
   Object3D,
 } from "three";
 
@@ -83,6 +81,7 @@ import {
 import { initWaterfall, createElement } from "./waterfall.js";
 import { initTweakPane } from "./init-tweakpane.js";
 import { initJoyPad, initKeyBoard } from "./init-inputs.js";
+import { addFogParticles } from "./init-fog-planes.js";
 import colorizeElement from "./colorize-element.js";
 import initShaders from "./init-shaders.js";
 import getRandomForm from "./get-random-form.js";
@@ -2096,6 +2095,8 @@ export default {
       );
       scene.add(this.pit);
 
+      this.addFogParticles();
+
       this.pit.userData.pitSize = pitSize;
       this.pit.userData.viewWidth = vWidth;
       this.pit.userData.viewHeight = vHeight;
@@ -3513,182 +3514,7 @@ export default {
       return true;
     },
 
-    /**
-     * Add fog planes helper
-     *
-     * @return  {Boolean}  Result
-     */
-    async addFogParticles() {
-      this.updateCameraProjection();
-
-      const {
-        scene,
-        fogGroup,
-        fogTexture,
-        isFogPlanesAround,
-        isFogPlanesCenter,
-        isHalloween,
-        viewWidth,
-        viewHeight,
-        pitWidth,
-        pitHeight,
-      } = this;
-
-      if (fogGroup) {
-        this.removeObjWithChildren(fogGroup);
-      }
-
-      if ((!isFogPlanesCenter && !isFogPlanesAround) || !isHalloween) {
-        return false;
-      }
-
-      this.log(
-        `Add fog planes particles: center-${isFogPlanesCenter} around-${isFogPlanesAround} halloween-${isHalloween}`
-      );
-
-      if (!fogTexture) {
-        this.fogTexture = await textureLoaderHelper(
-          "fog.png",
-          "fog",
-          this.progressCb
-        );
-      }
-
-      this.fogGroup = new Group();
-
-      this.fogParticles = [];
-
-      if (isFogPlanesCenter) {
-        const size = Math.max(pitWidth, pitHeight);
-
-        const material = new MeshLambertMaterial({
-          color: this.fogCenterColor,
-          depthWrite: false,
-          map: this.fogTexture,
-          transparent: true,
-          opacity: this.fogCenterOpacity,
-        });
-
-        const geometry = new PlaneGeometry(size, size);
-
-        const centerPlaneMesh = new InstancedMesh(
-          geometry,
-          material,
-          this.fogCenterParticlesCount
-        );
-        this.fogGroup.add(centerPlaneMesh);
-
-        const dummy = new Object3D();
-
-        for (let i = 0; i < this.fogCenterParticlesCount; i++) {
-          const x = (Math.random() - 0.5) * size;
-          const y = (Math.random() - 0.5) * size;
-          const z = 2;
-
-          const zRot = Math.random() * 2;
-
-          dummy.position.set(x, y, z);
-          dummy.rotation.z = zRot;
-
-          centerPlaneMesh.setMatrixAt(i, dummy.matrix);
-
-          this.fogParticles.push({
-            mesh: centerPlaneMesh,
-            index: i,
-            x,
-            y,
-            z,
-            zRot,
-            type: "center",
-          });
-        }
-      }
-
-      if (isFogPlanesAround) {
-        const material = new MeshLambertMaterial({
-          color: this.fogAroundColor,
-          depthWrite: false,
-          map: this.fogTexture,
-          transparent: true,
-          opacity: this.fogAroundOpacity,
-        });
-
-        // const vWidth = Math.round(viewWidth);
-        // const vHeight = Math.round(viewHeight);
-        // const maxSize = Math.max(vWidth, vHeight) - 1;
-
-        // console.log(vWidth, vHeight, maxSize);
-        // console.log(pitWidth, pitHeight);
-
-        // const heightDiff = (maxSize - pitHeight) / 2;
-        // const widthDiff = (maxSize - pitWidth) / 2;
-
-        // console.log(heightDiff, widthDiff);
-
-        const size = Math.round(
-          Math.max((viewWidth - pitWidth) / 2, (viewHeight - pitHeight) / 2)
-        );
-
-        // console.log(widthDiff, heightDiff);
-
-        const leftXPos = (-this.viewWidth / 2 - this.pitWidth / 2) / 2;
-        const bottomYPos = (-this.viewHeight / 2 - this.pitHeight / 2) / 2;
-
-        const xPos = [leftXPos, 0, Math.abs(leftXPos)];
-        const yPos = [bottomYPos, 0, Math.abs(bottomYPos)];
-
-        const geometry = new PlaneGeometry(size, size);
-
-        const aroundPlaneMesh = new InstancedMesh(
-          geometry,
-          material,
-          8 * this.fogAroundParticlesCount
-        );
-
-        this.fogGroup.add(aroundPlaneMesh);
-
-        const dummy = new Object3D();
-
-        let counter = 0;
-
-        xPos.forEach((xPosition) => {
-          yPos.forEach((yPosition) => {
-            if (!xPosition && !yPosition) {
-              return false;
-            }
-
-            for (let i = 0; i < this.fogAroundParticlesCount; i++) {
-              const x = (Math.random() - 0.5) * size + xPosition;
-              const y = (Math.random() - 0.5) * size + yPosition;
-              const z = 2;
-
-              const zRot = Math.random() * 2;
-
-              dummy.position.set(x, y, z);
-              dummy.rotation.z = zRot;
-
-              aroundPlaneMesh.setMatrixAt(counter, dummy.matrix);
-
-              this.fogParticles.push({
-                x,
-                y,
-                z,
-                zRot,
-                index: counter,
-                mesh: aroundPlaneMesh,
-                type: "around",
-              });
-
-              counter++;
-            }
-          });
-        });
-      }
-
-      scene.add(this.fogGroup);
-
-      return true;
-    },
+    addFogParticles,
 
     /**
      * Add random achievement
