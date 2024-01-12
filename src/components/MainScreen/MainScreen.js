@@ -151,7 +151,7 @@ export default {
       fogParticles: [],
 
       isFogPlanesCenter: false,
-      isFogPlanesAround: true,
+      isFogPlanesAround: false,
       fogCenterColor: 0xcc_cc_cc,
       fogAroundColor: 0xcc_cc_cc,
       fogGroup: undefined,
@@ -2122,7 +2122,7 @@ export default {
       );
       scene.add(this.pit);
 
-      this.addFogParticles();
+      this.updateFogState();
 
       this.pit.userData.pitSize = pitSize;
       this.pit.userData.viewWidth = vWidth;
@@ -2202,7 +2202,7 @@ export default {
       this.initLayers();
       this.initLights();
       // this.initLevelPreview();
-      this.addFogParticles();
+      this.updateFogState();
 
       this.createElement();
 
@@ -2831,7 +2831,7 @@ export default {
       this.initKeyBoard();
 
       // this.addFogPlanes();
-      this.addFogParticles();
+      this.updateFogState();
 
       // animation
 
@@ -3544,6 +3544,48 @@ export default {
     addFogParticles,
 
     /**
+     * Update fog state helper
+     *
+     * @return  {Boolean}  Result
+     */
+    updateFogState() {
+      this.log("Update fog state");
+
+      switch (this.theme) {
+        case "simple":
+          this.$store.commit("setSimple", true);
+          this.$store.commit("setSmooth", true);
+          break;
+        case "standard":
+          this.$store.commit("setSimple", false);
+          this.$store.commit("setSmooth", true);
+
+          this.isFogPlanesAround = false;
+          this.isFogPlanesCenter = false;
+          break;
+        case "halloween":
+          this.$store.commit("setSimple", false);
+          this.$store.commit("setSmooth", true);
+
+          this.isFogPlanesAround = true;
+          this.isFogPlanesCenter = true;
+
+          break;
+        default:
+          this.$store.commit("setSimple", false);
+          this.$store.commit("setSmooth", true);
+
+          this.isFogPlanesAround = false;
+          this.isFogPlanesCenter = false;
+          break;
+      }
+
+      this.addFogParticles();
+
+      return true;
+    },
+
+    /**
      * Add random achievement
      *
      * @return  {Boolean}  Result
@@ -3861,36 +3903,7 @@ export default {
     theme(newValue) {
       this.log("Update theme: ", newValue);
 
-      switch (newValue) {
-        case "simple":
-          this.$store.commit("setSimple", true);
-          this.$store.commit("setSmooth", true);
-          break;
-        case "standard":
-          this.$store.commit("setSimple", false);
-          this.$store.commit("setSmooth", true);
-
-          this.isFogPlanesAround = false;
-          this.isFogPlanesCenter = false;
-          break;
-        case "halloween":
-          this.$store.commit("setSimple", false);
-          this.$store.commit("setSmooth", true);
-
-          this.isFogPlanesAround = true;
-          this.isFogPlanesCenter = true;
-
-          break;
-        default:
-          this.$store.commit("setSimple", false);
-          this.$store.commit("setSmooth", true);
-
-          this.isFogPlanesAround = false;
-          this.isFogPlanesCenter = false;
-          break;
-      }
-
-      this.addFogParticles();
+      this.updateFogState();
 
       this.reCreatePit(this.pitSize, true);
     },

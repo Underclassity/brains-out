@@ -134,10 +134,13 @@ export async function addFogParticles() {
     // Constant position for fog planes
     const z = 2;
 
-    const leftX = -maxSize / 2 + halfCornerSize + hSize + wDiff;
-    const rightX = maxSize / 2 - halfCornerSize - hSize - wDiff;
-    const topY = maxSize / 2 - halfCornerSize - hSize - hDIff;
-    const bottomY = -maxSize / 2 + halfCornerSize + hSize + hDIff;
+    const leftXPos = (-viewWidth / 2 - pitWidth / 2) / 2;
+    const bottomYPos = (-viewHeight / 2 - pitHeight / 2) / 2;
+
+    const leftX = leftXPos;
+    const rightX = Math.abs(leftXPos);
+    const topY = Math.abs(bottomYPos);
+    const bottomY = bottomYPos;
 
     [
       {
