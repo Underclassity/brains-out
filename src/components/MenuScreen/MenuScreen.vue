@@ -68,9 +68,10 @@
             )
                 .menu--label {{ $t('pitWidth') }}
 
-                .menu--selector--prev(v-on:click="downPitWidth" ref="new.pitWidth.prev")
-                .menu--selector--value {{ pitWidth }}
-                .menu--selector--next(v-on:click="upPitWidth" ref="new.pitWidth.next")
+                .menu--selector--container
+                    .menu--selector--prev(v-on:click="downPitWidth" ref="new.pitWidth.prev")
+                    .menu--selector--value {{ pitWidth }}
+                    .menu--selector--next(v-on:click="upPitWidth" ref="new.pitWidth.next")
 
             .menu--selector(
                 v-show="flags.new"
@@ -79,9 +80,10 @@
             )
                 .menu--label {{ $t('pitHeight') }}
 
-                .menu--selector--prev(v-on:click="downPitHeight" ref="new.pitHeight.prev")
-                .menu--selector--value {{ pitHeight }}
-                .menu--selector--next(v-on:click="upPitHeight" ref="new.pitHeight.next")
+                .menu--selector--container
+                    .menu--selector--prev(v-on:click="downPitHeight" ref="new.pitHeight.prev")
+                    .menu--selector--value {{ pitHeight }}
+                    .menu--selector--next(v-on:click="upPitHeight" ref="new.pitHeight.next")
 
             .menu--selector(
                 v-show="flags.new"
@@ -90,15 +92,10 @@
             )
                 .menu--label {{ $t('pitDepth') }}
 
-                .menu--selector--prev(v-on:click="downPitDepth" ref="new.pitDepth.prev")
-                .menu--selector--value {{ pitDepth }}
-                .menu--selector--next(v-on:click="upPitDepth" ref="new.pitDepth.next")
-
-                //- .menu--selector--prev(v-on:click="prevPitSize" v-if="pitSizes.indexOf(pitSize) != 0" ref="new.pit.prev")
-                //- .menu--selector--value {{ pitSize }}
-                //- .menu--selector--next(v-on:click="nextPitSize" v-if="pitSizes.indexOf(pitSize) != pitSizes.length - 1" ref="new.pit.next")
-
-            //- hr.menu--divider(v-show="flags.new")
+                .menu--selector--container
+                    .menu--selector--prev(v-on:click="downPitDepth" ref="new.pitDepth.prev")
+                    .menu--selector--value {{ pitDepth }}
+                    .menu--selector--next(v-on:click="upPitDepth" ref="new.pitDepth.next")
 
             .menu--selector(
                 v-show="flags.new"
@@ -106,11 +103,13 @@
                 v-bind:class="{ 'focused': focused == 'new.blocksType' }"
             )
                 .menu--label {{ $t('blockType') }}
-                .menu--selector--prev(v-on:click="prevBlockType" v-if="blocksTypeOptions.indexOf(blocksType) != 0" ref="new.blocksType.prev")
-                .menu--selector--value(v-if="blocksType == 'flat'") {{ $t('flat') }}
-                .menu--selector--value(v-if="blocksType == 'basic'") {{ $t('basic') }}
-                .menu--selector--value(v-if="blocksType == 'extended'") {{ $t('extended') }}
-                .menu--selector--next(v-on:click="nextBlockType" v-if="blocksTypeOptions.indexOf(blocksType) != blocksTypeOptions.length - 1" ref="new.blocksType.next")
+
+                .menu--selector--container
+                    .menu--selector--prev(v-on:click="prevBlockType" v-if="blocksTypeOptions.indexOf(blocksType) != 0" ref="new.blocksType.prev")
+                    .menu--selector--value(v-if="blocksType == 'flat'") {{ $t('flat') }}
+                    .menu--selector--value(v-if="blocksType == 'basic'") {{ $t('basic') }}
+                    .menu--selector--value(v-if="blocksType == 'extended'") {{ $t('extended') }}
+                    .menu--selector--next(v-on:click="nextBlockType" v-if="blocksTypeOptions.indexOf(blocksType) != blocksTypeOptions.length - 1" ref="new.blocksType.next")
 
             .menu--selector(
                 v-show="flags.new"
@@ -118,9 +117,11 @@
                 v-bind:class="{ 'focused': focused == 'new.speed' }"
             )
                 .menu--label {{ $t('speed') }}
-                .menu--selector--prev(v-on:click="prevSpeed" v-if="settingsSpeed != minSpeed" ref="new.speed.prev")
-                .menu--selector--value {{ settingsSpeed }}
-                .menu--selector--next(v-on:click="nextSpeed" v-if="settingsSpeed != maxSpeed" ref="new.speed.next")
+
+                .menu--selector--container
+                    .menu--selector--prev(v-on:click="prevSpeed" v-if="settingsSpeed != minSpeed" ref="new.speed.prev")
+                    .menu--selector--value {{ settingsSpeed }}
+                    .menu--selector--next(v-on:click="nextSpeed" v-if="settingsSpeed != maxSpeed" ref="new.speed.next")
 
             .menu--selector(
                 v-show="flags.new"
@@ -128,10 +129,12 @@
                 v-bind:class="{ 'focused': focused == 'new.endless' }"
             )
                 .menu--label {{ $t('endlessMode') }}
-                .menu--selector--prev(v-on:click="disableEndless" v-if="isEndless" ref="new.endless.prev")
-                .menu--selector--value(v-if="isEndless") {{ $t('yes') }}
-                .menu--selector--value(v-if="!isEndless") {{ $t('no') }}
-                .menu--selector--next(v-on:click="enableEndless" v-if="!isEndless" ref="new.endless.next")
+
+                .menu--selector--container
+                    .menu--selector--prev(v-on:click="disableEndless" v-if="isEndless" ref="new.endless.prev")
+                    .menu--selector--value(v-if="isEndless") {{ $t('yes') }}
+                    .menu--selector--value(v-if="!isEndless") {{ $t('no') }}
+                    .menu--selector--next(v-on:click="enableEndless" v-if="!isEndless" ref="new.endless.next")
 
         .menu--buttons(v-show="flags.new")
             .menu--item--red.menu--button(
@@ -148,22 +151,6 @@
                 v-bind:class="{ 'focused': focused == 'new.play' }"
             )
                 span {{ $t('play') }}
-
-        //- Controls items
-        //- .menu--title(v-show="flags.controls") Controls
-
-        //- .menu--label(v-show="flags.controls") Arrows - Move
-        //- .menu--label(v-show="flags.controls") W S - Z axis
-        //- .menu--label(v-show="flags.controls") A D - X axis
-        //- .menu--label(v-show="flags.controls") Q E - Y axis
-        //- .menu--label(v-show="flags.controls") Space - Drop
-
-        //- .menu--buttons(v-show="flags.controls")
-        //-     .menu--item--red.menu--button(
-        //-         v-on:click="back"
-        //-         ref="controls.back"
-        //-         v-bind:class="{ 'focused': focused == 'controls.back' }"
-        //-     ) {{ $t('back') }}
 
         //- Game modes
         .menu--title(v-show="flags.mode")
@@ -314,10 +301,12 @@
                 v-bind:class="{ 'focused': focused == 'settings.antialias' }"
             )
                 .menu--label {{ $t('antialiasing') }}
-                .menu--selector--prev(v-on:click="disableAntialias" v-if="antialias" ref="settings.antialias.prev")
-                .menu--selector--value(v-if="antialias") {{ $t('yes') }}
-                .menu--selector--value(v-if="!antialias") {{ $t('no') }}
-                .menu--selector--next(v-on:click="enableAntialias" v-if="!antialias" ref="settings.antialias.next")
+
+                .menu--selector--container
+                    .menu--selector--prev(v-on:click="disableAntialias" v-if="antialias" ref="settings.antialias.prev")
+                    .menu--selector--value(v-if="antialias") {{ $t('yes') }}
+                    .menu--selector--value(v-if="!antialias") {{ $t('no') }}
+                    .menu--selector--next(v-on:click="enableAntialias" v-if="!antialias" ref="settings.antialias.next")
 
             .menu--selector(
                 v-show="flags.settings"
@@ -325,10 +314,12 @@
                 v-bind:class="{ 'focused': focused == 'settings.grid' }"
             )
                 .menu--label {{ $t('pitGrid') }}
-                .menu--selector--prev(v-on:click="disablePitGrid" v-if="isPitGrid" ref="settings.grid.prev")
-                .menu--selector--value(v-if="isPitGrid") {{ $t('yes') }}
-                .menu--selector--value(v-if="!isPitGrid") {{ $t('no') }}
-                .menu--selector--next(v-on:click="enablePitGrid" v-if="!isPitGrid" ref="settings.grid.next")
+
+                .menu--selector--container
+                    .menu--selector--prev(v-on:click="disablePitGrid" v-if="isPitGrid" ref="settings.grid.prev")
+                    .menu--selector--value(v-if="isPitGrid") {{ $t('yes') }}
+                    .menu--selector--value(v-if="!isPitGrid") {{ $t('no') }}
+                    .menu--selector--next(v-on:click="enablePitGrid" v-if="!isPitGrid" ref="settings.grid.next")
 
             .menu--selector(
                 v-show="flags.settings"
@@ -336,10 +327,12 @@
                 v-bind:class="{ 'focused': focused == 'settings.color' }"
             )
                 .menu--label {{ $t('color') }}
-                .menu--selector--prev(v-on:click="prevColorPalette" v-if="colorPaletteTypes.indexOf(colorPaletteType) != 0" ref="settings.color.prev")
-                .menu--selector--value(v-if="colorPaletteType == 'complex'") {{ $t('complex') }}
-                .menu--selector--value(v-if="colorPaletteType == 'flat'") {{ $t('flat') }}
-                .menu--selector--next(v-on:click="nextColorPalette" v-if="colorPaletteTypes.indexOf(colorPaletteType) != colorPaletteTypes.length - 1" ref="settings.color.next")
+
+                .menu--selector--container
+                    .menu--selector--prev(v-on:click="prevColorPalette" v-if="colorPaletteTypes.indexOf(colorPaletteType) != 0" ref="settings.color.prev")
+                    .menu--selector--value(v-if="colorPaletteType == 'complex'") {{ $t('complex') }}
+                    .menu--selector--value(v-if="colorPaletteType == 'flat'") {{ $t('flat') }}
+                    .menu--selector--next(v-on:click="nextColorPalette" v-if="colorPaletteTypes.indexOf(colorPaletteType) != colorPaletteTypes.length - 1" ref="settings.color.next")
 
             .menu--selector(
                 v-show="flags.settings"
@@ -347,11 +340,13 @@
                 v-bind:class="{ 'focused': focused == 'settings.theme' }"
             )
                 .menu--label {{ $t('theme') }}
-                .menu--selector--prev(v-on:click="prevTheme" v-if="theme != themes[0]" ref="settings.theme.prev")
-                .menu--selector--value(v-if="theme == 'simple'") {{ $t('simple') }}
-                .menu--selector--value(v-if="theme == 'standard'") {{ $t('standard') }}
-                .menu--selector--value(v-if="theme == 'halloween'") {{ $t('halloween') }}
-                .menu--selector--next(v-on:click="nextTheme" v-if="theme != themes[themes.length - 1]" ref="settings.theme.next")
+
+                .menu--selector--container
+                    .menu--selector--prev(v-on:click="prevTheme" v-if="theme != themes[0]" ref="settings.theme.prev")
+                    .menu--selector--value(v-if="theme == 'simple'") {{ $t('simple') }}
+                    .menu--selector--value(v-if="theme == 'standard'") {{ $t('standard') }}
+                    .menu--selector--value(v-if="theme == 'halloween'") {{ $t('halloween') }}
+                    .menu--selector--next(v-on:click="nextTheme" v-if="theme != themes[themes.length - 1]" ref="settings.theme.next")
 
             .menu--subtitle {{ $t('sound') }}
 
@@ -361,9 +356,11 @@
                 v-bind:class="{ 'focused': focused == 'settings.volume' }"
             )
                 .menu--label {{ $t('volume') }}
-                .menu--selector--prev(v-on:click="prevVolume" v-if="volume != 0" ref="settings.volume.prev")
-                .menu--selector--value {{ volume }}
-                .menu--selector--next(v-on:click="nextVolume" v-if="volume != 1" ref="settings.volume.next")
+
+                .menu--selector--container
+                    .menu--selector--prev(v-on:click="prevVolume" v-if="volume != 0" ref="settings.volume.prev")
+                    .menu--selector--value {{ volume }}
+                    .menu--selector--next(v-on:click="nextVolume" v-if="volume != 1" ref="settings.volume.next")
 
             .menu--selector(
                 v-show="flags.settings"
@@ -371,9 +368,11 @@
                 v-bind:class="{ 'focused': focused == 'settings.fxVolume' }"
             )
                 .menu--label {{ $t('fxVolume') }}
-                .menu--selector--prev(v-on:click="prevFxVolume" v-if="fxVolume != 0" ref="settings.fxVolume.prev")
-                .menu--selector--value {{ fxVolume }}
-                .menu--selector--next(v-on:click="nextFxVolume" v-if="fxVolume != 1" ref="settings.fxVolume.next")
+
+                .menu--selector--container
+                    .menu--selector--prev(v-on:click="prevFxVolume" v-if="fxVolume != 0" ref="settings.fxVolume.prev")
+                    .menu--selector--value {{ fxVolume }}
+                    .menu--selector--next(v-on:click="nextFxVolume" v-if="fxVolume != 1" ref="settings.fxVolume.next")
 
             .menu--subtitle {{ $t('other') }}
 
@@ -383,10 +382,12 @@
                 v-bind:class="{ 'focused': focused == 'settings.language' }"
             )
                 .menu--label {{ $t('language') }}
-                .menu--selector--prev(v-on:click="prevLanguage" v-if="locale != 'ru'" ref="settings.language.prev")
-                .menu--selector--value(v-if="locale == 'ru'") Рус
-                .menu--selector--value(v-if="locale == 'en'") Eng
-                .menu--selector--next(v-on:click="nextLanguage" v-if="locale != 'en'" ref="settings.language.next")
+
+                .menu--selector--container
+                    .menu--selector--prev(v-on:click="prevLanguage" v-if="locale != 'ru'" ref="settings.language.prev")
+                    .menu--selector--value(v-if="locale == 'ru'") Рус
+                    .menu--selector--value(v-if="locale == 'en'") Eng
+                    .menu--selector--next(v-on:click="nextLanguage" v-if="locale != 'en'" ref="settings.language.next")
 
             .menu--selector(
                 v-show="flags.settings && isDevApproved"
@@ -394,10 +395,12 @@
                 v-bind:class="{ 'focused': focused == 'settings.dev' }"
             )
                 .menu--label {{ $t('devMode') }}
-                .menu--selector--prev(v-on:click="disableDevMode" v-if="isDev" ref="settings.dev.prev")
-                .menu--selector--value(v-if="isDev") {{ $t('yes') }}
-                .menu--selector--value(v-if="!isDev") {{ $t('no') }}
-                .menu--selector--next(v-on:click="enableDevMode" v-if="!isDev" ref="settings.dev.next")
+
+                .menu--selector--container
+                    .menu--selector--prev(v-on:click="disableDevMode" v-if="isDev" ref="settings.dev.prev")
+                    .menu--selector--value(v-if="isDev") {{ $t('yes') }}
+                    .menu--selector--value(v-if="!isDev") {{ $t('no') }}
+                    .menu--selector--next(v-on:click="enableDevMode" v-if="!isDev" ref="settings.dev.next")
 
             .menu--selector(
                 v-show="flags.settings"
@@ -405,10 +408,12 @@
                 v-bind:class="{ 'focused': focused == 'settings.vibration' }"
             )
                 .menu--label {{ $t('vibration') }}
-                .menu--selector--prev(v-on:click="disableVibration" v-if="isVibration" ref="settings.vibration.prev")
-                .menu--selector--value(v-if="isVibration") {{ $t('yes') }}
-                .menu--selector--value(v-if="!isVibration") {{ $t('no') }}
-                .menu--selector--next(v-on:click="enableVibration" v-if="!isVibration" ref="settings.vibration.next")
+
+                .menu--selector--container
+                    .menu--selector--prev(v-on:click="disableVibration" v-if="isVibration" ref="settings.vibration.prev")
+                    .menu--selector--value(v-if="isVibration") {{ $t('yes') }}
+                    .menu--selector--value(v-if="!isVibration") {{ $t('no') }}
+                    .menu--selector--next(v-on:click="enableVibration" v-if="!isVibration" ref="settings.vibration.next")
 
             .menu--selector(
                 v-show="flags.settings"
@@ -416,10 +421,12 @@
                 v-bind:class="{ 'focused': focused == 'settings.controls' }"
             )
                 .menu--label {{ $t('controls') }}
-                .menu--selector--prev(v-on:click="disableControls" v-if="isControls" ref="settings.controls.prev")
-                .menu--selector--value(v-if="isControls") {{ $t('yes') }}
-                .menu--selector--value(v-if="!isControls") {{ $t('no') }}
-                .menu--selector--next(v-on:click="enableControls" v-if="!isControls" ref="settings.controls.next")
+
+                .menu--selector--container
+                    .menu--selector--prev(v-on:click="disableControls" v-if="isControls" ref="settings.controls.prev")
+                    .menu--selector--value(v-if="isControls") {{ $t('yes') }}
+                    .menu--selector--value(v-if="!isControls") {{ $t('no') }}
+                    .menu--selector--next(v-on:click="enableControls" v-if="!isControls" ref="settings.controls.next")
 
         hr.menu--divider(v-show="flags.settings")
 
