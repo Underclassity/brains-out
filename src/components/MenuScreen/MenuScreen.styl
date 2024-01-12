@@ -130,10 +130,12 @@
         @media(max-width 767px)
             font-size 20px
             line-height: 24px
+            margin-bottom: 10px
 
         @media(max-height 900px)
             font-size 20px
             line-height: 24px
+            margin-bottom: 10px
 
     &--empty
         width: 100%
@@ -154,12 +156,26 @@
         flex-wrap: nowrap
         margin-bottom: 20px
 
+        @media(max-width 767px)
+            flex-direction: column
+            justify-content: center
+
+        @media(max-height 900px)
+            flex-direction: column
+            justify-content: center
+
         &--container
             width: 100%
             display: flex
             align-items: center
             justify-content: space-between
             flex-wrap: wrap
+
+            @media(max-width 767px)
+                width: auto
+
+            @media(max-height 900px)
+                width: auto
 
         &--centered
             justify-content: center
@@ -551,6 +567,12 @@
         justify-content: space-between
         position: relative
         margin-right: 10px
+
+        @media(max-width 768px)
+            margin-bottom: 10px
+
+        @media(max-height 900px)
+            margin-bottom: 10px
 
     &--dotline
         width: calc(100% - 30px)
