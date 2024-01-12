@@ -42,6 +42,7 @@
         span.dev-button.material-symbols-outlined(v-on:click="playCall" v-if="isPause && isDev") play_arrow
 
     ControlsBlock(
+        ref="controls"
         :showFlag="isControls || isMobile"
         @w-click="controlsCallHelper('rotateXPlus')"
         @a-click="controlsCallHelper('rotateYMinus')"

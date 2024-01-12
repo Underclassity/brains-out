@@ -1,6 +1,7 @@
 .main
     width: 100vw
     height: 100vh
+    min-height: -webkit-fill-available
     display: flex
     flex-direction: column
     justify-content: space-between
@@ -9,6 +10,10 @@
     position: fixed
     top: 0px
     left: 0px
+
+    @media not all and (hover:hover) {
+        height: var(--app-height);
+    }
 
 .container
     width: 100%

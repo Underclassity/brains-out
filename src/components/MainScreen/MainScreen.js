@@ -474,6 +474,24 @@ export default {
     },
 
     /**
+     * Update viewport height for mobile devices
+     *
+     * @return  {Boolean}  Result
+     */
+    updateVhVar() {
+      // First we get the viewport height and we multiple it by 1% to get a value for a vh unit
+      const vh = window.innerHeight * 0.01;
+      // Then we set the value in the --vh custom property to the root of the document
+      document.documentElement.style.setProperty("--vh", `${vh}px`);
+      document.documentElement.style.setProperty(
+        "--app-height",
+        `${window.innerHeight}px`
+      );
+
+      return true;
+    },
+
+    /**
      * Update render side
      *
      * @return  {Boolean}  Result
@@ -488,13 +506,22 @@ export default {
       this.resizeTimeout = setTimeout(() => {
         this.log("Resize call");
 
-        const { container } = this.$refs;
+        this.updateVhVar();
 
-        const containerRect = container.getBoundingClientRect();
+        const width = window.innerWidth;
+        let height = window.innerHeight;
+
+        const controlsElement = document.querySelector(".controls");
+
+        if ((this.isControls || this.isMobile) && controlsElement) {
+          const controlsRect = controlsElement.getBoundingClientRect();
+
+          height -= controlsRect.height;
+        }
 
         // Set mobile flag
 
-        this.camera.aspect = containerRect.width / containerRect.height;
+        this.camera.aspect = width / height;
         this.camera.updateProjectionMatrix();
 
         if (this.controls) {
@@ -502,7 +529,7 @@ export default {
           this.initOrbitControls();
         }
 
-        this.renderer.setSize(containerRect.width, containerRect.height);
+        this.renderer.setSize(width, height);
         // this.composer.setSize(containerRect.width, containerRect.height);
 
         this.updateCameraProjection();
@@ -3927,6 +3954,8 @@ export default {
     this.emitter.on("newGame", this.newGame);
 
     this.emitter.on("vibrate", this.vibrateCall);
+
+    this.updateVhVar();
   },
 
   unmounted() {
