@@ -2,7 +2,7 @@
 .menu--overlay(v-show="isShow" :class="{ 'menu--end': flags.end, 'menu--started': isStarted }")
     .menu--main
         .menu--logo
-            img(:src="theme != 'halloween' ? logoSrc : halloweenLogo")
+            img(:src="imgSrc")
 
         //- Menu items
         .menu--item.menu--item--new(
