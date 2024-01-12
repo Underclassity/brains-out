@@ -334,7 +334,7 @@
                     .menu--selector--value(v-if="colorPaletteType == 'flat'") {{ $t('flat') }}
                     .menu--selector--next(v-on:click="nextColorPalette" v-if="colorPaletteTypes.indexOf(colorPaletteType) != colorPaletteTypes.length - 1" ref="settings.color.next")
 
-            .menu--selector(
+            .menu--selector.menu--selector--mobile(
                 v-show="flags.settings"
                 ref="settings.theme"
                 v-bind:class="{ 'focused': focused == 'settings.theme' }"

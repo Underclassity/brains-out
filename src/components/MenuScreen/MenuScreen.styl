@@ -130,12 +130,12 @@
         @media(max-width 767px)
             font-size 20px
             line-height: 24px
-            margin-bottom: 10px
+            // margin-bottom: 10px
 
         @media(max-height 900px)
             font-size 20px
             line-height: 24px
-            margin-bottom: 10px
+            // margin-bottom: 10px
 
     &--empty
         width: 100%
@@ -156,13 +156,16 @@
         flex-wrap: nowrap
         margin-bottom: 20px
 
-        @media(max-width 767px)
-            flex-direction: column
-            justify-content: center
+        &--mobile
+            @media(max-width 767px)
+                flex-direction: column
+                justify-content: center
+                margin-top: 10px
 
-        @media(max-height 900px)
-            flex-direction: column
-            justify-content: center
+            @media(max-height 900px)
+                flex-direction: column
+                justify-content: center
+                margin-top: 10px
 
         &--container
             width: 100%
