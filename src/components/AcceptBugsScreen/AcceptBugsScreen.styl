@@ -286,6 +286,46 @@
                 @media(max-height 900px)
                     display: none
 
+.theme-simple
+    .popup--button
+        background-color: #000
+        box-shadow: unset
+        border-radius: 2px
+        border-color: #fff
+
+    .popup--main
+        border-radius: 2px
+        background-color: #000
+        box-shadow: unset
+        border-radius: 2px
+        border-color: #fff
+
+    .popup--selector
+        &--value
+            box-shadow: unset
+            border-radius: 2px
+            border-color: #fff
+
+            &:before
+                display: none
+
+        &--prev
+            border-right: solid 52px #fff
+
+            &:hover
+                &:before
+                    border-right: solid 44px rgba(#fff, 0.6)
+
+        &--next
+            border-left: solid 52px #fff
+
+            &:hover
+                &:before
+                    border-left: solid 44px rgba(#fff, 0.6)
+
+    .focused
+        background-color: #1e1e1e
+
 .accept-enter-active
 .accept-leave-active
     transition: opacity 0.5s ease;

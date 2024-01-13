@@ -192,7 +192,7 @@
 
         &--prev
             border-left: solid 0px transparent
-            border-right: solid 52px #222
+            border-right: solid 52px var(--light-black, #222)
             border-top: solid 26px transparent
             border-bottom: solid 26px transparent
             position: relative
@@ -222,7 +222,7 @@
                     border-right: solid 44px rgba(#E77812, 0.6)
 
         &--next
-            border-left: solid 52px #222
+            border-left: solid 52px var(--light-black, #222)
             border-right: solid 0px transparent
             border-top: solid 26px transparent
             border-bottom: solid 26px transparent
@@ -255,7 +255,7 @@
         &--value
             box-sizing: border-box
             border-radius: 20px
-            border: 5px solid #222
+            border: 5px solid var(--light-black, #222)
             padding: 8px 16px
             background-color: var(--orange, #E77812)
             font-size: 36px
@@ -707,16 +707,31 @@
 
         &--item
             background-color: #000
+            box-shadow: unset
+            border-radius: 2px
+            border-color: #fff
+
+            &:before
+                display: none
 
             &--red
                 background-color: #000
+                box-shadow: unset
+                border-radius: 2px
+                border-color: #fff
 
             &--new
                 background-color: #000
+                box-shadow: unset
+                border-radius: 2px
+                border-color: #fff
 
         &--dot
             background-color: #000
             border-color: #fff
+
+            &--active
+                background-color: #fff
 
         &--dotline
             background-color: #000
@@ -724,9 +739,44 @@
 
         &--achievement
             background-color: #000
+            box-shadow: unset
+            border-radius: 2px
+            border-color: #fff
 
             &--earned
                 background-color: #fff
 
         &--button
             background-color: #000
+            box-shadow: unset
+            border-radius: 2px
+            border-color: #fff
+
+        &--divider
+            background-color: #fff
+
+        &--selector
+            &--value
+                box-shadow: unset
+                border-radius: 2px
+                border-color: #fff
+
+                &:before
+                    display: none
+
+            &--prev
+                border-right: solid 52px #fff
+
+                &:hover
+                    &:before
+                        border-right: solid 44px rgba(#fff, 0.6)
+
+            &--next
+                border-left: solid 52px #fff
+
+                &:hover
+                    &:before
+                        border-left: solid 44px rgba(#fff, 0.6)
+
+    .focused
+        background-color: #1e1e1e
