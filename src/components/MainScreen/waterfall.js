@@ -5,7 +5,6 @@ import { Vector3 } from "three";
 
 import getGroupSize from "../../helpers/get-group-size.js";
 import getWorldPosisition from "../../helpers/get-world-position.js";
-import log from "../../helpers/log.js";
 // import roundValue from "../../helpers/round-value.js";
 
 /**
@@ -25,7 +24,7 @@ export function createElement() {
   // Reset rotate count
   this.rotateCount = 0;
 
-  log("Create element call");
+  this.log("Create element call");
 
   const element = this.next ? this.next.clone() : this.getRandomForm();
 
@@ -92,7 +91,7 @@ export function createElement() {
  * @return  {Boolean}  Result
  */
 export function initWaterfall() {
-  log("Init waterfall");
+  this.log("Init waterfall");
 
   let prevCount = undefined;
 

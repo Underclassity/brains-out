@@ -36,7 +36,7 @@ function loadHelper(filename, id, cb, scale = 0.01) {
         object.scale.set(scale, scale, scale);
 
         log(
-          `Loaded ${id} parts: `,
+          `Loaded '${id}' parts: `,
           object.children.map((item) => item.name)
         );
 

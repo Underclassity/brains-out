@@ -2096,7 +2096,7 @@ export default {
         return false;
       }
 
-      log(
+      this.log(
         `Re-create pit call ${force}: ${pitSize}, ${vWidth} vw, ${vHeight} vh`
       );
 
@@ -3128,20 +3128,41 @@ export default {
       return true;
     },
 
+    /**
+     * Play background music helper
+     *
+     * @return  {Boolean}  Result
+     */
     playBgSound() {
       //this.log("Play bg sound: ", this.isWindowFocus);
       if (this.bgSound && !this.bgSound.isPlaying && this.isWindowFocus) {
         this.bgSound.play();
+        return true;
       }
+
+      return false;
     },
 
+    /**
+     * Pause background music helper
+     *
+     * @return  {Boolean}  Result
+     */
     pauseBgSound() {
       //this.log("Pause bg sound: ", this.isWindowFocus);
       if (this.bgSound?.isPlaying) {
         this.bgSound.pause();
+        return true;
       }
+
+      return false;
     },
 
+    /**
+     * Play menu background music helper
+     *
+     * @return  {Boolean}  Result
+     */
     playMenuBgSound() {
       //this.log("Play bg menu sound: ", this.isWindowFocus);
       if (
@@ -3151,24 +3172,48 @@ export default {
         this.isAccepted
       ) {
         this.bgMenuSound.play();
+        return true;
       }
+
+      return false;
     },
 
+    /**
+     * Pause menu background music helper
+     *
+     * @return  {Boolean}  Result
+     */
     pauseMenuBgSound() {
       //this.log("Pause bg menu sound: ", this.isWindowFocus);
+
       if (this.bgMenuSound?.isPlaying) {
         this.bgMenuSound.pause();
+        return true;
       }
+
+      return false;
     },
 
+    /**
+     * Play music helper
+     *
+     * @return  {Boolean}  Result
+     */
     playMusic() {
       this.log("Play music: ", this.isWindowFocus);
 
       this.isWindowFocus = true;
 
       this.openMenuScreen();
+
+      return true;
     },
 
+    /**
+     * Pause music helper
+     *
+     * @return  {Boolean}  Result
+     */
     pauseMusic() {
       this.log("Pause music");
 
@@ -3179,6 +3224,8 @@ export default {
 
       this.pauseBgSound();
       this.pauseMenuBgSound();
+
+      return true;
     },
 
     /**
