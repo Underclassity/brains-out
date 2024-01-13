@@ -2020,8 +2020,8 @@ export default {
         this.positionHelper(element, "z", -pitDepth + sizeZ / 2 + size / 2);
       }
 
-      if (position.z >= 2) {
-        this.positionHelper(element, "z", 2);
+      if (position.z >= 1) {
+        this.positionHelper(element, "z", 1);
       }
 
       // const newPosition = getWorldPosisition(element);
