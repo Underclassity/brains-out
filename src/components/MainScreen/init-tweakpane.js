@@ -858,6 +858,7 @@ function addFogPlanesFolder(pane) {
       }
 
       this.fogCenterColor = new Color(ev.value);
+      this.addFogParticles();
     });
 
   fogPlanesFolder
@@ -874,6 +875,7 @@ function addFogPlanesFolder(pane) {
       }
 
       this.fogAroundColor = new Color(ev.value);
+      this.addFogParticles();
     });
 
   fogPlanesFolder
@@ -886,6 +888,7 @@ function addFogPlanesFolder(pane) {
     })
     .on("change", (ev) => {
       this.fogCenterOpacity = ev.value;
+      this.addFogParticles();
     });
 
   fogPlanesFolder
@@ -898,6 +901,7 @@ function addFogPlanesFolder(pane) {
     })
     .on("change", (ev) => {
       this.fogAroundOpacity = ev.value;
+      this.addFogParticles();
     });
 
   fogPlanesFolder
@@ -963,6 +967,7 @@ function addFogPlanesFolder(pane) {
     })
     .on("change", (ev) => {
       this.fogParticlesDelta = ev.value;
+      this.addFogParticles();
     });
 
   return pane;

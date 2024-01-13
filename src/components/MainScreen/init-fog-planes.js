@@ -29,7 +29,6 @@ export async function addFogParticles() {
     viewHeight,
     pitWidth,
     pitHeight,
-    size,
   } = this;
 
   if (fogGroup) {
@@ -55,8 +54,6 @@ export async function addFogParticles() {
   this.fogGroup = new Group();
 
   this.fogParticles = [];
-
-  const hSize = size / 2;
 
   if (isFogPlanesCenter) {
     const planeSize = Math.max(pitWidth, pitHeight);
@@ -121,12 +118,13 @@ export async function addFogParticles() {
     const widthDiff = (maxSize - pitWidth) / 2;
 
     const cornerSize = Math.max(widthDiff, heightDiff);
-    const halfCornerSize = cornerSize / 2;
-    const wDiff = widthDiff / 2 - halfCornerSize;
-    const hDIff = heightDiff / 2 - halfCornerSize;
 
     const cornerGeometry = new PlaneGeometry(cornerSize, cornerSize);
-    const cornerPlaneMesh = new InstancedMesh(cornerGeometry, material, 4);
+    const cornerPlaneMesh = new InstancedMesh(
+      cornerGeometry,
+      material,
+      4 * this.fogCenterParticlesCount
+    );
     this.fogGroup.add(cornerPlaneMesh);
 
     const dummy = new Object3D();
@@ -141,6 +139,8 @@ export async function addFogParticles() {
     const rightX = Math.abs(leftXPos);
     const topY = Math.abs(bottomYPos);
     const bottomY = bottomYPos;
+
+    let index = 0;
 
     [
       {
@@ -159,23 +159,33 @@ export async function addFogParticles() {
         x: rightX,
         y: topY,
       },
-    ].forEach(({ x, y }, index) => {
-      const zRot = Math.random() * 2;
+    ].forEach(({ x, y }) => {
+      for (let i = 0; i < this.fogCenterParticlesCount; i++) {
+        const xOffset = (Math.random() - 0.5) * cornerSize;
+        const yOffset = (Math.random() - 0.5) * cornerSize;
 
-      dummy.position.set(x, y, z);
-      dummy.rotation.z = zRot;
+        x += xOffset;
+        y += yOffset;
 
-      cornerPlaneMesh.setMatrixAt(index, dummy.matrix);
+        const zRot = Math.random() * 2;
 
-      this.fogParticles.push({
-        x,
-        y,
-        z,
-        zRot,
-        index,
-        mesh: cornerPlaneMesh,
-        type: "around",
-      });
+        dummy.position.set(x, y, z);
+        dummy.rotation.z = zRot;
+
+        cornerPlaneMesh.setMatrixAt(index, dummy.matrix);
+
+        this.fogParticles.push({
+          x,
+          y,
+          z,
+          zRot,
+          index,
+          mesh: cornerPlaneMesh,
+          type: "around",
+        });
+
+        index++;
+      }
     });
 
     const topBottomCount = Math.round(pitWidth / heightDiff);
@@ -196,44 +206,51 @@ export async function addFogParticles() {
     );
     this.fogGroup.add(topBottomPlaneMesh);
 
-    let index = 0;
+    index = 0;
 
-    for (const x of xPositions) {
-      const zRot = Math.random() * 2;
+    for (let x of xPositions) {
+      for (let i = 0; i < this.fogCenterParticlesCount; i++) {
+        const xOffset = (Math.random() - 0.5) * topBottomPartWidth * 0.2;
+        const yOffset = (Math.random() - 0.5) * topBottomPartWidth * 0.2;
 
-      dummy.position.set(x, topY, z);
-      dummy.rotation.z = zRot;
+        x += xOffset;
 
-      topBottomPlaneMesh.setMatrixAt(index, dummy.matrix);
+        const zRot = Math.random() * 2;
 
-      this.fogParticles.push({
-        x,
-        y: topY,
-        z,
-        zRot,
-        index,
-        mesh: topBottomPlaneMesh,
-        type: "around",
-      });
+        dummy.position.set(x, topY + yOffset, z);
+        dummy.rotation.z = zRot;
 
-      index++;
+        topBottomPlaneMesh.setMatrixAt(index, dummy.matrix);
 
-      dummy.position.set(x, bottomY, z);
-      dummy.rotation.z = zRot;
+        this.fogParticles.push({
+          x,
+          y: topY + yOffset,
+          z,
+          zRot,
+          index,
+          mesh: topBottomPlaneMesh,
+          type: "around",
+        });
 
-      topBottomPlaneMesh.setMatrixAt(index, dummy.matrix);
+        index++;
 
-      this.fogParticles.push({
-        x,
-        y: bottomY,
-        z,
-        zRot,
-        index,
-        mesh: topBottomPlaneMesh,
-        type: "around",
-      });
+        dummy.position.set(x, bottomY + yOffset, z);
+        dummy.rotation.z = zRot;
 
-      index++;
+        topBottomPlaneMesh.setMatrixAt(index, dummy.matrix);
+
+        this.fogParticles.push({
+          x,
+          y: bottomY + yOffset,
+          z,
+          zRot,
+          index,
+          mesh: topBottomPlaneMesh,
+          type: "around",
+        });
+
+        index++;
+      }
     }
 
     const leftRightCount = Math.round(pitHeight / widthDiff);
@@ -256,42 +273,49 @@ export async function addFogParticles() {
 
     index = 0;
 
-    for (const y of yPositions) {
-      const zRot = Math.random() * 2;
+    for (let y of yPositions) {
+      for (let i = 0; i < this.fogCenterParticlesCount; i++) {
+        const xOffset = (Math.random() - 0.5) * leftRightHeight * 0.2;
+        const yOffset = (Math.random() - 0.5) * leftRightHeight * 0.2;
 
-      dummy.position.set(leftX, y, z);
-      dummy.rotation.z = zRot;
+        y += yOffset;
 
-      leftRightPlaneMesh.setMatrixAt(index, dummy.matrix);
+        const zRot = Math.random() * 2;
 
-      this.fogParticles.push({
-        x: leftX,
-        y,
-        z,
-        zRot,
-        index,
-        mesh: leftRightPlaneMesh,
-        type: "around",
-      });
+        dummy.position.set(leftX + xOffset, y, z);
+        dummy.rotation.z = zRot;
 
-      index++;
+        leftRightPlaneMesh.setMatrixAt(index, dummy.matrix);
 
-      dummy.position.set(rightX, y, z);
-      dummy.rotation.z = zRot;
+        this.fogParticles.push({
+          x: leftX + xOffset,
+          y,
+          z,
+          zRot,
+          index,
+          mesh: leftRightPlaneMesh,
+          type: "around",
+        });
 
-      leftRightPlaneMesh.setMatrixAt(index, dummy.matrix);
+        index++;
 
-      this.fogParticles.push({
-        x: rightX,
-        y,
-        z,
-        zRot,
-        index,
-        mesh: leftRightPlaneMesh,
-        type: "around",
-      });
+        dummy.position.set(rightX + xOffset, y, z);
+        dummy.rotation.z = zRot;
 
-      index++;
+        leftRightPlaneMesh.setMatrixAt(index, dummy.matrix);
+
+        this.fogParticles.push({
+          x: rightX + xOffset,
+          y,
+          z,
+          zRot,
+          index,
+          mesh: leftRightPlaneMesh,
+          type: "around",
+        });
+
+        index++;
+      }
     }
   }
 

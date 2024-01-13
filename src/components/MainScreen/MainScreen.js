@@ -160,7 +160,7 @@ export default {
       fogAroundOpacity: 0.2,
       fogCenterSize: 5,
       fogCenterParticlesCount: 10,
-      fogAroundParticlesCount: 10,
+      fogAroundParticlesCount: 3,
       fogParticlesDelta: 0.25,
 
       isSlow: false,
