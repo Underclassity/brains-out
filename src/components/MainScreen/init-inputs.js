@@ -383,9 +383,9 @@ export function initKeyBoard() {
 
   const momentKeyHandler = ({ code }) => {
     switch (code) {
-      case "ShiftLeft":
-        this.isSlow = !this.isSlow;
-        break;
+      // case "ShiftLeft":
+      //   this.isSlow = !this.isSlow;
+      //   break;
       case "Space":
         if (this.isMenu) {
           return false;
@@ -407,12 +407,12 @@ export function initKeyBoard() {
           this.openMenu();
         }
         break;
-      case "KeyR":
-        if (!this.isMenu) {
-          this.movesCounter += 2;
-          this.randomRotate(3);
-        }
-        break;
+      // case "KeyR":
+      //   if (!this.isMenu) {
+      //     this.movesCounter += 2;
+      //     this.randomRotate(3);
+      //   }
+      //   break;
     }
   };
 
