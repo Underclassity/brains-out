@@ -59,7 +59,7 @@ export const store = createStore({
     isFpsLock: false,
     fpsLockValue: 60,
 
-    gridColor: 0x9b_43_0e,
+    gridColor: 0xff_ff_ff,
     lightColor: 0xff_ff_ff,
     sceneColor: 0x12_12_12,
     firstLightColor: 0x85_8a_ff,
