@@ -113,24 +113,31 @@ export function getRandomForm() {
   const isDevParts = Math.random() <= 0.01 && !this.isPause && !this.isSimple;
   const devId = Math.random() <= 0.5 ? "I" : "N";
 
-  const isGhost = Math.random() <= 0.15 && this.isHalloween && !this.isSimple;
+  // const isGhost = Math.random() <= 0.15 && this.isHalloween && !this.isSimple;
+
+  const isGhost = false;
 
   if (isDevParts || isGhost) {
     formFunctions = [generateP2Form];
 
     zombieParts = isDevParts
       ? zombieParts.filter((item) => item.name[item.name.length - 1] == devId)
-      : zombieParts.filter(
-          (item) => item.name.includes("H_02_") || item.name.includes("H_01_")
-        );
+      : zombieParts.filter((item) => item.name.includes("H_02_"));
   } else {
-    zombieParts = zombieParts.filter(
-      (item) =>
-        item.name[item.name.length - 1] != "I" &&
-        item.name[item.name.length - 1] != "N" &&
-        !item.name.includes("H_02_") &&
-        !item.name.includes("H_01_")
-    );
+    zombieParts = zombieParts
+      .filter(
+        (item) =>
+          item.name[item.name.length - 1] != "I" &&
+          item.name[item.name.length - 1] != "N" &&
+          !item.name.includes("H_02_")
+      )
+      .filter((item) => {
+        if (!this.isHalloween) {
+          return !item.name.includes("H_01_");
+        }
+
+        return true;
+      });
   }
 
   const formFunction =
