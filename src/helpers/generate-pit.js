@@ -621,6 +621,7 @@ export function generatePit(
     bottomPlane.position.z = -depth + size / 2;
 
     const downPlane = generateGrid(width, depth, color);
+
     downPlane.rotateX(Math.PI / 2);
     downPlane.position.z = -depth / 2 + size / 2;
     downPlane.position.y = -height / 2;
@@ -672,19 +673,19 @@ export function generatePit(
     pit.add(topBgPlane);
     pit.add(bottomBgPlane);
 
-    const geometry = new BoxGeometry(width, height, depth);
-    const material = new MeshBasicMaterial({
-      color: 0xfa_fa_fa,
-      transparent: true,
-      opacity: 0.1,
-    });
-    material.name = "cube-material";
-    const cube = new Mesh(geometry, material);
-    cube.name = "pit";
+    // const geometry = new BoxGeometry(width, height, depth);
+    // const material = new MeshBasicMaterial({
+    //   color: 0xfa_fa_fa,
+    //   transparent: true,
+    //   opacity: 0.1,
+    // });
+    // material.name = "cube-material";
+    // const cube = new Mesh(geometry, material);
+    // cube.name = "pit";
 
-    cube.position.z = -depth / 2 + size / 2;
+    // cube.position.z = -depth / 2 + size / 2;
 
-    pit.add(cube);
+    // pit.add(cube);
   } else {
     const groundPart = pitParts.find((item) => item.name == "G_Ground");
     const grassPart = pitParts.find((item) => item.name == "G_Grass");
