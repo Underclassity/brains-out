@@ -2249,6 +2249,12 @@ export default {
         this.progressCb
       );
 
+      const fogTexture = await textureLoaderHelper(
+        "fog.png",
+        "fog",
+        this.progressCb
+      );
+
       // Save atlases
       if (greyAtlas) {
         this.greyAtlas = greyAtlas;
@@ -2260,6 +2266,10 @@ export default {
 
       if (greyGuts) {
         this.greyGuts = greyGuts;
+      }
+
+      if (fogTexture) {
+        this.fogTexture = fogTexture;
       }
 
       // if (halloweenParts?.children?.length) {

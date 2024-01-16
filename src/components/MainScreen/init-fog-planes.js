@@ -6,8 +6,6 @@ import {
   PlaneGeometry,
 } from "three";
 
-import { textureLoaderHelper } from "../../helpers/load-texture.js";
-
 import interpolateArray from "../../helpers/interpolate-array.js";
 
 /**
@@ -44,11 +42,7 @@ export async function addFogParticles() {
   );
 
   if (!fogTexture) {
-    this.fogTexture = await textureLoaderHelper(
-      "fog.png",
-      "fog",
-      this.progressCb
-    );
+    return false;
   }
 
   this.fogGroup = new Group();
@@ -123,7 +117,7 @@ export async function addFogParticles() {
     const cornerPlaneMesh = new InstancedMesh(
       cornerGeometry,
       material,
-      4 * this.fogCenterParticlesCount
+      4 * this.fogAroundParticlesCount
     );
     this.fogGroup.add(cornerPlaneMesh);
 
@@ -160,7 +154,7 @@ export async function addFogParticles() {
         y: topY,
       },
     ].forEach(({ x, y }) => {
-      for (let i = 0; i < this.fogCenterParticlesCount; i++) {
+      for (let i = 0; i < this.fogAroundParticlesCount; i++) {
         const xOffset = (Math.random() - 0.5) * cornerSize;
         const yOffset = (Math.random() - 0.5) * cornerSize;
 
@@ -209,7 +203,7 @@ export async function addFogParticles() {
     index = 0;
 
     for (let x of xPositions) {
-      for (let i = 0; i < this.fogCenterParticlesCount; i++) {
+      for (let i = 0; i < this.fogAroundParticlesCount; i++) {
         const xOffset = (Math.random() - 0.5) * topBottomPartWidth * 0.2;
         const yOffset = (Math.random() - 0.5) * topBottomPartWidth * 0.2;
 
@@ -267,14 +261,14 @@ export async function addFogParticles() {
     const leftRightPlaneMesh = new InstancedMesh(
       leftRightGeometry,
       material,
-      yPositions.length * 2
+      yPositions.length * 2 * this.fogAroundParticlesCount
     );
     this.fogGroup.add(leftRightPlaneMesh);
 
     index = 0;
 
     for (let y of yPositions) {
-      for (let i = 0; i < this.fogCenterParticlesCount; i++) {
+      for (let i = 0; i < this.fogAroundParticlesCount; i++) {
         const xOffset = (Math.random() - 0.5) * leftRightHeight * 0.2;
         const yOffset = (Math.random() - 0.5) * leftRightHeight * 0.2;
 
