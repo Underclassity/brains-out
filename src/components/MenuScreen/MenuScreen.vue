@@ -336,7 +336,7 @@
 
             .menu--subtitle {{ $t('theme') }}
 
-            .menu--selector.menu--selector--mobile(
+            .menu--selector.menu--selector--centered.menu--selector--mobile(
                 v-show="flags.settings"
                 ref="settings.theme"
                 v-bind:class="{ 'focused': focused == 'settings.theme' }"
