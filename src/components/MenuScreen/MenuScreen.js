@@ -831,7 +831,9 @@ export default {
 
       const refs = this.refs[flag];
 
-      if (refs.includes("back")) {
+      if (refs.includes("continue")) {
+        this.$refs[`${flag}.continue`].click();
+      } else if (refs.includes("back")) {
         this.$refs[`${flag}.back`].click();
       }
 
