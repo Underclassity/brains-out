@@ -120,13 +120,16 @@ export function getRandomForm() {
 
     zombieParts = isDevParts
       ? zombieParts.filter((item) => item.name[item.name.length - 1] == devId)
-      : zombieParts.filter((item) => item.name.includes("H_02_"));
+      : zombieParts.filter(
+          (item) => item.name.includes("H_02_") || item.name.includes("H_01_")
+        );
   } else {
     zombieParts = zombieParts.filter(
       (item) =>
         item.name[item.name.length - 1] != "I" &&
         item.name[item.name.length - 1] != "N" &&
-        !item.name.includes("H_02_")
+        !item.name.includes("H_02_") &&
+        !item.name.includes("H_01_")
     );
   }
 
