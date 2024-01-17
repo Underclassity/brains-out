@@ -113,9 +113,7 @@ export function getRandomForm() {
   const isDevParts = Math.random() <= 0.01 && !this.isPause && !this.isSimple;
   const devId = Math.random() <= 0.5 ? "I" : "N";
 
-  // const isGhost = Math.random() <= 0.15 && this.isHalloween && !this.isSimple;
-
-  const isGhost = false;
+  const isGhost = Math.random() <= 0.15 && this.isHalloween && !this.isSimple;
 
   if (isDevParts || isGhost) {
     formFunctions = [generateP2Form];
