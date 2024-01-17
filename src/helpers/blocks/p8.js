@@ -38,7 +38,8 @@ export function generateP8Form(size = 0.2, parts = [], isSimple = false) {
   const thirdMesh = generateLegsMeshPoint(
     size,
     parts,
-    isSimple.false,
+    isSimple,
+    false,
     "Z_01_Legs1"
   );
   const fourthPoint = generateBodyMeshPoint(
