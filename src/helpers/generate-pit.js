@@ -1,5 +1,4 @@
 import {
-  BoxGeometry,
   BoxHelper,
   Color,
   DynamicDrawUsage,
@@ -617,28 +616,27 @@ export function generatePit(
   // }
 
   if (simple) {
-    const bottomPlane = generateGrid(width, height, color);
+    const bottomPlane = generateGrid(width, height, color, true);
     bottomPlane.position.z = -depth + size / 2;
 
-    const downPlane = generateGrid(width, depth, color);
-
-    downPlane.rotateX(Math.PI / 2);
+    const downPlane = generateGrid(width, depth, color, true);
+    downPlane.rotateX(-Math.PI / 2);
     downPlane.position.z = -depth / 2 + size / 2;
     downPlane.position.y = -height / 2;
 
-    const upPlane = generateGrid(width, depth, color);
+    const upPlane = generateGrid(width, depth, color, true);
     upPlane.rotateX(Math.PI / 2);
     upPlane.position.z = -depth / 2 + size / 2;
     upPlane.position.y = height / 2;
 
-    const leftPlane = generateGrid(height, depth, color);
+    const leftPlane = generateGrid(height, depth, color, true);
     leftPlane.rotateY(Math.PI / 2);
     leftPlane.rotateZ(Math.PI / 2);
     leftPlane.position.z = -depth / 2 + size / 2;
     leftPlane.position.x = -width / 2;
 
-    const rightPlane = generateGrid(height, depth, color);
-    rightPlane.rotateY(Math.PI / 2);
+    const rightPlane = generateGrid(height, depth, color, true);
+    rightPlane.rotateY(-Math.PI / 2);
     rightPlane.rotateZ(Math.PI / 2);
     rightPlane.position.z = -depth / 2 + size / 2;
     rightPlane.position.x = width / 2;
@@ -672,20 +670,6 @@ export function generatePit(
     pit.add(rightBgPlane);
     pit.add(topBgPlane);
     pit.add(bottomBgPlane);
-
-    // const geometry = new BoxGeometry(width, height, depth);
-    // const material = new MeshBasicMaterial({
-    //   color: 0xfa_fa_fa,
-    //   transparent: true,
-    //   opacity: 0.1,
-    // });
-    // material.name = "cube-material";
-    // const cube = new Mesh(geometry, material);
-    // cube.name = "pit";
-
-    // cube.position.z = -depth / 2 + size / 2;
-
-    // pit.add(cube);
   } else {
     const groundPart = pitParts.find((item) => item.name == "G_Ground");
     const grassPart = pitParts.find((item) => item.name == "G_Grass");
