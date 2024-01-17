@@ -169,13 +169,22 @@ export default {
   },
 
   methods: {
+    /**
+     * Log all helper
+     *
+     * @return  {Function}  Log function for component
+     */
+    log() {
+      return log(`[${this.$options.name}]:`, ...arguments);
+    },
+
     backClick() {
-      log("Back click");
+      this.log("Back click: ", this.playButton);
       this.$emit("back");
     },
 
     playClick() {
-      log("Play click");
+      this.log("Play click: ", this.playButton);
       this.$emit("play");
     },
 

@@ -58,7 +58,7 @@ export function initJoyPad() {
       // Left
       case "button_14":
         if (inMenu) {
-          this.emitter.emit("pressLeft");
+          this.emitter.emit("pressLeft", e);
         } else {
           this.moveLeft();
         }
@@ -66,7 +66,7 @@ export function initJoyPad() {
       // Right
       case "button_15":
         if (inMenu) {
-          this.emitter.emit("pressRight");
+          this.emitter.emit("pressRight", e);
         } else {
           this.moveRight();
         }
@@ -74,7 +74,7 @@ export function initJoyPad() {
       // Up
       case "button_12":
         if (inMenu) {
-          this.emitter.emit("pressUp");
+          this.emitter.emit("pressUp", e);
         } else {
           this.moveUp();
         }
@@ -82,7 +82,7 @@ export function initJoyPad() {
       // Down
       case "button_13":
         if (inMenu) {
-          this.emitter.emit("pressDown");
+          this.emitter.emit("pressDown", e);
         } else {
           this.moveDown();
         }
@@ -90,7 +90,7 @@ export function initJoyPad() {
       // A
       case "button_0":
         if (inMenu) {
-          this.emitter.emit("pressA");
+          this.emitter.emit("pressA", e);
         } else {
           this.current.userData.drop = true;
         }
@@ -98,25 +98,25 @@ export function initJoyPad() {
       // B
       case "button_1":
         if (inMenu) {
-          this.emitter.emit("pressB");
+          this.emitter.emit("pressB", e);
         }
         break;
       // Y
       case "button_2":
         if (inMenu) {
-          this.emitter.emit("pressY");
+          this.emitter.emit("pressY", e);
         }
         break;
       // X
       case "button_3":
         if (inMenu) {
-          this.emitter.emit("pressX");
+          this.emitter.emit("pressX", e);
         }
         break;
       //LB
       case "button_4":
         if (inMenu) {
-          this.emitter.emit("pressLB");
+          this.emitter.emit("pressLB", e);
         } else if (this.isRandomRotate) {
           this.randomRotate();
         } else {
@@ -126,7 +126,7 @@ export function initJoyPad() {
       // RB
       case "button_5":
         if (inMenu) {
-          this.emitter.emit("pressRB");
+          this.emitter.emit("pressRB", e);
         } else if (this.isRandomRotate) {
           this.randomRotate();
         } else {
@@ -136,13 +136,13 @@ export function initJoyPad() {
       // LT
       case "button_6":
         if (inMenu) {
-          this.emitter.emit("pressLT");
+          this.emitter.emit("pressLT", e);
         }
         break;
       // RT
       case "button_7":
         if (inMenu) {
-          this.emitter.emit("pressRT");
+          this.emitter.emit("pressRT", e);
         } else {
           this.current.userData.drop = true;
         }
