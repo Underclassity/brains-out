@@ -7,7 +7,7 @@
         )
             .level-item(v-for="(value, index) of layers.slice().reverse()" :key="index" :style="isLayerVisible(index) ? `background-color: #${colorPalette[index].getHexString()}` : ''")
 
-    .navigation(v-show="!isPractice")
+    .navigation(v-show="!isPractice && !this.isPause")
         .navigation--item(
             v-bind:class="{ 'navigation--item--score-blinking': score > maxScore }"
         ) {{ $t('best') }}: {{ score > maxScore ? score : maxScore }}
@@ -28,7 +28,7 @@
             v-bind:class="{ 'navigation--item--blinking': timelessTime <= 10 * 1000 }"
         ) {{ $t('time') }}: {{ timelessTimeString }}
 
-    .navigation--item.navigation--menu(v-on:click="openMenu")
+    .navigation--item.navigation--menu(v-on:click="openMenu" v-if="!this.isPause")
         span.material-symbols-outlined menu
 
     v-tweakpane.dev-menu(
