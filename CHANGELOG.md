@@ -1,5 +1,3 @@
-### Version 0.1.3
-
 - Task 153: Add materials cache for colorize methods
 - Task 101: Throttle keyboard event
 - Task 152: Add timeless mode
@@ -113,65 +111,33 @@
 - Task 182: Update mobile controls layout
 - Task 182: Update mobile layout params
 - Task 162: Update fog planes logic
-
-### Version 0.1.3
-
-- Task 153: Add materials cache for colorize methods
-- Task 101: Throttle keyboard event
-- Task 152: Add timeless mode
-- Task 135: Add fog particles mode
-- Task 134: Add slow mode to dev GUI
-- Task 111: Add glitch effect on shuffle elements
-- Update load percent calculation
-- Add is.js; add check mobile and mac check for antialias
-- Change pixelRatio to devicePixelRatio from start
-- Disable antialias only on mobile by default
-- Task 152: Add check for pause state in timeless mode
-- Task 155: Add lock FPS settings via dev GUI
-- Task 154: Add antialias toggle in dev GUI
-- Task 154: Fix orbit controls re-init
-- Task 155: Update lock fps logic
-- Task 156: Add fog for halloween mode
-- Task 101: Remove throttle for keyboard events
-- Task 157: Add earned achievements color
-- Task 154: Add antialias selector in settings
-- Task 157: Update settings achiements colors
-- Task 156: Enable fog around pit by default
-- Task 89: Add game modes selector; update modes logic
-- Re-write fog to instanced meshes for better performance
-- Task 89: Updated modes menu
-- Task 89: Modes updates
-- Fix fog planes animation for instanced mesh
-- Task 161: Theme selector
-- Task 159: Add bottom space for menu title
-- Task 160: Update score blinking style
-- Task 89: Game mode selector fixes
-- Task 161: Toggle fog planes fix
-- Task 161: Fixed theme selector logic
-- Update docs; remove old code
-- Move simple and smooth flags to store
-- Task 161: Add simple theme; update themes logic
-- Move app styles to stylus file
-- Task 163: Fix can rotate check
-- Task 89: Update modes selector
-- Task 162: Update fog particles placement on change pit size
-- Add modes and themes selector in dev menu
-- Task 161: Fix simple theme view and colorize
-- Task 111: Change glitch mode shuffle to layers
-- Task 89: Re-write practice mode call
-- Task 161: Lock dev achievements for simple mode
-- Task 80: Add props models file
-- Task 80: Add props for standart theme
-- Task 89: Fix pit mess bug
-- Fix props parts show
-- Task 165: Fix new game call after focus
-- Task 155: Add FPS lock in settings
-- Task 161: Fix element create position bug
-- Task 161: Add smooth for simple mode
-- Task 80: Add 1 block radius for spruces
-- Task 80: Add directions and rotate restrains for props
-- Task 80: Add random rotate part based on direction
-- Task 168: Remove user-select for all in app
+- Update changelog
+- Task 183: Fixed container overflow on mobile
+- Task 182: Fixed controls layout
+- Task 183: Update mobile settings layout
+- Task 162: Update fog planes position
+- Task 183: Update mobile layout for theme selector
+- Task 181: Add simple theme for layout
+- Task 53: Change create form position from 2 to 1
+- Update logs and docs
+- Task 181: Update simple theme styles view
+- Task 183: Centered theme selector
+- Task 162: Update fog particles params
+- Task 185: Comment R and Shift buttons
+- Task 181: Update simple theme
+- Task 188: Update light theme only params
+- Task 183: Update theme selector
+- Task 182: Update levels view on mobile
+- Task 162: Move fog texture load to main load process
+- Task 189: Update parts filter
+- Task 181: Update controls simple view
+- Task 191: B press return to game
+- Task 190: Comment bg cube for simple theme
+- Task 189: Remove test code
+- Add logs for controls info screen
+- Task 190: Add bg planes in pit for simple themes
+- Task 192: Update flat forms
+- Task 192: Fix bug with form create
 
 ### Version 0.1.3
 
