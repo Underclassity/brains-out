@@ -25,20 +25,34 @@ export function generateP2Form(size = 0.2, parts = [], isSimple = false) {
   childsGroup.name = "childs";
 
   const firstMesh = generateHeadMeshPoint(size, parts, isSimple, false, [
+    // Normal ids
     "Z_01_Head1",
     "Z_01_Head2",
+    // Dev ids
+    "Z_01_HeadI",
+    "Z_01_HeadN",
+    // Ghost ids
+    "H_02_Head2",
   ]);
   const secondMesh = generateBodyMeshPoint(size, parts, isSimple, false, [
+    // Normal ids
     "Z_01_Body1",
     "Z_01_Body2",
+    // Dev ids
+    "Z_01_BodyI",
+    "Z_01_BodyN",
+    // Ghost ids
+    "H_02_Body2",
   ]);
-  const thirdMesh = generateLegsMeshPoint(
-    size,
-    parts,
-    isSimple,
-    false,
-    "Z_01_Legs1"
-  );
+  const thirdMesh = generateLegsMeshPoint(size, parts, isSimple, false, [
+    // Normal ids
+    "Z_01_Legs1",
+    // Dev ids
+    "Z_01_LegsI",
+    "Z_01_LegsN",
+    // Ghost ids
+    "H_02_Legs2",
+  ]);
 
   childsGroup.add(firstMesh);
   childsGroup.add(secondMesh);

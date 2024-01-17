@@ -5,7 +5,11 @@
             v-show="!isMenu"
             :style="levelsOffsetStyle"
         )
-            .level-item(v-for="(value, index) of layers.slice().reverse()" :key="index" :style="isLayerVisible(index) ? `background-color: #${colorPalette[index].getHexString()}` : ''")
+            .level-item(
+                v-for="(value, index) of layers.slice().reverse()"
+                :key="index"
+                :style="isLayerVisible(index) ? `background-color: #${colorPalette[index].getHexString()}` : ''"
+            )
 
     .navigation(v-show="!isPractice && !this.isPause")
         .navigation--item(

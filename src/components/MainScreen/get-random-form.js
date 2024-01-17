@@ -54,7 +54,7 @@ export function getRandomForm() {
 
   let { size, isSimple, zombieParts, blocksType } = this;
 
-  let formFunctions = [
+  const formFunctions = [
     generateP0Form,
     generateP1Form,
     generateP2Form,
@@ -111,16 +111,16 @@ export function getRandomForm() {
   }
 
   const isDevParts = Math.random() <= 0.01 && !this.isPause && !this.isSimple;
-  const devId = Math.random() <= 0.5 ? "I" : "N";
-
   const isGhost = Math.random() <= 0.15 && this.isHalloween && !this.isSimple;
 
-  if (isDevParts || isGhost) {
-    formFunctions = [generateP2Form];
+  const devId = Math.random() <= 0.5 ? "I" : "N";
 
-    zombieParts = isDevParts
-      ? zombieParts.filter((item) => item.name[item.name.length - 1] == devId)
-      : zombieParts.filter((item) => item.name.includes("H_02_"));
+  if (isDevParts) {
+    zombieParts = zombieParts.filter(
+      (item) => item.name[item.name.length - 1] == devId
+    );
+  } else if (isGhost) {
+    zombieParts = zombieParts.filter((item) => item.name.includes("H_02_"));
   } else {
     zombieParts = zombieParts
       .filter(
@@ -139,7 +139,9 @@ export function getRandomForm() {
   }
 
   const formFunction =
-    formFunctions[Math.floor(Math.random() * formFunctions.length)];
+    isDevParts || isGhost
+      ? generateP2Form
+      : formFunctions[Math.floor(Math.random() * formFunctions.length)];
 
   // Create element
   const element = formFunction(size, zombieParts, isSimple);
