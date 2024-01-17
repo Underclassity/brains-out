@@ -28,7 +28,7 @@ export function generateP1Form(size = 0.2, parts = [], isSimple = false) {
   const childsGroup = new Group();
   childsGroup.name = "childs";
 
-  const type = randomBetween(0, 5);
+  const type = randomBetween(0, 4);
 
   let firstMesh;
   let secondMesh;
@@ -36,18 +36,45 @@ export function generateP1Form(size = 0.2, parts = [], isSimple = false) {
   switch (type) {
     // Var A
     case 0:
-      firstMesh = generateHeadMeshPoint(size, parts, isSimple);
-      secondMesh = generateBodyMeshPoint(size, parts, isSimple);
+      firstMesh = generateHeadMeshPoint(size, parts, isSimple, false, [
+        "Z_01_Head1",
+        "Z_01_Head2",
+      ]);
+      secondMesh = generateBodyMeshPoint(size, parts, isSimple, false, [
+        "Z_01_Body1",
+        "Z_01_Body2",
+      ]);
       break;
     // Var B
     case 1:
-      firstMesh = generateBodyMeshPoint(size, parts, isSimple);
-      secondMesh = generateLegsMeshPoint(size, parts, isSimple);
+      firstMesh = generateBodyMeshPoint(size, parts, isSimple, false, [
+        "Z_01_Body1",
+        "Z_01_Body2",
+      ]);
+      secondMesh = generateLegsMeshPoint(
+        size,
+        parts,
+        isSimple,
+        false,
+        "Z_01_Legs1"
+      );
       break;
     // Var C
     case 2:
-      firstMesh = generateHeadMeshPoint(size, parts, isSimple);
-      secondMesh = generateBrainsMeshPoint(size, parts, isSimple);
+      firstMesh = generateHeadMeshPoint(
+        size,
+        parts,
+        isSimple,
+        false,
+        "Z_01_Head2"
+      );
+      secondMesh = generateBrainsMeshPoint(
+        size,
+        parts,
+        isSimple,
+        false,
+        "Z_01_Brains1"
+      );
       break;
     // Var D
     case 3:
@@ -68,28 +95,37 @@ export function generateP1Form(size = 0.2, parts = [], isSimple = false) {
       firstMesh.rotation.set(MathUtils.degToRad(-180), 0, 0);
       secondMesh.rotation.set(MathUtils.degToRad(-180), 0, 0);
       break;
-    // Var E
-    case 4:
-      firstMesh = generateBodyMeshPoint(
-        size,
-        parts,
-        isSimple,
-        false,
-        "Z_01_Body3_1"
-      );
-      secondMesh = generateBodyMeshPoint(
-        size,
-        parts,
-        isSimple,
-        false,
-        "Z_01_Body3_2"
-      );
-      firstMesh.rotation.set(0, MathUtils.degToRad(180), 0);
-      break;
+    // // Var E
+    // case 4:
+    //   firstMesh = generateBodyMeshPoint(
+    //     size,
+    //     parts,
+    //     isSimple,
+    //     false,
+    //     "Z_01_Body3_1"
+    //   );
+    //   secondMesh = generateBodyMeshPoint(
+    //     size,
+    //     parts,
+    //     isSimple,
+    //     false,
+    //     "Z_01_Body3_2"
+    //   );
+    //   firstMesh.rotation.set(0, MathUtils.degToRad(180), 0);
+    //   break;
     // Var Gnome
-    case 5:
-      firstMesh = generateHeadMeshPoint(size, parts, isSimple);
-      secondMesh = generateLegsMeshPoint(size, parts, isSimple);
+    case 4:
+      firstMesh = generateHeadMeshPoint(size, parts, isSimple, false, [
+        "Z_01_Head1",
+        "Z_01_Head2",
+      ]);
+      secondMesh = generateLegsMeshPoint(
+        size,
+        parts,
+        isSimple,
+        false,
+        "Z_01_Legs1"
+      );
       break;
     default:
       firstMesh = generateMeshPoint(size, parts, isSimple);

@@ -32,15 +32,24 @@ export function generateP9Form(size = 0.2, parts = [], isSimple = false) {
     false,
     "Z_01_Head2"
   );
-  const secondMesh = generateBodyMeshPoint(
+  const secondMesh = generateBodyMeshPoint(size, parts, isSimple, false, [
+    "Z_01_Body1",
+    "Z_01_Body2",
+  ]);
+  const thirdMesh = generateLegsMeshPoint(
     size,
     parts,
     isSimple,
     false,
-    "Z_01_Body1"
+    "Z_01_Legs1"
   );
-  const thirdMesh = generateLegsMeshPoint(size, parts, isSimple);
-  const fourthPoint = generateBrainsMeshPoint(size, parts, isSimple);
+  const fourthPoint = generateBrainsMeshPoint(
+    size,
+    parts,
+    isSimple,
+    false,
+    "Z_01_Brains1"
+  );
 
   childsGroup.add(firstMesh);
   childsGroup.add(secondMesh);

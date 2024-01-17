@@ -28,7 +28,7 @@ export function generateP5Form(size = 0.2, parts = [], isSimple = false) {
   const childsGroup = new Group();
   childsGroup.name = "childs";
 
-  const type = randomBetween(0, 4);
+  const type = randomBetween(0, 2);
 
   let firstMesh;
   let secondMesh;
@@ -51,11 +51,17 @@ export function generateP5Form(size = 0.2, parts = [], isSimple = false) {
         false,
         "Z_01_Head2"
       );
-      thirdMesh = generateBodyMeshPoint(size, parts, isSimple);
+      thirdMesh = generateBodyMeshPoint(size, parts, isSimple, false, [
+        "Z_01_Body1",
+        "Z_01_Body2",
+      ]);
       break;
     // Var B
     case 1:
-      firstMesh = generateHeadMeshPoint(size, parts, isSimple);
+      firstMesh = generateHeadMeshPoint(size, parts, isSimple, false, [
+        "Z_01_Head1",
+        "Z_01_Head2",
+      ]);
       secondMesh = generateBodyMeshPoint(
         size,
         parts,
@@ -103,64 +109,64 @@ export function generateP5Form(size = 0.2, parts = [], isSimple = false) {
       thirdMesh.rotation.set(0, MathUtils.degToRad(90), 0);
 
       break;
-    // Var D
-    case 3:
-      firstMesh = generateHeadMeshPoint(size, parts, isSimple);
-      secondMesh = generateBodyMeshPoint(
-        size,
-        parts,
-        isSimple,
-        false,
-        "Z_01_Body3_1"
-      );
-      thirdMesh = generateBodyMeshPoint(
-        size,
-        parts,
-        isSimple,
-        false,
-        "Z_01_Body3_2"
-      );
-      firstMesh.rotation.set(0, MathUtils.degToRad(-90), 0);
-      secondMesh.rotation.set(0, MathUtils.degToRad(-90), 0);
-      thirdMesh.rotation.set(0, MathUtils.degToRad(-90), 0);
+    // // Var D
+    // case 3:
+    //   firstMesh = generateHeadMeshPoint(size, parts, isSimple);
+    //   secondMesh = generateBodyMeshPoint(
+    //     size,
+    //     parts,
+    //     isSimple,
+    //     false,
+    //     "Z_01_Body3_1"
+    //   );
+    //   thirdMesh = generateBodyMeshPoint(
+    //     size,
+    //     parts,
+    //     isSimple,
+    //     false,
+    //     "Z_01_Body3_2"
+    //   );
+    //   firstMesh.rotation.set(0, MathUtils.degToRad(-90), 0);
+    //   secondMesh.rotation.set(0, MathUtils.degToRad(-90), 0);
+    //   thirdMesh.rotation.set(0, MathUtils.degToRad(-90), 0);
 
-      break;
-    // Var E
-    case 4:
-      firstMesh = generateLegsMeshPoint(
-        size,
-        parts,
-        isSimple,
-        false,
-        "Z_01_Legs1"
-      );
-      secondMesh = generateBodyMeshPoint(
-        size,
-        parts,
-        isSimple,
-        false,
-        "Z_01_Body3_2"
-      );
-      thirdMesh = generateBodyMeshPoint(
-        size,
-        parts,
-        isSimple,
-        false,
-        "Z_01_Body3_1"
-      );
-      firstMesh.rotation.set(0, MathUtils.degToRad(90), 0);
-      secondMesh.rotation.set(
-        MathUtils.degToRad(-180),
-        MathUtils.degToRad(90),
-        0
-      );
-      thirdMesh.rotation.set(
-        MathUtils.degToRad(-180),
-        MathUtils.degToRad(90),
-        0
-      );
+    //   break;
+    // // Var E
+    // case 4:
+    //   firstMesh = generateLegsMeshPoint(
+    //     size,
+    //     parts,
+    //     isSimple,
+    //     false,
+    //     "Z_01_Legs1"
+    //   );
+    //   secondMesh = generateBodyMeshPoint(
+    //     size,
+    //     parts,
+    //     isSimple,
+    //     false,
+    //     "Z_01_Body3_2"
+    //   );
+    //   thirdMesh = generateBodyMeshPoint(
+    //     size,
+    //     parts,
+    //     isSimple,
+    //     false,
+    //     "Z_01_Body3_1"
+    //   );
+    //   firstMesh.rotation.set(0, MathUtils.degToRad(90), 0);
+    //   secondMesh.rotation.set(
+    //     MathUtils.degToRad(-180),
+    //     MathUtils.degToRad(90),
+    //     0
+    //   );
+    //   thirdMesh.rotation.set(
+    //     MathUtils.degToRad(-180),
+    //     MathUtils.degToRad(90),
+    //     0
+    //   );
 
-      break;
+    //   break;
     default:
       firstMesh = generateMeshPoint(size, parts, isSimple);
       secondMesh = generateMeshPoint(size, parts, isSimple);

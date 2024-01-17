@@ -25,7 +25,10 @@ export function generateP7Form(size = 0.2, parts = [], isSimple = false) {
   const childsGroup = new Group();
   childsGroup.name = "childs";
 
-  const firstMesh = generateHeadMeshPoint(size, parts, isSimple);
+  const firstMesh = generateHeadMeshPoint(size, parts, isSimple, false, [
+    "Z_01_Head1",
+    "Z_01_Head2",
+  ]);
   const secondMesh = generateBodyMeshPoint(
     size,
     parts,

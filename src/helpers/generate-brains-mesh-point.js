@@ -22,7 +22,9 @@ export function generateBrainsMeshPoint(
   if (name) {
     return generateMeshPoint(
       size,
-      parts.filter((item) => item.name == name),
+      parts.filter((item) =>
+        Array.isArray(name) ? name.includes(item.name) : item.name == name
+      ),
       isSimple,
       line
     );
