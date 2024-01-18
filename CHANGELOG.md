@@ -1,3 +1,5 @@
+### Version 0.2.0
+
 - Task 153: Add materials cache for colorize methods
 - Task 101: Throttle keyboard event
 - Task 152: Add timeless mode
@@ -138,6 +140,13 @@
 - Task 190: Add bg planes in pit for simple themes
 - Task 192: Update flat forms
 - Task 192: Fix bug with form create
+- FIx loading buttons show on loading
+- Remove back view logic
+- Add flags for navigation view
+- Task 192: Fix dev and ghost models generation
+- Update sound logic
+- Task 192: Add pumpkins for flat forms generation
+- Fix navigation view
 
 ### Version 0.1.3
 
