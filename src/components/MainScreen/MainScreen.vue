@@ -11,7 +11,7 @@
                 :style="isLayerVisible(index) ? `background-color: #${colorPalette[index].getHexString()}` : ''"
             )
 
-    .navigation(v-show="!isPractice && (!this.isAccepted || isTest)")
+    .navigation(v-show="!isPractice")
         .navigation--item(
             v-bind:class="{ 'navigation--item--score-blinking': score > maxScore }"
         ) {{ $t('best') }}: {{ score > maxScore ? score : maxScore }}
@@ -32,7 +32,7 @@
             v-bind:class="{ 'navigation--item--blinking': timelessTime <= 10 * 1000 }"
         ) {{ $t('time') }}: {{ timelessTimeString }}
 
-    .navigation--item.navigation--menu(v-on:click="openMenu" v-if="!this.isAccepted || isTest")
+    .navigation--item.navigation--menu(v-on:click="openMenu")
         span.material-symbols-outlined menu
 
     v-tweakpane.dev-menu(
@@ -41,7 +41,7 @@
         @on-pane-created="initTweakPane"
     )
 
-    .dev-buttons(v-if="(!this.isAccepted || isTest) && isDev")
+    .dev-buttons(v-if="isDev")
         span.dev-button.material-symbols-outlined(v-on:click="pauseCall" v-if="!isPause") pause
         span.dev-button.material-symbols-outlined(v-on:click="playCall" v-if="isPause") play_arrow
 
