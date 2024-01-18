@@ -33,6 +33,8 @@ export function generateP2Form(size = 0.2, parts = [], isSimple = false) {
     "Z_01_HeadN",
     // Ghost ids
     "H_02_Head2",
+    // Halloween
+    "H_01_Head1",
   ]);
   const secondMesh = generateBodyMeshPoint(size, parts, isSimple, false, [
     // Normal ids

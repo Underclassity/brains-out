@@ -18,6 +18,7 @@ import randomBetween from "./random-between.js";
  * @param   {Array}    [parts=[]]         Parts array
  * @param   {Boolean}  [isSimple=false]   Render simple block flag
  * @param   {Boolean}  [line=false]       Render lines flag
+ * @param   {String}   [name=false]       Part name
  *
  * @return  {Object}                      Group objects
  */
@@ -25,11 +26,18 @@ export function generateMeshPoint(
   size = 0.2,
   parts = [],
   isSimple = false,
-  line = false
+  line = false,
+  name = false
 ) {
   if (!size) {
     log("Size not defined!");
     return false;
+  }
+
+  if (name) {
+    parts = parts.filter((item) =>
+      Array.isArray(name) ? name.includes(item.name) : item.name == name
+    );
   }
 
   let mesh;

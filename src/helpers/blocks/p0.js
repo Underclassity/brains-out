@@ -21,6 +21,7 @@ export function generateP0Form(size = 0.2, parts = [], isSimple = false) {
   const mesh = generateMeshPoint(size, parts, isSimple, false, [
     "Z_01_Head1",
     "Z_01_Head2",
+    "H_01_Head1",
     "Z_01_Brains1",
     "Z_01_Guts1",
   ]);

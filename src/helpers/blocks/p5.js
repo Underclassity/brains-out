@@ -61,6 +61,7 @@ export function generateP5Form(size = 0.2, parts = [], isSimple = false) {
       firstMesh = generateHeadMeshPoint(size, parts, isSimple, false, [
         "Z_01_Head1",
         "Z_01_Head2",
+        "H_01_Head1",
       ]);
       secondMesh = generateBodyMeshPoint(
         size,

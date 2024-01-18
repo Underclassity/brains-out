@@ -38,6 +38,7 @@ export function generateP6Form(size = 0.2, parts = [], isSimple = false) {
   const thirdMesh = generateHeadMeshPoint(size, parts, isSimple, false, [
     "Z_01_Head1",
     "Z_01_Head2",
+    "H_01_Head1",
   ]);
   const fourthMesh = generateBodyMeshPoint(
     size,

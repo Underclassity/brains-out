@@ -39,6 +39,7 @@ export function generateP1Form(size = 0.2, parts = [], isSimple = false) {
       firstMesh = generateHeadMeshPoint(size, parts, isSimple, false, [
         "Z_01_Head1",
         "Z_01_Head2",
+        "H_01_Head1",
       ]);
       secondMesh = generateBodyMeshPoint(size, parts, isSimple, false, [
         "Z_01_Body1",
@@ -74,6 +75,11 @@ export function generateP1Form(size = 0.2, parts = [], isSimple = false) {
         isSimple,
         false,
         "Z_01_Brains1"
+      );
+      firstMesh.rotation.set(
+        0,
+        MathUtils.degToRad(-90),
+        MathUtils.degToRad(90)
       );
       break;
     // Var D
@@ -118,6 +124,7 @@ export function generateP1Form(size = 0.2, parts = [], isSimple = false) {
       firstMesh = generateHeadMeshPoint(size, parts, isSimple, false, [
         "Z_01_Head1",
         "Z_01_Head2",
+        "H_01_Head1",
       ]);
       secondMesh = generateLegsMeshPoint(
         size,
