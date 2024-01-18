@@ -456,8 +456,12 @@ export default {
     timelessTimeString() {
       const { timelessTime } = this;
 
-      const minutes = Math.floor(timelessTime / 60 / 1000);
-      const seconds = Math.floor((timelessTime - minutes * 60 * 1000) / 1000);
+      const minutes = Math.floor(timelessTime / 60 / 1000)
+        .toString()
+        .padStart(2, "0");
+      const seconds = Math.floor((timelessTime - minutes * 60 * 1000) / 1000)
+        .toString()
+        .padStart(2, "0");
 
       return `${minutes}:${seconds}`;
     },
@@ -3145,7 +3149,11 @@ export default {
      */
     playBgSound() {
       //this.log("Play bg sound: ", this.isWindowFocus);
-      if (this.bgSound && !this.bgSound.isPlaying && this.isWindowFocus) {
+      if (
+        this.bgSound &&
+        !this.bgSound.isPlaying &&
+        (this.isWindowFocus || this.gamepad)
+      ) {
         this.bgSound.play();
         return true;
       }
@@ -3178,7 +3186,7 @@ export default {
       if (
         this.bgMenuSound &&
         !this.bgMenuSound.isPlaying &&
-        this.isWindowFocus &&
+        (this.isWindowFocus || this.gamepad) &&
         this.isAccepted
       ) {
         this.bgMenuSound.play();
@@ -3992,6 +4000,10 @@ export default {
 
     petrifyDelayMaxTime(newValue) {
       this.log("Petrify delay time changed: ", newValue);
+    },
+
+    isWindowFocus(newValue) {
+      this.log("Document focus change: ", newValue);
     },
   },
 

@@ -11,7 +11,7 @@
                 :style="isLayerVisible(index) ? `background-color: #${colorPalette[index].getHexString()}` : ''"
             )
 
-    .navigation(v-show="!isPractice && !this.isPause")
+    .navigation(v-show="!isPractice && (!this.isAccepted || isTest)")
         .navigation--item(
             v-bind:class="{ 'navigation--item--score-blinking': score > maxScore }"
         ) {{ $t('best') }}: {{ score > maxScore ? score : maxScore }}
@@ -32,7 +32,7 @@
             v-bind:class="{ 'navigation--item--blinking': timelessTime <= 10 * 1000 }"
         ) {{ $t('time') }}: {{ timelessTimeString }}
 
-    .navigation--item.navigation--menu(v-on:click="openMenu" v-if="!this.isPause")
+    .navigation--item.navigation--menu(v-on:click="openMenu" v-if="!this.isAccepted || isTest")
         span.material-symbols-outlined menu
 
     v-tweakpane.dev-menu(
@@ -41,9 +41,9 @@
         @on-pane-created="initTweakPane"
     )
 
-    .dev-buttons
-        span.dev-button.material-symbols-outlined(v-on:click="pauseCall" v-if="!isPause && isDev") pause
-        span.dev-button.material-symbols-outlined(v-on:click="playCall" v-if="isPause && isDev") play_arrow
+    .dev-buttons(v-if="(!this.isAccepted || isTest) && isDev")
+        span.dev-button.material-symbols-outlined(v-on:click="pauseCall" v-if="!isPause") pause
+        span.dev-button.material-symbols-outlined(v-on:click="playCall" v-if="isPause") play_arrow
 
     ControlsBlock(
         ref="controls"

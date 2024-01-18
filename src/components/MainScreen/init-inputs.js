@@ -31,6 +31,8 @@ export function initJoyPad() {
     this.emitter.emit("enableGamepad");
 
     window.focus();
+
+    this.playMusic();
   });
 
   joypad.on("disconnect", (e) => {
